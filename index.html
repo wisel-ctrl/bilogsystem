@@ -80,7 +80,7 @@
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link font-baskerville hover:text-black transition-colors duration-300 relative group">
+                    <a href="#home" class="nav-link font-baskerville hover:text-warm-cream transition-colors duration-300 relative group">
                         Home
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
@@ -489,9 +489,9 @@
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('text-rich-brown');
+                link.classList.remove('text-warm-cream');
                 if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-rich-brown');
+                    link.classList.add('text-warm-cream');
                 }
             });
         });
