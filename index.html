@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caffè Lilio Ristorante - Authentic Italian Dining Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-cream': '#E8E0D5',
+                        'rich-brown': '#8B4513',
+                        'deep-brown': '#5D2F0F',
+                        'accent-brown': '#A0522D'
+                    },
+                    fontFamily: {
+                        'serif': ['Georgia', 'serif'],
+                        'script': ['Brush Script MT', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(232, 224, 213, 0.9);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="smooth-scroll bg-warm-cream text-deep-brown">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div>
+                        <h1 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                        <p class="text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link font-baskerville hover:text-black transition-colors duration-300 relative group">
+                        Home
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="nav-link font-baskerville hover:text-rich-brown transition-colors duration-300 relative group">
+                        Menu
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#about" class="nav-link font-baskerville hover:text-rich-brown transition-colors duration-300 relative group">
+                        About Us
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden focus:outline-none" id="mobile-menu-btn">
+                    <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden glass-effect" id="mobile-menu">
+            <div class="px-4 py-4 space-y-4">
+                <a href="#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
+                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu</a>
+                <a href="#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="fade-in">
+                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
+                    Caffè Lilio
+                </h1>
+                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
+                    RISTORANTE
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Savor the Flavors of Spain and Italy
+                </p>
+                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
+                    <button class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto">
+                        Reserve a Table
+                    </button>
+                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
+                        View Our Menu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-xl text-rich-brown max-w-3xl mx-auto leading-relaxed">
+                    Discover our carefully crafted selection of traditional Italian dishes, 
+                    made with the finest ingredients and generations of culinary expertise.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Appetizers -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-warm-cream text-2xl">🍷</span>
+                    </div>
+                    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4 text-center">Antipasti</h3>
+                    <div class="space-y-4">
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Bruschetta Tradizionale</h4>
+                                    <p class="text-sm text-rich-brown">Fresh tomatoes, basil, garlic on toasted bread</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€12</span>
+                            </div>
+                        </div>
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Antipasto Misto</h4>
+                                    <p class="text-sm text-rich-brown">Selection of cured meats and cheeses</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€18</span>
+                            </div>
+                        </div>
+                        <div class="pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Caprese Salad</h4>
+                                    <p class="text-sm text-rich-brown">Fresh mozzarella, tomatoes, basil</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Courses -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-warm-cream text-2xl">🍝</span>
+                    </div>
+                    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4 text-center">Primi Piatti</h3>
+                    <div class="space-y-4">
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Spaghetti Carbonara</h4>
+                                    <p class="text-sm text-rich-brown">Traditional Roman pasta with eggs and pancetta</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€16</span>
+                            </div>
+                        </div>
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Risotto ai Funghi</h4>
+                                    <p class="text-sm text-rich-brown">Creamy mushroom risotto with truffle oil</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€18</span>
+                            </div>
+                        </div>
+                        <div class="pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Osso Buco</h4>
+                                    <p class="text-sm text-rich-brown">Braised veal shanks with saffron risotto</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€28</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift fade-in md:col-span-2 lg:col-span-1">
+                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-warm-cream text-2xl">🍰</span>
+                    </div>
+                    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4 text-center">Dolci</h3>
+                    <div class="space-y-4">
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Tiramisu</h4>
+                                    <p class="text-sm text-rich-brown">Classic Italian dessert with espresso</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€8</span>
+                            </div>
+                        </div>
+                        <div class="border-b border-warm-cream pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Panna Cotta</h4>
+                                    <p class="text-sm text-rich-brown">Silky vanilla custard with berry coulis</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€7</span>
+                            </div>
+                        </div>
+                        <div class="pb-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-baskerville font-bold text-deep-brown">Gelato Selection</h4>
+                                    <p class="text-sm text-rich-brown">Three scoops of artisanal gelato</p>
+                                </div>
+                                <span class="font-baskerville font-bold text-rich-brown">€6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in">
+                <button class="bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    View Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gradient-to-b from-amber-50 to-warm-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            Founded in 1952 by the Rossi family, Caffè Lilio has been a cornerstone of authentic Italian dining for over seven decades. 
+                            Our story began with Nonna Maria's simple dream: to share the true flavors of her homeland with the world.
+                        </p>
+                        <p>
+                            Today, we continue that legacy with the same passion and dedication to traditional recipes, 
+                            using only the finest ingredients imported directly from Italy. Every dish tells a story, 
+                            every meal creates a memory.
+                        </p>
+                        <p>
+                            From our wood-fired pizza oven to our handmade pasta, we maintain the time-honored techniques 
+                            that have made Italian cuisine beloved worldwide. Join us for an unforgettable dining experience 
+                            where tradition meets innovation.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">70+</div>
+                            <div class="font-baskerville text-deep-brown">Years of Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">5★</div>
+                            <div class="font-baskerville text-deep-brown">Customer Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">50+</div>
+                            <div class="font-baskerville text-deep-brown">Signature Dishes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-rich-brown to-deep-brown rounded-3xl p-8 shadow-2xl">
+                            <div class="bg-warm-cream rounded-2xl p-8">
+                                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">Visit Us Today</h3>
+                                
+                                <div class="space-y-4 font-baskerville text-deep-brown">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📍</span>
+                                        <div>
+                                            <div class="font-bold">Address</div>
+                                            <div>Via Roma 123, Milano, Italy</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📞</span>
+                                        <div>
+                                            <div class="font-bold">Phone</div>
+                                            <div>+39 02 1234 5678</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">🕒</span>
+                                        <div>
+                                            <div class="font-bold">Hours</div>
+                                            <div>Mon-Sun: 11:00 AM - 11:00 PM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">✉️</span>
+                                        <div>
+                                            <div class="font-bold">Email</div>
+                                            <div>info@caffelilio.com</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-8 space-y-3">
+                                    <button class="w-full bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300">
+                                        Make Reservation
+                                    </button>
+                                    <button class="w-full border-2 border-rich-brown text-rich-brown py-3 rounded-xl font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300">
+                                        Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-brown text-warm-cream py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
+                        <span class="text-warm-cream font-playfair font-bold text-xl">CL</span>
+                    </div>
+                    <div>
+                        <h3 class="font-playfair font-bold text-xl">Caffè Lilio</h3>
+                        <p class="text-xs tracking-widest opacity-75">RISTORANTE</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="#" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <span class="text-2xl">📘</span>
+                    </a>
+                    <a href="#" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <span class="text-2xl">📷</span>
+                    </a>
+                    <a href="#" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <span class="text-2xl">🐦</span>
+                    </a>
+                </div>
+                
+                <div class="border-t border-rich-brown pt-8">
+                    <p class="font-baskerville opacity-75">
+                        © 2024 Caffè Lilio Ristorante. All rights reserved. | 
+                        <span class="italic">Authentically Italian since 1952</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80; // Adjust this value based on your navbar height
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('glass-effect');
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('glass-effect');
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add active state to navigation links
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-rich-brown');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-rich-brown');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
