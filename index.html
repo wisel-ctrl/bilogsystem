@@ -73,24 +73,24 @@
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
                     <div>
-                        <h1 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                        <p class="text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                     </div>
                 </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link font-baskerville hover:text-warm-cream transition-colors duration-300 relative group">
+                    <a href="#home" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
                         Home
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#menu" class="nav-link font-baskerville hover:text-rich-brown transition-colors duration-300 relative group">
+                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
                         Menu
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#about" class="nav-link font-baskerville hover:text-rich-brown transition-colors duration-300 relative group">
+                    <a href="#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
                         About Us
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rich-brown transition-all duration-300 group-hover:w-full"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </div>
                 
@@ -445,13 +445,55 @@
 
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navUnderlines = document.querySelectorAll('.nav-link span');
+        const navTitle = document.querySelector('.nav-title');
+        const navSubtitle = document.querySelector('.nav-subtitle');
+
         window.addEventListener('scroll', () => {
+            const isHeroSection = window.scrollY < window.innerHeight - 100;
+
             if (window.scrollY > 100) {
                 navbar.classList.add('glass-effect');
                 navbar.classList.add('shadow-lg');
             } else {
                 navbar.classList.remove('glass-effect');
                 navbar.classList.remove('shadow-lg');
+            }
+
+            // Update nav links color based on section
+            navLinks.forEach(link => {
+                if (isHeroSection) {
+                    link.classList.remove('text-rich-brown', 'hover:text-rich-brown/80');
+                    link.classList.add('text-warm-cream', 'hover:text-warm-cream/80');
+                } else {
+                    link.classList.remove('text-warm-cream', 'hover:text-warm-cream/80');
+                    link.classList.add('text-rich-brown', 'hover:text-rich-brown/80');
+                }
+            });
+
+            // Update underline color based on section
+            navUnderlines.forEach(underline => {
+                if (isHeroSection) {
+                    underline.classList.remove('bg-rich-brown');
+                    underline.classList.add('bg-warm-cream');
+                } else {
+                    underline.classList.remove('bg-warm-cream');
+                    underline.classList.add('bg-rich-brown');
+                }
+            });
+
+            // Update nav title and subtitle colors
+            if (isHeroSection) {
+                navTitle.classList.remove('text-rich-brown');
+                navTitle.classList.add('text-warm-cream');
+                navSubtitle.classList.remove('text-rich-brown');
+                navSubtitle.classList.add('text-warm-cream');
+            } else {
+                navTitle.classList.remove('text-warm-cream');
+                navTitle.classList.add('text-rich-brown');
+                navSubtitle.classList.remove('text-warm-cream');
+                navSubtitle.classList.add('text-rich-brown');
             }
         });
 
@@ -476,22 +518,27 @@
 
         // Add active state to navigation links
         const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
 
         window.addEventListener('scroll', () => {
             let current = '';
+            const scrollPosition = window.pageYOffset;
+
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
+                const sectionTop = section.offsetTop - 150; // Adjusted offset for better UX
                 const sectionHeight = section.clientHeight;
-                if (window.pageYOffset >= (sectionTop - 200)) {
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                     current = section.getAttribute('id');
                 }
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('text-warm-cream');
+                link.classList.remove('active');
+                const underline = link.querySelector('span');
                 if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-warm-cream');
+                    link.classList.add('active');
+                    underline.style.width = '100%';
+                } else {
+                    underline.style.width = '0';
                 }
             });
         });
