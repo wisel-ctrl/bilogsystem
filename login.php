@@ -2,6 +2,30 @@
 require_once 'db_connect.php';
 session_start();
 
+// If user is already logged in, redirect them to appropriate page
+if (isset($_SESSION['user_id'])) {
+    switch ($_SESSION['usertype']) {
+        case 1:
+            header("Location: admin/adminindex.php");
+            break;
+        case 2:
+            header("Location: cashier/cashierindex.php");
+            break;
+        case 3:
+            header("Location: customer/customerindex.php");
+            break;
+        default:
+            // Invalid usertype - destroy session
+            session_destroy();
+    }
+    exit();
+}
+
+// Prevent caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 $login_error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
