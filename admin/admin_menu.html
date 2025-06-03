@@ -1,0 +1,410 @@
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'warm-cream': '#E8E0D5',
+                    'rich-brown': '#8B4513',
+                    'deep-brown': '#5D2F0F',
+                    'accent-brown': '#A0522D'
+                },
+                fontFamily: {
+                    'serif': ['Georgia', 'serif'],
+                    'script': ['Brush Script MT', 'cursive']
+                }
+            }
+        }
+    }
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Lilio - Menu Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        /* Animation classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Delay classes for staggered animations */
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-cream': '#E8E0D5',
+                        'rich-brown': '#8B4513',
+                        'deep-brown': '#5D2F0F',
+                        'accent-brown': '#A0522D'
+                    },
+                    fontFamily: {
+                        'serif': ['Georgia', 'serif'],
+                        'script': ['Brush Script MT', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-warm-cream font-serif">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-accent-brown">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-coffee text-2xl text-warm-cream"></i>
+                    <h1 id="cafe-title" class="text-xl font-bold text-warm-cream font-script">Cafe Lilio</h1>
+                </div>
+            </div>
+            
+            <nav class="mt-8 px-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-accent-brown text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-chart-pie w-5"></i>
+                            <span class="sidebar-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-calendar-check w-5"></i>
+                            <span class="sidebar-text">Booking Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text">Menu Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-boxes w-5"></i>
+                            <span class="sidebar-text">Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-receipt w-5"></i>
+                            <span class="sidebar-text">Expenses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span class="sidebar-text">Employee Creation</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-script">Dashboard</h2>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-sm text-rich-brown">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span id="current-date"></span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
+                            <span class="text-sm font-medium text-deep-brown">Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+                        <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
+                <!-- Menu Management Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6 animate-on-scroll">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-deep-brown font-script">Menu Management</h3>
+                        <button id="add-dish-btn" class="bg-rich-brown hover:bg-deep-brown text-white px-6 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Add New Dish</span>
+                        </button>
+                    </div>
+
+                    <!-- Menu Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="border-b-2 border-accent-brown">
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Dish Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Capital</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-table-body">
+                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
+                                    <td class="p-4 font-medium text-deep-brown">Espresso</td>
+                                    <td class="p-4 text-rich-brown">Coffee</td>
+                                    <td class="p-4">
+                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
+                                    </td>
+                                    <td class="p-4 text-deep-brown">₱120</td>
+                                    <td class="p-4 text-rich-brown">₱45</td>
+                                    <td class="p-4">
+                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
+                                    <td class="p-4 font-medium text-deep-brown">Cappuccino</td>
+                                    <td class="p-4 text-rich-brown">Coffee</td>
+                                    <td class="p-4">
+                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
+                                    </td>
+                                    <td class="p-4 text-deep-brown">₱150</td>
+                                    <td class="p-4 text-rich-brown">₱60</td>
+                                    <td class="p-4">
+                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
+                                    <td class="p-4 font-medium text-deep-brown">Chocolate Cake</td>
+                                    <td class="p-4 text-rich-brown">Dessert</td>
+                                    <td class="p-4">
+                                        <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">Unavailable</span>
+                                    </td>
+                                    <td class="p-4 text-deep-brown">₱280</td>
+                                    <td class="p-4 text-rich-brown">₱120</td>
+                                    <td class="p-4">
+                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Dish Creation Modal -->
+                <div id="dish-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-script">Create New Dish</h3>
+                                <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <form id="dish-form" class="space-y-6">
+                                <!-- Dish Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Name</label>
+                                    <input type="text" id="dish-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
+                                </div>
+
+                                <!-- Dish Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
+                                    <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
+                                        <input type="number" id="dish-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
+                                        <input type="number" id="dish-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Ingredients Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Ingredients</label>
+                                    <div id="ingredients-container">
+                                        <div class="ingredient-row flex items-center space-x-2 mb-2">
+                                            <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-select">
+                                                <option value="">Select ingredient</option>
+                                                <option value="coffee-beans">Coffee Beans</option>
+                                                <option value="milk">Milk</option>
+                                                <option value="sugar">Sugar</option>
+                                                <option value="flour">Flour</option>
+                                                <option value="chocolate">Chocolate</option>
+                                                <option value="butter">Butter</option>
+                                                <option value="eggs">Eggs</option>
+                                                <option value="vanilla">Vanilla</option>
+                                            </select>
+                                            <input type="number" placeholder="Quantity (kg)" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0">
+                                            <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="add-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Ingredient</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                        Create Dish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const cafeTitle = document.getElementById('cafe-title');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-16');
+            
+            if (sidebar.classList.contains('w-16')) {
+                cafeTitle.style.display = 'none';
+                sidebarTexts.forEach(text => text.style.display = 'none');
+            } else {
+                cafeTitle.style.display = 'block';
+                sidebarTexts.forEach(text => text.style.display = 'block');
+            }
+        });
+
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Scroll animation observer
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('dish-modal');
+        const addDishBtn = document.getElementById('add-dish-btn');
+        const closeModal = document.getElementById('close-modal');
+        const cancelDish = document.getElementById('cancel-dish');
+        const addIngredientBtn = document.getElementById('add-ingredient');
+        const ingredientsContainer = document.getElementById('ingredients-container');
+
+        // Open modal
+        addDishBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        // Close modal functions
+        const closeModalFunction = () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Re-enable background scrolling
+            // Reset form
+            document.getElementById('dish-form').reset();
+            // Reset ingredients to initial state
+            const initialIngredient = ingredientsContainer.querySelector('.ingredient-row');
+            ingredientsContainer.innerHTML = '';
+            ingredientsContainer.appendChild(initialIngredient.cloneNode(true));
+        };
+
+        closeModal.addEventListener('click', closeModalFunction);
+        cancelDish.addEventListener('click', closeModalFunction);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunction();
+            }
+        });
+
+        // Add new ingredient row
+        addIngredientBtn.addEventListener('click', () => {
+            const ingredientRow = document.querySelector('.ingredient-row').cloneNode(true);
+            const removeBtn = ingredientRow.querySelector('.remove-ingredient');
+            removeBtn.classList.remove('hidden');
+            ingredientsContainer.appendChild(ingredientRow);
+        });
+
+        // Remove ingredient row
+        ingredientsContainer.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-ingredient')) {
+                e.target.closest('.ingredient-row').remove();
+            }
+        });
+    </script>
+</body>
+</html>
