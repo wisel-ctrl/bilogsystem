@@ -7,6 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <div class="flex h-screen overflow-hidden">
@@ -215,13 +222,17 @@
                     <!-- Revenue Analysis Chart -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Revenue Analysis</h3>
-                        <canvas id="revenueChart" width="400" height="300"></canvas>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
                     </div>
                     
                     <!-- Menu Sales Chart -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Top Menu Items</h3>
-                        <canvas id="menuChart" width="400" height="300"></canvas>
+                        <div class="chart-container">
+                            <canvas id="menuChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -230,7 +241,9 @@
                     <!-- Season Trends Chart -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Seasonal Trends</h3>
-                        <canvas id="seasonChart" width="400" height="300"></canvas>
+                        <div class="chart-container">
+                            <canvas id="seasonChart"></canvas>
+                        </div>
                     </div>
                     
                     <!-- Customer Satisfaction -->
@@ -345,7 +358,7 @@
         // Chart.js configurations
         // Revenue Analysis Chart
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(revenueCtx, {
+        const revenueChart = new Chart(revenueCtx, {
             type: 'line',
             data: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -368,7 +381,8 @@
                 },
                 scales: {
                     y: {
-                        beginAtZero: true,
+                        beginAtZero: false,
+                        min: 60000,
                         ticks: {
                             callback: function(value) {
                                 return '₱' + value.toLocaleString();
@@ -381,7 +395,7 @@
 
         // Menu Sales Chart
         const menuCtx = document.getElementById('menuChart').getContext('2d');
-        new Chart(menuCtx, {
+        const menuChart = new Chart(menuCtx, {
             type: 'doughnut',
             data: {
                 labels: ['Cappuccino', 'Latte', 'Americano', 'Espresso', 'Frappe', 'Others'],
@@ -410,7 +424,7 @@
 
         // Season Trends Chart
         const seasonCtx = document.getElementById('seasonChart').getContext('2d');
-        new Chart(seasonCtx, {
+        const seasonChart = new Chart(seasonCtx, {
             type: 'bar',
             data: {
                 labels: ['Spring', 'Summer', 'Fall', 'Winter'],
@@ -435,7 +449,8 @@
                 },
                 scales: {
                     y: {
-                        beginAtZero: true,
+                        beginAtZero: false,
+                        min: 150000,
                         ticks: {
                             callback: function(value) {
                                 return '₱' + value.toLocaleString();
