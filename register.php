@@ -1,3 +1,71 @@
+<?php
+require_once 'db_connect.php';
+
+$registration_success = false;
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form data
+    $firstName = trim($_POST['firstName'] ?? '');
+    $middleName = trim($_POST['middleName'] ?? '');
+    $lastName = trim($_POST['lastName'] ?? '');
+    $suffix = trim($_POST['suffix'] ?? '');
+    $username = trim($_POST['username'] ?? '');
+    $contactNumber = str_replace('-', '', trim($_POST['contactNumber'] ?? ''));
+    $password = $_POST['password'] ?? '';
+    
+    // Basic validation
+    if (empty($firstName)) $errors['firstName'] = 'First name is required';
+    if (empty($lastName)) $errors['lastName'] = 'Last name is required';
+    if (empty($username)) $errors['username'] = 'Username is required';
+    if (empty($contactNumber)) {
+        $errors['contactNumber'] = 'Contact number is required';
+    } elseif (!preg_match('/^[0-9]{11}$/', $contactNumber)) {
+        $errors['contactNumber'] = 'Contact number must be 11 digits';
+    }
+    if (empty($password)) {
+        $errors['password'] = 'Password is required';
+    } elseif (strlen($password) < 8) {
+        $errors['password'] = 'Password must be at least 8 characters';
+    }
+
+    // Check if username already exists
+    if (empty($errors)) {
+        $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ?");
+        $stmt->execute([$username]);
+        if ($stmt->rowCount() > 0) {
+            $errors['username'] = 'Username already taken';
+        }
+    }
+
+    // If no errors, register user
+    if (empty($errors)) {
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $usertype = 3; // Customer account
+            
+            $stmt = $conn->prepare("INSERT INTO users_tb 
+                (first_name, middle_name, last_name, suffix, username, contact_number, password, usertype) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            $stmt->execute([
+                $firstName,
+                $middleName,
+                $lastName,
+                $suffix,
+                $username,
+                $contactNumber,
+                $hashedPassword,
+                $usertype
+            ]);
+            
+            $registration_success = true;
+        } catch(PDOException $e) {
+            $errors['database'] = 'Registration failed: ' . $e->getMessage();
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,7 +250,25 @@
                 </div>
 
                 <!-- Registration Form -->
-                <form id="registrationForm" class="space-y-6">
+                <form id="registrationForm" class="space-y-6" method="POST" action="">
+                    <?php if (!empty($errors)): ?>
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+                            <strong class="font-bold">Error!</strong>
+                            <span class="block sm:inline">Please fix the following issues:</span>
+                            <ul class="mt-2 list-disc list-inside">
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?php echo htmlspecialchars($error); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($registration_success): ?>
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+                            <strong class="font-bold">Success!</strong>
+                            <span class="block sm:inline">Registration successful! Welcome to Caffè Lilio.</span>
+                        </div>
+                    <?php endif; ?>
                     <!-- Name Fields Row -->
                     <div class="grid md:grid-cols-2 gap-6">
                         <!-- First Name -->
@@ -260,56 +346,20 @@
                         >
                         <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
                     </div>
-
-                    <!-- Contact Number with OTP -->
-                    <div class="space-y-4">
-                        <div class="flex gap-4">
-                            <div class="input-group relative flex-1">
-                                <input 
-                                    type="tel" 
-                                    id="contactNumber" 
-                                    name="contactNumber"
-                                    class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
-                                    placeholder="Contact Number *"
-                                    required
-                                >
-                                <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
-                            </div>
-                            <button 
-                                type="button" 
-                                id="sendOtpBtn"
-                                class="px-6 py-4 bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream rounded-xl font-baskerville font-bold btn-hover focus:outline-none focus:ring-4 focus:ring-rich-brown/30 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-                            >
-                                Send OTP
-                            </button>
-                        </div>
-
-                        <!-- OTP Input (Hidden initially) -->
-                        <div id="otpSection" class="hidden">
-                            <div class="input-group">
-                                <label for="otpCode" class="floating-label">Enter 6-digit OTP *</label>
-                                <input 
-                                    type="text" 
-                                    id="otpCode" 
-                                    name="otpCode"
-                                    class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown peer text-center text-2xl tracking-widest"
-                                    maxlength="6"
-                                >
-                                <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
-                            </div>
-                            <div class="flex justify-between items-center mt-2">
-                                <p id="otpTimer" class="text-sm font-baskerville text-rich-brown otp-countdown"></p>
-                                <button 
-                                    type="button" 
-                                    id="resendOtpBtn"
-                                    class="text-sm font-baskerville text-rich-brown hover:text-deep-brown transition-colors duration-300 hidden"
-                                >
-                                    Resend OTP
-                                </button>
-                            </div>
-                        </div>
+                    
+                    <!-- Contact Number -->
+                    <div class="input-group">
+                        <input 
+                            type="tel" 
+                            id="contactNumber" 
+                            name="contactNumber"
+                            class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                            placeholder="Contact Number *"
+                            required
+                        >
+                        <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
                     </div>
-
+                    
                     <!-- Password -->
                     <div class="input-group">
                         <label for="password" class="floating-label">Password *</label>
@@ -390,20 +440,11 @@
         const form = document.getElementById('registrationForm');
         const inputs = form.querySelectorAll('input[required], select[required]');
         const submitBtn = document.getElementById('submitBtn');
-        const sendOtpBtn = document.getElementById('sendOtpBtn');
-        const resendOtpBtn = document.getElementById('resendOtpBtn');
-        const otpSection = document.getElementById('otpSection');
-        const otpTimer = document.getElementById('otpTimer');
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeOpen = document.getElementById('eyeOpen');
         const eyeClosed = document.getElementById('eyeClosed');
 
-        // State variables
-        let otpSent = false;
-        let otpVerified = false;
-        let otpCountdown = 0;
-        let countdownInterval = null;
 
         // Initialize floating labels
         function initFloatingLabels() {
@@ -471,24 +512,18 @@
                     break;
 
                 case 'contactNumber':
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        message = 'Contact number is required';
-                    } else if (!/^[+]?[\d\s\-()]{10,15}$/.test(field.value.trim())) {
-                        isValid = false;
-                        message = 'Please enter a valid phone number';
-                    }
-                    break;
-
-                case 'otpCode':
-                    if (otpSent && !field.value.trim()) {
-                        isValid = false;
-                        message = 'OTP is required';
-                    } else if (otpSent && !/^\d{6}$/.test(field.value.trim())) {
-                        isValid = false;
-                        message = 'OTP must be 6 digits';
-                    }
-                    break;
+                const cleanNumber = field.value.replace(/\D/g, '');
+                if (!cleanNumber) {
+                    isValid = false;
+                    message = 'Contact number is required';
+                } else if (cleanNumber.length !== 11) {
+                    isValid = false;
+                    message = 'Contact number must be 11 digits';
+                } else if (!/^09\d{9}$/.test(cleanNumber)) {
+                    isValid = false;
+                    message = 'Please enter a valid Philippine mobile number (09XXXXXXXXX)';
+                }
+                break;
 
                 case 'password':
                     const strength = checkPasswordStrength(field.value);
@@ -585,10 +620,6 @@
                 isValid = false;
             }
 
-            // Check if OTP is required and verified
-            if (otpSent && !otpVerified) {
-                isValid = false;
-            }
 
             // Check terms acceptance
             if (!termsAccepted.checked) {
@@ -596,86 +627,6 @@
             }
 
             submitBtn.disabled = !isValid;
-        }
-
-        // OTP functionality
-        function sendOTP() {
-            const contactNumber = document.getElementById('contactNumber');
-            
-            if (!validateField(contactNumber)) {
-                return;
-            }
-
-            // Simulate OTP sending
-            sendOtpBtn.disabled = true;
-            sendOtpBtn.textContent = 'Sending...';
-            
-            setTimeout(() => {
-                otpSent = true;
-                otpSection.classList.remove('hidden');
-                sendOtpBtn.textContent = 'OTP Sent';
-                startOTPCountdown();
-                
-                // Focus on OTP input
-                document.getElementById('otpCode').focus();
-            }, 2000);
-        }
-
-        function startOTPCountdown() {
-            otpCountdown = 60;
-            updateCountdownDisplay();
-            
-            countdownInterval = setInterval(() => {
-                otpCountdown--;
-                updateCountdownDisplay();
-                
-                if (otpCountdown <= 0) {
-                    clearInterval(countdownInterval);
-                    resendOtpBtn.classList.remove('hidden');
-                }
-            }, 1000);
-        }
-
-        function updateCountdownDisplay() {
-            if (otpCountdown > 0) {
-                otpTimer.textContent = `Resend OTP in ${otpCountdown}s`;
-                otpTimer.classList.remove('hidden');
-                resendOtpBtn.classList.add('hidden');
-            } else {
-                otpTimer.classList.add('hidden');
-            }
-        }
-
-        function verifyOTP() {
-            const otpCode = document.getElementById('otpCode').value;
-            
-            // Simulate OTP verification (in real app, this would be an API call)
-            if (otpCode === '123456' || otpCode.length === 6) {
-                otpVerified = true;
-                const otpInput = document.getElementById('otpCode');
-                otpInput.classList.add('field-success');
-                
-                const feedback = otpInput.closest('.input-group').querySelector('.field-feedback');
-                feedback.textContent = 'Phone number verified successfully!';
-                feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-green-600';
-                feedback.classList.remove('hidden');
-                
-                clearInterval(countdownInterval);
-                otpTimer.textContent = '✓ Verified';
-                otpTimer.className = 'text-sm font-baskerville text-green-600';
-                resendOtpBtn.classList.add('hidden');
-                
-                checkFormValidity();
-            } else {
-                otpVerified = false;
-                const otpInput = document.getElementById('otpCode');
-                otpInput.classList.add('field-error');
-                
-                const feedback = otpInput.closest('.input-group').querySelector('.field-feedback');
-                feedback.textContent = 'Invalid OTP. Please try again.';
-                feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-red-600';
-                feedback.classList.remove('hidden');
-            }
         }
 
         // Password toggle functionality
@@ -694,90 +645,29 @@
 
         // Form submission
         function handleFormSubmit(e) {
-            e.preventDefault();
+            // Let the form submit normally since we have PHP handling it
+            // The validation will still run to provide immediate feedback
+            checkFormValidity();
             
-            // Final validation
-            let isValid = true;
-            inputs.forEach(input => {
-                if (!validateField(input)) {
-                    isValid = false;
-                }
-            });
-
-            if (!otpVerified) {
-                alert('Please verify your phone number with OTP first.');
-                return;
-            }
-
+        
             if (!document.getElementById('termsAccepted').checked) {
+                e.preventDefault();
                 alert('Please accept the terms and conditions.');
                 return;
             }
-
-            if (!isValid) {
+        
+            // Check if there are any validation errors
+            const errorFields = document.querySelectorAll('.field-error');
+            if (errorFields.length > 0) {
+                e.preventDefault();
                 alert('Please fix all errors before submitting.');
                 return;
             }
-
-            // Simulate form submission
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Creating Account...';
-            
-            setTimeout(() => {
-                alert('Account created successfully! Welcome to Caffè Lilio family.');
-                // In a real app, redirect to success page or login
-                form.reset();
-                submitBtn.textContent = 'Create Account';
-                submitBtn.disabled = false;
-                
-                // Reset form state
-                otpSent = false;
-                otpVerified = false;
-                otpSection.classList.add('hidden');
-                sendOtpBtn.disabled = false;
-                sendOtpBtn.textContent = 'Send OTP';
-                
-                // Remove all validation classes
-                inputs.forEach(input => {
-                    input.classList.remove('field-error', 'field-success');
-                    const inputGroup = input.closest('.input-group');
-                    inputGroup?.classList.remove('has-content');
-                    const feedback = inputGroup?.querySelector('.field-feedback');
-                    feedback?.classList.add('hidden');
-                });
-                
-                // Reset password strength indicator
-                const strengthBars = document.querySelectorAll('#passwordStrength > div');
-                strengthBars.forEach(bar => {
-                    bar.className = 'h-1 flex-1 bg-stone-200 rounded';
-                });
-            }, 2000);
         }
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             initFloatingLabels();
-            
-            // OTP functionality
-            sendOtpBtn.addEventListener('click', sendOTP);
-            resendOtpBtn.addEventListener('click', () => {
-                sendOTP();
-                resendOtpBtn.classList.add('hidden');
-            });
-            
-            // OTP input validation
-            document.getElementById('otpCode').addEventListener('input', function(e) {
-                // Only allow numbers
-                e.target.value = e.target.value.replace(/\D/g, '');
-                
-                // Auto-verify when 6 digits are entered
-                if (e.target.value.length === 6) {
-                    setTimeout(() => verifyOTP(), 500);
-                }
-                
-                validateField(e.target);
-                checkFormValidity();
-            });
             
             // Password toggle
             togglePassword.addEventListener('click', togglePasswordVisibility);
@@ -788,21 +678,19 @@
             // Form submission
             form.addEventListener('submit', handleFormSubmit);
             
-            // Contact number formatting
             document.getElementById('contactNumber').addEventListener('input', function(e) {
-                // Basic phone number formatting (you can enhance this)
+                // Only allow digits and limit to 11 characters
                 let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 0) {
-                    if (value.length <= 3) {
-                        e.target.value = value;
-                    } else if (value.length <= 6) {
-                        e.target.value = value.slice(0, 3) + '-' + value.slice(3);
-                    } else {
-                        e.target.value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6, 10);
-                    }
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
                 }
+                e.target.value = value;
+                
+                // Update validation
+                validateField(e.target);
+                checkFormValidity();
             });
-            
+                        
             // Username input - only allow alphanumeric and underscore
             document.getElementById('username').addEventListener('input', function(e) {
                 e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, '');
