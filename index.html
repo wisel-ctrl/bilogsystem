@@ -146,7 +146,7 @@
 
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
@@ -170,7 +170,7 @@
                         <!-- Slide 1 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <!-- Best Sellers -->
-                            <div class="w-1/2">
+                            <div class="w-1/3">
                                 <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_bestseller.jpg', 'Best Sellers Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/01_bestseller.jpg" alt="Best Sellers Menu" class="w-full h-full object-cover">
@@ -181,10 +181,21 @@
                                 </div>
                             </div>
                             <!-- Italian Dishes -->
-                            <div class="w-1/2">
+                            <div class="w-1/3">
                                 <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_italian.jpg', 'Italian Dishes Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/02_italian.jpg" alt="Italian Dishes Menu" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Spanish Dishes -->
+                            <div class="w-1/3">
+                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/03_spanish.jpg" alt="Spanish Dishes Menu" class="w-full h-full object-cover">
                                         <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
                                             <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
                                         </div>
@@ -195,19 +206,8 @@
 
                         <!-- Slide 2 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <!-- Spanish Dishes -->
-                            <div class="w-1/2">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/03_spanish.jpg" alt="Spanish Dishes Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- Salads and Soups -->
-                            <div class="w-1/2">
+                            <div class="w-1/3">
                                 <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_salad_soup.jpg', 'Salads and Soups Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/04_salad_soup.jpg" alt="Salads and Soups Menu" class="w-full h-full object-cover">
@@ -217,6 +217,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Placeholder slots for future menu items -->
+                            <div class="w-1/3 opacity-0"></div>
+                            <div class="w-1/3 opacity-0"></div>
                         </div>
                     </div>
                 </div>
