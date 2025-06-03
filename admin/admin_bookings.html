@@ -364,6 +364,35 @@
             observer.observe(element);
         });
 
+        // --- Modal Functions ---
+        function openBookingDetails(bookingId, clientName, phone, menu, price, datetime, pax, notes) {
+            // Set modal fields
+            document.getElementById('modal-booking-id').textContent = bookingId;
+            document.getElementById('modal-client-name').textContent = clientName;
+            document.getElementById('modal-phone').textContent = phone;
+            document.getElementById('modal-menu').textContent = menu;
+            document.getElementById('modal-price').textContent = price;
+            document.getElementById('modal-datetime').textContent = datetime;
+            document.getElementById('modal-pax').textContent = pax;
+            document.getElementById('modal-notes').textContent = notes;
+            // Show modal
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function openDeclineModal() {
+            // Hide booking modal, show decline modal
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.getElementById('decline-modal').classList.remove('hidden');
+        }
+
+        function acceptBooking() {
+            // Hide booking modal
+            document.getElementById('booking-modal').classList.add('hidden');
+            // Show success modal with message
+            document.getElementById('success-message').textContent = 'Booking has been accepted!';
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
     </script>
 </body>
 </html>
