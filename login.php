@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         </div>
 
-        <div class="relative max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Login Card -->
             <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12 fade-in">
                 <!-- Header -->
