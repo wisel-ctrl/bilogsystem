@@ -1264,33 +1264,32 @@ function showCategoryQuestions(category) {
 
     // Reset chat to initial state
     function resetChat() {
-    chatContent.innerHTML = `
-        <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-            <p class="text-center">Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
-            <div class="mt-2 grid grid-cols-1 gap-2">
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+        chatContent.innerHTML = `
+            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+                <p class="text-center">Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
+                <div class="mt-2 grid grid-cols-1 gap-2">
+                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+                </div>
             </div>
-        </div>
-    `;
+        `;
 
-    // Re-add event listeners to category buttons
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const category = this.dataset.category;
-            currentCategory = category;
-            showCategoryQuestions(category);
+        // Re-add event listeners to category buttons
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const category = this.dataset.category;
+                currentCategory = category;
+                showCategoryQuestions(category);
+            });
         });
+
+        // Scroll to bottom
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
     });
-
-    // Scroll to bottom
-    chatContent.scrollTop = chatContent.scrollHeight;
-}
-});
-
     </script>
 </body>
 </html>
