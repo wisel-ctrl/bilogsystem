@@ -30,7 +30,12 @@ require_once 'cashier_auth.php';
 </head>
 <body class="bg-warm-cream font-serif min-h-screen">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center text-rich-brown mb-8">Restaurant POS System</h1>
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-rich-brown">Restaurant POS System</h1>
+            <a href="../logout.php" class="bg-rich-brown hover:bg-deep-brown text-warm-cream px-4 py-2 rounded-lg transition-colors duration-300 font-baskerville">
+                Sign Out
+            </a>
+        </div>
         
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Section 1: Sidebar with category filters -->
