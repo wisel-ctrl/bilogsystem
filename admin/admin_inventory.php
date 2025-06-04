@@ -381,7 +381,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "fetch_ingredient.php",
+                    "url": "inventory_handlers/fetch_ingredient.php",
                     "type": "POST"
                 },
                 "columns": [
