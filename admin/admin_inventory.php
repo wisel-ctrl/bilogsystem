@@ -175,7 +175,7 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table id="ingredients-table" class="min-w-full divide-y divide-gray-200">
+                        <table id="ingredients-table" class="ingredients-table min-w-full divide-y divide-gray-200">
                             <thead class="bg-warm-cream">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Name</th>
