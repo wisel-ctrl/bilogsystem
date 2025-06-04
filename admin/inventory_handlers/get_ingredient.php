@@ -1,8 +1,6 @@
 <?php
 require_once '../../db_connection.php';
 
-// Database connection
-$pdo = connectDB();
 
 // Get ingredient ID from request
 $ingredientId = $_GET['id'] ?? null;
@@ -14,7 +12,7 @@ if (!$ingredientId) {
 }
 
 // Fetch ingredient data
-$stmt = $pdo->prepare("SELECT * FROM ingredients_tb WHERE ingredient_id = ?");
+$stmt = $conn->prepare("SELECT * FROM ingredients_tb WHERE ingredient_id = ?");
 $stmt->execute([$ingredientId]);
 $ingredient = $stmt->fetch(PDO::FETCH_ASSOC);
 
