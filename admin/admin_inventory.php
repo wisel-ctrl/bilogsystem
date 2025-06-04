@@ -212,11 +212,19 @@
                         <label for="ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select id="ingredient-category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
                             <option value="">Select a category</option>
-                            <option value="Coffee">Coffee</option>
-                            <option value="Dairy">Dairy</option>
-                            <option value="Flavoring">Flavoring</option>
-                            <option value="Bakery">Bakery</option>
-                            <option value="Other">Other</option>
+                            <option value="produce">Produce</option>
+                            <option value="protein">Proteins</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="grains">Grains & Starches</option>
+                            <option value="spices_herbs">Spices & Herbs</option>
+                            <option value="oils_fats">Oils & Fats</option>
+                            <option value="condiments">Condiments & Sauces</option>
+                            <option value="baking">Baking Ingredients</option>
+                            <option value="beverages">Beverages</option>
+                            <option value="canned">Canned & Preserved Goods</option>
+                            <option value="frozen">Frozen Ingredients</option>
+                            <option value="nuts_seeds">Nuts, Seeds & Legumes</option>
+                            <option value="other">Other..</option>
                         </select>
                     </div>
                     
