@@ -512,7 +512,7 @@
             };
             
             // Send data to server
-            fetch('inventory_handler/update_ingredient.php', {
+            fetch('inventory_handlers/update_ingredient.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
