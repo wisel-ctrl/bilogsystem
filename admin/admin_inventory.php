@@ -7,38 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <style>
-        /* Tailwind-like styling override for Select2 */
-        .select2-container .select2-selection--single {
-            @apply px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D69E2E] text-sm;
-            height: auto !important;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 1.5rem !important;
-            padding-left: 0 !important;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 100% !important;
-            top: 0 !important;
-            right: 0.5rem;
-        }
-
-        .select2-container .select2-selection--single:focus {
-            @apply ring-2 ring-[#D69E2E];
-        }
-
-        .select2-dropdown {
-            @apply border border-gray-300 shadow-lg rounded-md text-sm;
-        }
-
-        .select2-results__option--highlighted {
-            @apply bg-[#D69E2E] text-white;
-        }
         
         /* Animation classes */
         .animate-on-scroll {
@@ -294,12 +265,19 @@
                     <div class="mb-4">
                         <label for="edit-ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select id="edit-ingredient-category" class="w-full">
-                            <option value="">Select a category</option>
-                            <option value="Coffee">Coffee</option>
-                            <option value="Dairy">Dairy</option>
-                            <option value="Flavoring">Flavoring</option>
-                            <option value="Bakery">Bakery</option>
-                            <option value="Other">Other</option>
+                            <option value="produce">Produce</option>
+                            <option value="protein">Proteins</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="grains">Grains & Starches</option>
+                            <option value="spices_herbs">Spices & Herbs</option>
+                            <option value="oils_fats">Oils & Fats</option>
+                            <option value="condiments">Condiments & Sauces</option>
+                            <option value="baking">Baking Ingredients</option>
+                            <option value="beverages">Beverages</option>
+                            <option value="canned">Canned & Preserved Goods</option>
+                            <option value="frozen">Frozen Ingredients</option>
+                            <option value="nuts_seeds">Nuts, Seeds & Legumes</option>
+                            <option value="other">Other..</option>
                         </select>
                     </div>
                     
@@ -354,23 +332,6 @@
         </div>
     </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Select2 -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <!-- Init Select2 -->
-    <script>
-    $(document).ready(function () {
-        $('#edit-ingredient-category').select2({
-        tags: true,
-        placeholder: "Select or type a category",
-        dropdownAutoWidth: true,
-        width: '100%'
-        });
-    });
-    </script>
     <script>
         // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
