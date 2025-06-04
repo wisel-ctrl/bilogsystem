@@ -64,6 +64,24 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+        /* Customer Support Widget Styles */
+        .support-widget {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .support-widget.closed {
+            transform: translateY(100px);
+        }
+
+        .support-widget.open {
+            transform: translateY(0);
+        }
+
+        .support-toggle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
@@ -703,7 +721,51 @@
             <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain">
         </div>
     </div>
-
+    
+    
+    <!-- Add this inside your body tag, just before the closing </body> -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Toggle Button -->
+        <div id="supportToggle" class="support-toggle bg-deep-brown text-warm-cream w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-rich-brown transition-all duration-300 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </div>
+    
+        <!-- Chat Window -->
+        <div id="supportWindow" class="support-widget absolute bottom-20 right-0 w-80 bg-warm-cream rounded-lg overflow-hidden hidden closed flex flex-col" style="height: 500px;">
+            <!-- Header -->
+            <div class="bg-deep-brown text-warm-cream p-4 flex justify-between items-center">
+                <h3 class="font-playfair font-bold">Caffè Lilio Support</h3>
+                <button id="closeSupport" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Chat Content -->
+            <div id="chatContent" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Initial greeting message -->
+                <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+                    <p>Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Input Area (hidden by default) -->
+            <div class="p-3 border-t border-deep-brown/20 hidden" id="inputArea">
+                <input type="text" id="userInput" placeholder="Type your question..." class="w-full p-2 border border-deep-brown/30 rounded">
+            </div>
+        </div>
+    </div>
+    
+    
     <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1017,6 +1079,218 @@
             // Initialize carousel
             updatePackageCarousel();
         });
+        
+// FAQ Data (Filtered)
+const faqData = {
+    location: [
+        {
+            question: "Where is Caffè Lilio located?",
+            answer: "📍 Brgy. Rizal st. cr. 4th St., Liliw, Laguna, Philippines, 4004<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>"
+        },
+        {
+            question: "What are your opening hours?",
+            answer: "⏰ 9am - 8pm"
+        }
+    ],
+    reservations: [
+        {
+            question: "Do I need a reservation to dine?",
+            answer: "📝 Not required for regular dining, but recommended for events. <a href='https://caffelilioristorante.com/register.php' class='text-rich-brown underline' target='_blank'>Register an account to start your reservation</a>."
+        },
+        {
+            question: "Can you accommodate large groups or events?",
+            answer: "🎉 Yes, we offer event packages."
+        }
+    ],
+    menu: [
+        {
+            question: "Do you have vegetarian or vegan options?",
+            answer: "🥗 Yes, we offer vegetarian and vegan dishes."
+        },
+        {
+            question: "Can I customize dishes for dietary needs?",
+            answer: "👌 Yes, we can adjust dishes for specific preferences."
+        }
+    ],
+    contact: [
+        {
+            question: "How can I contact Caffè Lilio?",
+            answer: `
+                <div class="space-y-2">
+                    <div class="flex items-start">
+                        <span class="mr-2">📱</span>
+                        <div>
+                            <a href="https://www.facebook.com/caffelilio.ph" class="text-rich-brown underline" target="_blank">Facebook</a><br>
+                            <a href="https://www.instagram.com/caffelilio.ph/" class="text-rich-brown underline" target="_blank">Instagram</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="mr-2">📞</span>
+                        <div>+49 2542 084</div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="mr-2">✉️</span>
+                        <div>caffelilio.liliw@gmail.com</div>
+                    </div>
+                </div>
+            `
+        }
+    ]
+};
+
+// Chatbot functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const chatContent = document.getElementById('chatContent');
+    const supportToggle = document.getElementById('supportToggle');
+    const supportWindow = document.getElementById('supportWindow');
+    const closeSupport = document.getElementById('closeSupport');
+    let currentCategory = null; // Track current category
+
+    // Toggle chat window
+    supportToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (supportWindow.classList.contains('hidden')) {
+            supportWindow.classList.remove('hidden');
+            supportWindow.classList.remove('closed');
+            supportWindow.classList.add('open');
+        } else {
+            supportWindow.classList.add('closed');
+            supportWindow.classList.remove('open');
+            setTimeout(() => {
+                supportWindow.classList.add('hidden');
+            }, 300);
+        }
+    });
+
+    // Close button for chat window
+    closeSupport.addEventListener('click', (e) => {
+        e.stopPropagation();
+        supportWindow.classList.add('closed');
+        supportWindow.classList.remove('open');
+        setTimeout(() => {
+            supportWindow.classList.add('hidden');
+        }, 300);
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!supportWindow.contains(e.target) && e.target !== supportToggle && !supportWindow.classList.contains('hidden')) {
+            supportWindow.classList.add('closed');
+            supportWindow.classList.remove('open');
+            setTimeout(() => {
+                supportWindow.classList.add('hidden');
+            }, 300);
+        }
+    });
+
+    // Handle category selection
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const category = this.dataset.category;
+            currentCategory = category; // Store current category
+            showCategoryQuestions(category);
+        });
+    });
+
+// Show questions for a category
+function showCategoryQuestions(category) {
+    // Clear chat and show back button to categories
+    chatContent.innerHTML = `
+        <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+            <button class="back-btn flex items-center text-rich-brown mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to categories
+            </button>
+            <p>Select a question:</p>
+        </div>
+    `;
+
+    // Add questions for this category
+    faqData[category].forEach(item => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'chat-message user-message bg-deep-brown/5ipper text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
+        questionDiv.innerHTML = item.question;
+        questionDiv.dataset.answer = item.answer;
+        chatContent.appendChild(questionDiv);
+    });
+
+    // Scroll to bottom
+    chatContent.scrollTop = chatContent.scrollHeight;
+
+    // Add back button event
+    document.querySelector('.back-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetChat();
+    });
+
+    // Add question click events
+    document.querySelectorAll('.question-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showAnswer(this.innerHTML, this.dataset.answer);
+        });
+    });
+}
+
+    // Show selected question and answer only
+    function showAnswer(question, answer) {
+        // Clear chat content and show only the selected question and answer
+        chatContent.innerHTML = `
+            <div class="chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg">
+                ${question}
+            </div>
+            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+                ${answer}
+            </div>
+            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+                <button class="back-to-questions text-rich-brown underline">
+                    ← Back to questions
+                </button>
+            </div>
+        `;
+
+        // Scroll to bottom
+        chatContent.scrollTop = chatContent.scrollHeight;
+
+        // Add back button event to return to the current category's questions
+        document.querySelector('.back-to-questions').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showCategoryQuestions(currentCategory);
+        });
+    }
+
+    // Reset chat to initial state
+    function resetChat() {
+    chatContent.innerHTML = `
+        <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+            <p class="text-center">Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
+            <div class="mt-2 grid grid-cols-1 gap-2">
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+            </div>
+        </div>
+    `;
+
+    // Re-add event listeners to category buttons
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const category = this.dataset.category;
+            currentCategory = category;
+            showCategoryQuestions(category);
+        });
+    });
+
+    // Scroll to bottom
+    chatContent.scrollTop = chatContent.scrollHeight;
+}
+});
+
     </script>
 </body>
 </html>
