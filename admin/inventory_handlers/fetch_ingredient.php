@@ -45,7 +45,7 @@ try {
     $query .= " LIMIT :start, :length";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare($query);
+    $stmt = $conn->prepare($query);
 
     if (!empty($searchValue)) {
         $searchParam = "%$searchValue%";
@@ -60,8 +60,8 @@ try {
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Get total records and filtered records
-    $totalRecords = $pdo->query("SELECT COUNT(*) FROM ingredients_tb")->fetchColumn();
-    $filteredRecords = $pdo->query("SELECT FOUND_ROWS()")->fetchColumn();
+    $totalRecords = $conn->query("SELECT COUNT(*) FROM ingredients_tb")->fetchColumn();
+    $filteredRecords = $conn->query("SELECT FOUND_ROWS()")->fetchColumn();
 
     // Update successful response
     $response = [
