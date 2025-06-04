@@ -6,7 +6,9 @@
     <title>Cafe Lilio - Inventory Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <style>
         .chart-container {
             position: relative;
@@ -38,6 +40,32 @@
         }
         .delay-400 {
             transition-delay: 400ms;
+        }
+        
+        /* DataTables custom styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #d1d5db;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #d1d5db;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #d1d5db;
+            margin-left: 0.25rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #A0522D;
+            color: white !important;
+            border-color: #A0522D;
         }
     </style>
     <script>
@@ -147,7 +175,7 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table id="ingredients-table" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-warm-cream">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Name</th>
@@ -155,55 +183,11 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Quantity</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Price</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Total Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Action</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Arabica Coffee Beans</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Coffee</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">5 kg</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$12.50</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$62.50</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        <button class="edit-item-btn text-accent-brown hover:text-deep-brown mr-3">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Organic Milk</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Dairy</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">10 L</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$3.20</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$32.00</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        <button class="edit-item-btn text-accent-brown hover:text-deep-brown mr-3">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Vanilla Syrup</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Flavoring</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">2 L</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$8.75</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$17.50</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        <button class="edit-item-btn text-accent-brown hover:text-deep-brown mr-3">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <!-- Data will be loaded via DataTables -->
                             </tbody>
                         </table>
                     </div>
@@ -318,6 +302,34 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-deep-brown">Confirm Deletion</h3>
+                    <button id="close-delete-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <p class="text-gray-700">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-delete" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                        Cancel
+                    </button>
+                    <button type="button" id="confirm-delete" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200">
+                        Delete
+                    </button>
+                </div>
+                <input type="hidden" id="ingredient-to-delete">
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
@@ -363,6 +375,67 @@
             observer.observe(element);
         });
 
+        // Initialize DataTable
+        $(document).ready(function() {
+            var table = $('#ingredients-table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "fetch_ingredient.php",
+                    "type": "POST"
+                },
+                "columns": [
+                    { "data": "ingredient_name" },
+                    { "data": "category" },
+                    { "data": "quantity" },
+                    { 
+                        "data": "price",
+                        "render": function(data, type, row) {
+                            return '$' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        "data": "total_price",
+                        "render": function(data, type, row) {
+                            return '$' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        "data": "ingredient_id",
+                        "render": function(data, type, row) {
+                            return `
+                                <button onclick="editIngredient(${data})" class="text-accent-brown hover:text-deep-brown mr-3">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="confirmDelete(${data})" class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            `;
+                        },
+                        "orderable": false
+                    }
+                ],
+                "order": [[0, 'asc']],
+                "responsive": true,
+                "dom": '<"flex justify-between items-center mb-4"lf>rt<"flex justify-between items-center mt-4"ip>',
+                "language": {
+                    "search": "_INPUT_",
+                    "searchPlaceholder": "Search ingredients...",
+                    "lengthMenu": "Show _MENU_ entries",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            // Refresh table after adding/editing
+            window.refreshTable = function() {
+                table.ajax.reload(null, false);
+            };
+        });
+
         // Modal handling
         const addIngredientBtn = document.getElementById('add-ingredient-btn');
         const addIngredientModal = document.getElementById('add-ingredient-modal');
@@ -370,10 +443,14 @@
         const closeAddModal = document.getElementById('close-add-modal');
         const cancelAddIngredient = document.getElementById('cancel-add-ingredient');
         
-        const editItemBtns = document.querySelectorAll('.edit-item-btn');
         const editIngredientModal = document.getElementById('edit-ingredient-modal');
         const closeEditModal = document.getElementById('close-edit-modal');
         const cancelEditIngredient = document.getElementById('cancel-edit-ingredient');
+        
+        const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+        const closeDeleteModal = document.getElementById('close-delete-modal');
+        const cancelDelete = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
 
         // Show add ingredient modal
         addIngredientBtn.addEventListener('click', () => {
@@ -389,15 +466,6 @@
             addIngredientModal.classList.add('hidden');
         });
 
-        // Show edit ingredient modal
-        editItemBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // In a real app, you would fetch the item data here
-                // For demo purposes, we'll just show the modal
-                editIngredientModal.classList.remove('hidden');
-            });
-        });
-
         // Close edit ingredient modal
         closeEditModal.addEventListener('click', () => {
             editIngredientModal.classList.add('hidden');
@@ -407,6 +475,15 @@
             editIngredientModal.classList.add('hidden');
         });
 
+        // Close delete confirmation modal
+        closeDeleteModal.addEventListener('click', () => {
+            deleteConfirmModal.classList.add('hidden');
+        });
+
+        cancelDelete.addEventListener('click', () => {
+            deleteConfirmModal.classList.add('hidden');
+        });
+
         // Close modals when clicking outside
         window.addEventListener('click', (event) => {
             if (event.target === addIngredientModal) {
@@ -414,6 +491,9 @@
             }
             if (event.target === editIngredientModal) {
                 editIngredientModal.classList.add('hidden');
+            }
+            if (event.target === deleteConfirmModal) {
+                deleteConfirmModal.classList.add('hidden');
             }
         });
 
@@ -452,54 +532,61 @@
                     throw new Error('Failed to add ingredient');
                 }
                 
-                const newIngredient = await response.json();
+                const result = await response.json();
                 
-                // Close modal and reset form
-                closeAddIngredientModal();
-                
-                // Option 1: Refresh the page to show the new ingredient
-                // window.location.reload();
-                
-                // Option 2: Add the new ingredient to the table dynamically
-                // addIngredientToTable(newIngredient);
-                
-                alert('Ingredient added successfully!');
+                if (result.success) {
+                    // Close modal and reset form
+                    addIngredientModal.classList.add('hidden');
+                    addIngredientForm.reset();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient added successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to add ingredient');
+                }
                 
             } catch (error) {
                 console.error('Error adding ingredient:', error);
-                alert('Error adding ingredient. Please try again.');
+                alert('Error adding ingredient: ' + error.message);
             }
         });
 
-        // Function to close the modal
-        function closeAddIngredientModal() {
-            addIngredientModal.classList.add('hidden');
-            addIngredientForm.reset();
-        }
-
         // Function to open the edit modal with ingredient data
-        function openEditIngredientModal(ingredient) {
-            document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id;
-            document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name;
-            document.getElementById('edit-ingredient-category').value = ingredient.category;
-            document.getElementById('edit-ingredient-quantity').value = ingredient.quantity;
-            document.getElementById('edit-ingredient-price').value = ingredient.price;
-            
-            // Show the modal
-            document.getElementById('edit-ingredient-modal').classList.remove('hidden');
-        }
+        window.editIngredient = async function(ingredientId) {
+            try {
+                // Fetch ingredient data
+                const response = await fetch(`inventory_handlers/get_ingredient.php?id=${ingredientId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch ingredient data');
+                }
+                
+                const ingredient = await response.json();
+                
+                if (!ingredient) {
+                    throw new Error('Ingredient not found');
+                }
+                
+                // Populate the form
+                document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id;
+                document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name;
+                document.getElementById('edit-ingredient-category').value = ingredient.category;
+                document.getElementById('edit-ingredient-quantity').value = ingredient.quantity;
+                document.getElementById('edit-ingredient-price').value = ingredient.price;
+                
+                // Show the modal
+                editIngredientModal.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error fetching ingredient:', error);
+                alert('Error fetching ingredient data: ' + error.message);
+            }
+        };
 
-        // Close modal event listeners
-        document.getElementById('close-edit-modal').addEventListener('click', function() {
-            document.getElementById('edit-ingredient-modal').classList.add('hidden');
-        });
-
-        document.getElementById('cancel-edit-ingredient').addEventListener('click', function() {
-            document.getElementById('edit-ingredient-modal').classList.add('hidden');
-        });
-
-        // Form submission handler
-        document.getElementById('edit-ingredient-form').addEventListener('submit', function(e) {
+        // Form submission handler for edit
+        document.getElementById('edit-ingredient-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form data
@@ -511,30 +598,81 @@
                 price: document.getElementById('edit-ingredient-price').value
             };
             
-            // Send data to server
-            fetch('inventory_handlers/update_ingredient.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Close modal and refresh the ingredients list
-                    document.getElementById('edit-ingredient-modal').classList.add('hidden');
-                    alert('Ingredient updated successfully!');
-                    // You might want to refresh the ingredients table here
-                    window.location.reload(); // or use a more specific refresh function
-                } else {
-                    alert('Error updating ingredient: ' + data.message);
+            try {
+                // Send data to server
+                const response = await fetch('inventory_handlers/update_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to update ingredient');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while updating the ingredient.');
-            });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the ingredients list
+                    editIngredientModal.classList.add('hidden');
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient updated successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to update ingredient');
+                }
+                
+            } catch (error) {
+                console.error('Error updating ingredient:', error);
+                alert('Error updating ingredient: ' + error.message);
+            }
+        });
+
+        // Delete confirmation
+        window.confirmDelete = function(ingredientId) {
+            document.getElementById('ingredient-to-delete').value = ingredientId;
+            deleteConfirmModal.classList.remove('hidden');
+        };
+
+        // Delete handler
+        confirmDeleteBtn.addEventListener('click', async function() {
+            const ingredientId = document.getElementById('ingredient-to-delete').value;
+            
+            try {
+                const response = await fetch('inventory_handlers/delete_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ingredient_id: ingredientId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete ingredient');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the ingredients list
+                    deleteConfirmModal.classList.add('hidden');
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient deleted successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to delete ingredient');
+                }
+                
+            } catch (error) {
+                console.error('Error deleting ingredient:', error);
+                alert('Error deleting ingredient: ' + error.message);
+            }
         });
     </script>
 </body>
