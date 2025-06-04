@@ -565,28 +565,37 @@
         // Function to open the edit modal with ingredient data
         window.editIngredient = async function(ingredientId) {
             try {
+                // Validate ingredientId
+                if (!ingredientId) {
+                    throw new Error('Ingredient ID is required');
+                }
+
                 // Fetch ingredient data
                 const response = await fetch(`inventory_handlers/get_ingredient.php?id=${ingredientId}`);
                 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch ingredient data');
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
                 }
                 
                 const ingredient = await response.json();
                 
-                if (!ingredient) {
-                    throw new Error('Ingredient not found');
+                // Debug: log the received data
+                console.log('Received ingredient data:', ingredient);
+                
+                // Populate the form - add null checks
+                if (ingredient) {
+                    document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id || '';
+                    document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name || '';
+                    document.getElementById('edit-ingredient-category').value = ingredient.category || '';
+                    document.getElementById('edit-ingredient-quantity').value = ingredient.quantity || '';
+                    document.getElementById('edit-ingredient-price').value = ingredient.price || '';
+                    
+                    // Show the modal
+                    editIngredientModal.classList.remove('hidden');
+                } else {
+                    throw new Error('Ingredient data is empty');
                 }
-                
-                // Populate the form
-                document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id;
-                document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name;
-                document.getElementById('edit-ingredient-category').value = ingredient.category;
-                document.getElementById('edit-ingredient-quantity').value = ingredient.quantity;
-                document.getElementById('edit-ingredient-price').value = ingredient.price;
-                
-                // Show the modal
-                editIngredientModal.classList.remove('hidden');
                 
             } catch (error) {
                 console.error('Error fetching ingredient:', error);
