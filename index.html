@@ -84,13 +84,28 @@
                         Home
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        Menu
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                    </a>
                     <a href="#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
                         About Us
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Menu & Packages
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#services" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        What We Offer
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="login.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Login
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="register.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
+                        Register
                     </a>
                 </div>
                 
@@ -109,8 +124,18 @@
         <div class="md:hidden hidden glass-effect" id="mobile-menu">
             <div class="px-4 py-4 space-y-4">
                 <a href="#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
-                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu</a>
                 <a href="#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
+                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu & Packages</a>
+                <a href="#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
+                
+                <div class="pt-4 border-t border-deep-brown/10">
+                    <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
+                        Login
+                    </a>
+                    <a href="register.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
+                        Register
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -144,18 +169,105 @@
         </div>
     </section>
 
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
+                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
+                        </p>
+                        <p>
+                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
+                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
+                        </p>
+                        <p>
+                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
+                            and reputation as a premier dining destination in Liliw.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">3+</div>
+                            <div class="font-baskerville text-deep-brown">Years of Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">5★</div>
+                            <div class="font-baskerville text-deep-brown">Customer Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">30+</div>
+                            <div class="font-baskerville text-deep-brown">Signature Dishes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="relative">
+                        <div class="bg-deep-brown/50 rounded-3xl p-8 shadow-2xl">
+                            <div class="bg-warm-cream rounded-2xl p-8">
+                                <h6 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">
+                                    We're Here for You – Online & On-site
+                                </h6>
+                                
+                                <div class="space-y-4 font-baskerville text-deep-brown">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📍</span>
+                                        <div>
+                                            <div class="font-bold">Address</div>
+                                            <div>Brgy. Rizal st. cr. 4th St., Liliw Laguna, Liliw, Philippines, 4004</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📞</span>
+                                        <div>
+                                            <div class="font-bold">Phone</div>
+                                            <div>+49 2542 084</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">✉️</span>
+                                        <div>
+                                            <div class="font-bold">Email</div>
+                                            <div>caffelilio.liliw@gmail.com</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-8 space-y-3">
+                                    <button class="w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300">
+                                        Make Reservation
+                                    </button>
+                                    <button class="w-full border-2 border-deep-brown text-rich-brown py-3 rounded-xl font-baskerville font-bold hover:bg-deep-brown hover:text-warm-cream transition-all duration-300">
+                                        Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-xl text-rich-brown max-w-3xl mx-auto leading-relaxed">
-                    Discover the culinary delights of our restaurant, where we bring you the best of Spanish and Italian cuisine. 
-                    Our signature dishes are crafted with love and passion, using only the finest ingredients to create a memorable dining experience.
+                <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
+                    Discover our carefully curated menu featuring the finest Italian and Spanish dishes. From classic favorites to unique specialties.
                 </p>
             </div>
-            
+
             <div class="relative">
                 <!-- Previous Button -->
                 <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
@@ -170,32 +282,24 @@
                         <!-- Slide 1 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_bestseller.jpg', 'Best Sellers Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_bestseller.jpg', 'Best Sellers Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/01_bestseller.jpg" alt="Best Sellers Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_italian.jpg', 'Italian Dishes Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_italian.jpg', 'Italian Dishes Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/02_italian.jpg" alt="Italian Dishes Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/03_spanish.jpg" alt="Spanish Dishes Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -204,32 +308,26 @@
                         <!-- Slide 2 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_salad_soup.jpg', 'Salads and Soups Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_salad_soup.jpg', 'Salads and Soups Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/04_salad_soup.jpg" alt="Salads and Soups Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_burger.jpg', 'Burgers Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_burger.jpg', 'Burgers Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/05_burger.jpg" alt="Burgers Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_pizza.jpg', 'Pizza Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_pizza.jpg', 'Pizza Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/06_pizza.jpg" alt="Pizza Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -238,32 +336,26 @@
                         <!-- Slide 3 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_pasta.jpg', 'Pasta Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_pasta.jpg', 'Pasta Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/07_pasta.jpg" alt="Pasta Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/08_pasta_2.jpg', 'Special Pasta Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/08_pasta_2.jpg', 'Special Pasta Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/08_pasta_2.jpg" alt="Special Pasta Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/09_dessert.jpg', 'Dessert Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/09_dessert.jpg', 'Dessert Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/09_dessert.jpg" alt="Dessert Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -272,32 +364,26 @@
                         <!-- Slide 4 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/10_maincourse_fish.jpg', 'Fish Main Course Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/10_maincourse_fish.jpg', 'Fish Main Course Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/10_maincourse_fish.jpg" alt="Fish Main Course Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/11_maincourse_chicken.jpg', 'Chicken Main Course Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/11_maincourse_chicken.jpg', 'Chicken Main Course Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/11_maincourse_chicken.jpg" alt="Chicken Main Course Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/12_maincourse_pork.jpg', 'Pork Main Course Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/12_maincourse_pork.jpg', 'Pork Main Course Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/12_maincourse_pork.jpg" alt="Pork Main Course Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -306,46 +392,54 @@
                         <!-- Slide 5 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/13_maincourse_beef.jpg', 'Beef Main Course Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/13_maincourse_beef.jpg', 'Beef Main Course Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/13_maincourse_beef.jpg" alt="Beef Main Course Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/14_drinks.jpg', 'Drinks Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/14_drinks.jpg', 'Drinks Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/14_drinks.jpg" alt="Drinks Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/15_coffee.jpg', 'Coffee Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/15_coffee.jpg', 'Coffee Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/15_coffee.jpg" alt="Coffee Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Slide 6 -->
-                        <div class="w-full flex-shrink-0 px-4 flex justify-center items-center space-x-4">
+                        <!-- Slide 5 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
-                                <div class="bg-white rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/16_liquor.jpg', 'Liquor Menu')">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/16_liquor.jpg', 'Liquor Menu')">
                                     <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
                                         <img src="images/16_liquor.jpg" alt="Liquor Menu" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-deep-brown bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                            <span class="text-warm-cream opacity-0 hover:opacity-100 transform translate-y-2 hover:translate-y-0 transition-all duration-300">Click to zoom</span>
-                                        </div>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cheesewheelpasta.jpg', 'Cheese Wheel Pasta')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/cheesewheelpasta.jpg" alt="Cheese Wheel Pasta" class="w-full h-full object-cover">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cochinillo.jpg', 'Cochinillo')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/cochinillo.jpg" alt="Cochinillo" class="w-full h-full object-cover">
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -368,31 +462,162 @@
                     <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="3"></button>
                     <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="4"></button>
                     <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="5"></button>
+                    
                 </div>
             </div>
             
             <div class="text-center mt-12 fade-in">
-                <button class="bg-rich-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
                     Download Full Menu
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Modal for zoomed image -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
-        <div class="relative max-w-7xl mx-auto px-4 py-8 w-full h-full flex items-center justify-center">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-warm-cream hover:text-rich-brown transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    <!-- Packages Section -->
+    <div class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="text-center mb-16 fade-in">
+            <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Buffet Packages</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+            <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
+                Choose from our carefully curated packages, perfect for any occasion. From intimate gatherings to grand celebrations.
+            </p>
+        </div>
+
+        <!-- Packages Carousel Section -->
+        <div class="relative max-w-6xl mx-auto">
+            <!-- Previous Button -->
+            <button id="prevBtnPackages" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
-            <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain">
+
+            <!-- Carousel Container -->
+            <div class="overflow-hidden">
+                <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Slide 1 -->
+                    <div class="w-full flex-shrink-0 px-4 flex justify-center space-x-4">
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 7</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 1</h3>
+                                        <p class="font-baskerville text-sm">₱2,200 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 2</h3>
+                                        <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 3</h3>
+                                        <p class="font-baskerville text-sm">₱1,500 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 4</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 5</h3>
+                                        <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="w-full flex-shrink-0 px-4">
+                        <div class="flex justify-center items-center gap-8 max-w-4xl mx-auto">
+                            <div class="w-1/2 max-w-sm">
+                                <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                            <h3 class="font-playfair text-lg font-bold">Buffet 6</h3>
+                                            <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 max-w-sm">
+                                <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                            <h3 class="font-playfair text-lg font-bold">Sit-down Plated</h3>
+                                            <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Button -->
+            <button id="nextBtnPackages" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <!-- Carousel Indicators -->
+            <div class="flex justify-center mt-8 space-x-2">
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="0"></button>
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="1"></button>
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="2"></button>
+            </div>
         </div>
     </div>
 
     <!-- What We Offer Section -->
-    <section id="services" class="py-20 bg-gradient-to-b from-amber-50 to-stone-100">
+    <section id="services" class="py-20 bg-warm-cream">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">What We Offer</h2>
@@ -402,10 +627,10 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="fade-in">
                     <div class="relative">
-                        <div class="rounded-3xl overflow-hidden shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                        <div class="rounded-xl overflow-hidden shadow-2xl">
+                            <img src="images/Events_image_1.jpg" 
                                  alt="Elegant restaurant dining setup" 
-                                 class="w-full h-96 object-cover">
+                                 class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
@@ -433,94 +658,6 @@
             </div>
         </div>
     </section>
-
-    <!-- About Section -->
-<section id="about" class="py-20 bg-gradient-to-b from-stone-100 to-warm-cream">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div class="fade-in">
-                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
-                <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
-                    <p>
-                        Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
-                        The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
-                    </p>
-                    <p>
-                        Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
-                        The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
-                    </p>
-                    <p>
-                        Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
-                        and reputation as a premier dining destination in Liliw.
-                    </p>
-                </div>
-                
-                <div class="mt-12 grid grid-cols-3 gap-8">
-                    <div class="text-center">
-                        <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">3+</div>
-                        <div class="font-baskerville text-deep-brown">Years of Excellence</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">5★</div>
-                        <div class="font-baskerville text-deep-brown">Customer Rating</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">30+</div>
-                        <div class="font-baskerville text-deep-brown">Signature Dishes</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="fade-in">
-                <div class="relative">
-                    <div class="bg-gradient-to-br from-rich-brown to-deep-brown rounded-3xl p-8 shadow-2xl">
-                        <div class="bg-warm-cream rounded-2xl p-8">
-                            <h6 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">
-                                We're Here for You – Online & On-site
-                            </h6>
-                            
-                            <div class="space-y-4 font-baskerville text-deep-brown">
-                                <div class="flex items-start space-x-3">
-                                    <span class="text-rich-brown mt-1">📍</span>
-                                    <div>
-                                        <div class="font-bold">Address</div>
-                                        <div>Brgy. Rizal st. cr. 4th St., Liliw Laguna 4004 Liliw, Philippines</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start space-x-3">
-                                    <span class="text-rich-brown mt-1">📞</span>
-                                    <div>
-                                        <div class="font-bold">Phone</div>
-                                        <div>+49 2542 084</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start space-x-3">
-                                    <span class="text-rich-brown mt-1">✉️</span>
-                                    <div>
-                                        <div class="font-bold">Email</div>
-                                        <div>caffelilio.liliw@gmail.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-8 space-y-3">
-                                <button class="w-full bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300">
-                                    Make Reservation
-                                </button>
-                                <button class="w-full border-2 border-rich-brown text-rich-brown py-3 rounded-xl font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300">
-                                    Get Directions
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
@@ -554,6 +691,18 @@
             </div>
         </div>
     </footer>
+
+    <!-- Modal for zoomed image -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
+        <div class="relative max-w-7xl mx-auto px-4 py-8 w-full h-full flex items-center justify-center">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain">
+        </div>
+    </div>
 
     <script>
         // Smooth scrolling for navigation links
@@ -595,9 +744,9 @@
         const navUnderlines = document.querySelectorAll('.nav-link span');
         const navTitle = document.querySelector('.nav-title');
         const navSubtitle = document.querySelector('.nav-subtitle');
+        const navButton = document.querySelector('.nav-button');
 
         window.addEventListener('scroll', () => {
-            // Remove the window.innerHeight check to make it change immediately on scroll
             const isHeroSection = window.scrollY === 0;
 
             if (window.scrollY > 0) {
@@ -611,36 +760,46 @@
             // Update nav links color based on section
             navLinks.forEach(link => {
                 if (isHeroSection) {
-                    link.classList.remove('text-rich-brown', 'hover:text-rich-brown/80');
+                    link.classList.remove('text-deep-brown', 'hover:text-deep-brown/80');
                     link.classList.add('text-warm-cream', 'hover:text-warm-cream/80');
                 } else {
                     link.classList.remove('text-warm-cream', 'hover:text-warm-cream/80');
-                    link.classList.add('text-rich-brown', 'hover:text-rich-brown/80');
+                    link.classList.add('text-deep-brown', 'hover:text-deep-brown/80');
                 }
             });
 
             // Update underline color based on section
             navUnderlines.forEach(underline => {
                 if (isHeroSection) {
-                    underline.classList.remove('bg-rich-brown');
+                    underline.classList.remove('bg-deep-brown');
                     underline.classList.add('bg-warm-cream');
                 } else {
                     underline.classList.remove('bg-warm-cream');
-                    underline.classList.add('bg-rich-brown');
+                    underline.classList.add('bg-deep-brown');
                 }
             });
 
             // Update nav title and subtitle colors
             if (isHeroSection) {
-                navTitle.classList.remove('text-rich-brown');
+                navTitle.classList.remove('text-deep-brown');
                 navTitle.classList.add('text-warm-cream');
-                navSubtitle.classList.remove('text-rich-brown');
+                navSubtitle.classList.remove('text-deep-brown');
                 navSubtitle.classList.add('text-warm-cream');
+                // Update register button colors for hero section
+                if (navButton) {
+                    navButton.classList.remove('bg-deep-brown', 'text-warm-cream');
+                    navButton.classList.add('bg-warm-cream', 'text-deep-brown');
+                }
             } else {
                 navTitle.classList.remove('text-warm-cream');
-                navTitle.classList.add('text-rich-brown');
+                navTitle.classList.add('text-deep-brown');
                 navSubtitle.classList.remove('text-warm-cream');
-                navSubtitle.classList.add('text-rich-brown');
+                navSubtitle.classList.add('text-deep-brown');
+                // Update register button colors for scrolled section
+                if (navButton) {
+                    navButton.classList.remove('bg-warm-cream', 'text-deep-brown');
+                    navButton.classList.add('bg-deep-brown', 'text-warm-cream');
+                }
             }
         });
 
@@ -792,6 +951,71 @@
             if (e.key === 'Escape') {
                 closeModal();
             }
+        });
+
+        // Package carousel functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const packageCarousel = document.getElementById('packageCarousel');
+            const prevBtnPackages = document.getElementById('prevBtnPackages');
+            const nextBtnPackages = document.getElementById('nextBtnPackages');
+            const packageIndicators = document.querySelectorAll('.package-indicator');
+            let currentPackageIndex = 0;
+            const totalPackageSlides = 3;
+
+            function updatePackageCarousel() {
+                const offset = currentPackageIndex * -100;
+                packageCarousel.style.transform = `translateX(${offset}%)`;
+                
+                // Update indicators
+                packageIndicators.forEach((indicator, index) => {
+                    if (index === currentPackageIndex) {
+                        indicator.classList.add('opacity-100');
+                        indicator.classList.remove('opacity-50');
+                    } else {
+                        indicator.classList.add('opacity-50');
+                        indicator.classList.remove('opacity-100');
+                    }
+                });
+            }
+
+            function nextPackageSlide() {
+                currentPackageIndex = (currentPackageIndex + 1) % totalPackageSlides;
+                updatePackageCarousel();
+            }
+
+            function prevPackageSlide() {
+                currentPackageIndex = (currentPackageIndex - 1 + totalPackageSlides) % totalPackageSlides;
+                updatePackageCarousel();
+            }
+
+            // Auto-advance carousel every 7 seconds
+            let autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+
+            // Event listeners for manual navigation
+            prevBtnPackages.addEventListener('click', () => {
+                clearInterval(autoAdvancePackages);
+                prevPackageSlide();
+                autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+            });
+
+            nextBtnPackages.addEventListener('click', () => {
+                clearInterval(autoAdvancePackages);
+                nextPackageSlide();
+                autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+            });
+
+            // Event listeners for indicators
+            packageIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(autoAdvancePackages);
+                    currentPackageIndex = index;
+                    updatePackageCarousel();
+                    autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+                });
+            });
+
+            // Initialize carousel
+            updatePackageCarousel();
         });
     </script>
 </body>
