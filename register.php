@@ -426,7 +426,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="text-center mt-8">
                     <p class="font-baskerville text-warm-cream">
                         Already have an account? 
-                        <a href="#" class="text-rich-brown hover:text-accent-brown font-bold underline transition-colors duration-300">
+                        <a href="login.php" class="text-rich-brown hover:text-accent-brown font-bold underline transition-colors duration-300">
                             Sign In
                         </a>
                     </p>
