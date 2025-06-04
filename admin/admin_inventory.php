@@ -211,19 +211,18 @@
                     <div class="mb-4">
                         <label for="ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select id="ingredient-category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <option value="">Select a category</option>
-                            <option value="produce">Produce</option>
-                            <option value="protein">Proteins</option>
-                            <option value="dairy">Dairy</option>
-                            <option value="grains">Grains & Starches</option>
-                            <option value="spices_herbs">Spices & Herbs</option>
-                            <option value="oils_fats">Oils & Fats</option>
-                            <option value="condiments">Condiments & Sauces</option>
-                            <option value="baking">Baking Ingredients</option>
-                            <option value="beverages">Beverages</option>
-                            <option value="canned">Canned & Preserved Goods</option>
-                            <option value="frozen">Frozen Ingredients</option>
-                            <option value="nuts_seeds">Nuts, Seeds & Legumes</option>
+                            <option value="produce" title="Fresh fruits and vegetables">Produce</option>
+                            <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
+                            <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
+                            <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
+                            <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
+                            <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
+                            <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
+                            <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
+                            <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
+                            <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
+                            <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
+                            <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
                             <option value="other">Other..</option>
                         </select>
                     </div>
@@ -273,18 +272,18 @@
                     <div class="mb-4">
                         <label for="edit-ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select id="edit-ingredient-category" class="w-full">
-                            <option value="produce">Produce</option>
-                            <option value="protein">Proteins</option>
-                            <option value="dairy">Dairy</option>
-                            <option value="grains">Grains & Starches</option>
-                            <option value="spices_herbs">Spices & Herbs</option>
-                            <option value="oils_fats">Oils & Fats</option>
-                            <option value="condiments">Condiments & Sauces</option>
-                            <option value="baking">Baking Ingredients</option>
-                            <option value="beverages">Beverages</option>
-                            <option value="canned">Canned & Preserved Goods</option>
-                            <option value="frozen">Frozen Ingredients</option>
-                            <option value="nuts_seeds">Nuts, Seeds & Legumes</option>
+                            <option value="produce" title="Fresh fruits and vegetables">Produce</option>
+                            <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
+                            <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
+                            <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
+                            <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
+                            <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
+                            <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
+                            <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
+                            <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
+                            <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
+                            <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
+                            <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
                             <option value="other">Other..</option>
                         </select>
                     </div>
