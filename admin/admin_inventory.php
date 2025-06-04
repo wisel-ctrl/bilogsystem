@@ -435,7 +435,7 @@
             
             try {
                 // Send data to server
-                const response = await fetch('inventory_handler/add_ingredient.php', {
+                const response = fetch('inventory_handler/add_ingredient.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
