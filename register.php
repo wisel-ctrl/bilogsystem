@@ -222,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                     </div>
                 </div>
-                <a href="index.html" class="font-baskerville text-warm-cream hover:text-deep-brown transition-colors duration-300 slide-in" style="animation-delay: 0.2s;">
+                <a href="index.php" class="font-baskerville text-warm-cream hover:text-deep-brown transition-colors duration-300 slide-in" style="animation-delay: 0.2s;">
                     ← Back to Home
                 </a>
             </div>
