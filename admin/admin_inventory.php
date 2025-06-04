@@ -366,6 +366,7 @@
         // Modal handling
         const addIngredientBtn = document.getElementById('add-ingredient-btn');
         const addIngredientModal = document.getElementById('add-ingredient-modal');
+        const addIngredientForm = document.getElementById('add-ingredient-form');
         const closeAddModal = document.getElementById('close-add-modal');
         const cancelAddIngredient = document.getElementById('cancel-add-ingredient');
         
@@ -419,18 +420,121 @@
         // Form submissions
         document.getElementById('add-ingredient-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            // Handle form submission here
-            alert('Ingredient added successfully!');
-            addIngredientModal.classList.add('hidden');
-            // Reset form
-            e.target.reset();
+            
+            // Get form values
+            const name = document.getElementById('ingredient-name').value.trim();
+            const category = document.getElementById('ingredient-category').value;
+            const quantity = parseFloat(document.getElementById('ingredient-quantity').value);
+            const price = parseFloat(document.getElementById('ingredient-price').value);
+            
+            // Simple validation
+            if (!name || !category || isNaN(quantity) || isNaN(price)) {
+                alert('Please fill all fields with valid values');
+                return;
+            }
+            
+            try {
+                // Send data to server
+                const response = await fetch('inventory_handler/add_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ingredient_name: name,
+                        category: category,
+                        quantity: quantity,
+                        price: price
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to add ingredient');
+                }
+                
+                const newIngredient = await response.json();
+                
+                // Close modal and reset form
+                closeAddIngredientModal();
+                
+                // Option 1: Refresh the page to show the new ingredient
+                // window.location.reload();
+                
+                // Option 2: Add the new ingredient to the table dynamically
+                // addIngredientToTable(newIngredient);
+                
+                alert('Ingredient added successfully!');
+                
+            } catch (error) {
+                console.error('Error adding ingredient:', error);
+                alert('Error adding ingredient. Please try again.');
+            }
         });
 
-        document.getElementById('edit-ingredient-form').addEventListener('submit', (e) => {
+        // Function to close the modal
+        function closeAddIngredientModal() {
+            addIngredientModal.classList.add('hidden');
+            addIngredientForm.reset();
+        }
+
+        // Function to open the edit modal with ingredient data
+        function openEditIngredientModal(ingredient) {
+            document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id;
+            document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name;
+            document.getElementById('edit-ingredient-category').value = ingredient.category;
+            document.getElementById('edit-ingredient-quantity').value = ingredient.quantity;
+            document.getElementById('edit-ingredient-price').value = ingredient.price;
+            
+            // Show the modal
+            document.getElementById('edit-ingredient-modal').classList.remove('hidden');
+        }
+
+        // Close modal event listeners
+        document.getElementById('close-edit-modal').addEventListener('click', function() {
+            document.getElementById('edit-ingredient-modal').classList.add('hidden');
+        });
+
+        document.getElementById('cancel-edit-ingredient').addEventListener('click', function() {
+            document.getElementById('edit-ingredient-modal').classList.add('hidden');
+        });
+
+        // Form submission handler
+        document.getElementById('edit-ingredient-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Handle form submission here
-            alert('Changes saved successfully!');
-            editIngredientModal.classList.add('hidden');
+            
+            // Get form data
+            const formData = {
+                ingredient_id: document.getElementById('edit-ingredient-id').value,
+                ingredient_name: document.getElementById('edit-ingredient-name').value,
+                category: document.getElementById('edit-ingredient-category').value,
+                quantity: document.getElementById('edit-ingredient-quantity').value,
+                price: document.getElementById('edit-ingredient-price').value
+            };
+            
+            // Send data to server
+            fetch('inventory_handler/update_ingredient.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close modal and refresh the ingredients list
+                    document.getElementById('edit-ingredient-modal').classList.add('hidden');
+                    alert('Ingredient updated successfully!');
+                    // You might want to refresh the ingredients table here
+                    window.location.reload(); // or use a more specific refresh function
+                } else {
+                    alert('Error updating ingredient: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the ingredient.');
+            });
         });
     </script>
 </body>
