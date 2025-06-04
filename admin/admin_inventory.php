@@ -418,7 +418,7 @@
         });
 
         // Form submissions
-        document.getElementById('add-ingredient-form').addEventListener('submit', (e) => {
+        document.getElementById('add-ingredient-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form values
@@ -435,7 +435,7 @@
             
             try {
                 // Send data to server
-                const response = fetch('inventory_handler/add_ingredient.php', {
+                const response = await fetch('inventory_handler/add_ingredient.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
