@@ -510,8 +510,8 @@
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
                                     <select id="edit-dish-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
+                                        <option value="active">Available</option>
+                                        <option value="unavailable">Unavailable</option>
                                     </select>
                                 </div>
 
