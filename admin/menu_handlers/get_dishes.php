@@ -5,7 +5,7 @@ require_once "../../db_connect.php";
 
 try {
     // Your query
-    $stmt = $conn->prepare("SELECT dish_id, dish_name, dish_category, price, capital, status FROM dishes");
+    $stmt = $conn->prepare("SELECT dish_id, dish_name, dish_category, price, capital, status FROM dishes_tb");
     $stmt->execute();
     
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
