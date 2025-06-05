@@ -421,12 +421,18 @@
                                     <div id="dishes-container">
                                         <div class="dish-row flex items-center space-x-2 mb-2">
                                             <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-select">
-                                                <option value="">Select dish</option>
-                                                <option value="espresso">Espresso</option>
-                                                <option value="cappuccino">Cappuccino</option>
-                                                <option value="chocolate-cake">Chocolate Cake</option>
-                                                <option value="sandwich">Sandwich</option>
-                                                <option value="salad">Salad</option>
+                                                <option value="">Select Category</option>
+                                                    <option value="italian-dish">Italian Dish</option>
+                                                    <option value="spanish-dish">Spanish Dish</option>
+                                                    <option value="house-salad">House Salad</option>
+                                                    <option value="pizza">Pizza</option>
+                                                    <option value="burgers">Burgers</option>
+                                                    <option value="pasta">Pasta</option>
+                                                    <option value="pasta_caza">Pasta e Caza</option>
+                                                    <option value="desserts">Desserts</option>
+                                                    <option value="main-course">Main Course</option>
+                                                    <option value="drinks">Drinks</option>
+                                                    <option value="coffee">Coffee</option>
                                             </select>
                                             <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-quantity" min="1" value="1">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-dish hidden">
@@ -485,12 +491,17 @@
                                     <label class="block text-sm font-medium text-deep-brown mb-2">Dish Category</label>
                                     <select id="edit-dish-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
                                         <option value="">Select category</option>
-                                        <option value="appetizer">Appetizer</option>
-                                        <option value="main-course">Main Course</option>
-                                        <option value="dessert">Dessert</option>
-                                        <option value="beverage">Beverage</option>
-                                        <option value="liquor">Liquor</option>
-                                        <option value="pasta">Pasta</option>
+                                            <option value="italian-dish">Italian Dish</option>
+                                            <option value="spanish-dish">Spanish Dish</option>
+                                            <option value="house-salad">House Salad</option>
+                                            <option value="pizza">Pizza</option>
+                                            <option value="burgers">Burgers</option>
+                                            <option value="pasta">Pasta</option>
+                                            <option value="pasta_caza">Pasta e Caza</option>
+                                            <option value="desserts">Desserts</option>
+                                            <option value="main-course">Main Course</option>
+                                            <option value="drinks">Drinks</option>
+                                            <option value="coffee">Coffee</option>
                                     </select>
                                 </div>
 
