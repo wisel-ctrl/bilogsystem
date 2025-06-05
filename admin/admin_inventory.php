@@ -395,12 +395,11 @@
                 },
                 "columns": [
                     { "data": "ingredient_name" },
-                    {   "data": "category", 
+                    {   "data": "category" },
+                    { "data": "quantity", 
                         "render": function(data, type, row) {
                     return parseFloat(data).toFixed(2) + ' kg'; // Add kg suffix
-                        }
-                     },
-                    { "data": "quantity" },
+                        } },
                     { 
                         "data": "price",
                         "render": function(data, type, row) {
