@@ -662,6 +662,125 @@
             }
         });
 
+        // Update the form submission
+        document.getElementById('dish-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const dishData = {
+                name: document.getElementById('dish-name').value,
+                description: document.getElementById('dish-description').value,
+                price: document.getElementById('dish-price').value,
+                capital: document.getElementById('dish-capital').value,
+                image: document.getElementById('dish-image').files[0],
+                ingredients: []
+            };
+            
+            // Collect ingredients data
+            const ingredientRows = document.querySelectorAll('.ingredient-row');
+            ingredientRows.forEach(row => {
+                const ingredientId = row.querySelector('.ingredient-select').value;
+                const quantity = row.querySelector('.ingredient-quantity').value;
+                
+                if (ingredientId && quantity) {
+                    dishData.ingredients.push({
+                        ingredient_id: ingredientId,
+                        quantity_kg: quantity
+                    });
+                }
+            });
+            
+            // Validate
+            if (!dishData.name || !dishData.price || !dishData.capital) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (dishData.ingredients.length === 0) {
+                alert('Please add at least one ingredient');
+                return;
+            }
+            
+            // Submit to server
+            try {
+                const formData = new FormData();
+                formData.append('name', dishData.name);
+                formData.append('description', dishData.description);
+                formData.append('price', dishData.price);
+                formData.append('capital', dishData.capital);
+                if (dishData.image) {
+                    formData.append('image', dishData.image);
+                }
+                formData.append('ingredients', JSON.stringify(dishData.ingredients));
+                
+                const response = await fetch('menu_handlers/add_dish.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Dish added successfully!');
+                    closeModalFunction();
+                    // Refresh the dishes table
+                    // loadDishes();
+                } else {
+                    alert('Error: ' + (result.message || 'Failed to add dish'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while adding the dish');
+            }
+        });
+
+        // Function to load dishes (to be called after adding a new dish)
+        async function loadDishes() {
+            try {
+                const response = await fetch('get_dishes.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const dishes = await response.json();
+                updateDishesTable(dishes);
+            } catch (error) {
+                console.error('Error loading dishes:', error);
+            }
+        }
+
+        function updateDishesTable(dishes) {
+            const tableBody = document.getElementById('menu-table-body');
+            tableBody.innerHTML = '';
+            
+            dishes.forEach(dish => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200';
+                
+                row.innerHTML = `
+                    <td class="p-4 font-medium text-deep-brown">${dish.dish_name}</td>
+                    <td class="p-4 text-rich-brown">${dish.category || 'N/A'}</td>
+                    <td class="p-4">
+                        <span class="px-3 py-1 rounded-full text-sm ${dish.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${dish.status === 'active' ? 'Active' : 'Unavailable'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-deep-brown">₱${dish.price}</td>
+                    <td class="p-4 text-rich-brown">₱${dish.capital}</td>
+                    <td class="p-4">
+                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${dish.dish_id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
         // Package Modal functionality
         const packageModal = document.getElementById('package-modal');
         const addPackageBtn = document.getElementById('add-package-btn');
