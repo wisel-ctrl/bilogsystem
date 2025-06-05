@@ -103,72 +103,21 @@ require_once 'cashier_auth.php';
 
     <script>
         // Sample menu data
-        const menuItems = [
-            {
-                id: 1,
-                name: "Grilled Salmon",
-                description: "Fresh salmon with lemon butter sauce",
-                price: 18.99,
-                category: "main",
-                image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 2,
-                name: "Beef Steak",
-                description: "Juicy ribeye steak with mashed potatoes",
-                price: 24.99,
-                category: "main",
-                image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 3,
-                name: "Chocolate Cake",
-                description: "Rich chocolate cake with raspberry sauce",
-                price: 8.99,
-                category: "dessert",
-                image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 4,
-                name: "Tiramisu",
-                description: "Classic Italian dessert with coffee flavor",
-                price: 7.99,
-                category: "dessert",
-                image: "https://images.unsplash.com/photo-1535920527002-b35e96722eb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 5,
-                name: "Red Wine",
-                description: "Glass of premium house red wine",
-                price: 9.99,
-                category: "drink",
-                image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 6,
-                name: "Iced Tea",
-                description: "Fresh brewed iced tea with lemon",
-                price: 3.99,
-                category: "drink",
-                image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 7,
-                name: "Bruschetta",
-                description: "Toasted bread with tomatoes and basil",
-                price: 6.99,
-                category: "appetizer",
-                image: "https://images.unsplash.com/photo-1529563021893-cc83c992d00d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 8,
-                name: "Caesar Salad",
-                description: "Classic Caesar with homemade dressing",
-                price: 9.99,
-                category: "appetizer",
-                image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        let menuItems = [];
+
+        async function fetchMenuItems() {
+            try {
+                const response = await fetch('get_menu.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                menuItems = await response.json();
+                renderMenuItems('all'); // Render all items by default
+            } catch (error) {
+                console.error('Error fetching menu items:', error);
+                // You might want to show an error message to the user here
             }
-        ];
+        }
 
         // Cart state
         let cart = [];
@@ -185,7 +134,7 @@ require_once 'cashier_auth.php';
 
         // Initialize the page
         function init() {
-            renderMenuItems('all');
+            fetchMenuItems(); // This will now fetch from the server
             setupEventListeners();
         }
 
