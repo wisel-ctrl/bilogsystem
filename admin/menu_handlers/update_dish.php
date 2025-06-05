@@ -4,7 +4,7 @@ require_once '../../db_connect.php';
 
 try {
     // Start transaction
-    $pdo->beginTransaction();
+    $conn->beginTransaction();
 
     // Get form data
     $dishId = $_POST['dish_id'] ?? null;
@@ -30,7 +30,7 @@ try {
         }
 
         // Get current image path to delete later
-        $stmt = $pdo->prepare("SELECT dish_pic_url FROM dishes_tb WHERE dish_id = ?");
+        $stmt = $conn->prepare("SELECT dish_pic_url FROM dishes_tb WHERE dish_id = ?");
         $stmt->execute([$dishId]);
         $currentImage = $stmt->fetchColumn();
 
@@ -69,17 +69,17 @@ try {
     }
     $params[] = $dishId;
 
-    $stmt = $pdo->prepare($updateDishSql);
+    $stmt = $conn->prepare($updateDishSql);
     $stmt->execute($params);
 
     // Update ingredients - first delete existing ones, then insert new ones
     $deleteIngredientsSql = "DELETE FROM dish_ingredients WHERE dish_id = ?";
-    $stmt = $pdo->prepare($deleteIngredientsSql);
+    $stmt = $conn->prepare($deleteIngredientsSql);
     $stmt->execute([$dishId]);
 
     if (!empty($ingredients)) {
         $insertIngredientSql = "INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_grams) VALUES (?, ?, ?)";
-        $stmt = $pdo->prepare($insertIngredientSql);
+        $stmt = $conn->prepare($insertIngredientSql);
         
         foreach ($ingredients as $ingredient) {
             $stmt->execute([
@@ -91,14 +91,14 @@ try {
     }
 
     // Commit transaction
-    $pdo->commit();
+    $conn->commit();
 
     echo json_encode([
         'success' => true,
         'message' => 'Dish updated successfully'
     ]);
 } catch (Exception $e) {
-    $pdo->rollBack();
+    $conn->rollBack();
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
