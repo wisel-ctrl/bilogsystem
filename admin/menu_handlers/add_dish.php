@@ -3,6 +3,8 @@ header('Content-Type: application/json');
 
 require_once "../../db_connect.php";
 try {
+    // Start transaction
+    $conn->beginTransaction();
     
     // Handle image upload
     $imageUrl = null;
