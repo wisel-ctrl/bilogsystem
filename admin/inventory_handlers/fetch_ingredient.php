@@ -30,7 +30,7 @@ try {
     // Base query
     $query = "SELECT SQL_CALC_FOUND_ROWS ingredient_id, ingredient_name, category, price, quantity, total_price 
               FROM ingredients_tb 
-              WHERE 1=1";
+              WHERE visibility = 'show'";
 
     // Add search condition if search value is provided
     if (!empty($searchValue)) {
