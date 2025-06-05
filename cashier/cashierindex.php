@@ -107,7 +107,7 @@ require_once 'cashier_auth.php';
 
         async function fetchMenuItems() {
             try {
-                const response = await fetch('get_menu.php');
+                const response = await fetch('posFunctions/get_menu.php');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
