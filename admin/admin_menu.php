@@ -563,11 +563,48 @@
         const addIngredientBtn = document.getElementById('add-ingredient');
         const ingredientsContainer = document.getElementById('ingredients-container');
 
+        async function fetchIngredients() {
+            try {
+                const response = await fetch('menu_handlers/get_ingredients.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const ingredients = await response.json();
+                return ingredients;
+            } catch (error) {
+                console.error('Error fetching ingredients:', error);
+                return [];
+            }
+        }
+
         // Open modal
         addDishBtn.addEventListener('click', () => {
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Fetch and populate ingredients
+            const ingredients = await fetchIngredients();
+            populateIngredientDropdowns(ingredients);
         });
+
+        function populateIngredientDropdowns(ingredients) {
+            const dropdowns = document.querySelectorAll('.ingredient-select');
+            
+            dropdowns.forEach(dropdown => {
+                // Clear existing options except the first one
+                while (dropdown.options.length > 1) {
+                    dropdown.remove(1);
+                }
+                
+                // Add new options
+                ingredients.forEach(ingredient => {
+                    const option = document.createElement('option');
+                    option.value = ingredient.ingredient_id;
+                    option.textContent = ingredient.ingredient_name;
+                    dropdown.appendChild(option);
+                });
+            });
+        }
 
         // Close modal functions
         const closeModalFunction = () => {
@@ -597,7 +634,26 @@
             const removeBtn = ingredientRow.querySelector('.remove-ingredient');
             removeBtn.classList.remove('hidden');
             ingredientsContainer.appendChild(ingredientRow);
+
+            // Populate the new dropdown
+            const newDropdown = ingredientRow.querySelector('.ingredient-select');
+            populateDropdown(newDropdown, ingredients);
         });
+
+        function populateDropdown(dropdown, ingredients) {
+            // Clear existing options except the first one
+            while (dropdown.options.length > 1) {
+                dropdown.remove(1);
+            }
+            
+            // Add new options
+            ingredients.forEach(ingredient => {
+                const option = document.createElement('option');
+                option.value = ingredient.ingredient_id;
+                option.textContent = ingredient.ingredient_name;
+                dropdown.appendChild(option);
+            });
+        }
 
         // Remove ingredient row
         ingredientsContainer.addEventListener('click', (e) => {
