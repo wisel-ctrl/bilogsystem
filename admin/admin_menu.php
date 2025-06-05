@@ -936,7 +936,7 @@
                 
                 if (dishData.ingredients && dishData.ingredients.length > 0) {
                     dishData.ingredients.forEach(ingredient => {
-                        addIngredientRowToEditModal(ingredients, ingredient.ingredient_id, ingredient.quantity_kg);
+                        addIngredientRowToEditModal(ingredients, ingredient.ingredient_id, ingredient.quantity_grams);
                     });
                 } else {
                     // Add at least one empty row
