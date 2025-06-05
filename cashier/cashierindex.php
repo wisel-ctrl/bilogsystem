@@ -120,6 +120,32 @@ require_once 'cashier_auth.php';
                 </div>
             </div>
         </div>
+
+        <!-- Discount Modal -->
+        <div id="discount-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg w-96">
+                <h3 class="text-xl font-bold text-rich-brown mb-4">Apply Discount</h3>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <input type="radio" id="none" name="discount" value="none" checked class="mr-2">
+                        <label for="none">None</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="senior" name="discount" value="senior" class="mr-2">
+                        <label for="senior">Senior Citizen (20%)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="pwd" name="discount" value="PWD" class="mr-2">
+                        <label for="pwd">PWD (20%)</label>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancel-discount" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+                    <button id="apply-discount" class="px-4 py-2 bg-rich-brown text-white rounded hover:bg-deep-brown">Apply</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -282,14 +308,79 @@ require_once 'cashier_auth.php';
         }
 
         // Checkout
-        function checkout() {
+        async function checkout() {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
                 return;
             }
             
-            alert(`Order placed! Total: $${totalElement.textContent.substring(1)}`);
-            clearCart();
+            // Show discount modal
+            const modal = document.getElementById('discount-modal');
+            modal.classList.remove('hidden');
+            
+            // Wait for user to select discount
+            const discountApplied = await new Promise((resolve) => {
+                document.getElementById('apply-discount').addEventListener('click', () => {
+                    const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
+                    modal.classList.add('hidden');
+                    resolve(selectedDiscount);
+                });
+                
+                document.getElementById('cancel-discount').addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                    resolve('none');
+                });
+            });
+            
+            // Calculate totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.10;
+            const totalBeforeDiscount = subtotal + tax;
+            
+            // Apply discount if selected
+            let discountPrice = 0;
+            if (discountApplied === 'senior' || discountApplied === 'PWD') {
+                discountPrice = totalBeforeDiscount * 0.20;
+            }
+            const finalTotal = totalBeforeDiscount - discountPrice;
+            
+            // Prepare data for backend
+            const orderData = {
+                total_price: totalBeforeDiscount,
+                discount_type: discountApplied,
+                discount_price: discountPrice,
+                items: cart.map(item => ({
+                    dish_id: item.id,
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            };
+            
+            // Send to backend
+            try {
+                const response = await fetch('posFunctions/process_order.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to process order');
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert(`Order #${result.sales_id} placed successfully!\nTotal: $${finalTotal.toFixed(2)}`);
+                    clearCart();
+                } else {
+                    alert('Error processing order: ' + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Error processing order. Please try again.');
+            }
         }
 
         // Setup event listeners
