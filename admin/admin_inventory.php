@@ -395,18 +395,22 @@
                 },
                 "columns": [
                     { "data": "ingredient_name" },
-                    { "data": "category" },
+                    {   "data": "category", 
+                        "render": function(data, type, row) {
+                    return parseFloat(data).toFixed(2) + ' kg'; // Add kg suffix
+                        }
+                     },
                     { "data": "quantity" },
                     { 
                         "data": "price",
                         "render": function(data, type, row) {
-                            return '$' + parseFloat(data).toFixed(2);
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     { 
                         "data": "total_price",
                         "render": function(data, type, row) {
-                            return '$' + parseFloat(data).toFixed(2);
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     {
