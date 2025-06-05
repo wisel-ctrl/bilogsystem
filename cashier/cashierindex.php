@@ -357,6 +357,7 @@ require_once 'cashier_auth.php';
             // Show discount modal
             const modal = document.getElementById('discount-modal');
             modal.classList.remove('hidden');
+            document.getElementById('none').checked = true;
             
             // Update summary display initially
             document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
@@ -487,6 +488,7 @@ require_once 'cashier_auth.php';
                 if (result.success) {
                     alert(`Order #${result.sales_id} placed successfully!\nTotal: ₱${paymentData.finalTotal.toFixed(2)}\nChange: ₱${paymentData.change.toFixed(2)}`);
                     clearCart();
+                    document.getElementById('none').checked = true;
                 } else {
                     alert('Error processing order: ' + (result.message || 'Unknown error'));
                 }
