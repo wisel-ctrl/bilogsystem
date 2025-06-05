@@ -37,7 +37,7 @@ require_once 'cashier_auth.php';
             </a>
         </div>
         
-        <div class="flex flex-col lg:flex-row gap-6">
+         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Section 1: Sidebar with category filters -->
             <div class="w-full lg:w-1/6 bg-rich-brown p-4 rounded-lg shadow-lg">
                 <h2 class="text-2xl text-warm-cream mb-4 font-bold">Categories</h2>
@@ -46,16 +46,37 @@ require_once 'cashier_auth.php';
                         <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="all">All Items</button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="main">Main Courses</button>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="italian">Italian Dishes</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="spanish">Spanish Dishes</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="salad">House Salads</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pizza">Pizza</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="burgers">Burgers</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pasta">Pasta</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pasta_caza">Pasta e Caza</button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="dessert">Desserts</button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="drink">Drinks</button>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="main">Main Courses</button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="appetizer">Appetizers</button>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="drinks">Drinks</button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="coffee">Coffee</button>
                     </li>
                 </ul>
             </div>

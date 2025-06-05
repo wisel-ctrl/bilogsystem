@@ -23,6 +23,7 @@ try {
         
         // Default to 'main' if category not found in map
         $category = $categoryMap[strtolower($dish['dish_category'])] ?? 'main';
+        //italian dish, spanish dish,  house salad, pizza, burgers, Pasta, pasta e caza, desserts, main course, drinks, coffee
         
         return [
             'id' => (int)$dish['dish_id'],
