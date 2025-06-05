@@ -153,9 +153,14 @@ require_once 'admin_auth.php';
                             <i class="fas fa-calendar-alt mr-2"></i>
                             <span id="current-date"></span>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
-                            <span class="text-sm font-medium text-deep-brown">Admin</span>
+                        <div class="flex items-center space-x-4">
+                            <a href="../logout.php" class="bg-rich-brown hover:bg-deep-brown text-warm-cream px-4 py-2 rounded-lg transition-colors duration-300">
+                                Sign Out
+                            </a>
+                            <div class="flex items-center space-x-2">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
+                                <span class="text-sm font-medium text-deep-brown">Admin</span>
+                            </div>
                         </div>
                     </div>
                 </div>
