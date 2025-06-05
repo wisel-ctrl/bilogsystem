@@ -124,8 +124,11 @@ require_once 'cashier_auth.php';
         <!-- Discount Modal -->
         <div id="discount-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white p-6 rounded-lg w-96">
-                <h3 class="text-xl font-bold text-rich-brown mb-4">Apply Discount</h3>
-                <div class="space-y-3 mb-6">
+                <h3 class="text-xl font-bold text-rich-brown mb-4">Payment Details</h3>
+                
+                <!-- Discount Options -->
+                <div class="space-y-3 mb-4">
+                    <h4 class="font-semibold">Discount Type:</h4>
                     <div class="flex items-center">
                         <input type="radio" id="none" name="discount" value="none" checked class="mr-2">
                         <label for="none">None</label>
@@ -139,9 +142,40 @@ require_once 'cashier_auth.php';
                         <label for="pwd">PWD (20%)</label>
                     </div>
                 </div>
+                
+                <!-- Payment Amount Input -->
+                <div class="mb-4">
+                    <label for="payment-amount" class="block font-semibold mb-1">Amount Paid:</label>
+                    <input type="number" id="payment-amount" class="w-full p-2 border rounded" min="0" step="0.01">
+                </div>
+                
+                <!-- Summary Display -->
+                <div class="border-t pt-3 mb-4">
+                    <h4 class="font-semibold mb-2">Payment Summary:</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal" class="text-right">₱0.00</span>
+                        
+                        <span>Tax (10%):</span>
+                        <span id="summary-tax" class="text-right">₱0.00</span>
+                        
+                        <span>Discount:</span>
+                        <span id="summary-discount" class="text-right">₱0.00</span>
+                        
+                        <span class="font-semibold">Total:</span>
+                        <span id="summary-total" class="text-right font-semibold">₱0.00</span>
+                        
+                        <span>Amount Paid:</span>
+                        <span id="summary-paid" class="text-right">₱0.00</span>
+                        
+                        <span class="font-semibold">Change:</span>
+                        <span id="summary-change" class="text-right font-semibold">₱0.00</span>
+                    </div>
+                </div>
+                
                 <div class="flex justify-end space-x-2">
                     <button id="cancel-discount" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-                    <button id="apply-discount" class="px-4 py-2 bg-rich-brown text-white rounded hover:bg-deep-brown">Apply</button>
+                    <button id="apply-discount" class="px-4 py-2 bg-rich-brown text-white rounded hover:bg-deep-brown">Complete Payment</button>
                 </div>
             </div>
         </div>
@@ -314,41 +348,90 @@ require_once 'cashier_auth.php';
                 return;
             }
             
-            // Show discount modal
-            const modal = document.getElementById('discount-modal');
-            modal.classList.remove('hidden');
-            
-            // Wait for user to select discount
-            const discountApplied = await new Promise((resolve) => {
-                document.getElementById('apply-discount').addEventListener('click', () => {
-                    const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
-                    modal.classList.add('hidden');
-                    resolve(selectedDiscount);
-                });
-                
-                document.getElementById('cancel-discount').addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                    resolve('none');
-                });
-            });
-            
-            // Calculate totals
+            // Calculate initial totals
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const tax = subtotal * 0.10;
             const totalBeforeDiscount = subtotal + tax;
             
-            // Apply discount if selected
-            let discountPrice = 0;
-            if (discountApplied === 'senior' || discountApplied === 'PWD') {
-                discountPrice = totalBeforeDiscount * 0.20;
+            // Show discount modal
+            const modal = document.getElementById('discount-modal');
+            modal.classList.remove('hidden');
+            
+            // Update summary display initially
+            document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+            document.getElementById('summary-tax').textContent = `₱${tax.toFixed(2)}`;
+            document.getElementById('summary-total').textContent = `₱${totalBeforeDiscount.toFixed(2)}`;
+            
+            // Function to update payment summary
+            function updateSummary() {
+                const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
+                const paymentAmount = parseFloat(document.getElementById('payment-amount').value) || 0;
+                
+                // Calculate discount
+                let discountPrice = 0;
+                if (selectedDiscount === 'senior' || selectedDiscount === 'PWD') {
+                    discountPrice = totalBeforeDiscount * 0.20;
+                }
+                const finalTotal = totalBeforeDiscount - discountPrice;
+                
+                // Calculate change
+                const change = paymentAmount - finalTotal;
+                
+                // Update display
+                document.getElementById('summary-discount').textContent = `₱${discountPrice.toFixed(2)}`;
+                document.getElementById('summary-total').textContent = `₱${finalTotal.toFixed(2)}`;
+                document.getElementById('summary-paid').textContent = `₱${paymentAmount.toFixed(2)}`;
+                document.getElementById('summary-change').textContent = `₱${change.toFixed(2)}`;
+                
+                // Enable/disable apply button based on sufficient payment
+                document.getElementById('apply-discount').disabled = change < 0;
             }
-            const finalTotal = totalBeforeDiscount - discountPrice;
+            
+            // Add event listeners for real-time updates
+            document.querySelectorAll('input[name="discount"]').forEach(radio => {
+                radio.addEventListener('change', updateSummary);
+            });
+            document.getElementById('payment-amount').addEventListener('input', updateSummary);
+            
+            // Wait for user to complete payment
+            const paymentData = await new Promise((resolve) => {
+                document.getElementById('apply-discount').addEventListener('click', () => {
+                    const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
+                    const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
+                    
+                    // Calculate final totals
+                    let discountPrice = 0;
+                    if (selectedDiscount === 'senior' || selectedDiscount === 'PWD') {
+                        discountPrice = totalBeforeDiscount * 0.20;
+                    }
+                    const finalTotal = totalBeforeDiscount - discountPrice;
+                    const change = paymentAmount - finalTotal;
+                    
+                    modal.classList.add('hidden');
+                    resolve({
+                        discountType: selectedDiscount,
+                        discountPrice,
+                        paymentAmount,
+                        change,
+                        finalTotal
+                    });
+                });
+                
+                document.getElementById('cancel-discount').addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                    resolve(null); // Indicates cancellation
+                });
+            });
+            
+            if (!paymentData) return; // User cancelled
             
             // Prepare data for backend
             const orderData = {
-                total_price: totalBeforeDiscount,
-                discount_type: discountApplied,
-                discount_price: discountPrice,
+                total_price: paymentData.finalTotal,
+                discount_type: paymentData.discountType,
+                discount_price: paymentData.discountPrice,
+                amount_paid: paymentData.paymentAmount,
+                amount_change: paymentData.change,
                 items: cart.map(item => ({
                     dish_id: item.id,
                     price: item.price,
@@ -372,7 +455,7 @@ require_once 'cashier_auth.php';
                 
                 const result = await response.json();
                 if (result.success) {
-                    alert(`Order #${result.sales_id} placed successfully!\nTotal: $${finalTotal.toFixed(2)}`);
+                    alert(`Order #${result.sales_id} placed successfully!\nTotal: ₱${paymentData.finalTotal.toFixed(2)}\nChange: ₱${paymentData.change.toFixed(2)}`);
                     clearCart();
                 } else {
                     alert('Error processing order: ' + (result.message || 'Unknown error'));

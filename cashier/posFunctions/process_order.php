@@ -15,16 +15,31 @@ if (!$data || !isset($data['total_price'])) {
 try {
     $conn->beginTransaction();
     
-    // Insert into sales_tb
+    // Insert into sales_tb with payment details
     $stmt = $conn->prepare("
-        INSERT INTO sales_tb (total_price, discount_type, discount_price, sales_type) 
-        VALUES (:total_price, :discount_type, :discount_price, 'walk-in')
+        INSERT INTO sales_tb (
+            total_price, 
+            discount_type, 
+            discount_price, 
+            amount_paid,
+            amount_change,
+            sales_type
+        ) VALUES (
+            :total_price, 
+            :discount_type, 
+            :discount_price,
+            :amount_paid,
+            :amount_change,
+            'walk-in'
+        )
     ");
     
     $stmt->execute([
         ':total_price' => $data['total_price'],
         ':discount_type' => $data['discount_type'] ?? 'none',
-        ':discount_price' => $data['discount_price'] ?? 0
+        ':discount_price' => $data['discount_price'] ?? 0,
+        ':amount_paid' => $data['amount_paid'],
+        ':amount_change' => $data['amount_change']
     ]);
     
     $sales_id = $conn->lastInsertId();
