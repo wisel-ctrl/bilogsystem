@@ -893,11 +893,199 @@
             });
         });
 
-        function openEditDishModal(dishId){
-            const editModal = document.getElementById('edit-dish-modal');
-            editModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+        
+        // Edit Dish Modal functionality
+        const editDishModal = document.getElementById('edit-dish-modal');
+        const closeEditModal = document.getElementById('close-edit-modal');
+        const cancelEditDish = document.getElementById('cancel-edit-dish');
+        const addEditIngredientBtn = document.getElementById('add-edit-ingredient');
+        const editIngredientsContainer = document.getElementById('edit-ingredients-container');
+
+        // Function to open edit modal with dish data
+        async function openEditDishModal(dishId) {
+            try {
+                // Fetch dish data
+                const response = await fetch(`menu_handlers/get_editDish.php?id=${dishId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const dishData = await response.json();
+                
+                // Populate form fields
+                document.getElementById('edit-dish-id').value = dishData.dish_id;
+                document.getElementById('edit-dish-name').value = dishData.dish_name;
+                document.getElementById('edit-dish-description').value = dishData.dish_description;
+                document.getElementById('edit-dish-category').value = dishData.dish_category;
+                document.getElementById('edit-dish-price').value = dishData.price;
+                document.getElementById('edit-dish-capital').value = dishData.capital;
+                document.getElementById('edit-dish-status').value = dishData.status;
+                
+                // Set image preview if available
+                const previewContainer = document.getElementById('edit-image-preview-container');
+                const previewImage = document.getElementById('edit-image-preview');
+                if (dishData.image_path) {
+                    previewImage.src = dishData.image_path;
+                    previewContainer.classList.remove('hidden');
+                } else {
+                    previewContainer.classList.add('hidden');
+                }
+                
+                // Clear and populate ingredients
+                editIngredientsContainer.innerHTML = '';
+                const ingredients = await fetchIngredients();
+                
+                if (dishData.ingredients && dishData.ingredients.length > 0) {
+                    dishData.ingredients.forEach(ingredient => {
+                        addIngredientRowToEditModal(ingredients, ingredient.ingredient_id, ingredient.quantity_kg);
+                    });
+                } else {
+                    // Add at least one empty row
+                    addIngredientRowToEditModal(ingredients);
+                }
+                
+                // Show modal
+                editDishModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error fetching dish data:', error);
+                alert('Failed to load dish data for editing');
+            }
         }
+
+        // Function to add ingredient row to edit modal
+        function addIngredientRowToEditModal(ingredients, selectedId = '', quantity = '') {
+            const ingredientRow = document.createElement('div');
+            ingredientRow.className = 'ingredient-row flex items-center space-x-2 mb-2';
+            
+            ingredientRow.innerHTML = `
+                <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-select">
+                    <option value="">Select ingredient</option>
+                    ${ingredients.map(ing => 
+                        `<option value="${ing.ingredient_id}" ${ing.ingredient_id == selectedId ? 'selected' : ''}>${ing.ingredient_name}</option>`
+                    ).join('')}
+                </select>
+                <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0" value="${quantity || ''}">
+                <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            editIngredientsContainer.appendChild(ingredientRow);
+        }
+
+        // Close modal functions
+        const closeEditModalFunction = () => {
+            editDishModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('edit-dish-form').reset();
+            editIngredientsContainer.innerHTML = '';
+        };
+
+        closeEditModal.addEventListener('click', closeEditModalFunction);
+        cancelEditDish.addEventListener('click', closeEditModalFunction);
+
+        // Close modal when clicking outside
+        editDishModal.addEventListener('click', (e) => {
+            if (e.target === editDishModal) {
+                closeEditModalFunction();
+            }
+        });
+
+        // Add new ingredient row to edit modal
+        addEditIngredientBtn.addEventListener('click', async () => {
+            const ingredients = await fetchIngredients();
+            addIngredientRowToEditModal(ingredients);
+        });
+
+        // Remove ingredient row from edit modal
+        editIngredientsContainer.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-ingredient')) {
+                e.target.closest('.ingredient-row').remove();
+            }
+        });
+
+        // Handle edit form submission
+        document.getElementById('edit-dish-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const dishData = {
+                dish_id: document.getElementById('edit-dish-id').value,
+                name: document.getElementById('edit-dish-name').value,
+                description: document.getElementById('edit-dish-description').value,
+                category: document.getElementById('edit-dish-category').value,
+                price: document.getElementById('edit-dish-price').value,
+                capital: document.getElementById('edit-dish-capital').value,
+                status: document.getElementById('edit-dish-status').value,
+                image: document.getElementById('edit-dish-image').files[0],
+                ingredients: []
+            };
+            
+            // Collect ingredients data
+            const ingredientRows = editIngredientsContainer.querySelectorAll('.ingredient-row');
+            ingredientRows.forEach(row => {
+                const ingredientId = row.querySelector('.ingredient-select').value;
+                const quantity = row.querySelector('.ingredient-quantity').value;
+                
+                if (ingredientId && quantity) {
+                    dishData.ingredients.push({
+                        ingredient_id: ingredientId,
+                        quantity_kg: quantity
+                    });
+                }
+            });
+            
+            // Validate
+            if (!dishData.name || !dishData.price || !dishData.capital || !dishData.category) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (dishData.ingredients.length === 0) {
+                alert('Please add at least one ingredient');
+                return;
+            }
+            
+            // Submit to server
+            try {
+                const formData = new FormData();
+                formData.append('dish_id', dishData.dish_id);
+                formData.append('name', dishData.name);
+                formData.append('description', dishData.description);
+                formData.append('category', dishData.category);
+                formData.append('price', dishData.price);
+                formData.append('capital', dishData.capital);
+                formData.append('status', dishData.status);
+                if (dishData.image) {
+                    formData.append('image', dishData.image);
+                }
+                formData.append('ingredients', JSON.stringify(dishData.ingredients));
+                
+                const response = await fetch('menu_handlers/update_dish.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Dish updated successfully!');
+                    closeEditModalFunction();
+                    // Refresh the dishes table
+                    $('#menu-table').DataTable().ajax.reload(null, false);
+                } else {
+                    alert('Error: ' + (result.message || 'Failed to update dish'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating the dish');
+            }
+        });
+
 
         // Package Modal functionality
         const packageModal = document.getElementById('package-modal');
