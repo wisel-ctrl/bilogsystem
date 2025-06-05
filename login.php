@@ -6,7 +6,7 @@ session_start();
 if (isset($_SESSION['user_id'])) {
     switch ($_SESSION['usertype']) {
         case 1:
-            header("Location: admin/adminindex.php");
+            header("Location: admin/admin_dashboard.php");
             break;
         case 2:
             header("Location: cashier/cashierindex.php");
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($user['usertype'] == 2) {
                     header("Location: cashier/cashierindex.php");
                 } elseif ($user['usertype'] == 1) {
-                    header("Location: admin/adminindex.php");
+                    header("Location: admin/admin_dashboard.php");
                 }
                 exit();
             } else {
