@@ -330,16 +330,9 @@
                                         <div class="ingredient-row flex items-center space-x-2 mb-2">
                                             <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-select">
                                                 <option value="">Select ingredient</option>
-                                                <option value="coffee-beans">Coffee Beans</option>
-                                                <option value="milk">Milk</option>
-                                                <option value="sugar">Sugar</option>
-                                                <option value="flour">Flour</option>
-                                                <option value="chocolate">Chocolate</option>
-                                                <option value="butter">Butter</option>
-                                                <option value="eggs">Eggs</option>
-                                                <option value="vanilla">Vanilla</option>
+                                                <!-- Options will be populated by JavaScript -->
                                             </select>
-                                            <input type="number" placeholder="Quantity (kg)" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0">
+                                            <input type="number" placeholder="Quantity (kg)" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0" value="">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -580,7 +573,9 @@
             // Reset ingredients to initial state
             const initialIngredient = ingredientsContainer.querySelector('.ingredient-row');
             ingredientsContainer.innerHTML = '';
-            ingredientsContainer.appendChild(initialIngredient.cloneNode(true));
+            const newRow = initialIngredient.cloneNode(true);
+            newRow.querySelector('.ingredient-quantity').value = ''; // Reset quantity
+            ingredientsContainer.appendChild(newRow);
         };
 
         closeModal.addEventListener('click', closeModalFunction);
@@ -594,13 +589,19 @@
         });
 
         // Add new ingredient row
-        addIngredientBtn.addEventListener('click', () => {
+        addIngredientBtn.addEventListener('click', async () => {
             const ingredientRow = document.querySelector('.ingredient-row').cloneNode(true);
             const removeBtn = ingredientRow.querySelector('.remove-ingredient');
+            const quantityInput = ingredientRow.querySelector('.ingredient-quantity');
+            
+            // Reset the quantity field to empty
+            quantityInput.value = '';
+            
             removeBtn.classList.remove('hidden');
             ingredientsContainer.appendChild(ingredientRow);
 
-            // Populate the new dropdown
+            // Fetch and populate the new dropdown
+            const ingredients = await fetchIngredients();
             const newDropdown = ingredientRow.querySelector('.ingredient-select');
             populateDropdown(newDropdown, ingredients);
         });
