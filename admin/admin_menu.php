@@ -578,7 +578,7 @@
         }
 
         // Open modal
-        addDishBtn.addEventListener('click', () => {
+        addDishBtn.addEventListener('click', async () => {
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
