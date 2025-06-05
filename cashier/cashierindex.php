@@ -147,6 +147,7 @@ require_once 'cashier_auth.php';
                 <div class="mb-4">
                     <label for="payment-amount" class="block font-semibold mb-1">Amount Paid:</label>
                     <input type="number" id="payment-amount" class="w-full p-2 border rounded" min="0" step="0.01">
+                    <p id="payment-error" class="text-red-500 text-sm mt-1 hidden">Payment amount must be positive and cover the total amount</p>
                 </div>
                 
                 <!-- Summary Display -->
@@ -361,11 +362,16 @@ require_once 'cashier_auth.php';
             document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
             document.getElementById('summary-tax').textContent = `₱${tax.toFixed(2)}`;
             document.getElementById('summary-total').textContent = `₱${totalBeforeDiscount.toFixed(2)}`;
+
+            // Reset payment amount and error
+            document.getElementById('payment-amount').value = '';
+            document.getElementById('payment-error').classList.add('hidden');
             
             // Function to update payment summary
             function updateSummary() {
                 const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
                 const paymentAmount = parseFloat(document.getElementById('payment-amount').value) || 0;
+                const paymentError = document.getElementById('payment-error');
                 
                 // Calculate discount
                 let discountPrice = 0;
@@ -376,6 +382,20 @@ require_once 'cashier_auth.php';
                 
                 // Calculate change
                 const change = paymentAmount - finalTotal;
+
+                // Validate payment amount
+                if (paymentAmount < 0) {
+                    paymentError.textContent = "Payment amount cannot be negative";
+                    paymentError.classList.remove('hidden');
+                    document.getElementById('apply-discount').disabled = true;
+                } else if (paymentAmount > 0 && paymentAmount < finalTotal) {
+                    paymentError.textContent = "Payment amount must cover the total amount";
+                    paymentError.classList.remove('hidden');
+                    document.getElementById('apply-discount').disabled = true;
+                } else {
+                    paymentError.classList.add('hidden');
+                    document.getElementById('apply-discount').disabled = change < 0;
+                }
                 
                 // Update display
                 document.getElementById('summary-discount').textContent = `₱${discountPrice.toFixed(2)}`;
@@ -383,8 +403,7 @@ require_once 'cashier_auth.php';
                 document.getElementById('summary-paid').textContent = `₱${paymentAmount.toFixed(2)}`;
                 document.getElementById('summary-change').textContent = `₱${change.toFixed(2)}`;
                 
-                // Enable/disable apply button based on sufficient payment
-                document.getElementById('apply-discount').disabled = change < 0;
+                
             }
             
             // Add event listeners for real-time updates
@@ -398,6 +417,17 @@ require_once 'cashier_auth.php';
                 document.getElementById('apply-discount').addEventListener('click', () => {
                     const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
                     const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
+
+                    // Validate payment amount again before proceeding
+                    if (isNaN(paymentAmount)) {
+                        alert('Please enter a valid payment amount');
+                        return;
+                    }
+                    
+                    if (paymentAmount < 0) {
+                        alert('Payment amount cannot be negative');
+                        return;
+                    }
                     
                     // Calculate final totals
                     let discountPrice = 0;
