@@ -454,6 +454,111 @@
                     </div>
                 </div>
 
+                <!-- Add this modal right after the dish creation modal in your HTML -->
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-script">Edit Dish</h3>
+                                <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <form id="edit-dish-form" class="space-y-6">
+                                <input type="hidden" id="edit-dish-id">
+                                
+                                <!-- Dish Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Name</label>
+                                    <input type="text" id="edit-dish-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
+                                </div>
+
+                                <!-- Dish Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
+                                    <textarea id="edit-dish-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
+                                </div>
+
+                                <!-- Dish Category -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Category</label>
+                                    <select id="edit-dish-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
+                                        <option value="">Select category</option>
+                                        <option value="appetizer">Appetizer</option>
+                                        <option value="main-course">Main Course</option>
+                                        <option value="dessert">Dessert</option>
+                                        <option value="beverage">Beverage</option>
+                                        <option value="liquor">Liquor</option>
+                                        <option value="pasta">Pasta</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
+                                        <input type="number" id="edit-dish-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
+                                        <input type="number" id="edit-dish-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Status -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
+                                    <select id="edit-dish-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Dish Image Upload -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Image</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative flex-1">
+                                            <input type="file" id="edit-dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                                <i class="fas fa-upload mr-2"></i>
+                                                <span id="edit-file-name">Choose an image file</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="edit-image-preview-container" class="mt-4">
+                                        <p class="text-sm text-gray-500 mb-2">Current Image:</p>
+                                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-gray-200">
+                                    </div>
+                                </div>
+
+                                <!-- Ingredients Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Ingredients</label>
+                                    <div id="edit-ingredients-container">
+                                        <!-- Ingredients will be populated here -->
+                                    </div>
+                                    <button type="button" id="add-edit-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Ingredient</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                                    <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                        Update Dish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -783,9 +888,16 @@
             $('#menu-table').on('click', '.edit-dish-btn', function() {
                 var dishId = $(this).data('id');
                 // Handle edit functionality here
+                openEditDishModal(dishId);
                 console.log('Edit dish with ID:', dishId);
             });
         });
+
+        function openEditDishModal(dishId){
+            const editModal = document.getElementById('edit-dish-modal');
+            editModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
         // Package Modal functionality
         const packageModal = document.getElementById('package-modal');
