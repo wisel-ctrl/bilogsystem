@@ -694,7 +694,7 @@
                     alert('Dish added successfully!');
                     closeModalFunction();
                     // Refresh the dishes table
-                    // loadDishes();
+                    $('#menu-table').DataTable().ajax.reload(null, false);
                 } else {
                     alert('Error: ' + (result.message || 'Failed to add dish'));
                 }
