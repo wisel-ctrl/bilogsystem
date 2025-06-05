@@ -1030,7 +1030,7 @@
                 if (ingredientId && quantity) {
                     dishData.ingredients.push({
                         ingredient_id: ingredientId,
-                        quantity_kg: quantity
+                        quantity_grams: quantity
                     });
                 }
             });

@@ -24,7 +24,7 @@ try {
     // Handle image upload if exists
     $imagePath = null;
     if (!empty($_FILES['image']['name'])) {
-        $uploadDir = '../../assets/images/dishes/';
+        $uploadDir = '../../images/dish_images/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -41,7 +41,7 @@ try {
 
         // Move uploaded file
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $imagePath = 'assets/images/dishes/' . $filename;
+            $imagePath = '../../images/dish_images/' . $filename;
             
             // Delete old image if exists
             if ($currentImage && file_exists('../../' . $currentImage)) {
