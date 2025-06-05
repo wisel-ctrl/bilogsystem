@@ -293,6 +293,19 @@
                                     <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
                                 </div>
 
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Category</label>
+                                    <select id="dish-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
+                                        <option value="">Select category</option>
+                                        <option value="appetizer">Appetizer</option>
+                                        <option value="main-course">Main Course</option>
+                                        <option value="dessert">Dessert</option>
+                                        <option value="beverage">Beverage</option>
+                                        <option value="liquor">Liquor</option>
+                                        <option value="pasta">Pasta</option>
+                                    </select>
+                                </div>
+
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -636,6 +649,7 @@
             const dishData = {
                 name: document.getElementById('dish-name').value,
                 description: document.getElementById('dish-description').value,
+                category: document.getElementById('dish-category').value,
                 price: document.getElementById('dish-price').value,
                 capital: document.getElementById('dish-capital').value,
                 image: document.getElementById('dish-image').files[0],
@@ -657,7 +671,7 @@
             });
             
             // Validate
-            if (!dishData.name || !dishData.price || !dishData.capital) {
+            if (!dishData.name || !dishData.price || !dishData.capital || !dishData.category) {
                 alert('Please fill in all required fields');
                 return;
             }
@@ -672,6 +686,7 @@
                 const formData = new FormData();
                 formData.append('name', dishData.name);
                 formData.append('description', dishData.description);
+                formData.append('category', dishData.category);
                 formData.append('price', dishData.price);
                 formData.append('capital', dishData.capital);
                 if (dishData.image) {

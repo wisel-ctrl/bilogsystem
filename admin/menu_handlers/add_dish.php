@@ -24,13 +24,14 @@ try {
     
     // Insert dish into dishes_tb
     $stmt = $conn->prepare("
-        INSERT INTO dishes_tb (dish_name, dish_description, price, capital, dish_pic_url) 
-        VALUES (:name, :description, :price, :capital, :image_url)
+        INSERT INTO dishes_tb (dish_name, dish_description, dish_category ,price, capital, dish_pic_url) 
+        VALUES (:name, :description, :category, :price, :capital, :image_url)
     ");
     
     $stmt->execute([
         ':name' => $_POST['name'],
         ':description' => $_POST['description'] ?? null,
+        'category' => $_POST['category'],
         ':price' => $_POST['price'],
         ':capital' => $_POST['capital'],
         ':image_url' => $imageUrl
