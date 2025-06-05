@@ -102,15 +102,15 @@ require_once 'cashier_auth.php';
                 <div class="bg-warm-cream p-3 rounded mb-4">
                     <div class="flex justify-between py-2 border-b border-rich-brown">
                         <span class="font-bold">Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
+                        <span id="subtotal">₱0.00</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-rich-brown">
                         <span class="font-bold">Tax (10%):</span>
-                        <span id="tax">$0.00</span>
+                        <span id="tax">₱0.00</span>
                     </div>
                     <div class="flex justify-between py-2 font-bold text-lg">
                         <span>Total:</span>
-                        <span id="total">$0.00</span>
+                        <span id="total">₱0.00</span>
                     </div>
                 </div>
                 
@@ -274,7 +274,7 @@ require_once 'cashier_auth.php';
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="font-bold">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="font-bold">₱${(item.price * item.quantity).toFixed(2)}</div>
                         <button class="remove-item text-xs text-red-500 hover:text-red-700" data-id="${item.id}">Remove</button>
                     </div>
                 `;
@@ -290,9 +290,9 @@ require_once 'cashier_auth.php';
             const tax = subtotal * 0.10; // 10% tax
             const total = subtotal + tax;
             
-            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-            taxElement.textContent = `$${tax.toFixed(2)}`;
-            totalElement.textContent = `$${total.toFixed(2)}`;
+            subtotalElement.textContent = `₱${subtotal.toFixed(2)}`;
+            taxElement.textContent = `₱${tax.toFixed(2)}`;
+            totalElement.textContent = `₱${total.toFixed(2)}`;
         }
 
         // Add item to cart
@@ -358,7 +358,7 @@ require_once 'cashier_auth.php';
             const modal = document.getElementById('discount-modal');
             modal.classList.remove('hidden');
             document.getElementById('none').checked = true;
-            
+
             // Update summary display initially
             document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
             document.getElementById('summary-tax').textContent = `₱${tax.toFixed(2)}`;
