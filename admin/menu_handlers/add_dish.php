@@ -9,7 +9,7 @@ try {
     // Handle image upload
     $imageUrl = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'dish_images/';
+        $uploadDir = '../../images/dish_images/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
