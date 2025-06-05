@@ -170,9 +170,10 @@
 
                     <!-- Menu Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full table-auto">
+                        <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
                                 <tr class="border-b-2 border-accent-brown">
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Dish ID</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Dish Name</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Category</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Status</th>
@@ -181,49 +182,8 @@
                                     <th class="text-left p-4 font-semibold text-deep-brown">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="menu-table-body">
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Espresso</td>
-                                    <td class="p-4 text-rich-brown">Coffee</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
-                                    </td>
-                                    <td class="p-4 text-deep-brown">₱120</td>
-                                    <td class="p-4 text-rich-brown">₱45</td>
-                                    <td class="p-4">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Cappuccino</td>
-                                    <td class="p-4 text-rich-brown">Coffee</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
-                                    </td>
-                                    <td class="p-4 text-deep-brown">₱150</td>
-                                    <td class="p-4 text-rich-brown">₱60</td>
-                                    <td class="p-4">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Chocolate Cake</td>
-                                    <td class="p-4 text-rich-brown">Dessert</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">Unavailable</span>
-                                    </td>
-                                    <td class="p-4 text-deep-brown">₱280</td>
-                                    <td class="p-4 text-rich-brown">₱120</td>
-                                    <td class="p-4">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody>
+                                <!-- Data will be loaded via AJAX -->
                             </tbody>
                         </table>
                     </div>
@@ -738,48 +698,73 @@
             }
         });
 
-        // Function to load dishes (to be called after adding a new dish)
-        async function loadDishes() {
-            try {
-                const response = await fetch('get_dishes.php');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+        // Initialize DataTable
+        $(document).ready(function() {
+            var table = $('#menu-table').DataTable({
+                responsive: true,
+                ajax: {
+                    url: 'menu_handlers/get_dishes.php', // Your PHP endpoint that returns JSON data
+                    type: 'GET',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'dish_id' },
+                    { data: 'dish_name' },
+                    { data: 'dish_category' },
+                    { 
+                        data: 'status',
+                        render: function(data, type, row) {
+                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                        }
+                    },
+                    { 
+                        data: 'price',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'capital',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        data: 'dish_id',
+                        render: function(data) {
+                            return `<button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>`;
+                        },
+                        orderable: false
+                    }
+                ],
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 }, // Dish Name
+                    { responsivePriority: 2, targets: 3 }, // Status
+                    { responsivePriority: 3, targets: 4 }, // Price
+                    { responsivePriority: 4, targets: -1 } // Actions
+                ],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search dishes...",
+                    lengthMenu: "Show _MENU_ dishes per page",
+                    zeroRecords: "No dishes found",
+                    info: "Showing _START_ to _END_ of _TOTAL_ dishes",
+                    infoEmpty: "No dishes available",
+                    infoFiltered: "(filtered from _MAX_ total dishes)"
                 }
-                const dishes = await response.json();
-                updateDishesTable(dishes);
-            } catch (error) {
-                console.error('Error loading dishes:', error);
-            }
-        }
-
-        function updateDishesTable(dishes) {
-            const tableBody = document.getElementById('menu-table-body');
-            tableBody.innerHTML = '';
-            
-            dishes.forEach(dish => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200';
-                
-                row.innerHTML = `
-                    <td class="p-4 font-medium text-deep-brown">${dish.dish_name}</td>
-                    <td class="p-4 text-rich-brown">${dish.category || 'N/A'}</td>
-                    <td class="p-4">
-                        <span class="px-3 py-1 rounded-full text-sm ${dish.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                            ${dish.status === 'active' ? 'Active' : 'Unavailable'}
-                        </span>
-                    </td>
-                    <td class="p-4 text-deep-brown">₱${dish.price}</td>
-                    <td class="p-4 text-rich-brown">₱${dish.capital}</td>
-                    <td class="p-4">
-                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${dish.dish_id}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
-                `;
-                
-                tableBody.appendChild(row);
             });
-        }
+
+            // You might want to add this to handle edit button clicks
+            $('#menu-table').on('click', '.edit-dish-btn', function() {
+                var dishId = $(this).data('id');
+                // Handle edit functionality here
+                console.log('Edit dish with ID:', dishId);
+            });
+        });
 
         // Package Modal functionality
         const packageModal = document.getElementById('package-modal');
