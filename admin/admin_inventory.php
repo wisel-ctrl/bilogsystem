@@ -232,7 +232,7 @@
                             Quantity
                         </label>
                         <div class="relative rounded-md shadow-sm">
-                            <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" 
+                            <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" step="0.01" min="0"
                                 class="w-full px-3 py-2 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
                                 kg
