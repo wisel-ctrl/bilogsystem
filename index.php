@@ -435,7 +435,7 @@
                             </div>
                         </div>
 
-                        <!-- Slide 5 -->
+                        <!-- Slide 6 -->
                         <div class="w-full flex-shrink-0 px-4 flex space-x-4">
                             <div class="w-1/3">
                                 <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/16_liquor.jpg', 'Liquor Menu')">
@@ -746,9 +746,9 @@
             
             <!-- Chat Content -->
             <div id="chatContent" class="flex-1 overflow-y-auto p-4 space-y-3">
-                <!-- Initial greeting message -->
+                <!-- Initial welcome message -->
                 <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-                    <p>Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
+                    <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
                     <div class="mt-2 grid grid-cols-1 gap-2">
                         <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
                         <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
@@ -758,8 +758,8 @@
                 </div>
             </div>
             
-            <!-- Input Area (hidden by default) -->
-            <div class="p-3 border-t border-deep-brown/20 hidden" id="inputArea">
+            <!-- Input Area -->
+            <div class="p-3 border-t border-deep-brown/20" id="inputArea">
                 <input type="text" id="userInput" placeholder="Type your question..." class="w-full p-2 border border-deep-brown/30 rounded">
             </div>
         </div>
@@ -1138,13 +1138,262 @@ const faqData = {
     ]
 };
 
-// Chatbot functionality
+// Chatbot functionality with localStorage
 document.addEventListener('DOMContentLoaded', function() {
     const chatContent = document.getElementById('chatContent');
     const supportToggle = document.getElementById('supportToggle');
     const supportWindow = document.getElementById('supportWindow');
     const closeSupport = document.getElementById('closeSupport');
+    const inputArea = document.getElementById('inputArea');
+    const userInput = document.getElementById('userInput');
     let currentCategory = null; // Track current category
+
+    // Load conversation from localStorage if available
+    const loadConversation = () => {
+        const savedConvo = localStorage.getItem('caffeLilioChat');
+        chatContent.innerHTML = ''; // Clear chat content to avoid duplication
+        if (savedConvo && savedConvo.trim() !== '') {
+            chatContent.innerHTML = savedConvo;
+            // Reattach event listeners to any buttons in the saved conversation
+            attachEventListeners();
+        } else {
+            // Show initial greeting if no saved conversation
+            showWelcomeMessage();
+        }
+        // Ensure input area is visible
+        inputArea.classList.remove('hidden');
+        chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+    };
+
+    // Save conversation to localStorage
+    const saveConversation = () => {
+        localStorage.setItem('caffeLilioChat', chatContent.innerHTML);
+    };
+
+    // Keyword responses
+    const keywordResponses = {
+        'location': " everlasting 📍 Our location: Brgy. Rizal st. cr. 4th St., Liliw, Laguna<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>",
+        'hours': "⏰ Our opening hours are 9am - 8pm daily",
+        'menu': "🍽️ You can view our menu in the 'Menu & Packages' section of our website",
+        'contact': "📞 You can reach us at +49 2542 084 or caffelilio.liliw@gmail.com",
+        'reservation': "📝 You can make a reservation by visiting our website or calling us",
+        'hello': "👋 Hello! How can I help you today?",
+        'hi': "👋 Hi there! What can I assist you with?",
+        'thanks': "😊 You're welcome! Is there anything else I can help with?"
+    };
+
+    // Check for keywords in user message
+    const checkKeywords = (message) => {
+        const lowerMsg = message.toLowerCase();
+        for (const [keyword, response] of Object.entries(keywordResponses)) {
+            if (lowerMsg.includes(keyword)) {
+                return response;
+            }
+        }
+        return null;
+    };
+
+    // Add a message to the chat
+    const addMessage = (sender, message, isHTML = false) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}-message bg-deep-brown/${sender === 'bot' ? '10' : '5'} text-deep-brown p-3 rounded-lg mb-2`;
+        
+        if (isHTML) {
+            messageDiv.innerHTML = message;
+        } else {
+            messageDiv.textContent = message;
+        }
+        
+        chatContent.appendChild(messageDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        saveConversation();
+    };
+
+    // Show welcome message with categories
+    const showWelcomeMessage = () => {
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+        welcomeDiv.innerHTML = `
+            <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
+            <div class="mt-2 grid grid-cols-1 gap-2">
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+            </div>
+        `;
+        chatContent.appendChild(welcomeDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        saveConversation();
+        
+        // Reattach event listeners
+        attachEventListeners();
+    };
+
+    // Handle user input
+    const handleUserInput = () => {
+        const message = userInput.value.trim();
+        if (message) {
+            addMessage('user', message);
+            userInput.value = '';
+            
+            // Check for keywords first
+            const keywordResponse = checkKeywords(message);
+            if (keywordResponse) {
+                setTimeout(() => {
+                    addMessage('bot', keywordResponse, true);
+                }, 500);
+                return;
+            }
+            
+            // If no keywords matched, show default response
+            setTimeout(() => {
+                addMessage('bot', "I'm sorry, I didn't understand that. Could you try asking in a different way or choose from the categories below?", true);
+                showCategories();
+            }, 500);
+        }
+    };
+
+    // Show categories
+    const showCategories = () => {
+        const categoriesDiv = document.createElement('div');
+        categoriesDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+        categoriesDiv.innerHTML = `
+            <div class="mt-2 grid grid-cols-1 gap-2">
+                ${Object.keys(faqData).map(category => `
+                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="${category}">
+                        ${category === 'location' ? '📍 Location & Hours' :
+                          category === 'reservations' ? '📅 Reservations & Events' :
+                          category === 'menu' ? '🍽️ Menu & Dietary' :
+                          '📞 Contact Us'}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+        chatContent.appendChild(categoriesDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        saveConversation();
+        
+        // Reattach event listeners
+        attachEventListeners();
+    };
+
+    // Attach event listeners to dynamic elements
+    const attachEventListeners = () => {
+        // Remove existing event listeners to prevent duplicates
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+        });
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+        });
+        document.querySelectorAll('.question-btn').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+        });
+        document.querySelectorAll('.back-to-questions').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+        });
+
+        // Add new event listeners
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const category = this.dataset.category;
+                currentCategory = category;
+                showCategoryQuestions(category);
+            });
+        });
+        
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showCategories();
+            });
+        });
+        
+        document.querySelectorAll('.question-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showAnswer(this.innerHTML, this.dataset.answer);
+            });
+        });
+        
+        document.querySelectorAll('.back-to-questions').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (currentCategory) {
+                    showCategoryQuestions(currentCategory);
+                }
+            });
+        });
+    };
+
+    // Show questions for a category
+    function showCategoryQuestions(category) {
+        // Append back button and questions to chat content without clearing
+        const questionsDiv = document.createElement('div');
+        questionsDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+        questionsDiv.innerHTML = `
+            <button class="back-btn flex items-center text-rich-brown mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to categories
+            </button>
+            <p>Select a question:</p>
+        `;
+        chatContent.appendChild(questionsDiv);
+
+        // Add questions for this category
+        faqData[category].forEach(item => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
+            questionDiv.innerHTML = item.question;
+            questionDiv.dataset.answer = item.answer;
+            chatContent.appendChild(questionDiv);
+        });
+
+        // Scroll to bottom
+        chatContent.scrollTop = chatContent.scrollHeight;
+        saveConversation();
+
+        // Reattach event listeners
+        attachEventListeners();
+    }
+
+    // Show selected question and answer only
+    function showAnswer(question, answer) {
+        // Append question and answer to chat content
+        const questionMessage = document.createElement('div');
+        questionMessage.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg';
+        questionMessage.innerHTML = question;
+        chatContent.appendChild(questionMessage);
+
+        const answerMessage = document.createElement('div');
+        answerMessage.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+        answerMessage.innerHTML = answer;
+        chatContent.appendChild(answerMessage);
+
+        const backButton = document.createElement('div');
+        backButton.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+        backButton.innerHTML = `
+            <button class="back-to-questions text-rich-brown underline">
+                ← Back to questions
+            </button>
+        `;
+        chatContent.appendChild(backButton);
+
+        // Scroll to bottom
+        chatContent.scrollTop = chatContent.scrollHeight;
+        saveConversation();
+
+        // Reattach event listeners
+        attachEventListeners();
+    }
 
     // Toggle chat window
     supportToggle.addEventListener('click', (e) => {
@@ -1153,6 +1402,7 @@ document.addEventListener('DOMContentLoaded', function() {
             supportWindow.classList.remove('hidden');
             supportWindow.classList.remove('closed');
             supportWindow.classList.add('open');
+            loadConversation();
         } else {
             supportWindow.classList.add('closed');
             supportWindow.classList.remove('open');
@@ -1183,113 +1433,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle category selection
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const category = this.dataset.category;
-            currentCategory = category; // Store current category
-            showCategoryQuestions(category);
-        });
+    // Handle Enter key in input field
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleUserInput();
+        }
     });
 
-// Show questions for a category
-function showCategoryQuestions(category) {
-    // Clear chat and show back button to categories
-    chatContent.innerHTML = `
-        <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-            <button class="back-btn flex items-center text-rich-brown mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to categories
-            </button>
-            <p>Select a question:</p>
-        </div>
-    `;
-
-    // Add questions for this category
-    faqData[category].forEach(item => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'chat-message user-message bg-deep-brown/5ipper text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
-        questionDiv.innerHTML = item.question;
-        questionDiv.dataset.answer = item.answer;
-        chatContent.appendChild(questionDiv);
-    });
-
-    // Scroll to bottom
-    chatContent.scrollTop = chatContent.scrollHeight;
-
-    // Add back button event
-    document.querySelector('.back-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        resetChat();
-    });
-
-    // Add question click events
-    document.querySelectorAll('.question-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            showAnswer(this.innerHTML, this.dataset.answer);
-        });
-    });
-}
-
-    // Show selected question and answer only
-    function showAnswer(question, answer) {
-        // Clear chat content and show only the selected question and answer
-        chatContent.innerHTML = `
-            <div class="chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg">
-                ${question}
-            </div>
-            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-                ${answer}
-            </div>
-            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-                <button class="back-to-questions text-rich-brown underline">
-                    ← Back to questions
-                </button>
-            </div>
-        `;
-
-        // Scroll to bottom
-        chatContent.scrollTop = chatContent.scrollHeight;
-
-        // Add back button event to return to the current category's questions
-        document.querySelector('.back-to-questions').addEventListener('click', (e) => {
-            e.stopPropagation();
-            showCategoryQuestions(currentCategory);
-        });
-    }
-
-    // Reset chat to initial state
-    function resetChat() {
-        chatContent.innerHTML = `
-            <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
-                <p class="text-center">Hello! I'm here to help with your questions about Caffè Lilio. Choose a category:</p>
-                <div class="mt-2 grid grid-cols-1 gap-2">
-                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
-                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
-                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
-                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
-                </div>
-            </div>
-        `;
-
-        // Re-add event listeners to category buttons
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const category = this.dataset.category;
-                currentCategory = category;
-                showCategoryQuestions(category);
-            });
-        });
-
-        // Scroll to bottom
-        chatContent.scrollTop = chatContent.scrollHeight;
-    }
-    });
+    // Show input area by default
+    inputArea.classList.remove('hidden');
+    
+    // Load any saved conversation when page loads
+    loadConversation();
+});
     </script>
     
 </body>
