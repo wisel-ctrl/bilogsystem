@@ -115,7 +115,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="admin_inventory.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_inventory.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
                             <i class="fas fa-boxes w-5"></i>
                             <span class="sidebar-text">Inventory</span>
                         </a>

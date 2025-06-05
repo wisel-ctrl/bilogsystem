@@ -108,7 +108,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="admin_menu.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_menu.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text">Menu Management</span>
                         </a>
