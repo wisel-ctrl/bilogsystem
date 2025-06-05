@@ -403,7 +403,14 @@
                     "type": "POST"
                 },
                 "columns": [
-                    { "data": "ingredient_name" },
+                    {
+                        "data": "ingredient_name",
+                        "render": function(data, type, row) {
+                            return data.replace(/\w\S*/g, function(txt) {
+                                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                            });
+                        }
+                    },
                     {   "data": "category" },
                     { "data": "quantity", 
                         "render": function(data, type, row) {
