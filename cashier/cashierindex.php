@@ -242,7 +242,7 @@ require_once 'cashier_auth.php';
                         <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
                         <p class="text-gray-600 mb-2">${item.description}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-lg font-bold text-accent-brown">$${item.price.toFixed(2)}</span>
+                            <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
                             <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
                         </div>
                     </div>
