@@ -42,7 +42,7 @@ try {
     // Insert ingredients into dish_ingredients
     $ingredients = json_decode($_POST['ingredients'], true);
     $ingredientStmt = $conn->prepare("
-        INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_kg) 
+        INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_grams) 
         VALUES (:dish_id, :ingredient_id, :quantity_kg)
     ");
     
