@@ -516,12 +516,36 @@
             // Get form values
             const name = document.getElementById('ingredient-name').value.trim();
             const category = document.getElementById('ingredient-category').value;
-            const quantity = parseFloat(document.getElementById('ingredient-quantity').value);
-            const price = parseFloat(document.getElementById('ingredient-price').value);
+            const quantityInput = document.getElementById('ingredient-quantity').value;
+            const priceInput = document.getElementById('ingredient-price').value;
             
-            // Simple validation
-            if (!name || !category || isNaN(quantity) || isNaN(price)) {
-                alert('Please fill all fields with valid values');
+            // Validate quantity
+            if (!/^\d*\.?\d+$/.test(quantityInput)) {
+                alert('Quantity must be a positive number (letters and symbols not allowed)');
+                return;
+            }
+            
+            const quantity = parseFloat(quantityInput);
+            if (quantity <= 0) {
+                alert('Quantity must be greater than zero');
+                return;
+            }
+            
+            // Validate price
+            if (!/^\d*\.?\d+$/.test(priceInput)) {
+                alert('Price must be a positive number (letters and symbols not allowed)');
+                return;
+            }
+            
+            const price = parseFloat(priceInput);
+            if (price < 0) {
+                alert('Price cannot be negative');
+                return;
+            }
+            
+            // Basic validation for other fields
+            if (!name || !category) {
+                alert('Please fill all fields');
                 return;
             }
             
