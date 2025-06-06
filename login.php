@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12 fade-in">
                 <!-- Header -->
                 <div class="text-center mb-10">
-                    <h2 class="font-playfair text-4xl md:text-5xl font-bold text-warm-cream mb-4">Welcome Back</h2>
+                    <h2 class="font-playfair text-4xl md:text-5xl font-bold text-warm-cream mb-4">Welcome</h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-6"></div>
                     <p class="font-baskerville text-lg text-warm-cream leading-relaxed">
                         Sign in to your account to continue your Caffè Lilio experience
