@@ -357,17 +357,21 @@ require_once 'cashier_auth.php';
             // Show discount modal
             const modal = document.getElementById('discount-modal');
             modal.classList.remove('hidden');
+            
+            // Reset all inputs and selections
             document.getElementById('none').checked = true;
-
-            // Update summary display initially
-            document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
-            document.getElementById('summary-tax').textContent = `₱${tax.toFixed(2)}`;
-            document.getElementById('summary-total').textContent = `₱${totalBeforeDiscount.toFixed(2)}`;
-
-            // Reset payment amount and error
             document.getElementById('payment-amount').value = '';
             document.getElementById('payment-error').classList.add('hidden');
-            
+            document.getElementById('apply-discount').disabled = true;
+
+            // FULLY reset summary display
+            document.getElementById('summary-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+            document.getElementById('summary-tax').textContent = `₱${tax.toFixed(2)}`;
+            document.getElementById('summary-discount').textContent = `₱0.00`;
+            document.getElementById('summary-total').textContent = `₱${totalBeforeDiscount.toFixed(2)}`;
+            document.getElementById('summary-paid').textContent = `₱0.00`;
+            document.getElementById('summary-change').textContent = `₱0.00`;
+
             // Function to update payment summary
             function updateSummary() {
                 const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
@@ -395,17 +399,22 @@ require_once 'cashier_auth.php';
                     document.getElementById('apply-discount').disabled = true;
                 } else {
                     paymentError.classList.add('hidden');
-                    document.getElementById('apply-discount').disabled = change < 0;
+                    document.getElementById('apply-discount').disabled = paymentAmount === 0 || change < 0;
                 }
                 
                 // Update display
                 document.getElementById('summary-discount').textContent = `₱${discountPrice.toFixed(2)}`;
                 document.getElementById('summary-total').textContent = `₱${finalTotal.toFixed(2)}`;
                 document.getElementById('summary-paid').textContent = `₱${paymentAmount.toFixed(2)}`;
-                document.getElementById('summary-change').textContent = `₱${change.toFixed(2)}`;
-                
-                
+                document.getElementById('summary-change').textContent = `₱${Math.max(change, 0).toFixed(2)}`;
             }
+            
+            // Remove old event listeners to prevent duplicates
+            document.querySelectorAll('input[name="discount"]').forEach(radio => {
+                radio.replaceWith(radio.cloneNode(true));
+            });
+            const paymentInput = document.getElementById('payment-amount');
+            paymentInput.replaceWith(paymentInput.cloneNode(true));
             
             // Add event listeners for real-time updates
             document.querySelectorAll('input[name="discount"]').forEach(radio => {
@@ -415,6 +424,14 @@ require_once 'cashier_auth.php';
             
             // Wait for user to complete payment
             const paymentData = await new Promise((resolve) => {
+                const applyBtn = document.getElementById('apply-discount');
+                const cancelBtn = document.getElementById('cancel-discount');
+                
+                // Remove old listeners
+                applyBtn.replaceWith(applyBtn.cloneNode(true));
+                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+                
+                // Add new listeners
                 document.getElementById('apply-discount').addEventListener('click', () => {
                     const selectedDiscount = document.querySelector('input[name="discount"]:checked').value;
                     const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
