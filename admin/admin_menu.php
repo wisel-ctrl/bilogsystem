@@ -1151,9 +1151,163 @@
         const dishesContainer = document.getElementById('dishes-container');
 
         // Open modal
-        addPackageBtn.addEventListener('click', () => {
+        // Add this code to your existing JavaScript
+
+        // Function to fetch and populate dishes
+        async function populateDishes() {
+            try {
+                const response = await fetch('menu_handlers/get_dishesForPackageModal.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'query=SELECT dish_id, dish_name, dish_category, price, capital FROM `dishes_tb` WHERE status = "active"'
+                });
+                
+                const dishes = await response.json();
+                
+                // Clear existing options and group by category
+                const categoryMap = {};
+                dishes.forEach(dish => {
+                    if (!categoryMap[dish.dish_category]) {
+                        categoryMap[dish.dish_category] = [];
+                    }
+                    categoryMap[dish.dish_category].push(dish);
+                });
+                
+                // Update all dish selects
+                document.querySelectorAll('.dish-select').forEach(select => {
+                    // Save current value
+                    const currentValue = select.value;
+                    
+                    // Clear existing options
+                    select.innerHTML = '<option value="">Select Dish</option>';
+                    
+                    // Add options grouped by category
+                    for (const [category, categoryDishes] of Object.entries(categoryMap)) {
+                        const optgroup = document.createElement('optgroup');
+                        optgroup.label = category;
+                        
+                        categoryDishes.forEach(dish => {
+                            const option = document.createElement('option');
+                            option.value = dish.dish_id;
+                            option.textContent = `${dish.dish_name} (₱${dish.price})`;
+                            option.dataset.price = dish.price;
+                            option.dataset.capital = dish.capital;
+                            optgroup.appendChild(option);
+                        });
+                        
+                        select.appendChild(optgroup);
+                    }
+                    
+                    // Restore value if it exists
+                    if (currentValue) {
+                        select.value = currentValue;
+                    }
+                });
+                
+                return dishes;
+            } catch (error) {
+                console.error('Error fetching dishes:', error);
+                return [];
+            }
+        }
+
+        // Function to calculate total price and capital
+        function calculateTotals() {
+            let totalPrice = 0;
+            let totalCapital = 0;
+            
+            document.querySelectorAll('.dish-row').forEach(row => {
+                const select = row.querySelector('.dish-select');
+                const quantityInput = row.querySelector('.dish-quantity');
+                
+                if (select && select.value && quantityInput) {
+                    const selectedOption = select.options[select.selectedIndex];
+                    const price = parseFloat(selectedOption.dataset.price) || 0;
+                    const capital = parseFloat(selectedOption.dataset.capital) || 0;
+                    const quantity = parseInt(quantityInput.value) || 1;
+                    
+                    totalPrice += price * quantity;
+                    totalCapital += capital * quantity;
+                }
+            });
+            
+            document.getElementById('package-price').value = totalPrice.toFixed(2);
+            document.getElementById('package-capital').value = totalCapital.toFixed(2);
+        }
+
+        // Event listeners for dish changes
+        dishesContainer.addEventListener('change', (e) => {
+            if (e.target.classList.contains('dish-select') || e.target.classList.contains('dish-quantity')) {
+                calculateTotals();
+            }
+        });
+
+        // Initialize when modal opens
+        addPackageBtn.addEventListener('click', async () => {
             packageModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            await populateDishes();
+        });
+
+        // Form submission
+        document.getElementById('package-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect package data
+            const packageData = {
+                name: document.getElementById('package-name').value,
+                description: document.getElementById('package-description').value,
+                price: document.getElementById('package-price').value,
+                capital: document.getElementById('package-capital').value,
+                status: document.getElementById('package-status').value,
+                dishes: []
+            };
+            
+            // Collect dish data
+            document.querySelectorAll('.dish-row').forEach(row => {
+                const select = row.querySelector('.dish-select');
+                const quantityInput = row.querySelector('.dish-quantity');
+                
+                if (select && select.value && quantityInput) {
+                    packageData.dishes.push({
+                        dish_id: select.value,
+                        quantity: quantityInput.value
+                    });
+                }
+            });
+            
+            try {
+                const response = await fetch('add_menu_packages.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(packageData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Package created successfully!');
+                    closePackageModalFunction();
+                    // You might want to refresh the packages list here
+                } else {
+                    alert('Error creating package: ' + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to create package. Please try again.');
+            }
+        });
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clone the initial dish row template and remove it from DOM
+            const initialDish = dishesContainer.querySelector('.dish-row');
+            dishesContainer.innerHTML = '';
+            dishesContainer.appendChild(initialDish.cloneNode(true));
         });
 
         // Close modal functions
