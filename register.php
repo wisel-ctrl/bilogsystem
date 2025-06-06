@@ -352,15 +352,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Contact Number -->
                     <div class="input-group">
-                        <input 
-                            type="tel" 
-                            id="contactNumber" 
-                            name="contactNumber"
-                            class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
-                            placeholder="Contact Number *"
-                            required
-                        >
+                        <div class="flex space-x-2">
+                            <div class="flex-grow">
+                                <input 
+                                    type="tel" 
+                                    id="contactNumber" 
+                                    name="contactNumber"
+                                    class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                    placeholder="Contact Number *"
+                                    required
+                                >
+                            </div>
+                            <button 
+                                type="button" 
+                                id="sendOtpBtn"
+                                class="px-4 py-3 bg-rich-brown text-warm-cream rounded-xl font-baskerville btn-hover disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                disabled
+                            >
+                                Send OTP
+                            </button>
+                        </div>
                         <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
+                        <div id="otpCountdown" class="mt-2 text-sm font-baskerville text-rich-brown hidden"></div>
                     </div>
                     
                     <!-- Password -->
@@ -750,6 +763,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             return data;
         }
+
+        // OTP functionality
+        const sendOtpBtn = document.getElementById('sendOtpBtn');
+        const contactNumberInput = document.getElementById('contactNumber');
+        const otpCountdown = document.getElementById('otpCountdown');
+        let countdownInterval;
+
+        // Enable/disable OTP button based on contact number validation
+        contactNumberInput.addEventListener('input', function() {
+            const cleanNumber = this.value.replace(/\D/g, '');
+            sendOtpBtn.disabled = !(cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber));
+        });
+
+        // Handle OTP button click
+        sendOtpBtn.addEventListener('click', function() {
+            const contactNumber = contactNumberInput.value.replace(/\D/g, '');
+            if (contactNumber.length === 11 && /^09\d{9}$/.test(contactNumber)) {
+                // Disable the button and start countdown
+                sendOtpBtn.disabled = true;
+                let timeLeft = 60; // 60 seconds countdown
+                
+                // Show and update countdown
+                otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
+                otpCountdown.classList.remove('hidden');
+                
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        sendOtpBtn.disabled = false;
+                        otpCountdown.classList.add('hidden');
+                    }
+                }, 1000);
+
+                // TODO: Implement actual OTP sending functionality
+                showNotification('OTP sent successfully!', 'success');
+            }
+        });
+
+        // Clear countdown when leaving the page
+        window.addEventListener('beforeunload', () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+        });
     </script>
 </body>
 </html>
