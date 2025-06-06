@@ -1237,11 +1237,9 @@
             document.getElementById('package-capital').value = totalCapital.toFixed(2);
         }
 
-        // Event listeners for dish changes
-        dishesContainer.addEventListener('click', (e) => {
-            if (e.target.closest('.remove-dish')) {
-                e.target.closest('.dish-row').remove();
-                calculateTotals(); // Add this line to recalculate after removal
+        dishesContainer.addEventListener('change', (e) => {
+            if (e.target.classList.contains('dish-select') || e.target.classList.contains('dish-quantity')) {
+                calculateTotals();
             }
         });
 
@@ -1343,6 +1341,7 @@
         dishesContainer.addEventListener('click', (e) => {
             if (e.target.closest('.remove-dish')) {
                 e.target.closest('.dish-row').remove();
+                calculateTotals();
             }
         });
     </script>
