@@ -15,10 +15,18 @@ try {
     $menuItems = array_map(function($dish) {
         // Map database categories to the categories used in your frontend
         $categoryMap = [
-            'main' => 'main',
-            'dessert' => 'dessert',
-            'drink' => 'drink',
-            'appetizer' => 'appetizer'
+            'main' => 'Main Courses',
+            'desserts' => 'Desserts',
+            'drinks' => 'Drinks',
+            'appetizer' => 'appetizer', // Not present in buttons, kept from original
+            'italian-dish' => 'Italian Dishes',
+            'spanish-dish' => 'Spanish Dishes',
+            'house-salad' => 'House Salads',
+            'pizza' => 'Pizza',
+            'burgers' => 'Burgers',
+            'pasta' => 'Pasta',
+            'pasta_caza' => 'Pasta e Caza',
+            'coffee' => 'Coffee'
         ];
         
         // Default to 'main' if category not found in map

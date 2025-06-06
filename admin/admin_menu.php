@@ -710,7 +710,7 @@
             const newRow = initialIngredient.cloneNode(true);
             newRow.querySelector('.ingredient-quantity').value = ''; // Reset quantity
             ingredientsContainer.appendChild(newRow);
-            
+
             const dishImageInput = document.getElementById('dish-image');
             const fileNameSpan = document.getElementById('file-name');
             const imagePreviewContainer = document.getElementById('image-preview-container');
