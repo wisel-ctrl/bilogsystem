@@ -244,7 +244,7 @@ require_once 'cashier_auth.php';
                 ? menuItems 
                 : menuItems.filter(item => item.category === category))
                 .filter(item => {
-                    if (!searchTerm) return true;
+                    if (searchTerm || '') return true;
                     const term = searchTerm.toLowerCase();
                     return (
                         item.name.toLowerCase().includes(term) || 
@@ -544,7 +544,7 @@ require_once 'cashier_auth.php';
             categoryBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const category = btn.dataset.category;
-                    renderMenuItems(category);
+                    renderMenuItems(category, '');
                     
                     // Update active button style
                     categoryBtns.forEach(b => b.classList.remove('bg-deep-brown'));
@@ -562,7 +562,7 @@ require_once 'cashier_auth.php';
             clearSearchBtn.addEventListener('click', () => {
                 searchInput.value = '';
                 clearSearchBtn.classList.add('hidden');
-                renderMenuItems(currentCategory);
+                renderMenuItems(currentCategory, '');
             });
 
             searchInput.addEventListener('input', (e) => {
