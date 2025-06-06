@@ -182,7 +182,7 @@
                 </p>
                 <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
                     <button class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto">
-                        Reserve a Table
+                        Make Reservation
                     </button>
                     <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
                         View Our Menu
@@ -767,7 +767,7 @@
                 <div class="border-t border-rich-brown pt-8">
                     <p class="font-baskerville opacity-75">
                         © 2024 Caffè Lilio Ristorante. All rights reserved. | 
-                        <span class="italic">Authentically Italian since 1952</span>
+                        <span class="italic">Authentically Italian and Spanish since 2021</span>
                     </p>
                 </div>
             </div>
