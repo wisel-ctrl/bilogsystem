@@ -69,14 +69,19 @@
         .support-widget {
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(0);
         }
 
         .support-widget.closed {
-            transform: translateY(100px);
+            transform: translateX(calc(100% + 1rem));
+            pointer-events: none;
+            opacity: 0;
         }
 
         .support-widget.open {
-            transform: translateY(0);
+            transform: translateX(0);
+            pointer-events: auto;
+            opacity: 1;
         }
 
         .support-toggle {
@@ -258,13 +263,24 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Map Section -->
+                                <div class="mt-6">
+                                    <section class="map w-full rounded-xl overflow-hidden shadow-lg">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+                                            width="100%"
+                                            height="250"
+                                            style="border:0;"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </section>
+                                </div>
                                 
-                                <div class="mt-8 space-y-3">
+                                <div class="mt-6">
                                     <button class="w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300">
                                         Make Reservation
-                                    </button>
-                                    <button class="w-full border-2 border-deep-brown text-rich-brown py-3 rounded-xl font-baskerville font-bold hover:bg-deep-brown hover:text-warm-cream transition-all duration-300">
-                                        Get Directions
                                     </button>
                                 </div>
                             </div>
@@ -645,10 +661,58 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="fade-in">
                     <div class="relative">
-                        <div class="rounded-xl overflow-hidden shadow-2xl">
-                            <img src="images/Events_image_1.jpg" 
-                                 alt="Elegant restaurant dining setup" 
-                                 class="w-full h-full object-cover">
+                        <!-- Services Carousel Container -->
+                        <div class="overflow-hidden rounded-xl shadow-2xl">
+                            <div id="servicesCarousel" class="flex transition-transform duration-500 ease-in-out">
+                                <!-- Slide 1 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_2.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 2 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_1.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 3 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_3.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 4 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_4.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_5.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_6.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_7.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_8.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carousel Indicators -->
+                        <div class="flex justify-center mt-4 space-x-2">
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="0"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="1"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="2"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="3"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="4"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="5"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="6"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="7"></button>
                         </div>
                     </div>
                 </div>
@@ -724,16 +788,9 @@
     
     
     <!-- Add this inside your body tag, just before the closing </body> -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <!-- Chat Toggle Button -->
-        <div id="supportToggle" class="support-toggle bg-deep-brown text-warm-cream w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-rich-brown transition-all duration-300 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-        </div>
-    
+    <div class="fixed bottom-6 right-6 z-50 flex items-end space-x-4">
         <!-- Chat Window -->
-        <div id="supportWindow" class="support-widget absolute bottom-20 right-0 w-80 bg-warm-cream rounded-lg overflow-hidden hidden closed flex flex-col" style="height: 500px;">
+        <div id="supportWindow" class="support-widget bg-warm-cream rounded-lg overflow-hidden hidden closed flex flex-col" style="height: 500px; width: 320px;">
             <!-- Header -->
             <div class="bg-deep-brown text-warm-cream p-4 flex justify-between items-center">
                 <h3 class="font-playfair font-bold">Caffè Lilio Support</h3>
@@ -763,8 +820,39 @@
                 <input type="text" id="userInput" placeholder="Type your question..." class="w-full p-2 border border-deep-brown/30 rounded">
             </div>
         </div>
+
+        <!-- Chat Toggle Button -->
+        <div id="supportToggle" class="support-toggle bg-deep-brown text-warm-cream w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-rich-brown transition-all duration-300 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </div>
     </div>
-    
+
+    <style>
+        /* Update the support widget styles */
+        .support-widget {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(0);
+        }
+
+        .support-widget.closed {
+            transform: translateX(calc(100% + 1rem));
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .support-widget.open {
+            transform: translateX(0);
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .support-toggle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
     
     <script>
         // Smooth scrolling for navigation links
@@ -1079,373 +1167,418 @@
             // Initialize carousel
             updatePackageCarousel();
         });
-        
-// FAQ Data (Filtered)
-const faqData = {
-    location: [
-        {
-            question: "Where is Caffè Lilio located?",
-            answer: "📍 Brgy. Rizal st. cr. 4th St., Liliw, Laguna, Philippines, 4004<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>"
-        },
-        {
-            question: "What are your opening hours?",
-            answer: "⏰ 9am - 8pm"
-        }
-    ],
-    reservations: [
-        {
-            question: "Do I need a reservation to dine?",
-            answer: "📝 Not required for regular dining, but recommended for events. <a href='https://caffelilioristorante.com/register.php' class='text-rich-brown underline' target='_blank'>Register an account to start your reservation</a>."
-        },
-        {
-            question: "Can you accommodate large groups or events?",
-            answer: "🎉 Yes, we offer event packages."
-        }
-    ],
-    menu: [
-        {
-            question: "Do you have vegetarian or vegan options?",
-            answer: "🥗 Yes, we offer vegetarian and vegan dishes."
-        },
-        {
-            question: "Can I customize dishes for dietary needs?",
-            answer: "👌 Yes, we can adjust dishes for specific preferences."
-        }
-    ],
-    contact: [
-        {
-            question: "How can I contact Caffè Lilio?",
-            answer: `
-                <div class="space-y-2">
-                    <div class="flex items-start">
-                        <span class="mr-2">📱</span>
-                        <div>
-                            <a href="https://www.facebook.com/caffelilio.ph" class="text-rich-brown underline" target="_blank">Facebook</a><br>
-                            <a href="https://www.instagram.com/caffelilio.ph/" class="text-rich-brown underline" target="_blank">Instagram</a>
+
+        // Services carousel functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const servicesCarousel = document.getElementById('servicesCarousel');
+            const servicesIndicators = document.querySelectorAll('.services-indicator');
+            let currentServicesIndex = 0;
+            const totalServicesSlides = 4;
+
+            function updateServicesCarousel() {
+                const offset = currentServicesIndex * -100;
+                servicesCarousel.style.transform = `translateX(${offset}%)`;
+                
+                // Update indicators
+                servicesIndicators.forEach((indicator, index) => {
+                    if (index === currentServicesIndex) {
+                        indicator.classList.add('opacity-100');
+                        indicator.classList.remove('opacity-50');
+                    } else {
+                        indicator.classList.add('opacity-50');
+                        indicator.classList.remove('opacity-100');
+                    }
+                });
+            }
+
+            function nextServicesSlide() {
+                currentServicesIndex = (currentServicesIndex + 1) % totalServicesSlides;
+                updateServicesCarousel();
+            }
+
+            // Auto-advance carousel every 5 seconds
+            let autoAdvanceServices = setInterval(nextServicesSlide, 5000);
+
+            // Event listeners for indicators
+            servicesIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(autoAdvanceServices);
+                    currentServicesIndex = index;
+                    updateServicesCarousel();
+                    autoAdvanceServices = setInterval(nextServicesSlide, 5000);
+                });
+            });
+
+            // Initialize carousel
+            updateServicesCarousel();
+        });
+
+        // FAQ Data (Filtered)
+        const faqData = {
+            location: [
+                {
+                    question: "Where is Caffè Lilio located?",
+                    answer: "📍 Brgy. Rizal st. cr. 4th St., Liliw, Laguna, Philippines, 4004<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>"
+                },
+                {
+                    question: "What are your opening hours?",
+                    answer: "⏰ 9am - 8pm"
+                }
+            ],
+            reservations: [
+                {
+                    question: "Do I need a reservation to dine?",
+                    answer: "📝 Not required for regular dining, but recommended for events. <a href='https://caffelilioristorante.com/register.php' class='text-rich-brown underline' target='_blank'>Register an account to start your reservation</a>."
+                },
+                {
+                    question: "Can you accommodate large groups or events?",
+                    answer: "🎉 Yes, we offer event packages."
+                }
+            ],
+            menu: [
+                {
+                    question: "Do you have vegetarian or vegan options?",
+                    answer: "🥗 Yes, we offer vegetarian and vegan dishes."
+                },
+                {
+                    question: "Can I customize dishes for dietary needs?",
+                    answer: "👌 Yes, we can adjust dishes for specific preferences."
+                }
+            ],
+            contact: [
+                {
+                    question: "How can I contact Caffè Lilio?",
+                    answer: `
+                        <div class="space-y-2">
+                            <div class="flex items-start">
+                                <span class="mr-2">📱</span>
+                                <div>
+                                    <a href="https://www.facebook.com/caffelilio.ph" class="text-rich-brown underline" target="_blank">Facebook</a><br>
+                                    <a href="https://www.instagram.com/caffelilio.ph/" class="text-rich-brown underline" target="_blank">Instagram</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2">📞</span>
+                                <div>+49 2542 084</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2">✉️</span>
+                                <div>caffelilio.liliw@gmail.com</div>
+                            </div>
                         </div>
+                    `
+                }
+            ]
+        };
+
+        // Chatbot functionality with localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatContent = document.getElementById('chatContent');
+            const supportToggle = document.getElementById('supportToggle');
+            const supportWindow = document.getElementById('supportWindow');
+            const closeSupport = document.getElementById('closeSupport');
+            const inputArea = document.getElementById('inputArea');
+            const userInput = document.getElementById('userInput');
+            let currentCategory = null; // Track current category
+
+            // Load conversation from localStorage if available
+            const loadConversation = () => {
+                const savedConvo = localStorage.getItem('caffeLilioChat');
+                chatContent.innerHTML = ''; // Clear chat content to avoid duplication
+                if (savedConvo && savedConvo.trim() !== '') {
+                    chatContent.innerHTML = savedConvo;
+                    // Reattach event listeners to any buttons in the saved conversation
+                    attachEventListeners();
+                } else {
+                    // Show initial greeting if no saved conversation
+                    showWelcomeMessage();
+                }
+                // Ensure input area is visible
+                inputArea.classList.remove('hidden');
+                chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+            };
+
+            // Save conversation to localStorage
+            const saveConversation = () => {
+                localStorage.setItem('caffeLilioChat', chatContent.innerHTML);
+            };
+
+            // Keyword responses
+            const keywordResponses = {
+                'location': " everlasting 📍 Our location: Brgy. Rizal st. cr. 4th St., Liliw, Laguna<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>",
+                'hours': "⏰ Our opening hours are 9am - 8pm daily",
+                'menu': "🍽️ You can view our menu in the 'Menu & Packages' section of our website",
+                'contact': "📞 You can reach us at +49 2542 084 or caffelilio.liliw@gmail.com",
+                'reservation': "📝 You can make a reservation by visiting our website or calling us",
+                'hello': "👋 Hello! How can I help you today?",
+                'hi': "👋 Hi there! What can I assist you with?",
+                'thanks': "😊 You're welcome! Is there anything else I can help with?"
+            };
+
+            // Check for keywords in user message
+            const checkKeywords = (message) => {
+                const lowerMsg = message.toLowerCase();
+                for (const [keyword, response] of Object.entries(keywordResponses)) {
+                    if (lowerMsg.includes(keyword)) {
+                        return response;
+                    }
+                }
+                return null;
+            };
+
+            // Add a message to the chat
+            const addMessage = (sender, message, isHTML = false) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${sender}-message bg-deep-brown/${sender === 'bot' ? '10' : '5'} text-deep-brown p-3 rounded-lg mb-2`;
+                
+                if (isHTML) {
+                    messageDiv.innerHTML = message;
+                } else {
+                    messageDiv.textContent = message;
+                }
+                
+                chatContent.appendChild(messageDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+            };
+
+            // Show welcome message with categories
+            const showWelcomeMessage = () => {
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                welcomeDiv.innerHTML = `
+                    <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
                     </div>
-                    <div class="flex items-start">
-                        <span class="mr-2">📞</span>
-                        <div>+49 2542 084</div>
+                `;
+                chatContent.appendChild(welcomeDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+                
+                // Reattach event listeners
+                attachEventListeners();
+            };
+
+            // Handle user input
+            const handleUserInput = () => {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage('user', message);
+                    userInput.value = '';
+                    
+                    // Check for keywords first
+                    const keywordResponse = checkKeywords(message);
+                    if (keywordResponse) {
+                        setTimeout(() => {
+                            addMessage('bot', keywordResponse, true);
+                        }, 500);
+                        return;
+                    }
+                    
+                    // If no keywords matched, show default response
+                    setTimeout(() => {
+                        addMessage('bot', "I'm sorry, I didn't understand that. Could you try asking in a different way or choose from the categories below?", true);
+                        showCategories();
+                    }, 500);
+                }
+            };
+
+            // Show categories
+            const showCategories = () => {
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                categoriesDiv.innerHTML = `
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        ${Object.keys(faqData).map(category => `
+                            <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="${category}">
+                                ${category === 'location' ? '📍 Location & Hours' :
+                                  category === 'reservations' ? '📅 Reservations & Events' :
+                                  category === 'menu' ? '🍽️ Menu & Dietary' :
+                                  '📞 Contact Us'}
+                            </button>
+                        `).join('')}
                     </div>
-                    <div class="flex items-start">
-                        <span class="mr-2">✉️</span>
-                        <div>caffelilio.liliw@gmail.com</div>
-                    </div>
-                </div>
-            `
-        }
-    ]
-};
+                `;
+                chatContent.appendChild(categoriesDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+                
+                // Reattach event listeners
+                attachEventListeners();
+            };
 
-// Chatbot functionality with localStorage
-document.addEventListener('DOMContentLoaded', function() {
-    const chatContent = document.getElementById('chatContent');
-    const supportToggle = document.getElementById('supportToggle');
-    const supportWindow = document.getElementById('supportWindow');
-    const closeSupport = document.getElementById('closeSupport');
-    const inputArea = document.getElementById('inputArea');
-    const userInput = document.getElementById('userInput');
-    let currentCategory = null; // Track current category
+            // Attach event listeners to dynamic elements
+            const attachEventListeners = () => {
+                // Remove existing event listeners to prevent duplicates
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.back-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.question-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.back-to-questions').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
 
-    // Load conversation from localStorage if available
-    const loadConversation = () => {
-        const savedConvo = localStorage.getItem('caffeLilioChat');
-        chatContent.innerHTML = ''; // Clear chat content to avoid duplication
-        if (savedConvo && savedConvo.trim() !== '') {
-            chatContent.innerHTML = savedConvo;
-            // Reattach event listeners to any buttons in the saved conversation
-            attachEventListeners();
-        } else {
-            // Show initial greeting if no saved conversation
-            showWelcomeMessage();
-        }
-        // Ensure input area is visible
-        inputArea.classList.remove('hidden');
-        chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
-    };
+                // Add new event listeners
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const category = this.dataset.category;
+                        currentCategory = category;
+                        showCategoryQuestions(category);
+                    });
+                });
+                
+                document.querySelectorAll('.back-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        showCategories();
+                    });
+                });
+                
+                document.querySelectorAll('.question-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        showAnswer(this.innerHTML, this.dataset.answer);
+                    });
+                });
+                
+                document.querySelectorAll('.back-to-questions').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (currentCategory) {
+                            showCategoryQuestions(currentCategory);
+                        }
+                    });
+                });
+            };
 
-    // Save conversation to localStorage
-    const saveConversation = () => {
-        localStorage.setItem('caffeLilioChat', chatContent.innerHTML);
-    };
-
-    // Keyword responses
-    const keywordResponses = {
-        'location': " everlasting 📍 Our location: Brgy. Rizal st. cr. 4th St., Liliw, Laguna<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>",
-        'hours': "⏰ Our opening hours are 9am - 8pm daily",
-        'menu': "🍽️ You can view our menu in the 'Menu & Packages' section of our website",
-        'contact': "📞 You can reach us at +49 2542 084 or caffelilio.liliw@gmail.com",
-        'reservation': "📝 You can make a reservation by visiting our website or calling us",
-        'hello': "👋 Hello! How can I help you today?",
-        'hi': "👋 Hi there! What can I assist you with?",
-        'thanks': "😊 You're welcome! Is there anything else I can help with?"
-    };
-
-    // Check for keywords in user message
-    const checkKeywords = (message) => {
-        const lowerMsg = message.toLowerCase();
-        for (const [keyword, response] of Object.entries(keywordResponses)) {
-            if (lowerMsg.includes(keyword)) {
-                return response;
-            }
-        }
-        return null;
-    };
-
-    // Add a message to the chat
-    const addMessage = (sender, message, isHTML = false) => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${sender}-message bg-deep-brown/${sender === 'bot' ? '10' : '5'} text-deep-brown p-3 rounded-lg mb-2`;
-        
-        if (isHTML) {
-            messageDiv.innerHTML = message;
-        } else {
-            messageDiv.textContent = message;
-        }
-        
-        chatContent.appendChild(messageDiv);
-        chatContent.scrollTop = chatContent.scrollHeight;
-        saveConversation();
-    };
-
-    // Show welcome message with categories
-    const showWelcomeMessage = () => {
-        const welcomeDiv = document.createElement('div');
-        welcomeDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
-        welcomeDiv.innerHTML = `
-            <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
-            <div class="mt-2 grid grid-cols-1 gap-2">
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
-                <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
-            </div>
-        `;
-        chatContent.appendChild(welcomeDiv);
-        chatContent.scrollTop = chatContent.scrollHeight;
-        saveConversation();
-        
-        // Reattach event listeners
-        attachEventListeners();
-    };
-
-    // Handle user input
-    const handleUserInput = () => {
-        const message = userInput.value.trim();
-        if (message) {
-            addMessage('user', message);
-            userInput.value = '';
-            
-            // Check for keywords first
-            const keywordResponse = checkKeywords(message);
-            if (keywordResponse) {
-                setTimeout(() => {
-                    addMessage('bot', keywordResponse, true);
-                }, 500);
-                return;
-            }
-            
-            // If no keywords matched, show default response
-            setTimeout(() => {
-                addMessage('bot', "I'm sorry, I didn't understand that. Could you try asking in a different way or choose from the categories below?", true);
-                showCategories();
-            }, 500);
-        }
-    };
-
-    // Show categories
-    const showCategories = () => {
-        const categoriesDiv = document.createElement('div');
-        categoriesDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
-        categoriesDiv.innerHTML = `
-            <div class="mt-2 grid grid-cols-1 gap-2">
-                ${Object.keys(faqData).map(category => `
-                    <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="${category}">
-                        ${category === 'location' ? '📍 Location & Hours' :
-                          category === 'reservations' ? '📅 Reservations & Events' :
-                          category === 'menu' ? '🍽️ Menu & Dietary' :
-                          '📞 Contact Us'}
+            // Show questions for a category
+            function showCategoryQuestions(category) {
+                // Append back button and questions to chat content without clearing
+                const questionsDiv = document.createElement('div');
+                questionsDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                questionsDiv.innerHTML = `
+                    <button class="back-btn flex items-center text-rich-brown mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to categories
                     </button>
-                `).join('')}
-            </div>
-        `;
-        chatContent.appendChild(categoriesDiv);
-        chatContent.scrollTop = chatContent.scrollHeight;
-        saveConversation();
-        
-        // Reattach event listeners
-        attachEventListeners();
-    };
+                    <p>Select a question:</p>
+                `;
+                chatContent.appendChild(questionsDiv);
 
-    // Attach event listeners to dynamic elements
-    const attachEventListeners = () => {
-        // Remove existing event listeners to prevent duplicates
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-        });
-        document.querySelectorAll('.back-btn').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-        });
-        document.querySelectorAll('.question-btn').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-        });
-        document.querySelectorAll('.back-to-questions').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-        });
+                // Add questions for this category
+                faqData[category].forEach(item => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
+                    questionDiv.innerHTML = item.question;
+                    questionDiv.dataset.answer = item.answer;
+                    chatContent.appendChild(questionDiv);
+                });
 
-        // Add new event listeners
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+                // Scroll to bottom
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+
+                // Reattach event listeners
+                attachEventListeners();
+            }
+
+            // Show selected question and answer only
+            function showAnswer(question, answer) {
+                // Append question and answer to chat content
+                const questionMessage = document.createElement('div');
+                questionMessage.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg';
+                questionMessage.innerHTML = question;
+                chatContent.appendChild(questionMessage);
+
+                const answerMessage = document.createElement('div');
+                answerMessage.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                answerMessage.innerHTML = answer;
+                chatContent.appendChild(answerMessage);
+
+                const backButton = document.createElement('div');
+                backButton.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                backButton.innerHTML = `
+                    <button class="back-to-questions text-rich-brown underline">
+                        ← Back to questions
+                    </button>
+                `;
+                chatContent.appendChild(backButton);
+
+                // Scroll to bottom
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+
+                // Reattach event listeners
+                attachEventListeners();
+            }
+
+            // Toggle chat window
+            supportToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const category = this.dataset.category;
-                currentCategory = category;
-                showCategoryQuestions(category);
-            });
-        });
-        
-        document.querySelectorAll('.back-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                showCategories();
-            });
-        });
-        
-        document.querySelectorAll('.question-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                showAnswer(this.innerHTML, this.dataset.answer);
-            });
-        });
-        
-        document.querySelectorAll('.back-to-questions').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (currentCategory) {
-                    showCategoryQuestions(currentCategory);
+                if (supportWindow.classList.contains('hidden')) {
+                    supportWindow.classList.remove('hidden');
+                    supportWindow.classList.remove('closed');
+                    supportWindow.classList.add('open');
+                    loadConversation();
+                } else {
+                    supportWindow.classList.add('closed');
+                    supportWindow.classList.remove('open');
+                    setTimeout(() => {
+                        supportWindow.classList.add('hidden');
+                    }, 300);
                 }
             });
-        });
-    };
 
-    // Show questions for a category
-    function showCategoryQuestions(category) {
-        // Append back button and questions to chat content without clearing
-        const questionsDiv = document.createElement('div');
-        questionsDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
-        questionsDiv.innerHTML = `
-            <button class="back-btn flex items-center text-rich-brown mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to categories
-            </button>
-            <p>Select a question:</p>
-        `;
-        chatContent.appendChild(questionsDiv);
+            // Close button for chat window
+            closeSupport.addEventListener('click', (e) => {
+                e.stopPropagation();
+                supportWindow.classList.add('closed');
+                supportWindow.classList.remove('open');
+                setTimeout(() => {
+                    supportWindow.classList.add('hidden');
+                }, 300);
+            });
 
-        // Add questions for this category
-        faqData[category].forEach(item => {
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
-            questionDiv.innerHTML = item.question;
-            questionDiv.dataset.answer = item.answer;
-            chatContent.appendChild(questionDiv);
-        });
+            // Close when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!supportWindow.contains(e.target) && e.target !== supportToggle && !supportWindow.classList.contains('hidden')) {
+                    supportWindow.classList.add('closed');
+                    supportWindow.classList.remove('open');
+                    setTimeout(() => {
+                        supportWindow.classList.add('hidden');
+                    }, 300);
+                }
+            });
 
-        // Scroll to bottom
-        chatContent.scrollTop = chatContent.scrollHeight;
-        saveConversation();
+            // Handle Enter key in input field
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleUserInput();
+                }
+            });
 
-        // Reattach event listeners
-        attachEventListeners();
-    }
-
-    // Show selected question and answer only
-    function showAnswer(question, answer) {
-        // Append question and answer to chat content
-        const questionMessage = document.createElement('div');
-        questionMessage.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg';
-        questionMessage.innerHTML = question;
-        chatContent.appendChild(questionMessage);
-
-        const answerMessage = document.createElement('div');
-        answerMessage.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
-        answerMessage.innerHTML = answer;
-        chatContent.appendChild(answerMessage);
-
-        const backButton = document.createElement('div');
-        backButton.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
-        backButton.innerHTML = `
-            <button class="back-to-questions text-rich-brown underline">
-                ← Back to questions
-            </button>
-        `;
-        chatContent.appendChild(backButton);
-
-        // Scroll to bottom
-        chatContent.scrollTop = chatContent.scrollHeight;
-        saveConversation();
-
-        // Reattach event listeners
-        attachEventListeners();
-    }
-
-    // Toggle chat window
-    supportToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (supportWindow.classList.contains('hidden')) {
-            supportWindow.classList.remove('hidden');
-            supportWindow.classList.remove('closed');
-            supportWindow.classList.add('open');
+            // Show input area by default
+            inputArea.classList.remove('hidden');
+            
+            // Load any saved conversation when page loads
             loadConversation();
-        } else {
-            supportWindow.classList.add('closed');
-            supportWindow.classList.remove('open');
-            setTimeout(() => {
-                supportWindow.classList.add('hidden');
-            }, 300);
-        }
-    });
-
-    // Close button for chat window
-    closeSupport.addEventListener('click', (e) => {
-        e.stopPropagation();
-        supportWindow.classList.add('closed');
-        supportWindow.classList.remove('open');
-        setTimeout(() => {
-            supportWindow.classList.add('hidden');
-        }, 300);
-    });
-
-    // Close when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!supportWindow.contains(e.target) && e.target !== supportToggle && !supportWindow.classList.contains('hidden')) {
-            supportWindow.classList.add('closed');
-            supportWindow.classList.remove('open');
-            setTimeout(() => {
-                supportWindow.classList.add('hidden');
-            }, 300);
-        }
-    });
-
-    // Handle Enter key in input field
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleUserInput();
-        }
-    });
-
-    // Show input area by default
-    inputArea.classList.remove('hidden');
-    
-    // Load any saved conversation when page loads
-    loadConversation();
-});
+        });
     </script>
     
 </body>
