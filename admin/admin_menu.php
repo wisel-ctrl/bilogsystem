@@ -934,11 +934,16 @@
                 // Set image preview if available
                 const previewContainer = document.getElementById('edit-image-preview-container');
                 const previewImage = document.getElementById('edit-image-preview');
+                const fileNameDisplay = document.getElementById('edit-file-name');
+                
                 if (dishData.image_path) {
                     previewImage.src = dishData.image_path;
                     previewContainer.classList.remove('hidden');
+                    fileNameDisplay.textContent = 'Current image'; // Or you can extract filename from path
                 } else {
-                    previewContainer.classList.add('hidden');
+                    previewImage.src = '#';
+                    fileNameDisplay.textContent = 'Choose an image file';
+                    previewContainer.classList.remove('hidden'); // Keep container visible even if no image
                 }
                 
                 // Clear and populate ingredients
@@ -990,6 +995,8 @@
             document.body.style.overflow = 'auto';
             document.getElementById('edit-dish-form').reset();
             editIngredientsContainer.innerHTML = '';
+            document.getElementById('edit-dish-image').value = '';
+            document.getElementById('edit-file-name').textContent = 'Choose an image file';
         };
 
         closeEditModal.addEventListener('click', closeEditModalFunction);
@@ -1012,6 +1019,28 @@
         editIngredientsContainer.addEventListener('click', (e) => {
             if (e.target.closest('.remove-ingredient')) {
                 e.target.closest('.ingredient-row').remove();
+            }
+        });
+
+        // Edit dish image upload preview functionality
+        document.getElementById('edit-dish-image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('edit-image-preview-container');
+            const previewImage = document.getElementById('edit-image-preview');
+            const fileNameDisplay = document.getElementById('edit-file-name');
+            
+            if (file) {
+                fileNameDisplay.textContent = file.name;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                fileNameDisplay.textContent = 'Choose an image file';
+                // Don't hide the container as we might want to keep showing the current image
             }
         });
 
