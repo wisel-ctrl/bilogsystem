@@ -199,14 +199,14 @@ require_once 'admin_auth.php';
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="relative">
-                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200 relative z-50">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
                                 <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
                                 </div>
                                 <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
                                 <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
                             </button>
-                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200 z-[60]">
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform scale-95 opacity-0 transition-all duration-200 origin-top-right z-50">
                                 <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Sign Out</span>
@@ -782,6 +782,7 @@ require_once 'admin_auth.php';
         profileDropdown.addEventListener('click', () => {
             profileMenu.classList.toggle('hidden');
             setTimeout(() => {
+                profileMenu.classList.toggle('scale-95');
                 profileMenu.classList.toggle('opacity-0');
                 dropdownIcon.classList.toggle('rotate-180');
             }, 50);
@@ -790,7 +791,7 @@ require_once 'admin_auth.php';
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target)) {
-                profileMenu.classList.add('hidden', 'opacity-0');
+                profileMenu.classList.add('hidden', 'scale-95', 'opacity-0');
                 dropdownIcon.classList.remove('rotate-180');
             }
         });
