@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Database connection
-require_once '../../db_connect.php'; // Assuming you have a file with database connection
+require_once '../../db_connect.php';
 
 $response = ['success' => false, 'message' => ''];
 
@@ -21,26 +21,24 @@ try {
     }
     
     // Start transaction
-    $conn->begin_transaction();
+    $conn->beginTransaction();
     
-    // Insert into menu_packages_tb
-    $stmt = $conn->prepare("INSERT INTO menu_packages_tb 
+    // Insert into menu_packages
+    $stmt = $conn->prepare("INSERT INTO menu_packages 
                            (package_name, package_description, price, capital, type) 
                            VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdds", 
-        $data['name'], 
-        $data['description'], 
-        $data['price'], 
-        $data['capital'], 
-        $data['type']
-    );
     
-    if (!$stmt->execute()) {
-        throw new Exception('Failed to create package: ' . $stmt->error);
+    if (!$stmt->execute([
+        $data['name'],
+        $data['description'] ?? null,
+        $data['price'],
+        $data['capital'],
+        $data['type']
+    ])) {
+        throw new Exception('Failed to create package');
     }
     
-    $package_id = $conn->insert_id;
-    $stmt->close();
+    $package_id = $conn->lastInsertId();
     
     // Insert dish mappings if there are any
     if (!empty($data['dishes']) && is_array($data['dishes'])) {
@@ -52,14 +50,11 @@ try {
             if (empty($dish['dish_id'])) continue;
             
             $quantity = !empty($dish['quantity']) ? (int)$dish['quantity'] : 1;
-            $dish_stmt->bind_param("iii", $package_id, $dish['dish_id'], $quantity);
             
-            if (!$dish_stmt->execute()) {
-                throw new Exception('Failed to add dish to package: ' . $dish_stmt->error);
+            if (!$dish_stmt->execute([$package_id, $dish['dish_id'], $quantity])) {
+                throw new Exception('Failed to add dish to package');
             }
         }
-        
-        $dish_stmt->close();
     }
     
     // Commit transaction
@@ -69,17 +64,20 @@ try {
     $response['message'] = 'Package created successfully';
     $response['package_id'] = $package_id;
     
+} catch (PDOException $e) {
+    // Rollback transaction if there was an error
+    if (isset($conn) && $conn instanceof PDO) {
+        $conn->rollBack();
+    }
+    
+    $response['message'] = 'Database error: ' . $e->getMessage();
 } catch (Exception $e) {
     // Rollback transaction if there was an error
-    if (isset($conn) && $conn instanceof mysqli) {
-        $conn->rollback();
+    if (isset($conn) && $conn instanceof PDO) {
+        $conn->rollBack();
     }
     
     $response['message'] = $e->getMessage();
-} finally {
-    if (isset($conn) && $conn instanceof mysqli) {
-        $conn->close();
-    }
 }
 
 echo json_encode($response);
