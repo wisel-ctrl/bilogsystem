@@ -50,13 +50,47 @@ try {
         VALUES (:sales_id, :dish_id, :price, :quantity)
     ");
     
+    // Prepare statement to get dish ingredients
+    $ingredientStmt = $conn->prepare("
+        SELECT ingredient_id, quantity_grams 
+        FROM dish_ingredients 
+        WHERE dish_id = :dish_id
+    ");
+    
+    // Prepare statement to update ingredient quantity
+    $updateIngredientStmt = $conn->prepare("
+        UPDATE ingredients_tb 
+        SET quantity = quantity - (:quantity_kg) 
+        WHERE ingredient_id = :ingredient_id
+    ");
+    
     foreach ($data['items'] as $item) {
+        // Insert order record
         $stmt->execute([
             ':sales_id' => $sales_id,
             ':dish_id' => $item['dish_id'],
             ':price' => $item['price'],
             ':quantity' => $item['quantity']
         ]);
+        
+        // Get all ingredients for this dish
+        $ingredientStmt->execute([':dish_id' => $item['dish_id']]);
+        $ingredients = $ingredientStmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // For each ingredient, calculate total used and update inventory
+        foreach ($ingredients as $ingredient) {
+            // Calculate total grams used (quantity per dish * number of dishes ordered)
+            $total_grams = $ingredient['quantity_grams'] * $item['quantity'];
+            
+            // Convert to kg (divide by 1000)
+            $total_kg = $total_grams / 1000;
+            
+            // Update ingredient quantity in inventory
+            $updateIngredientStmt->execute([
+                ':quantity_kg' => $total_kg,
+                ':ingredient_id' => $ingredient['ingredient_id']
+            ]);
+        }
     }
     
     $conn->commit();
