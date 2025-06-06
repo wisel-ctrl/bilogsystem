@@ -271,66 +271,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
 
                     <!-- Name Fields Row -->
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <!-- First Name -->
-                        <div class="input-group">
-                            <input 
-                                type="text" 
-                                id="firstName" 
-                                name="firstName"
-                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
-                                placeholder="First Name *"
-                                required
-                            >
-                            <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
+                    <div class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-2">
+                            <!-- First Name -->
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName"
+                                    class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                    placeholder="First Name *"
+                                    required
+                                >
+                                <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
+                            </div>
+
+                            <!-- Middle Name -->
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="middleName" 
+                                    name="middleName"
+                                    class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                    placeholder="Middle Name"
+                                >
+                            </div>
                         </div>
 
-                        <!-- Middle Name -->
-                        <div class="input-group">
-                            <input 
-                                type="text" 
-                                id="middleName" 
-                                name="middleName"
-                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
-                                placeholder="Middle Name"
-                            >
-                        </div>
-                    </div>
+                        <!-- Last Name and Suffix Row -->
+                        <div class="grid md:grid-cols-3 gap-2">
+                            <!-- Last Name -->
+                            <div class="input-group md:col-span-2">
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName"
+                                    class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                    placeholder="Last Name *"
+                                    required
+                                >
+                                <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
+                            </div>
 
-                    <!-- Last Name and Suffix Row -->
-                    <div class="grid md:grid-cols-3 gap-4">
-                        <!-- Last Name -->
-                        <div class="input-group md:col-span-2">
-                            <input 
-                                type="text" 
-                                id="lastName" 
-                                name="lastName"
-                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
-                                placeholder="Last Name *"
-                                required
-                            >
-                            <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
-                        </div>
-
-                        <!-- Suffix -->
-                        <div class="input-group">
-                            <select 
-                                id="suffix" 
-                                name="suffix"
-                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown appearance-none cursor-pointer"
-                            >
-                                <option value="" disabled selected>Suffix</option>
-                                <option value="">None</option>
-                                <option value="Jr.">Jr.</option>
-                                <option value="Sr.">Sr.</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
-                                <option value="IV">IV</option>
-                            </select>
-                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
+                            <!-- Suffix -->
+                            <div class="input-group">
+                                <select 
+                                    id="suffix" 
+                                    name="suffix"
+                                    class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown appearance-none cursor-pointer"
+                                >
+                                    <option value="" disabled selected>Suffix</option>
+                                    <option value="">None</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                </select>
+                                <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
