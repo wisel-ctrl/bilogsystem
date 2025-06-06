@@ -250,7 +250,8 @@ require_once 'cashier_auth.php';
                         item.name.toLowerCase().includes(term) || 
                         item.description.toLowerCase().includes(term))
                 });
-            
+            console.log('Items:', filteredItems);
+            console.log('category:', currentCategory);
             if (filteredItems.length === 0) {
                 menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items found</p>';
                 return;
