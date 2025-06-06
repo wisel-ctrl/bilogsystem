@@ -6,6 +6,7 @@
     <title>Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/loading-animation.css">
     <script>
         tailwind.config = {
             theme: {
@@ -88,144 +89,27 @@
         .support-toggle {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-
-        /* Loading Animation Styles */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #E8E0D5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        .loading-screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .pasta-loader {
-            width: 120px;
-            height: 120px;
-            position: relative;
-        }
-
-        .plate {
-            width: 100px;
-            height: 20px;
-            background: #8B4513;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .pasta {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 6px solid #A0522D;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: twirl 1s infinite linear;
-            left: 50%;
-            top: 40%;
-            transform: translate(-50%, -50%);
-        }
-
-        .pasta::before {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 6px solid #8B4513;
-            border-radius: 50%;
-            border-top-color: transparent;
-            top: 4px;
-            left: 4px;
-            animation: twirl 1.5s infinite linear reverse;
-        }
-
-        .pasta::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 6px solid #5D2F0F;
-            border-radius: 50%;
-            border-top-color: transparent;
-            top: 14px;
-            left: 14px;
-            animation: twirl 2s infinite linear;
-        }
-
-        @keyframes twirl {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            position: absolute;
-            bottom: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            color: #5D2F0F;
-            font-size: 1.5rem;
-            text-align: center;
-            width: 100%;
-        }
-
-        .loading-text span {
-            display: inline-block;
-            animation: bounce 1.4s infinite;
-        }
-
-        .loading-text span:nth-child(2) { animation-delay: 0.1s; }
-        .loading-text span:nth-child(3) { animation-delay: 0.2s; }
-        .loading-text span:nth-child(4) { animation-delay: 0.3s; }
-        .loading-text span:nth-child(5) { animation-delay: 0.4s; }
-        .loading-text span:nth-child(6) { animation-delay: 0.5s; }
-        .loading-text span:nth-child(7) { animation-delay: 0.6s; }
-        .loading-text span:nth-child(8) { animation-delay: 0.7s; }
-        .loading-text span:nth-child(9) { animation-delay: 0.8s; }
-        .loading-text span:nth-child(10) { animation-delay: 0.9s; }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Loading Screen -->
     <div class="loading-screen">
-        <div class="pasta-loader">
-            <div class="pasta"></div>
-            <div class="plate"></div>
-        </div>
-        <div class="loading-text">
-            <span>P</span>
-            <span>r</span>
-            <span>e</span>
-            <span>p</span>
-            <span>a</span>
-            <span>r</span>
-            <span>i</span>
-            <span>n</span>
-            <span>g</span>
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
+        <div class="loading-content">
+            <div class="loading-icons">
+                <div class="loading-icon">
+                    <img src="images/loading-icons/pasta.svg" alt="Pasta">
+                </div>
+                <div class="loading-icon">
+                    <img src="images/loading-icons/pizza.svg" alt="Pizza" class="plate-spin">
+                </div>
+                <div class="loading-icon">
+                    <img src="images/loading-icons/paella.svg" alt="Paella">
+                </div>
+            </div>
+            <div class="loading-text">Loading Caffè Lilio...</div>
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
         </div>
     </div>
 
@@ -991,24 +875,6 @@
     </style>
     
     <script>
-        // Add this at the beginning of your script section
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle page transitions
-            document.querySelectorAll('a').forEach(link => {
-                if (link.href && !link.href.includes('#') && !link.target) {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const loadingScreen = document.querySelector('.loading-screen');
-                        loadingScreen.classList.add('active');
-                        
-                        setTimeout(() => {
-                            window.location.href = this.href;
-                        }, 1500); // Show animation for 1.5 seconds before redirecting
-                    });
-                }
-            });
-        });
-
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1732,6 +1598,32 @@
             
             // Load any saved conversation when page loads
             loadConversation();
+        });
+
+        // Add this at the beginning of your script section
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen when page is fully loaded
+            window.addEventListener('load', function() {
+                const loadingScreen = document.querySelector('.loading-screen');
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            });
+
+            // Show loading screen when navigating away
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && !link.hasAttribute('target') && link.href && !link.href.includes('#')) {
+                    e.preventDefault();
+                    const loadingScreen = document.querySelector('.loading-screen');
+                    loadingScreen.style.display = 'flex';
+                    loadingScreen.classList.remove('fade-out');
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 500);
+                }
+            });
         });
     </script>
     
