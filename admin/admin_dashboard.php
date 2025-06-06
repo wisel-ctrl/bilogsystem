@@ -254,7 +254,7 @@ header {
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-warm-cream/80 text-sm font-baskerville">Weekly Revenue</p>
-                                    <p class="text-2xl font-bold text-warm-cream font-baskerville">₱18,750</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville">₱18,750</p>
                                     <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
                                         <i class="fas fa-arrow-up text-green-400 mr-1"></i>
                                         +8% from last week
