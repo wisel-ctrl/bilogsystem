@@ -244,7 +244,7 @@ require_once 'cashier_auth.php';
                 ? menuItems 
                 : menuItems.filter(item => item.category === category))
                 .filter(item => {
-                    if (searchTerm || '') return true;
+                    if (!searchTerm) return true;
                     const term = searchTerm.toLowerCase();
                     return (
                         item.name.toLowerCase().includes(term) || 
