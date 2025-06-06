@@ -6,7 +6,6 @@
     <title>Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/loading-animation.css">
     <script>
         tailwind.config = {
             theme: {
@@ -92,27 +91,6 @@
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-icons">
-                <div class="loading-icon">
-                    <img src="images/loading-icons/pasta.svg" alt="Pasta">
-                </div>
-                <div class="loading-icon">
-                    <img src="images/loading-icons/pizza.svg" alt="Pizza" class="plate-spin">
-                </div>
-                <div class="loading-icon">
-                    <img src="images/loading-icons/paella.svg" alt="Paella">
-                </div>
-            </div>
-            <div class="loading-text">Loading Caffè Lilio...</div>
-            <div class="loading-progress">
-                <div class="loading-progress-bar"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1598,32 +1576,6 @@
             
             // Load any saved conversation when page loads
             loadConversation();
-        });
-
-        // Add this at the beginning of your script section
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hide loading screen when page is fully loaded
-            window.addEventListener('load', function() {
-                const loadingScreen = document.querySelector('.loading-screen');
-                loadingScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            });
-
-            // Show loading screen when navigating away
-            document.addEventListener('click', function(e) {
-                const link = e.target.closest('a');
-                if (link && !link.hasAttribute('target') && link.href && !link.href.includes('#')) {
-                    e.preventDefault();
-                    const loadingScreen = document.querySelector('.loading-screen');
-                    loadingScreen.style.display = 'flex';
-                    loadingScreen.classList.remove('fade-out');
-                    setTimeout(() => {
-                        window.location.href = link.href;
-                    }, 500);
-                }
-            });
         });
     </script>
     
