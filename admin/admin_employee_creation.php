@@ -8,6 +8,38 @@ $registration_success = false;
 $update_success = false;
 $errors = [];
 
+// Handle real-time username check
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'check_username') {
+    $username = trim($_POST['username'] ?? '');
+    $cashierId = isset($_POST['cashier_id']) ? trim($_POST['cashier_id']) : null;
+    
+    try {
+        if ($cashierId) {
+            // For edit form, exclude the current user's ID
+            $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ? AND id != ?");
+            $stmt->execute([$username, $cashierId]);
+        } else {
+            // For create form
+            $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ?");
+            $stmt->execute([$username]);
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'exists' => $stmt->rowCount() > 0,
+            'message' => $stmt->rowCount() > 0 ? 'Username already taken' : 'Username available'
+        ]);
+        exit;
+    } catch(PDOException $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'exists' => false,
+            'error' => 'Database error: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'cashier') {
     // Get form data
     $firstName = trim($_POST['fname'] ?? '');
@@ -70,14 +102,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 $createdAt
             ]);
             
-            $registration_success = true;
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Cashier account created successfully'
+            ]);
+            exit;
         } catch(PDOException $e) {
             $errors['database'] = 'Registration failed: ' . $e->getMessage();
         }
     }
+
 }
 
-// Handle cashier update
 // Handle cashier update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_cashier') {
     $cashierId = trim($_POST['cashier_id'] ?? '');
@@ -129,20 +166,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             if (!$existingCashier) {
                 $errors['database'] = 'Cashier not found';
             } else {
+                // Normalize data for comparison
+                $existingMiddleName = $existingCashier['middle_name'] ?? '';
+                $existingSuffix = $existingCashier['suffix'] ?? '';
+                
                 // Compare form data with existing data
                 $noChanges = (
                     $firstName === $existingCashier['first_name'] &&
-                    ($middleName === $existingCashier['middle_name'] || ($middleName === '' && $existingCashier['middle_name'] === null)) &&
+                    $middleName === $existingMiddleName &&
                     $lastName === $existingCashier['last_name'] &&
-                    ($suffix === $existingCashier['suffix'] || ($suffix === '' && $existingCashier['suffix'] === null)) &&
+                    $suffix === $existingSuffix &&
                     $username === $existingCashier['username'] &&
                     $contactNumber === $existingCashier['contact_number'] &&
-                    empty($password) // Password is unchanged if empty
+                    empty($password)
                 );
 
                 if ($noChanges) {
-                    // Set a flag to show no changes message
-                    $errors['no_changes'] = 'No changes were made to the cashier information';
+                    // Return JSON response indicating no changes
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'No changes were made to the cashier information'
+                    ]);
+                    exit;
                 } else {
                     // Proceed with update if there are changes
                     try {
@@ -183,7 +229,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                             ]);
                         }
                         
-                        $update_success = true;
+                        // Return JSON response indicating success
+                        header('Content-Type: application/json');
+                        echo json_encode([
+                            'success' => true,
+                            'message' => 'Cashier updated successfully'
+                        ]);
+                        exit;
                     } catch(PDOException $e) {
                         $errors['database'] = 'Update failed: ' . $e->getMessage();
                     }
@@ -192,6 +244,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         } catch(PDOException $e) {
             $errors['database'] = 'Failed to fetch cashier data: ' . $e->getMessage();
         }
+    }
+
+    // If there are errors, return them as JSON
+    if (!empty($errors)) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ]);
+        exit;
     }
 }
 ?>
@@ -497,6 +560,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     <div class="input-group col-span-2">
                         <label for="username" class="floating-label">Username *</label>
                         <input type="text" id="username" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
+                        <p class="username-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                     <div class="input-group col-span-2">
@@ -512,6 +576,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
+                        <p class="password-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="password-strength mt-2 flex space-x-1">
                             <div class="h-1 flex-1 bg-gray-200 rounded"></div>
                             <div class="h-1 flex-1 bg-gray-200 rounded"></div>
@@ -528,6 +593,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
+                        <p class="confirm-password-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                 </div>
@@ -613,6 +679,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     <div class="input-group col-span-2">
                         <label for="edit-username" class="floating-label">Username *</label>
                         <input type="text" id="edit-username" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
+                        <p class="username-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                     <div class="input-group col-span-2">
@@ -633,6 +700,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
+                        <p class="password-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="password-strength mt-2 flex space-x-1">
                             <div class="h-1 flex-1 bg-gray-200 rounded"></div>
                             <div class="h-1 flex-1 bg-gray-200 rounded"></div>
@@ -649,6 +717,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
+                        <p class="confirm-password-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                 </div>
@@ -838,6 +907,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 createInputs.forEach(input => validateField(input, createForm));
                 checkFormValidity(createForm);
                 updatePasswordStrength({ score: 0 });
+                // Clear feedback messages
+                createForm.querySelectorAll('.username-feedback, .password-feedback, .confirm-password-feedback').forEach(fb => {
+                    fb.classList.add('hidden');
+                    fb.textContent = '';
+                });
             }
             if (!modal.classList.contains('modal-hidden') && modal === editModal) {
                 // Reset password fields and hide them
@@ -850,6 +924,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 updatePasswordStrength({ score: 0 });
                 editInputs.forEach(input => validateField(input, editForm));
                 checkFormValidity(editForm);
+                // Clear feedback messages
+                editForm.querySelectorAll('.username-feedback, .password-feedback, .confirm-password-feedback').forEach(fb => {
+                    fb.classList.add('hidden');
+                    fb.textContent = '';
+                });
             }
         }
 
@@ -873,36 +952,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 confirmPasswordInput.value = '';
                 passwordInput.classList.remove('field-error', 'field-success');
                 confirmPasswordInput.classList.remove('field-error', 'field-success');
-                const feedbacks = document.querySelectorAll('.password-strength-feedback');
-                feedbacks.forEach(fb => fb.classList.add('hidden'));
+                const feedbacks = editForm.querySelectorAll('.password-feedback, .confirm-password-feedback');
+                feedbacks.forEach(fb => {
+                    fb.classList.add('hidden');
+                    fb.textContent = '';
+                });
                 togglePasswordBtn.textContent = 'Change Password?';
             }
-            checkFormValidity(editForm); // Re-check form validity
+            checkFormValidity(editForm);
         });
 
-
-        // Event listeners for create cashier modal
+        // Event listeners for modals
         createBtn.addEventListener('click', () => toggleModal(createModal));
         closeCreateModalBtn.addEventListener('click', () => toggleModal(createModal));
         cancelCreateBtn.addEventListener('click', () => toggleModal(createModal));
-        
-        createModal.addEventListener('click', function(e) {
-            if (e.target === createModal) {
-                toggleModal(createModal);
-            }
-        });
-
-        // Event listeners for edit cashier modal
         closeEditModalBtn.addEventListener('click', () => toggleModal(editModal));
         cancelEditBtn.addEventListener('click', () => toggleModal(editModal));
-        
-        editModal.addEventListener('click', function(e) {
-            if (e.target === editModal) {
-                toggleModal(editModal);
-            }
-        });
-
-        // Event listeners for archived accounts modal
         viewArchivedBtn.addEventListener('click', () => toggleModal(archivedModal));
         closeArchivedModalBtn.addEventListener('click', () => toggleModal(archivedModal));
         cancelArchivedBtn.addEventListener('click', () => toggleModal(archivedModal));
@@ -912,6 +977,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 toggleModal(archivedModal);
             }
         });
+
+        // Real-time username validation
+        function checkUsernameAvailability(username, form, cashierId = null) {
+            const feedback = form.querySelector('.username-feedback');
+            const input = form.querySelector('[name="username"]');
+            
+            if (username.length >= 3 && /^[A-Za-z0-9_]+$/.test(username)) {
+                const formData = new FormData();
+                formData.append('action', 'check_username');
+                formData.append('username', username);
+                if (cashierId) {
+                    formData.append('cashier_id', cashierId);
+                }
+                
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+                    if (data.exists) {
+                        input.classList.remove('field-success');
+                        input.classList.add('field-error');
+                        feedback.classList.add('text-red-600');
+                        feedback.textContent = data.message;
+                    } else {
+                        input.classList.remove('field-error');
+                        input.classList.add('field-success');
+                        feedback.classList.add('text-green-600');
+                        feedback.textContent = data.message;
+                    }
+                    checkFormValidity(form);
+                })
+                .catch(error => {
+                    feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+                    feedback.classList.add('text-red-600');
+                    feedback.textContent = 'Error checking username';
+                    input.classList.add('field-error');
+                    checkFormValidity(form);
+                });
+            } else {
+                feedback.classList.add('hidden');
+                feedback.textContent = '';
+                validateField(input, form);
+            }
+        }
 
         // Validation functions
         function validateField(field, form) {
@@ -969,33 +1081,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     if (field.hasAttribute('required')) {
                         const strength = checkPasswordStrength(field.value);
                         updatePasswordStrength(strength);
+                        const feedback = form.querySelector('.password-feedback');
+                        feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
                         if (!field.value.trim()) {
                             isValid = false;
                             message = 'Password is required';
+                            feedback.classList.add('text-red-600');
+                            feedback.textContent = message;
                         } else if (field.value.length < 8) {
                             isValid = false;
                             message = 'Password must be at least 8 characters';
+                            feedback.classList.add('text-red-600');
+                            feedback.textContent = message;
+                        } else {
+                            feedback.classList.add('text-green-600');
+                            feedback.textContent = 'Password is valid';
                         }
-                        // Remove the strict strength requirement for editing
-                        // Just check length and presence
                     }
                     break;
 
                 case 'confirm-password':
                     if (field.hasAttribute('required')) {
                         const password = form.querySelector('#' + (form.id === 'edit-cashier-form' ? 'edit-password' : 'password')).value;
+                        const feedback = form.querySelector('.confirm-password-feedback');
+                        feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
                         if (!field.value.trim()) {
                             isValid = false;
                             message = 'Confirm password is required';
+                            feedback.classList.add('text-red-600');
+                            feedback.textContent = message;
                         } else if (field.value !== password) {
                             isValid = false;
                             message = 'Passwords do not match';
+                            feedback.classList.add('text-red-600');
+                            feedback.textContent = message;
+                        } else {
+                            feedback.classList.add('text-green-600');
+                            feedback.textContent = 'Passwords match';
                         }
                     }
                     break;
             }
 
-            if (field.value.trim() !== '') {
+            if (field.value.trim() !== '' && field.name !== 'username' && field.name !== 'password' && field.name !== 'confirm-password') {
                 if (isValid) {
                     field.classList.add('field-success');
                     if (message) {
@@ -1046,12 +1174,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         }
 
         function checkFormValidity(form) {
-            const inputs = form.querySelectorAll('input, select'); // Include all inputs, not just required
+            const inputs = form.querySelectorAll('input, select');
             const submitBtn = form.querySelector('[type="submit"]');
             let isValid = true;
         
             inputs.forEach(input => {
-                // Only validate if the field is required or has a value
                 if (input.hasAttribute('required') || input.value.trim()) {
                     if (!validateField(input, form)) {
                         isValid = false;
@@ -1061,6 +1188,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     }
                 }
             });
+        
+            // Additional check for username availability
+            const usernameFeedback = form.querySelector('.username-feedback');
+            if (usernameFeedback && usernameFeedback.classList.contains('text-red-600')) {
+                isValid = false;
+            }
         
             submitBtn.disabled = !isValid;
         }
@@ -1088,31 +1221,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             checkFormValidity(createForm);
             
             const errorFields = createForm.querySelectorAll('.field-error');
-            if (errorFields.length > 0) {
-                alert('Please fix all errors before submitting.');
-                return;
-            }
-            
-            const formData = new FormData(createForm);
-            fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                location.reload();
-            })
-            .catch(error => {
-                alert('An error occurred: ' + error.message);
-            });
-        });
-
-        editForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            checkFormValidity(editForm);
-            
-            const errorFields = editForm.querySelectorAll('.field-error');
-            if (errorFields.length > 0) {
+            const usernameFeedback = createForm.querySelector('.username-feedback');
+            if (errorFields.length > 0 || (usernameFeedback && usernameFeedback.classList.contains('text-red-600'))) {
                 Swal.fire({
                     title: 'Error!',
                     text: 'Please fix all errors before submitting.',
@@ -1122,127 +1232,212 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 return;
             }
             
-            const formData = new FormData(editForm);
-            fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Check if the response contains the no changes message
-                if (data.includes('No changes were made to the cashier information')) {
-                    Swal.fire({
-                        title: 'No Changes!',
-                        text: 'No changes were made to the cashier information.',
-                        icon: 'warning',
-                        confirmButtonColor: '#8B4513'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Cashier updated successfully!',
-                        icon: 'success',
-                        confirmButtonColor: '#8B4513'
-                    }).then(() => {
-                        location.reload();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to create this cashier account?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#8B4513',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Yes, create it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData(createForm);
+                    fetch('', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Cashier account created successfully!',
+                                icon: 'success',
+                                confirmButtonColor: '#8B4513'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message || 'Failed to create cashier account.',
+                                icon: 'error',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred: ' + error.message,
+                            icon: 'error',
+                            confirmButtonColor: '#8B4513'
+                        });
                     });
                 }
-            })
-            .catch(error => {
+            });
+        });
+
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            checkFormValidity(editForm);
+            
+            const errorFields = editForm.querySelectorAll('.field-error');
+            const usernameFeedback = editForm.querySelector('.username-feedback');
+            if (errorFields.length > 0 || (usernameFeedback && usernameFeedback.classList.contains('text-red-600'))) {
                 Swal.fire({
                     title: 'Error!',
-                    text: 'An error occurred: ' + error.message,
+                    text: 'Please fix all errors before submitting.',
                     icon: 'error',
                     confirmButtonColor: '#8B4513'
                 });
+                return;
+            }
+            
+            Swal.fire({
+                title: 'Confirm Changes',
+                text: 'Are you sure you want to save the changes to this cashier account?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#8B4513',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Yes, save changes!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData(editForm);
+                    fetch('', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonColor: '#8B4513'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: data.message.includes('No changes') ? 'No Changes!' : 'Error!',
+                                text: data.message,
+                                icon: data.message.includes('No changes') ? 'warning' : 'error',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred: ' + error.message,
+                            icon: 'error',
+                            confirmButtonColor: '#8B4513'
+                        });
+                    });
+                }
             });
         });
 
         // Input validation and handling
         function setupInputValidation(inputs, form) {
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            validateField(input, form);
-            checkFormValidity(form);
-        });
-        input.addEventListener('blur', () => {
-            validateField(input, form);
-        });
-    });
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    validateField(input, form);
+                    checkFormValidity(form);
+                    if (input.name === 'username') {
+                        const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
+                        checkUsernameAvailability(input.value, form, cashierId);
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    validateField(input, form);
+                    if (input.name === 'username') {
+                        const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
+                        checkUsernameAvailability(input.value, form, cashierId);
+                    }
+                });
+            });
 
-    const phoneInput = form.querySelector('[name="phone"]');
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 11) {
-            value = value.substring(0, 11);
-        }
-        e.target.value = value;
-        validateField(e.target, form);
-        checkFormValidity(form);
-    });
-
-    ['fname', 'lname', 'mname'].forEach(fieldName => {
-        const field = form.querySelector(`[name="${fieldName}"]`);
-        if (field) {
-            field.addEventListener('input', function(e) {
-                let value = e.target.value;
-                if (value.length > 0) {
-                    value = value.charAt(0).toUpperCase() + value.slice(1);
-                }
-                value = value.replace(/\s+/g, ' ').replace(/[^A-Za-z\s]/g, '');
-                if (value.startsWith(' ')) {
-                    value = value.trimStart();
-                }
-                if (value.length < 2 && value.includes(' ')) {
-                    value = value.replace(/\s/g, '');
+            const phoneInput = form.querySelector('[name="phone"]');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
                 }
                 e.target.value = value;
                 validateField(e.target, form);
                 checkFormValidity(form);
             });
 
-            field.addEventListener('paste', function(e) {
-                e.preventDefault();
-                let pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                pastedText = pastedText.replace(/[^A-Za-z\s]/g, '').replace(/\s+/g, ' ').trim();
-                if (pastedText.length > 0) {
-                    pastedText = pastedText.charAt(0).toUpperCase() + pastedText.slice(1);
+            ['fname', 'lname', 'mname'].forEach(fieldName => {
+                const field = form.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                    field.addEventListener('input', function(e) {
+                        let value = e.target.value;
+                        if (value.length > 0) {
+                            value = value.charAt(0).toUpperCase() + value.slice(1);
+                        }
+                        value = value.replace(/\s+/g, ' ').replace(/[^A-Za-z\s]/g, '');
+                        if (value.startsWith(' ')) {
+                            value = value.trimStart();
+                        }
+                        if (value.length < 2 && value.includes(' ')) {
+                            value = value.replace(/\s/g, '');
+                        }
+                        e.target.value = value;
+                        validateField(e.target, form);
+                        checkFormValidity(form);
+                    });
+
+                    field.addEventListener('paste', function(e) {
+                        e.preventDefault();
+                        let pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                        pastedText = pastedText.replace(/[^A-Za-z\s]/g, '').replace(/\s+/g, ' ').trim();
+                        if (pastedText.length > 0) {
+                            pastedText = pastedText.charAt(0).toUpperCase() + pastedText.slice(1);
+                        }
+                        if (this.value.length < 2) {
+                            pastedText = pastedText.replace(/\s/g, '');
+                        }
+                        this.value = pastedText;
+                        validateField(this, form);
+                        checkFormValidity(form);
+                    });
                 }
-                if (this.value.length < 2) {
-                    pastedText = pastedText.replace(/\s/g, '');
-                }
-                this.value = pastedText;
-                validateField(this, form);
-                checkFormValidity(form);
             });
+
+            const usernameInput = form.querySelector('[name="username"]');
+            usernameInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, '');
+                validateField(e.target, form);
+                checkFormValidity(form);
+                const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
+                checkUsernameAvailability(e.target.value, form, cashierId);
+            });
+
+            const passwordInput = form.querySelector('[name="password"]');
+            const confirmPasswordInput = form.querySelector('[name="confirm-password"]');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', () => {
+                    validateField(passwordInput, form);
+                    checkFormValidity(form);
+                    const strength = checkPasswordStrength(passwordInput.value);
+                    updatePasswordStrength(strength);
+                });
+            }
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', () => {
+                    validateField(confirmPasswordInput, form);
+                    checkFormValidity(form);
+                });
+            }
         }
-    });
-
-    const usernameInput = form.querySelector('[name="username"]');
-    usernameInput.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, '');
-        validateField(e.target, form);
-        checkFormValidity(form);
-    });
-
-    // Add specific listeners for password fields
-    const passwordInput = form.querySelector('[name="password"]');
-    const confirmPasswordInput = form.querySelector('[name="confirm-password"]');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', () => {
-            validateField(passwordInput, form);
-            checkFormValidity(form);
-            const strength = checkPasswordStrength(passwordInput.value);
-            updatePasswordStrength(strength);
-        });
-    }
-    if (confirmPasswordInput) {
-        confirmPasswordInput.addEventListener('input', () => {
-            validateField(confirmPasswordInput, form);
-            checkFormValidity(form);
-        });
-    }
-}
 
         // Initialize input validation for both forms
         initFloatingLabels(createForm, createInputs);
@@ -1272,7 +1467,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                             document.getElementById('edit-username').value = data.cashier.username || '';
                             document.getElementById('edit-phone').value = data.cashier.contact_number || '';
                             
-                            // Update floating labels
+                            // Update floating labels and validate
                             editInputs.forEach(input => {
                                 const inputGroup = input.closest('.input-group');
                                 if (input.value.trim() !== '') {
@@ -1282,6 +1477,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 }
                                 validateField(input, editForm);
                             });
+                            // Trigger username availability check
+                            checkUsernameAvailability(data.cashier.username, editForm, cashierId);
                             checkFormValidity(editForm);
                             toggleModal(editModal);
                         } else {
