@@ -413,10 +413,10 @@
 
                                 <!-- Status -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
-                                    <select id="package-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Menu Type</label>
+                                    <select id="package-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                        <option value="buffet">Buffet</option>
+                                        <option value="per_plate">Sit - On's</option>
                                     </select>
                                 </div>
 
@@ -1260,7 +1260,7 @@
                 description: document.getElementById('package-description').value,
                 price: document.getElementById('package-price').value,
                 capital: document.getElementById('package-capital').value,
-                status: document.getElementById('package-status').value,
+                type: document.getElementById('package-type').value,
                 dishes: []
             };
             
@@ -1278,7 +1278,7 @@
             });
             
             try {
-                const response = await fetch('add_menu_packages.php', {
+                const response = await fetch('menu_handlers/add_menu_packages.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
