@@ -193,11 +193,11 @@ require_once 'admin_auth.php';
                         </button>
                         <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
                     </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
                     <div class="flex items-center space-x-6">
-                        <div class="text-sm text-rich-brown font-baskerville">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            <span id="current-date"></span>
-                        </div>
                         <div class="flex items-center space-x-4">
                             <a href="../logout.php" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg transition-all duration-300 font-baskerville flex items-center space-x-2">
                                 <i class="fas fa-sign-out-alt"></i>
