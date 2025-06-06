@@ -21,11 +21,11 @@ try {
             'appetizer' => 'appetizer', // Not present in buttons, kept from original
             'italian-dish' => 'Italian Dishes',
             'spanish-dish' => 'Spanish Dishes',
-            'house-salad' => 'House Salads',
+            'house-salad' => 'house-salad',
             'pizza' => 'Pizza',
             'burgers' => 'Burgers',
             'pasta' => 'Pasta',
-            'pasta_caza' => 'Pasta e Caza',
+            'pasta_caza' => 'pasta_caza',
             'coffee' => 'Coffee'
         ];
         
