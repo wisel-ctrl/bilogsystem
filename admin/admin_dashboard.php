@@ -206,7 +206,7 @@ require_once 'admin_auth.php';
                                 <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
                                 <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
                             </button>
-                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform scale-95 opacity-0 transition-all duration-200 origin-top-right z-50">
+                            <div id="profileMenu" class="fixed right-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200 z-[9999]">
                                 <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Sign Out</span>
@@ -782,7 +782,6 @@ require_once 'admin_auth.php';
         profileDropdown.addEventListener('click', () => {
             profileMenu.classList.toggle('hidden');
             setTimeout(() => {
-                profileMenu.classList.toggle('scale-95');
                 profileMenu.classList.toggle('opacity-0');
                 dropdownIcon.classList.toggle('rotate-180');
             }, 50);
@@ -791,7 +790,7 @@ require_once 'admin_auth.php';
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target)) {
-                profileMenu.classList.add('hidden', 'scale-95', 'opacity-0');
+                profileMenu.classList.add('hidden', 'opacity-0');
                 dropdownIcon.classList.remove('rotate-180');
             }
         });
