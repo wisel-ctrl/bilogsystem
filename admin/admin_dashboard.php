@@ -236,7 +236,7 @@ header {
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-warm-cream/80 text-sm font-baskerville">Today's Revenue</p>
-                                    <p class="text-2xl font-bold text-warm-cream font-playfair">₱2,450</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville">₱2,450</p>
                                     <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
                                         <i class="fas fa-arrow-up text-green-400 mr-1"></i>
                                         +12% from yesterday
@@ -272,7 +272,7 @@ header {
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-warm-cream/80 text-sm font-baskerville">Monthly Revenue</p>
-                                    <p class="text-2xl font-bold text-warm-cream font-playfair">₱84,320</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville">₱84,320</p>
                                     <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
                                         <i class="fas fa-arrow-up text-green-400 mr-1"></i>
                                         +15% from last month
@@ -290,7 +290,7 @@ header {
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-warm-cream/80 text-sm font-baskerville">Yearly Revenue</p>
-                                    <p class="text-2xl font-bold text-warm-cream font-playfair">₱950,680</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville">₱950,680</p>
                                     <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
                                         <i class="fas fa-arrow-up text-green-400 mr-1"></i>
                                         +22% from last year
@@ -310,7 +310,7 @@ header {
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-deep-brown text-sm font-baskerville">Today's Orders</p>
-                                <p class="text-2xl font-bold text-rich-brown font-playfair mt-1">124</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">124</p>
                                 <div class="flex items-center mt-2">
                                     <div class="w-full bg-warm-cream/50 h-2 rounded-full">
                                         <div class="bg-deep-brown h-2 rounded-full" style="width: 75%"></div>
@@ -327,7 +327,7 @@ header {
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-deep-brown text-sm font-baskerville">Weekly Orders</p>
-                                <p class="text-2xl font-bold text-rich-brown font-playfair mt-1">892</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">892</p>
                                 <div class="flex items-center mt-2">
                                     <div class="w-full bg-warm-cream/50 h-2 rounded-full">
                                         <div class="bg-deep-brown h-2 rounded-full" style="width: 85%"></div>
@@ -344,7 +344,7 @@ header {
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-deep-brown text-sm font-baskerville">Monthly Orders</p>
-                                <p class="text-2xl font-bold text-rich-brown font-playfair mt-1">3,847</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">3,847</p>
                                 <div class="flex items-center mt-2">
                                     <div class="w-full bg-warm-cream/50 h-2 rounded-full">
                                         <div class="bg-deep-brown h-2 rounded-full" style="width: 90%"></div>
@@ -361,7 +361,7 @@ header {
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-deep-brown text-sm font-baskerville">Yearly Orders</p>
-                                <p class="text-2xl font-bold text-rich-brown font-playfair mt-1">45,320</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">45,320</p>
                                 <div class="flex items-center mt-2">
                                     <div class="w-full bg-warm-cream/50 h-2 rounded-full">
                                         <div class="bg-deep-brown h-2 rounded-full" style="width: 95%"></div>
@@ -384,7 +384,7 @@ header {
                                 <i class="fas fa-arrow-up text-2xl text-green-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Revenue</h4>
-                            <p class="text-2xl font-bold text-green-600 font-playfair mt-2">₱84,320</p>
+                            <p class="text-xl font-bold text-green-600 font-baskerville mt-2">₱84,320</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                         
@@ -393,7 +393,7 @@ header {
                                 <i class="fas fa-arrow-down text-2xl text-red-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Expenses</h4>
-                            <p class="text-2xl font-bold text-red-600 font-playfair mt-2">₱45,680</p>
+                            <p class="text-xl font-bold text-red-600 font-baskerville mt-2">₱45,680</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                         
@@ -402,7 +402,7 @@ header {
                                 <i class="fas fa-chart-pie text-2xl text-blue-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Profit</h4>
-                            <p class="text-2xl font-bold text-blue-600 font-playfair mt-2">₱38,640</p>
+                            <p class="text-xl font-bold text-blue-600 font-baskerville mt-2">₱38,640</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                     </div>
