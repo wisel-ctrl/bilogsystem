@@ -8,7 +8,7 @@ require_once 'admin_auth.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafe Lilio - Admin Dashboard</title>
+    <title>Caffe Lillio - Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -146,7 +146,7 @@ header {
             <div class="p-6 border-b border-warm-cream/20">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                    <h1 id="cafe-title" class="text-2xl font-bold text-warm-cream font-playfair">Cafe Lilio</h1>
+                    <h1 id="cafe-title" class="text-2xl font-bold text-warm-cream font-playfair">Caffe Lillio</h1>
                 </div>
             </div>
             
