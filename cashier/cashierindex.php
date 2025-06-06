@@ -237,43 +237,50 @@ require_once 'cashier_auth.php';
 
         // Render menu items based on category
         function renderMenuItems(category, searchTerm = '') {
-            menuItemsContainer.innerHTML = '';
-            currentCategory = category;
-            
-            const filteredItems = (category === 'all' 
-                ? menuItems 
-                : menuItems.filter(item => item.category === category))
-                .filter(item => {
-                    if (!searchTerm) return true;
-                    const term = searchTerm.toLowerCase();
-                    return (
-                        item.name.toLowerCase().includes(term) || 
-                        item.description.toLowerCase().includes(term))
-                });
-            console.log('Items:', filteredItems);
-            console.log('category:', currentCategory);
-            if (filteredItems.length === 0) {
-                menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items found</p>';
-                return;
-            }
-            
-            filteredItems.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer';
-                itemElement.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
-                        <p class="text-gray-600 mb-2">${item.description}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
-                            <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
-                        </div>
-                    </div>
-                `;
-                menuItemsContainer.appendChild(itemElement);
-            });
-        }
+    menuItemsContainer.innerHTML = '';
+    currentCategory = category;
+    
+    // Debug logs
+    console.log('All categories:', [...new Set(menuItems.map(item => item.category))]);
+    console.log('Requested category:', category);
+    
+    const filteredItems = (category === 'all' 
+        ? menuItems 
+        : menuItems.filter(item => 
+            item.category.trim().toLowerCase() === category.trim().toLowerCase()
+        ))
+        .filter(item => {
+            if (!searchTerm) return true;
+            const term = searchTerm.toLowerCase();
+            return (
+                item.name.toLowerCase().includes(term) || 
+                item.description.toLowerCase().includes(term))
+        });
+    
+    console.log('Filtered items:', filteredItems);
+    
+    if (filteredItems.length === 0) {
+        menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items found</p>';
+        return;
+    }
+    
+    filteredItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer';
+        itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover">
+            <div class="p-4">
+                <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
+                <p class="text-gray-600 mb-2">${item.description}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
+                    <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
+                </div>
+            </div>
+        `;
+        menuItemsContainer.appendChild(itemElement);
+    });
+}
 
         // Render cart items
         function renderCart() {
