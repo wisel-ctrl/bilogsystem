@@ -710,6 +710,16 @@
             const newRow = initialIngredient.cloneNode(true);
             newRow.querySelector('.ingredient-quantity').value = ''; // Reset quantity
             ingredientsContainer.appendChild(newRow);
+            
+            const dishImageInput = document.getElementById('dish-image');
+            const fileNameSpan = document.getElementById('file-name');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            const imagePreview = document.getElementById('image-preview');
+            
+            dishImageInput.value = ''; // Clear the file input
+            fileNameSpan.textContent = 'Choose an image file';
+            imagePreviewContainer.classList.add('hidden');
+            imagePreview.src = '#';
         };
 
         closeModal.addEventListener('click', closeModalFunction);
