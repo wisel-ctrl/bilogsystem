@@ -165,13 +165,13 @@ header {
                         </a>
                     </li>
                     <li>
-                        <a href="admin_menu.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Menu Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_inventory.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-boxes w-5"></i>
                             <span class="sidebar-text font-baskerville">Inventory</span>
                         </a>
