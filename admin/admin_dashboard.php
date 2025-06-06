@@ -204,11 +204,15 @@ header {
                         <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
                     </div>
                     <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
                         <span id="current-date"></span>
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="relative">
                             <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
                                 <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
                                 <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
                             </button>
