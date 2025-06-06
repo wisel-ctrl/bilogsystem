@@ -27,25 +27,42 @@ try {
         4 => 'total_price'
     ];
 
-    // Base query
-    $query = "SELECT SQL_CALC_FOUND_ROWS ingredient_id, ingredient_name, category, price, quantity, total_price 
+    // Base query for total records (without LIMIT)
+    $baseQuery = "SELECT ingredient_id, ingredient_name, category, price, quantity, total_price 
               FROM ingredients_tb 
               WHERE visibility = 'show'";
 
+    // Query for filtered records (with search conditions if any)
+    $filteredQuery = $baseQuery;
+    
     // Add search condition if search value is provided
     if (!empty($searchValue)) {
-        $query .= " AND (ingredient_name LIKE :search OR category LIKE :search)";
+        $filteredQuery .= " AND (ingredient_name LIKE :search OR category LIKE :search)";
     }
 
-    // Add ordering
+    // Get total records (all visible records)
+    $totalRecords = $conn->query("SELECT COUNT(*) FROM ingredients_tb WHERE visibility = 'show'")->fetchColumn();
+
+    // Get filtered records count (with search conditions if any)
+    $stmtCount = $conn->prepare("SELECT COUNT(*) FROM ingredients_tb WHERE visibility = 'show'" . 
+                               (!empty($searchValue) ? " AND (ingredient_name LIKE :search OR category LIKE :search)" : ""));
+    
+    if (!empty($searchValue)) {
+        $searchParam = "%$searchValue%";
+        $stmtCount->bindParam(':search', $searchParam, PDO::PARAM_STR);
+    }
+    $stmtCount->execute();
+    $filteredRecords = $stmtCount->fetchColumn();
+
+    // Add ordering to data query
     $orderColumnName = $columns[$orderColumn] ?? $columns[0];
-    $query .= " ORDER BY $orderColumnName $orderDir";
+    $filteredQuery .= " ORDER BY $orderColumnName $orderDir";
 
     // Add limit for pagination
-    $query .= " LIMIT :start, :length";
+    $filteredQuery .= " LIMIT :start, :length";
 
-    // Prepare and execute the query
-    $stmt = $conn->prepare($query);
+    // Prepare and execute the query for data
+    $stmt = $conn->prepare($filteredQuery);
 
     if (!empty($searchValue)) {
         $searchParam = "%$searchValue%";
@@ -58,10 +75,6 @@ try {
 
     // Fetch the data
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Get total records and filtered records
-    $totalRecords = $conn->query("SELECT COUNT(*) FROM ingredients_tb")->fetchColumn();
-    $filteredRecords = $conn->query("SELECT FOUND_ROWS()")->fetchColumn();
 
     // Update successful response
     $response = [
