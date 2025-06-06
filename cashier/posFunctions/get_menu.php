@@ -19,8 +19,8 @@ try {
             'desserts' => 'Desserts',
             'drinks' => 'Drinks',
             'appetizer' => 'appetizer', // Not present in buttons, kept from original
-            'italian-dish' => 'Italian Dishes',
-            'spanish-dish' => 'Spanish Dishes',
+            'italian-dish' => 'italian-dish',
+            'spanish-dish' => 'spanish-dish',
             'house-salad' => 'house-salad',
             'pizza' => 'Pizza',
             'burgers' => 'Burgers',
