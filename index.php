@@ -182,9 +182,9 @@
                     Savor the Flavors of Spain and Italy
                 </p>
                 <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
-                    <button class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto">
+                    <a href="register.php" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
                         Make Reservation
-                    </button>
+                    </a>
                     <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
                         View Our Menu
                     </a>
@@ -280,9 +280,9 @@
                                 </div>
                                 
                                 <div class="mt-6">
-                                    <button class="w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300">
+                                    <a href="register.php" class="block w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300 text-center">
                                         Make Reservation
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
