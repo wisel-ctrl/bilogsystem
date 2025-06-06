@@ -350,6 +350,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const username = document.getElementById('username');
             const password = document.getElementById('password');
             
+            // Username input - only allow alphanumeric and symbols, no spaces
+            username.addEventListener('input', function(e) {
+                let value = e.target.value;
+                // Remove spaces and only allow alphanumeric and symbols
+                value = value.replace(/\s/g, '');
+                value = value.replace(/[^A-Za-z0-9!@#$%^&*()_+=\-[\]{}|\\:;"'<>,.?/]/g, '');
+                e.target.value = value;
+                
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                }
+            });
+
+            username.addEventListener('paste', function(e) {
+                e.preventDefault();
+                let pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                // Remove spaces and invalid characters
+                pastedText = pastedText.replace(/\s/g, '');
+                pastedText = pastedText.replace(/[^A-Za-z0-9!@#$%^&*()_+=\-[\]{}|\\:;"'<>,.?/]/g, '');
+                this.value = pastedText;
+                
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                }
+            });
+
+            // Password input - prevent spaces
+            password.addEventListener('input', function(e) {
+                let value = e.target.value;
+                // Remove any spaces
+                value = value.replace(/\s/g, '');
+                e.target.value = value;
+                
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                }
+            });
+
+            password.addEventListener('paste', function(e) {
+                e.preventDefault();
+                let pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                // Remove any spaces from pasted text
+                pastedText = pastedText.replace(/\s/g, '');
+                this.value = pastedText;
+                
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                }
+            });
+            
             form.addEventListener('submit', function(e) {
                 let isValid = true;
                 
@@ -370,19 +420,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if (!isValid) {
                     e.preventDefault();
-                }
-            });
-            
-            // Clear error state when user starts typing
-            username.addEventListener('input', function() {
-                if (this.value.trim()) {
-                    this.classList.remove('field-error');
-                }
-            });
-            
-            password.addEventListener('input', function() {
-                if (this.value.trim()) {
-                    this.classList.remove('field-error');
                 }
             });
         });
