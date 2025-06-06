@@ -707,19 +707,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 checkFormValidity();
             });
                         
-            // Username input - only allow alphanumeric and underscore
-            document.getElementById('username').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, '');
-            });
-            
-            // Name inputs - only allow letters and spaces
+            // Name inputs - only allow letters and spaces with specific rules
             ['firstName', 'lastName', 'middleName'].forEach(fieldName => {
                 const field = document.getElementById(fieldName);
                 if (field) {
                     field.addEventListener('input', function(e) {
-                        e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+                        let value = e.target.value;
+                        
+                        // Auto capitalize first letter
+                        if (value.length > 0) {
+                            value = value.charAt(0).toUpperCase() + value.slice(1);
+                        }
+                        
+                        // Remove consecutive spaces
+                        value = value.replace(/\s+/g, ' ');
+                        
+                        // Only allow letters
+                        value = value.replace(/[^A-Za-z\s]/g, '');
+                        
+                        // Remove space if it's the first character
+                        if (value.startsWith(' ')) {
+                            value = value.trimStart();
+                        }
+                        
+                        // Only allow space after 2 characters
+                        if (value.length < 2 && value.includes(' ')) {
+                            value = value.replace(/\s/g, '');
+                        }
+                        
+                        // Update the input value
+                        e.target.value = value;
+                        validateField(e.target);
+                        checkFormValidity();
+                    });
+
+                    // Handle pasting
+                    field.addEventListener('paste', function(e) {
+                        e.preventDefault();
+                        let pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                        
+                        // Clean the pasted text
+                        pastedText = pastedText.replace(/[^A-Za-z\s]/g, '');
+                        pastedText = pastedText.replace(/\s+/g, ' ').trim();
+                        
+                        if (pastedText.length > 0) {
+                            pastedText = pastedText.charAt(0).toUpperCase() + pastedText.slice(1);
+                        }
+                        
+                        if (this.value.length < 2) {
+                            pastedText = pastedText.replace(/\s/g, '');
+                        }
+                        
+                        this.value = pastedText;
+                        validateField(this);
+                        checkFormValidity();
                     });
                 }
+            });
+            
+            // Username input - only allow alphanumeric and symbols, no spaces
+            document.getElementById('username').addEventListener('input', function(e) {
+                let value = e.target.value;
+                // Remove spaces and only allow alphanumeric and symbols
+                value = value.replace(/\s/g, '');
+                value = value.replace(/[^A-Za-z0-9!@#$%^&*()_+=\-[\]{}|\\:;"'<>,.?/]/g, '');
+                e.target.value = value;
+                validateField(e.target);
+                checkFormValidity();
+            });
+
+            // Password input - prevent spaces
+            document.getElementById('password').addEventListener('input', function(e) {
+                let value = e.target.value;
+                // Remove any spaces
+                value = value.replace(/\s/g, '');
+                e.target.value = value;
+                validateField(e.target);
+                checkFormValidity();
+            });
+
+            document.getElementById('password').addEventListener('paste', function(e) {
+                e.preventDefault();
+                let pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                // Remove any spaces from pasted text
+                pastedText = pastedText.replace(/\s/g, '');
+                this.value = pastedText;
+                validateField(this);
+                checkFormValidity();
             });
         });
 
