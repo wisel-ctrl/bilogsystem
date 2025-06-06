@@ -70,7 +70,7 @@ require_once 'cashier_auth.php';
                         <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="dessert">Desserts</button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="main-course">Main Courses</button>
+                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="main">Main Courses</button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="drinks">Drinks</button>
@@ -83,7 +83,21 @@ require_once 'cashier_auth.php';
             
             <!-- Section 2: Main dishes display -->
             <div class="w-full lg:w-3/6 p-4">
-                <h2 class="text-2xl text-rich-brown mb-4 font-bold">Menu Items</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl text-rich-brown font-bold">Menu Items</h2>
+                    <div class="relative w-1/2">
+                        <input type="text" id="menu-search" placeholder="Search menu items..." 
+                            class="w-full p-2 pl-8 pr-8 border border-rich-brown rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                        <svg class="absolute left-2 top-3 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <button id="clear-search" class="absolute right-2 top-3 h-4 w-4 text-gray-400 hidden">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-items">
                     <!-- Menu items will be dynamically inserted here -->
                 </div>
@@ -186,6 +200,7 @@ require_once 'cashier_auth.php';
     <script>
         // Sample menu data
         let menuItems = [];
+        let currentCategory = 'all'; 
 
         async function fetchMenuItems() {
             try {
@@ -221,35 +236,51 @@ require_once 'cashier_auth.php';
         }
 
         // Render menu items based on category
-        function renderMenuItems(category) {
-            menuItemsContainer.innerHTML = '';
-            
-            const filteredItems = category === 'all' 
-                ? menuItems 
-                : menuItems.filter(item => item.category === category);
-            
-            if (filteredItems.length === 0) {
-                menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items in this category</p>';
-                return;
-            }
-            
-            filteredItems.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer';
-                itemElement.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
-                        <p class="text-gray-600 mb-2">${item.description}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
-                            <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
-                        </div>
-                    </div>
-                `;
-                menuItemsContainer.appendChild(itemElement);
-            });
-        }
+        function renderMenuItems(category, searchTerm = '') {
+    menuItemsContainer.innerHTML = '';
+    currentCategory = category;
+    
+    // Debug logs
+    console.log('All categories:', [...new Set(menuItems.map(item => item.category))]);
+    console.log('Requested category:', category);
+    
+    const filteredItems = (category === 'all' 
+        ? menuItems 
+        : menuItems.filter(item => 
+            item.category.trim().toLowerCase() === category.trim().toLowerCase()
+        ))
+        .filter(item => {
+            if (!searchTerm) return true;
+            const term = searchTerm.toLowerCase();
+            return (
+                item.name.toLowerCase().includes(term) || 
+                item.description.toLowerCase().includes(term))
+        });
+    
+    console.log('Filtered items:', filteredItems);
+    
+    if (filteredItems.length === 0) {
+        menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items found</p>';
+        return;
+    }
+    
+    filteredItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer';
+        itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover">
+            <div class="p-4">
+                <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
+                <p class="text-gray-600 mb-2">${item.description}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
+                    <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
+                </div>
+            </div>
+        `;
+        menuItemsContainer.appendChild(itemElement);
+    });
+}
 
         // Render cart items
         function renderCart() {
@@ -521,14 +552,34 @@ require_once 'cashier_auth.php';
             categoryBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const category = btn.dataset.category;
-                    renderMenuItems(category);
+                    console.log('Category button clicked:', btn.dataset.category);
+                    console.log('Category  clicked:', category);
+                    renderMenuItems(category, '');
                     
                     // Update active button style
                     categoryBtns.forEach(b => b.classList.remove('bg-deep-brown'));
                     btn.classList.add('bg-deep-brown');
                 });
             });
+
+            // Search functionality
+            const searchInput = document.getElementById('menu-search');
+            searchInput.addEventListener('input', (e) => {
+                renderMenuItems(currentCategory, e.target.value);
+            });
             
+            const clearSearchBtn = document.getElementById('clear-search');
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                renderMenuItems(currentCategory, '');
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                clearSearchBtn.classList.toggle('hidden', !e.target.value);
+                renderMenuItems(currentCategory, e.target.value);
+            });
+
             // Add to cart buttons (delegated)
             menuItemsContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('add-to-cart')) {
