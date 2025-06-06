@@ -250,12 +250,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <!-- Registration Form -->
-                <form id="registrationForm" class="space-y-6" method="POST" action="">
+                <form id="registrationForm" class="space-y-4" method="POST" action="">
                     <?php if (!empty($errors)): ?>
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded-xl mb-4" role="alert">
                             <strong class="font-bold">Error!</strong>
                             <span class="block sm:inline">Please fix the following issues:</span>
-                            <ul class="mt-2 list-disc list-inside">
+                            <ul class="mt-1 list-disc list-inside">
                                 <?php foreach ($errors as $error): ?>
                                     <li><?php echo htmlspecialchars($error); ?></li>
                                 <?php endforeach; ?>
@@ -264,24 +264,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                     
                     <?php if ($registration_success): ?>
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded-xl mb-4" role="alert">
                             <strong class="font-bold">Success!</strong>
                             <span class="block sm:inline">Registration successful! Welcome to Caffè Lilio.</span>
                         </div>
                     <?php endif; ?>
+
                     <!-- Name Fields Row -->
-                    <div class="grid md:grid-cols-2 gap-6">
+                    <div class="grid md:grid-cols-2 gap-4">
                         <!-- First Name -->
                         <div class="input-group">
                             <input 
                                 type="text" 
                                 id="firstName" 
                                 name="firstName"
-                                class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                 placeholder="First Name *"
                                 required
                             >
-                            <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
+                            <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                         </div>
 
                         <!-- Middle Name -->
@@ -290,25 +291,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 type="text" 
                                 id="middleName" 
                                 name="middleName"
-                                class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                 placeholder="Middle Name"
                             >
                         </div>
                     </div>
 
                     <!-- Last Name and Suffix Row -->
-                    <div class="grid md:grid-cols-3 gap-6">
+                    <div class="grid md:grid-cols-3 gap-4">
                         <!-- Last Name -->
                         <div class="input-group md:col-span-2">
                             <input 
                                 type="text" 
                                 id="lastName" 
                                 name="lastName"
-                                class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                 placeholder="Last Name *"
                                 required
                             >
-                            <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
+                            <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                         </div>
 
                         <!-- Suffix -->
@@ -316,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <select 
                                 id="suffix" 
                                 name="suffix"
-                                class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown appearance-none cursor-pointer"
+                                class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown appearance-none cursor-pointer"
                             >
                                 <option value="" disabled selected>Suffix</option>
                                 <option value="">None</option>
@@ -327,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="IV">IV</option>
                             </select>
                             <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </div>
@@ -340,11 +341,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="text" 
                             id="username" 
                             name="username"
-                            class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                            class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                             placeholder="Username *"
                             required
                         >
-                        <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
+                        <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                     </div>
                     
                     <!-- Contact Number -->
@@ -353,21 +354,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="tel" 
                             id="contactNumber" 
                             name="contactNumber"
-                            class="w-full px-4 py-4 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                            class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                             placeholder="Contact Number *"
                             required
                         >
-                        <div class="field-feedback mt-2 text-sm font-baskerville hidden"></div>
+                        <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                     </div>
                     
                     <!-- Password -->
                     <div class="input-group">
-                        <label for="password" class="floating-label">Password *</label>
                         <input 
                             type="password" 
                             id="password" 
                             name="password"
-                            class="w-full px-4 py-4 pr-12 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown peer"
+                            class="w-full px-4 py-3 pr-10 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown peer"
+                            placeholder="Password *"
                             required
                         >
                         <button 
@@ -375,18 +376,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             id="togglePassword"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-rich-brown transition-colors duration-300 focus:outline-none"
                         >
-                            <svg id="eyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg id="eyeOpen" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
-                            <svg id="eyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg id="eyeClosed" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L12 12m-2.122-2.122L7.758 7.758M12 12l2.122-2.122m0 0L16.242 7.758M12 12l-2.122 2.122"></path>
                             </svg>
                         </button>
                         
                         <!-- Password Strength Indicator -->
                         <div class="mt-2">
-                            <div id="passwordStrength" class="flex space-x-1 mb-2">
+                            <div id="passwordStrength" class="flex space-x-1 mb-1">
                                 <div class="h-1 flex-1 bg-stone-200 rounded"></div>
                                 <div class="h-1 flex-1 bg-stone-200 rounded"></div>
                                 <div class="h-1 flex-1 bg-stone-200 rounded"></div>
@@ -397,15 +398,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <!-- Terms and Conditions -->
-                    <div class="flex items-start space-x-3">
+                    <div class="flex items-start space-x-3 mt-4">
                         <input 
                             type="checkbox" 
                             id="termsAccepted" 
                             name="termsAccepted"
-                            class="mt-1 w-5 h-5 text-rich-brown border-2 border-stone-300 rounded focus:ring-rich-brown focus:ring-2"
+                            class="mt-1 w-4 h-4 text-rich-brown border-2 border-stone-300 rounded focus:ring-rich-brown focus:ring-2"
                             required
                         >
-                        <label for="termsAccepted" class="font-baskerville text-warm-cream leading-relaxed">
+                        <label for="termsAccepted" class="font-baskerville text-warm-cream leading-relaxed text-sm">
                             I agree to the <a href="#" class="text-rich-brown hover:text-deep-brown underline transition-colors duration-300">Terms of Service</a> 
                             and <a href="#" class="text-rich-brown hover:text-deep-brown underline transition-colors duration-300">Privacy Policy</a>
                         </label>
@@ -415,7 +416,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button 
                         type="submit" 
                         id="submitBtn"
-                        class="w-full py-4 bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream rounded-xl font-baskerville font-bold text-lg btn-hover focus:outline-none focus:ring-4 focus:ring-rich-brown/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="w-full py-3 mt-6 bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream rounded-xl font-baskerville font-bold text-lg btn-hover focus:outline-none focus:ring-4 focus:ring-rich-brown/30 disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled
                     >
                         Create Account
@@ -423,7 +424,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
 
                 <!-- Sign In Link -->
-                <div class="text-center mt-8">
+                <div class="text-center mt-6">
                     <p class="font-baskerville text-warm-cream">
                         Already have an account? 
                         <a href="login.php" class="text-rich-brown hover:text-accent-brown font-bold underline transition-colors duration-300">
