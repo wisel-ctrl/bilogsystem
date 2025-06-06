@@ -24,7 +24,7 @@ try {
     $conn->beginTransaction();
     
     // Insert into menu_packages
-    $stmt = $conn->prepare("INSERT INTO menu_packages 
+    $stmt = $conn->prepare("INSERT INTO menu_packages_tb 
                            (package_name, package_description, price, capital, type) 
                            VALUES (?, ?, ?, ?, ?)");
     
