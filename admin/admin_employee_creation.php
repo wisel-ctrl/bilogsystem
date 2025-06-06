@@ -8,6 +8,71 @@ $registration_success = false;
 $update_success = false;
 $errors = [];
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'check_username') {
+        $username = trim($_POST['username'] ?? '');
+        $cashierId = isset($_POST['cashier_id']) ? trim($_POST['cashier_id']) : null;
+        
+        try {
+            if ($cashierId) {
+                // For edit form, exclude the current user's ID
+                $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ? AND id != ?");
+                $stmt->execute([$username, $cashierId]);
+            } else {
+                // For create form
+                $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ?");
+                $stmt->execute([$username]);
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'exists' => $stmt->rowCount() > 0,
+                'message' => $stmt->rowCount() > 0 ? 'Username already taken' : 'Username available'
+            ]);
+            exit;
+        } catch(PDOException $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'exists' => false,
+                'error' => 'Database error: ' . $e->getMessage()
+            ]);
+            exit;
+        }
+    }
+    // Add this new block for phone number check
+    elseif ($_POST['action'] === 'check_phone') {
+        $phone = trim($_POST['phone'] ?? '');
+        $phone = str_replace('-', '', $phone); // Clean the phone number
+        $cashierId = isset($_POST['cashier_id']) ? trim($_POST['cashier_id']) : null;
+        
+        try {
+            if ($cashierId) {
+                // For edit form, exclude the current user's ID
+                $stmt = $conn->prepare("SELECT id FROM users_tb WHERE contact_number = ? AND id != ?");
+                $stmt->execute([$phone, $cashierId]);
+            } else {
+                // For create form
+                $stmt = $conn->prepare("SELECT id FROM users_tb WHERE contact_number = ?");
+                $stmt->execute([$phone]);
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'exists' => $stmt->rowCount() > 0,
+                'message' => $stmt->rowCount() > 0 ? 'Phone number already in use' : 'Phone number available'
+            ]);
+            exit;
+        } catch(PDOException $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'exists' => false,
+                'error' => 'Database error: ' . $e->getMessage()
+            ]);
+            exit;
+        }
+    }
+}
+
 // Handle real-time username check
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'check_username') {
     $username = trim($_POST['username'] ?? '');
@@ -363,7 +428,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         
         .password-strength {
             display: flex;
-            space-x: 1px;
+            gap: 1px; /* Use standard CSS gap property for precise 1px spacing */
             margin-bottom: 0.25rem;
         }
         
@@ -566,6 +631,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     <div class="input-group col-span-2">
                         <label for="phone" class="floating-label">Phone Number *</label>
                         <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
+                        <p class="phone-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                     <div class="input-group col-span-1">
@@ -685,6 +751,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     <div class="input-group col-span-2">
                         <label for="edit-phone" class="floating-label">Phone Number *</label>
                         <input type="tel" id="edit-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
+                        <p class="phone-feedback mt-2 text-sm text-red-600 hidden"></p>
                         <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
                     </div>
                     <div class="input-group col-span-2">
@@ -1024,123 +1091,179 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 validateField(input, form);
             }
         }
+        
+        function checkPhoneAvailability(phone, form, cashierId = null) {
+    const feedback = form.querySelector('.phone-feedback');
+    const input = form.querySelector('[name="phone"]');
+    
+    // Basic validation first
+    const cleanNumber = phone.replace(/\D/g, '');
+    if (cleanNumber.length < 11) {
+        feedback.classList.add('hidden');
+        feedback.textContent = '';
+        validateField(input, form);
+        return;
+    }
+    
+    if (cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber)) {
+        const formData = new FormData();
+        formData.append('action', 'check_phone');
+        formData.append('phone', cleanNumber);
+        if (cashierId) {
+            formData.append('cashier_id', cashierId);
+        }
+        
+        fetch('', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            if (data.exists) {
+                input.classList.remove('field-success');
+                input.classList.add('field-error');
+                feedback.classList.add('text-red-600');
+                feedback.textContent = data.message;
+            } else {
+                input.classList.remove('field-error');
+                input.classList.add('field-success');
+                feedback.classList.add('text-green-600');
+                feedback.textContent = data.message;
+            }
+            checkFormValidity(form);
+        })
+        .catch(error => {
+            feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            feedback.classList.add('text-red-600');
+            feedback.textContent = 'Error checking phone number';
+            input.classList.add('field-error');
+            checkFormValidity(form);
+        });
+    } else {
+        feedback.classList.add('hidden');
+        feedback.textContent = '';
+        validateField(input, form);
+    }
+}
+
 
         // Validation functions
         function validateField(field, form) {
-            const inputGroup = field.closest('.input-group');
-            const feedback = inputGroup?.querySelector('.field-feedback');
-            let isValid = true;
-            let message = '';
+    const inputGroup = field.closest('.input-group');
+    const feedback = inputGroup?.querySelector('.field-feedback');
+    let isValid = true;
+    let message = '';
 
-            field.classList.remove('field-error', 'field-success');
-            feedback?.classList.add('hidden');
+    field.classList.remove('field-error', 'field-success');
+    feedback?.classList.add('hidden');
 
-            switch (field.name) {
-                case 'fname':
-                case 'lname':
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        message = `${field.name === 'fname' ? 'First' : 'Last'} name is required`;
-                    } else if (field.value.trim().length < 2) {
-                        isValid = false;
-                        message = 'Name must be at least 2 characters';
-                    } else if (!/^[A-Za-z\s]+$/.test(field.value.trim())) {
-                        isValid = false;
-                        message = 'Name can only contain letters and spaces';
-                    }
-                    break;
-
-                case 'username':
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        message = 'Username is required';
-                    } else if (field.value.trim().length < 3) {
-                        isValid = false;
-                        message = 'Username must be at least 3 characters';
-                    } else if (!/^[A-Za-z0-9_]+$/.test(field.value.trim())) {
-                        isValid = false;
-                        message = 'Username can only contain letters, numbers, and underscores';
-                    }
-                    break;
-
-                case 'phone':
-                    const cleanNumber = field.value.replace(/\D/g, '');
-                    if (!cleanNumber) {
-                        isValid = false;
-                        message = 'Contact number is required';
-                    } else if (cleanNumber.length !== 11) {
-                        isValid = false;
-                        message = 'Contact number must be 11 digits';
-                    } else if (!/^09\d{9}$/.test(cleanNumber)) {
-                        isValid = false;
-                        message = 'Please enter a valid Philippine mobile number (09XXXXXXXXX)';
-                    }
-                    break;
-
-                case 'password':
-                    if (field.hasAttribute('required')) {
-                        const strength = checkPasswordStrength(field.value);
-                        updatePasswordStrength(strength);
-                        const feedback = form.querySelector('.password-feedback');
-                        feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
-                        if (!field.value.trim()) {
-                            isValid = false;
-                            message = 'Password is required';
-                            feedback.classList.add('text-red-600');
-                            feedback.textContent = message;
-                        } else if (field.value.length < 8) {
-                            isValid = false;
-                            message = 'Password must be at least 8 characters';
-                            feedback.classList.add('text-red-600');
-                            feedback.textContent = message;
-                        } else {
-                            feedback.classList.add('text-green-600');
-                            feedback.textContent = 'Password is valid';
-                        }
-                    }
-                    break;
-
-                case 'confirm-password':
-                    if (field.hasAttribute('required')) {
-                        const password = form.querySelector('#' + (form.id === 'edit-cashier-form' ? 'edit-password' : 'password')).value;
-                        const feedback = form.querySelector('.confirm-password-feedback');
-                        feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
-                        if (!field.value.trim()) {
-                            isValid = false;
-                            message = 'Confirm password is required';
-                            feedback.classList.add('text-red-600');
-                            feedback.textContent = message;
-                        } else if (field.value !== password) {
-                            isValid = false;
-                            message = 'Passwords do not match';
-                            feedback.classList.add('text-red-600');
-                            feedback.textContent = message;
-                        } else {
-                            feedback.classList.add('text-green-600');
-                            feedback.textContent = 'Passwords match';
-                        }
-                    }
-                    break;
+    switch (field.name) {
+        case 'fname':
+        case 'lname':
+            if (!field.value.trim()) {
+                isValid = false;
+                message = `${field.name === 'fname' ? 'First' : 'Last'} name is required`;
+            } else if (field.value.trim().length < 2) {
+                isValid = false;
+                message = 'Name must be at least 2 characters';
+            } else if (!/^[A-Za-z\s]+$/.test(field.value.trim())) {
+                isValid = false;
+                message = 'Name can only contain letters and spaces';
             }
+            break;
 
-            if (field.value.trim() !== '' && field.name !== 'username' && field.name !== 'password' && field.name !== 'confirm-password') {
-                if (isValid) {
-                    field.classList.add('field-success');
-                    if (message) {
-                        feedback.textContent = message;
-                        feedback.className = 'field-feedback mt-2 text-sm text-green-600';
-                        feedback.classList.remove('hidden');
-                    }
-                } else {
-                    field.classList.add('field-error');
+        case 'username':
+            if (!field.value.trim()) {
+                isValid = false;
+                message = 'Username is required';
+            } else if (field.value.trim().length < 3) {
+                isValid = false;
+                message = 'Username must be at least 3 characters';
+            } else if (!/^[A-Za-z0-9_]+$/.test(field.value.trim())) {
+                isValid = false;
+                message = 'Username can only contain letters, numbers, and underscores';
+            }
+            break;
+
+        case 'phone':
+            const cleanNumber = field.value.replace(/\D/g, '');
+            if (!cleanNumber) {
+                isValid = false;
+                message = 'Contact number is required';
+            } else if (cleanNumber.length !== 11) {
+                isValid = false;
+                message = 'Contact number must be 11 digits';
+            } else if (!/^09\d{9}$/.test(cleanNumber)) {
+                isValid = false;
+                message = 'Please enter a valid Philippine mobile number (09XXXXXXXXX)';
+            }
+            break;
+
+        case 'password':
+            if (field.hasAttribute('required')) {
+                const strength = checkPasswordStrength(field.value);
+                updatePasswordStrength(strength);
+                const feedback = form.querySelector('.password-feedback');
+                feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+                if (!field.value.trim()) {
+                    isValid = false;
+                    message = 'Password is required';
+                    feedback.classList.add('text-red-600');
                     feedback.textContent = message;
-                    feedback.className = 'field-feedback mt-2 text-sm text-red-600';
-                    feedback.classList.remove('hidden');
+                } else if (field.value.length < 8) {
+                    isValid = false;
+                    message = 'Password must be at least 8 characters';
+                    feedback.classList.add('text-red-600');
+                    feedback.textContent = message;
+                } else {
+                    feedback.classList.add('text-green-600');
+                    feedback.textContent = 'Password is valid';
                 }
             }
+            break;
 
-            return isValid;
+        case 'confirm-password':
+            if (field.hasAttribute('required')) {
+                const password = form.querySelector('#' + (form.id === 'edit-cashier-form' ? 'edit-password' : 'password')).value;
+                const feedback = form.querySelector('.confirm-password-feedback');
+                feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+                if (!field.value.trim()) {
+                    isValid = false;
+                    message = 'Confirm password is required';
+                    feedback.classList.add('text-red-600');
+                    feedback.textContent = message;
+                } else if (field.value !== password) {
+                    isValid = false;
+                    message = 'Passwords do not match';
+                    feedback.classList.add('text-red-600');
+                    feedback.textContent = message;
+                } else {
+                    feedback.classList.add('text-green-600');
+                    feedback.textContent = 'Passwords match';
+                }
+            }
+            break;
+    }
+
+    if (field.value.trim() !== '' && field.name !== 'username' && field.name !== 'password' && field.name !== 'confirm-password') {
+        if (isValid) {
+            field.classList.add('field-success');
+            if (message) {
+                feedback.textContent = message;
+                feedback.className = 'field-feedback mt-2 text-sm text-green-600';
+                feedback.classList.remove('hidden');
+            }
+        } else {
+            field.classList.add('field-error');
+            feedback.textContent = message;
+            feedback.className = 'field-feedback mt-2 text-sm text-red-600';
+            feedback.classList.remove('hidden');
         }
+    }
+
+    return isValid;
+}
 
         function checkPasswordStrength(password) {
             let score = 0;
@@ -1177,7 +1300,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             const inputs = form.querySelectorAll('input, select');
             const submitBtn = form.querySelector('[type="submit"]');
             let isValid = true;
-        
+            
             inputs.forEach(input => {
                 if (input.hasAttribute('required') || input.value.trim()) {
                     if (!validateField(input, form)) {
@@ -1188,13 +1311,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     }
                 }
             });
-        
-            // Additional check for username availability
+            
+            // Check username availability
             const usernameFeedback = form.querySelector('.username-feedback');
             if (usernameFeedback && usernameFeedback.classList.contains('text-red-600')) {
                 isValid = false;
             }
-        
+            
+            // Check phone number availability
+            const phoneFeedback = form.querySelector('.phone-feedback');
+            if (phoneFeedback && phoneFeedback.classList.contains('text-red-600')) {
+                isValid = false;
+            }
+            
             submitBtn.disabled = !isValid;
         }
 
@@ -1354,12 +1483,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
                         checkUsernameAvailability(input.value, form, cashierId);
                     }
+                    if (input.name === 'phone') {
+                        const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
+                        checkPhoneAvailability(input.value, form, cashierId);
+                    }
                 });
                 input.addEventListener('blur', () => {
                     validateField(input, form);
                     if (input.name === 'username') {
                         const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
                         checkUsernameAvailability(input.value, form, cashierId);
+                    }
+                    if (input.name === 'phone') {
+                        const cashierId = form.id === 'edit-cashier-form' ? document.getElementById('edit-cashier-id').value : null;
+                        checkPhoneAvailability(input.value, form, cashierId);
                     }
                 });
             });
