@@ -544,6 +544,8 @@ require_once 'cashier_auth.php';
             categoryBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const category = btn.dataset.category;
+                    console.log('Category button clicked:', btn.dataset.category);
+                    console.log('Category  clicked:', category);
                     renderMenuItems(category, '');
                     
                     // Update active button style
