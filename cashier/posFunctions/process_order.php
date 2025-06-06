@@ -1,6 +1,11 @@
 <?php
 require_once '../../db_connect.php';
 
+// Set the default timezone to Asia/Manila
+date_default_timezone_set('Asia/Manila');
+// Get the current datetime
+$currentDateTime = date('Y-m-d H:i:s');
+
 // Get the raw POST data
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
@@ -23,14 +28,16 @@ try {
             discount_price, 
             amount_paid,
             amount_change,
-            sales_type
+            sales_type,
+            created_at
         ) VALUES (
             :total_price, 
             :discount_type, 
             :discount_price,
             :amount_paid,
             :amount_change,
-            'walk-in'
+            'walk-in',
+            :created_at
         )
     ");
     
@@ -39,7 +46,8 @@ try {
         ':discount_type' => $data['discount_type'] ?? 'none',
         ':discount_price' => $data['discount_price'] ?? 0,
         ':amount_paid' => $data['amount_paid'],
-        ':amount_change' => $data['amount_change']
+        ':amount_change' => $data['amount_change'],
+        ':created_at' => $currentDateTime
     ]);
     
     $sales_id = $conn->lastInsertId();
