@@ -746,9 +746,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex items-center justify-center space-x-3 mb-6">
-                    <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
-                        <span class="text-warm-cream font-playfair font-bold text-xl">CL</span>
-                    </div>
                     <div>
                         <h3 class="font-playfair font-bold text-xl">Caffè Lilio</h3>
                         <p class="text-xs tracking-widest opacity-75">RISTORANTE</p>
