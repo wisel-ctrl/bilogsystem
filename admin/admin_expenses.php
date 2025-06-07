@@ -387,8 +387,18 @@
                 },
                 columns: [
                     { data: 'created_at' },
-                    { data: 'expense_name' },
-                    { data: 'expense_category' },
+                    { 
+                        data: 'expense_name',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
+                    { 
+                        data: 'expense_category',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
                     { 
                         data: 'amount',
                         render: function(data, type, row) {
@@ -417,11 +427,36 @@
 
         // Add expense
         document.getElementById('save-expense').addEventListener('click', function() {
+            const name = document.getElementById('expense-name').value.trim();
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
+            }
+            
+            if (!category) {
+                alert('Category is required');
+                return;
+            }
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
+
             const formData = {
-                expense_name: document.getElementById('expense-name').value,
-                expense_category: document.getElementById('expense-category').value,
-                amount: document.getElementById('expense-amount').value,
-                notes: document.getElementById('expense-notes').value
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('expense-notes').value.trim()
             };
 
             fetch('expense_handlers/add_expense.php', {
@@ -470,12 +505,37 @@
 
         // Update expense
         document.getElementById('update-expense').addEventListener('click', function() {
+            const name = document.getElementById('edit-expense-name').value.trim();
+            const category = document.getElementById('edit-expense-category').value;
+            const amount = parseFloat(document.getElementById('edit-expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
+            }
+            
+            if (!category) {
+                alert('Category is required');
+                return;
+            }
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
+
             const formData = {
                 expense_id: document.getElementById('edit-expense-id').value,
-                expense_name: document.getElementById('edit-expense-name').value,
-                expense_category: document.getElementById('edit-expense-category').value,
-                amount: document.getElementById('edit-expense-amount').value,
-                notes: document.getElementById('edit-expense-notes').value
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('edit-expense-notes').value.trim()
             };
 
             fetch('expense_handlers/update_expense.php', {
