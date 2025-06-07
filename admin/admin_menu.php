@@ -1045,6 +1045,18 @@
 
         // Initialize DataTable
         $(document).ready(function() {
+            // Destroy existing DataTables instances if they exist
+            if ($.fn.DataTable.isDataTable('#menu-table')) {
+                $('#menu-table').DataTable().destroy();
+            }
+            if ($.fn.DataTable.isDataTable('#packages-table')) {
+                $('#packages-table').DataTable().destroy();
+            }
+
+            // Clear the table contents
+            $('#menu-table tbody').empty();
+            $('#packages-table tbody').empty();
+
             var table = $('#menu-table').DataTable({
                 responsive: true,
                 ajax: {
@@ -1156,7 +1168,6 @@
                 }
             });
 
-            // Initialize Packages Table with similar styling
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
                 ajax: {
@@ -1268,12 +1279,21 @@
                 }
             });
 
-            // You might want to add this to handle edit button clicks
+            // Handle edit button clicks
             $('#menu-table').on('click', '.edit-dish-btn', function() {
                 var dishId = $(this).data('id');
-                // Handle edit functionality here
                 openEditDishModal(dishId);
-                console.log('Edit dish with ID:', dishId);
+            });
+
+            // Handle package buttons
+            $('#packages-table').on('click', '.edit-package-btn', function() {
+                var packageId = $(this).data('id');
+                openEditPackageModal(packageId);
+            });
+
+            $('#packages-table').on('click', '.view-package-btn', function() {
+                var packageId = $(this).data('id');
+                openViewPackageModal(packageId);
             });
         });
 
