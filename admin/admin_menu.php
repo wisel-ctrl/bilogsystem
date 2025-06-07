@@ -128,25 +128,6 @@
         header {
             z-index: 50;
         }
-
-        /* Add these styles to your existing style section */
-        .blur-effect {
-            filter: blur(5px);
-            transition: filter 0.3s ease;
-            pointer-events: none;
-        }
-
-        #dish-modal {
-            z-index: 1000 !important;
-        }
-
-        .flex-1 {
-            position: static;
-        }
-
-        #sidebar {
-            z-index: 40;
-        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -309,18 +290,16 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
-                        <div class="p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
                                 <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                             <form id="dish-form" class="space-y-6">
                                 <!-- Dish Name -->
                                 <div>
@@ -334,7 +313,6 @@
                                     <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish description"></textarea>
                                 </div>
 
-                                <!-- Dish Category -->
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
                                     <select id="dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
@@ -403,35 +381,31 @@
                                         <span>Add Another Ingredient</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div class="p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                    Cancel
-                                </button>
-                                <button type="submit" form="dish-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Create Dish
-                                </button>
-                            </div>
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Create Dish
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- Package Modal -->
-                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
-                        <div class="p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+    
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
                                 <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
                                 <div>
@@ -496,35 +470,32 @@
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div class="p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                    Cancel
-                                </button>
-                                <button type="submit" form="package-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Create Package
-                                </button>
-                            </div>
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Create Package
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
 
                 <!-- Edit Dish Modal -->
-                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
-                        <div class="p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
                                 <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                             <form id="edit-dish-form" class="space-y-6">
                                 <input type="hidden" id="edit-dish-id">
                                 
@@ -609,35 +580,32 @@
                                         <span>Add Another Ingredient</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div class="p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                    Cancel
-                                </button>
-                                <button type="submit" form="edit-dish-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Update Dish
-                                </button>
-                            </div>
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Update Dish
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
 
                 <!-- View Package Modal -->
-                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
-                        <div class="p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
                                 <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                             <div class="space-y-6">
                                 <!-- Package Info -->
                                 <div class="grid grid-cols-2 gap-4">
@@ -675,32 +643,29 @@
                                         <!-- Dishes will be grouped by category here -->
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end">
-                                <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Close
-                                </button>
+                                <!-- Close Button -->
+                                <div class="flex justify-end pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
-                        <div class="p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
                                 <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                             <form id="edit-package-form" class="space-y-6">
                                 <input type="hidden" id="edit-package-id">
                                 
@@ -757,18 +722,17 @@
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div class="p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                    Cancel
-                                </button>
-                                <button type="submit" form="edit-package-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Update Package
-                                </button>
-                            </div>
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Update Package
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -910,7 +874,6 @@
 
         // Open modal
         addDishBtn.addEventListener('click', async () => {
-            addBlurEffect();
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
@@ -940,7 +903,6 @@
 
         // Close modal functions
         const closeModalFunction = () => {
-            removeBlurEffect();
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto'; // Re-enable background scrolling
             // Reset form
@@ -1711,7 +1673,6 @@
         // Function to open view package modal
         async function openViewPackageModal(packageId) {
             try {
-                addBlurEffect();
                 // Fetch package data
                 const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
                 if (!response.ok) {
@@ -1812,8 +1773,8 @@
             }
         }
 
+        // Close view modal functions
         const closeViewPackageModalFunction = () => {
-            removeBlurEffect();
             viewPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         };
@@ -1838,7 +1799,6 @@
         // Function to open edit package modal
         async function openEditPackageModal(packageId) {
             try {
-                addBlurEffect();
                 // Fetch package data
                 const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
                 if (!response.ok) {
@@ -1855,6 +1815,29 @@
                 document.getElementById('edit-package-status').value = packageData.status;
                 document.getElementById('edit-package-type').value = packageData.type;
                 
+                // Clear and populate dishes
+                editPackageDishesContainer.innerHTML = '';
+                
+                // First fetch all available dishes
+                const dishesResponse = await fetch('menu_handlers/get_dishesForPackageModal.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'query=SELECT dish_id, dish_name, dish_category, price, capital FROM `dishes_tb` WHERE status = "active"'
+                });
+                
+                const allDishes = await dishesResponse.json();
+                
+                if (packageData.dishes && packageData.dishes.length > 0) {
+                    packageData.dishes.forEach(dish => {
+                        addDishRowToEditPackageModal(allDishes, dish.dish_id, dish.quantity);
+                    });
+                } else {
+                    // Add at least one empty row
+                    addDishRowToEditPackageModal(allDishes);
+                }
+                
                 // Show modal
                 editPackageModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
@@ -1864,8 +1847,60 @@
             }
         }
 
+        // Function to add dish row to edit package modal
+        function addDishRowToEditPackageModal(allDishes, selectedId = '', quantity = 1) {
+            const dishRow = document.createElement('div');
+            dishRow.className = 'dish-row flex items-center space-x-2 mb-2';
+            
+            // Group dishes by category
+            const categoryMap = {};
+            allDishes.forEach(dish => {
+                if (!categoryMap[dish.dish_category]) {
+                    categoryMap[dish.dish_category] = [];
+                }
+                categoryMap[dish.dish_category].push(dish);
+            });
+            
+            // Create select element with optgroups
+            const select = document.createElement('select');
+            select.className = 'flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-select';
+            select.innerHTML = '<option value="">Select Dish</option>';
+            
+            // Add optgroups for each category
+            for (const [category, dishes] of Object.entries(categoryMap)) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = category;
+                
+                dishes.forEach(dish => {
+                    const option = document.createElement('option');
+                    option.value = dish.dish_id;
+                    option.textContent = `${dish.dish_name} (₱${dish.price})`;
+                    option.dataset.price = dish.price;
+                    option.dataset.capital = dish.capital;
+                    if (dish.dish_id === selectedId) {
+                        option.selected = true;
+                    }
+                    optgroup.appendChild(option);
+                });
+                
+                select.appendChild(optgroup);
+            }
+            
+            dishRow.innerHTML = `
+                <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-quantity" min="1" value="${quantity}">
+                <button type="button" class="text-red-500 hover:text-red-700 remove-dish">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            // Insert select at the beginning
+            dishRow.insertBefore(select, dishRow.firstChild);
+            
+            editPackageDishesContainer.appendChild(dishRow);
+        }
+
+        // Close modal functions
         const closeEditPackageModalFunction = () => {
-            removeBlurEffect();
             editPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
             document.getElementById('edit-package-form').reset();
@@ -2026,50 +2061,6 @@
             preventNegativeInputs('edit-dish-price');
             preventNegativeInputs('edit-dish-capital');
         });
-
-        // Add these functions to your existing JavaScript
-        function addBlurEffect() {
-            document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
-        }
-
-        function removeBlurEffect() {
-            document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
-        }
-
-        // Update your existing modal open/close functions
-        document.getElementById('add-dish-btn').addEventListener('click', async () => {
-            addBlurEffect();
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            // ... rest of your existing code ...
-        });
-
-        const closeModalFunction = () => {
-            removeBlurEffect();
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            // ... rest of your existing code ...
-        };
-
-        // Update package modal functions
-        document.getElementById('add-package-btn').addEventListener('click', async () => {
-            addBlurEffect();
-            packageModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            await populateDishes();
-        });
-
-        const closePackageModalFunction = () => {
-            removeBlurEffect();
-            packageModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            document.getElementById('package-form').reset();
-            const initialDish = dishesContainer.querySelector('.dish-row');
-            dishesContainer.innerHTML = '';
-            dishesContainer.appendChild(initialDish.cloneNode(true));
-        };
 
     </script>
 </body>
