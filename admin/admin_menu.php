@@ -529,6 +529,148 @@
                     </div>
                 </div>
 
+                <!-- View Package Modal -->
+                <div id="view-package-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-script">Package Details</h3>
+                                <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <div class="space-y-6">
+                                <!-- Package Info -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1">Package Name</label>
+                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1">Type</label>
+                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1">Price</label>
+                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1">Status</label>
+                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown">-</p>
+                                    </div>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1">Description</label>
+                                    <p id="view-package-description" class="text-gray-700">-</p>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dishes Included</label>
+                                    <div id="view-dishes-container" class="space-y-4">
+                                        <!-- Dishes will be grouped by category here -->
+                                    </div>
+                                </div>
+
+                                <!-- Close Button -->
+                                <div class="flex justify-end pt-4 border-t border-gray-200">
+                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Package Modal -->
+                <div id="edit-package-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-script">Edit Package</h3>
+                                <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <form id="edit-package-form" class="space-y-6">
+                                <input type="hidden" id="edit-package-id">
+                                
+                                <!-- Package Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Package Name</label>
+                                    <input type="text" id="edit-package-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package name" required>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
+                                    <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package description"></textarea>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
+                                        <input type="number" id="edit-package-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
+                                        <input type="number" id="edit-package-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Status and Type -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
+                                        <select id="edit-package-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                            <option value="active">Available</option>
+                                            <option value="unavailable">Unavailable</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2">Menu Type</label>
+                                        <select id="edit-package-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                            <option value="buffet">Buffet</option>
+                                            <option value="per_plate">Sit - On's</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dishes in Package</label>
+                                    <div id="edit-package-dishes-container">
+                                        <!-- Dishes will be populated here -->
+                                    </div>
+                                    <button type="button" id="add-edit-package-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Dish</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                                    <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                        Update Package
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -1104,9 +1246,6 @@
         const addDishesBtn = document.getElementById('add-dish');
         const dishesContainer = document.getElementById('dishes-container');
 
-        // Open modal
-        // Add this code to your existing JavaScript
-
         // Function to fetch and populate dishes
         async function populateDishes() {
             try {
@@ -1375,6 +1514,7 @@
                 var packageId = $(this).data('id');
                 // Handle edit functionality here
                 console.log('Edit package with ID:', packageId);
+                openEditPackageModal(packageId);
             });
 
             // Handle view package button clicks
@@ -1382,7 +1522,367 @@
                 var packageId = $(this).data('id');
                 // Handle view functionality here
                 console.log('View package with ID:', packageId);
+                openViewPackageModal(packageId);
             });
+        });
+
+        // View Package Modal functionality
+        const viewPackageModal = document.getElementById('view-package-modal');
+        const closeViewPackageModal = document.getElementById('close-view-package-modal');
+        const closeViewPackageBtn = document.getElementById('close-view-package-btn');
+
+        // Function to open view package modal
+        async function openViewPackageModal(packageId) {
+            try {
+                // Fetch package data
+                const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const packageData = await response.json();
+                
+                // Populate basic info
+                document.getElementById('view-package-name').textContent = packageData.package_name;
+                document.getElementById('view-package-description').textContent = packageData.description || 'No description available';
+                document.getElementById('view-package-price').textContent = '₱' + parseFloat(packageData.price).toFixed(2);
+                
+                // Set type
+                const typeText = packageData.type === 'buffet' ? 'Buffet' : 'Per Plate';
+                document.getElementById('view-package-type').textContent = typeText;
+                
+                // Set status
+                const statusText = packageData.status === 'active' ? 'Available' : 'Unavailable';
+                const statusClass = packageData.status === 'active' ? 'text-green-600' : 'text-red-600';
+                document.getElementById('view-package-status').textContent = statusText;
+                document.getElementById('view-package-status').className = `text-lg font-semibold ${statusClass}`;
+                
+                // Group dishes by category
+                const dishesContainer = document.getElementById('view-dishes-container');
+                dishesContainer.innerHTML = '';
+                
+                if (packageData.dishes && packageData.dishes.length > 0) {
+                    const categories = {};
+                    
+                    // Group dishes by category
+                    packageData.dishes.forEach(dish => {
+                        if (!categories[dish.dish_category]) {
+                            categories[dish.dish_category] = [];
+                        }
+                        categories[dish.dish_category].push(dish);
+                    });
+                    
+                    // Define the order of categories (appetizers first, desserts last)
+                    const categoryOrder = [
+                        'house-salad', 'italian-dish', 'spanish-dish', // Appetizers/salads
+                        'pizza', 'burgers', 'pasta', 'pasta_caza', 'main-course', // Main courses
+                        'desserts', 'drinks', 'coffee' // Desserts/drinks
+                    ];
+                    
+                    // Sort categories according to our defined order
+                    const sortedCategories = Object.keys(categories).sort((a, b) => {
+                        const aIndex = categoryOrder.indexOf(a);
+                        const bIndex = categoryOrder.indexOf(b);
+                        return aIndex - bIndex;
+                    });
+                    
+                    // Create sections for each category
+                    sortedCategories.forEach(category => {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'mb-4';
+                        
+                        // Convert category name to display format
+                        const displayCategory = category.replace(/-/g, ' ').replace(/_/g, ' ');
+                        const categoryTitle = document.createElement('h4');
+                        categoryTitle.className = 'text-lg font-semibold text-deep-brown mb-2 border-b border-accent-brown pb-1';
+                        categoryTitle.textContent = displayCategory.charAt(0).toUpperCase() + displayCategory.slice(1);
+                        categoryDiv.appendChild(categoryTitle);
+                        
+                        // Create list of dishes
+                        const dishList = document.createElement('ul');
+                        dishList.className = 'space-y-2';
+                        
+                        categories[category].forEach(dish => {
+                            const dishItem = document.createElement('li');
+                            dishItem.className = 'flex justify-between items-center';
+                            
+                            const dishName = document.createElement('span');
+                            dishName.className = 'text-rich-brown';
+                            dishName.textContent = dish.dish_name;
+                            
+                            const dishQuantity = document.createElement('span');
+                            dishQuantity.className = 'bg-warm-cream px-2 py-1 rounded text-deep-brown text-sm';
+                            dishQuantity.textContent = `x${dish.quantity}`;
+                            
+                            dishItem.appendChild(dishName);
+                            dishItem.appendChild(dishQuantity);
+                            dishList.appendChild(dishItem);
+                        });
+                        
+                        categoryDiv.appendChild(dishList);
+                        dishesContainer.appendChild(categoryDiv);
+                    });
+                } else {
+                    dishesContainer.innerHTML = '<p class="text-gray-500">No dishes in this package.</p>';
+                }
+                
+                // Show modal
+                viewPackageModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error fetching package data:', error);
+                alert('Failed to load package details');
+            }
+        }
+
+        // Close view modal functions
+        const closeViewPackageModalFunction = () => {
+            viewPackageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeViewPackageModal.addEventListener('click', closeViewPackageModalFunction);
+        closeViewPackageBtn.addEventListener('click', closeViewPackageModalFunction);
+
+        // Close modal when clicking outside
+        viewPackageModal.addEventListener('click', (e) => {
+            if (e.target === viewPackageModal) {
+                closeViewPackageModalFunction();
+            }
+        });
+
+        // Edit Package Modal functionality
+        const editPackageModal = document.getElementById('edit-package-modal');
+        const closeEditPackageModal = document.getElementById('close-edit-package-modal');
+        const cancelEditPackage = document.getElementById('cancel-edit-package');
+        const addEditPackageDishBtn = document.getElementById('add-edit-package-dish');
+        const editPackageDishesContainer = document.getElementById('edit-package-dishes-container');
+
+        // Function to open edit package modal
+        async function openEditPackageModal(packageId) {
+            try {
+                // Fetch package data
+                const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const packageData = await response.json();
+                
+                // Populate form fields
+                document.getElementById('edit-package-id').value = packageData.package_id;
+                document.getElementById('edit-package-name').value = packageData.package_name;
+                document.getElementById('edit-package-description').value = packageData.description || '';
+                document.getElementById('edit-package-price').value = packageData.price;
+                document.getElementById('edit-package-capital').value = packageData.capital;
+                document.getElementById('edit-package-status').value = packageData.status;
+                document.getElementById('edit-package-type').value = packageData.type;
+                
+                // Clear and populate dishes
+                editPackageDishesContainer.innerHTML = '';
+                
+                // First fetch all available dishes
+                const dishesResponse = await fetch('menu_handlers/get_dishesForPackageModal.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'query=SELECT dish_id, dish_name, dish_category, price, capital FROM `dishes_tb` WHERE status = "active"'
+                });
+                
+                const allDishes = await dishesResponse.json();
+                
+                if (packageData.dishes && packageData.dishes.length > 0) {
+                    packageData.dishes.forEach(dish => {
+                        addDishRowToEditPackageModal(allDishes, dish.dish_id, dish.quantity);
+                    });
+                } else {
+                    // Add at least one empty row
+                    addDishRowToEditPackageModal(allDishes);
+                }
+                
+                // Show modal
+                editPackageModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error fetching package data:', error);
+                alert('Failed to load package data for editing');
+            }
+        }
+
+        // Function to add dish row to edit package modal
+        function addDishRowToEditPackageModal(allDishes, selectedId = '', quantity = 1) {
+            const dishRow = document.createElement('div');
+            dishRow.className = 'dish-row flex items-center space-x-2 mb-2';
+            
+            // Group dishes by category
+            const categoryMap = {};
+            allDishes.forEach(dish => {
+                if (!categoryMap[dish.dish_category]) {
+                    categoryMap[dish.dish_category] = [];
+                }
+                categoryMap[dish.dish_category].push(dish);
+            });
+            
+            // Create select element with optgroups
+            const select = document.createElement('select');
+            select.className = 'flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-select';
+            select.innerHTML = '<option value="">Select Dish</option>';
+            
+            // Add optgroups for each category
+            for (const [category, dishes] of Object.entries(categoryMap)) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = category;
+                
+                dishes.forEach(dish => {
+                    const option = document.createElement('option');
+                    option.value = dish.dish_id;
+                    option.textContent = `${dish.dish_name} (₱${dish.price})`;
+                    option.dataset.price = dish.price;
+                    option.dataset.capital = dish.capital;
+                    if (dish.dish_id === selectedId) {
+                        option.selected = true;
+                    }
+                    optgroup.appendChild(option);
+                });
+                
+                select.appendChild(optgroup);
+            }
+            
+            dishRow.innerHTML = `
+                <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-quantity" min="1" value="${quantity}">
+                <button type="button" class="text-red-500 hover:text-red-700 remove-dish">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            // Insert select at the beginning
+            dishRow.insertBefore(select, dishRow.firstChild);
+            
+            editPackageDishesContainer.appendChild(dishRow);
+        }
+
+        // Close modal functions
+        const closeEditPackageModalFunction = () => {
+            editPackageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('edit-package-form').reset();
+            editPackageDishesContainer.innerHTML = '';
+        };
+
+        closeEditPackageModal.addEventListener('click', closeEditPackageModalFunction);
+        cancelEditPackage.addEventListener('click', closeEditPackageModalFunction);
+
+        // Close modal when clicking outside
+        editPackageModal.addEventListener('click', (e) => {
+            if (e.target === editPackageModal) {
+                closeEditPackageModalFunction();
+            }
+        });
+
+        // Add new dish row to edit package modal
+        addEditPackageDishBtn.addEventListener('click', async () => {
+            const dishesResponse = await fetch('menu_handlers/get_dishesForPackageModal.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'query=SELECT dish_id, dish_name, dish_category, price, capital FROM `dishes_tb` WHERE status = "active"'
+            });
+            
+            const allDishes = await dishesResponse.json();
+            addDishRowToEditPackageModal(allDishes);
+        });
+
+        // Remove dish row from edit package modal
+        editPackageDishesContainer.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-dish')) {
+                e.target.closest('.dish-row').remove();
+                calculateEditPackageTotals();
+            }
+        });
+
+        // Function to calculate totals for edit package
+        function calculateEditPackageTotals() {
+            let totalPrice = 0;
+            let totalCapital = 0;
+            
+            editPackageDishesContainer.querySelectorAll('.dish-row').forEach(row => {
+                const select = row.querySelector('.dish-select');
+                const quantityInput = row.querySelector('.dish-quantity');
+                
+                if (select && select.value && quantityInput) {
+                    const selectedOption = select.options[select.selectedIndex];
+                    const price = parseFloat(selectedOption.dataset.price) || 0;
+                    const capital = parseFloat(selectedOption.dataset.capital) || 0;
+                    const quantity = parseInt(quantityInput.value) || 1;
+                    
+                    totalPrice += price * quantity;
+                    totalCapital += capital * quantity;
+                }
+            });
+            
+            document.getElementById('edit-package-price').value = totalPrice.toFixed(2);
+            document.getElementById('edit-package-capital').value = totalCapital.toFixed(2);
+        }
+
+        // Update totals when dish selection or quantity changes
+        editPackageDishesContainer.addEventListener('change', (e) => {
+            if (e.target.classList.contains('dish-select') || e.target.classList.contains('dish-quantity')) {
+                calculateEditPackageTotals();
+            }
+        });
+
+        // Handle edit package form submission
+        document.getElementById('edit-package-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect package data
+            const packageData = {
+                package_id: document.getElementById('edit-package-id').value,
+                name: document.getElementById('edit-package-name').value,
+                description: document.getElementById('edit-package-description').value,
+                price: document.getElementById('edit-package-price').value,
+                capital: document.getElementById('edit-package-capital').value,
+                type: document.getElementById('edit-package-type').value,
+                status: document.getElementById('edit-package-status').value,
+                dishes: []
+            };
+            
+            // Collect dish data
+            editPackageDishesContainer.querySelectorAll('.dish-row').forEach(row => {
+                const select = row.querySelector('.dish-select');
+                const quantityInput = row.querySelector('.dish-quantity');
+                
+                if (select && select.value && quantityInput) {
+                    packageData.dishes.push({
+                        dish_id: select.value,
+                        quantity: quantityInput.value
+                    });
+                }
+            });
+            
+            try {
+                const response = await fetch('menu_handlers/update_package.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(packageData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Package updated successfully!');
+                    closeEditPackageModalFunction();
+                    // Refresh the packages table
+                    $('#packages-table').DataTable().ajax.reload(null, false);
+                } else {
+                    alert('Error updating package: ' + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to update package. Please try again.');
+            }
         });
 
     </script>
