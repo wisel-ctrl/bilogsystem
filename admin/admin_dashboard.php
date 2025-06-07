@@ -245,7 +245,7 @@ header {
                         <i class="fas fa-calendar-alt mr-2"></i>
                         <span id="current-date"></span>
                     </div>
-                    <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-4">
                         <div class="relative">
                             <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
                                 <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
