@@ -224,61 +224,6 @@
         header {
             z-index: 50;
         }
-
-        /* Add this to your existing style section */
-        /* Improved z-index layering */
-        .modal-overlay {
-            z-index: 9999 !important;
-        }
-
-        #dish-modal, #package-modal, #edit-dish-modal, #edit-package-modal, #view-package-modal {
-            z-index: 9999 !important;
-        }
-
-        /* Ensure header stays below modals */
-        header {
-            z-index: 50;
-        }
-
-        /* Improved blur effect */
-        .blur-effect {
-            filter: blur(4px);
-            transition: filter 0.3s ease;
-            pointer-events: none;
-        }
-
-        /* Modal container improvements */
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        /* Ensure modals are properly layered */
-        .modal-wrapper {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-wrapper.show {
-            opacity: 1;
-        }
-
-        .modal-wrapper.show .modal-container {
-            opacity: 1;
-            transform: translateY(0);
-        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -441,7 +386,7 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="modal-wrapper hidden">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
                         <div class="modal-header p-6">
                             <div class="flex items-center justify-between mb-6">
@@ -551,7 +496,7 @@
                 </div>
     
                 <!-- Package Modal -->
-                <div id="package-modal" class="modal-wrapper hidden">
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
                         <div class="modal-header p-6">
                             <div class="flex items-center justify-between mb-6">
@@ -644,18 +589,16 @@
                 </div>
 
                 <!-- Edit Dish Modal -->
-                <div id="edit-dish-modal" class="modal-wrapper hidden">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
-                        <div class="modal-header p-6">
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
                                 <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="modal-body p-6">
                             <form id="edit-dish-form" class="space-y-6">
                                 <input type="hidden" id="edit-dish-id">
                                 
@@ -755,19 +698,77 @@
                     </div>
                 </div>
 
+                <!-- View Package Modal -->
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
+                                <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <div class="space-y-6">
+                                <!-- Package Info -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
+                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Type</label>
+                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
+                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
+                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
+                                    <p id="view-package-description" class="text-gray-700 font-baskerville">-</p>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes Included</label>
+                                    <div id="view-dishes-container" class="space-y-4">
+                                        <!-- Dishes will be grouped by category here -->
+                                    </div>
+                                </div>
+
+                                <!-- Close Button -->
+                                <div class="flex justify-end pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="modal-wrapper hidden">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
-                        <div class="modal-header p-6">
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
                                 <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="modal-body p-6">
                             <form id="edit-package-form" class="space-y-6">
                                 <input type="hidden" id="edit-package-id">
                                 
@@ -835,69 +836,6 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- View Package Modal -->
-                <div id="view-package-modal" class="modal-wrapper hidden">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
-                        <div class="modal-header p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
-                                <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                                    <i class="fas fa-times text-xl"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="modal-body p-6">
-                            <div class="space-y-6">
-                                <!-- Package Info -->
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
-                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Type</label>
-                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
-                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
-                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
-                                    </div>
-                                </div>
-
-                                <!-- Package Description -->
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                                    <p id="view-package-description" class="text-gray-700 font-baskerville">-</p>
-                                </div>
-
-                                <!-- Dishes Section -->
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes Included</label>
-                                    <div id="view-dishes-container" class="space-y-4">
-                                        <!-- Dishes will be grouped by category here -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer px-6 py-4 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Close
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1039,11 +977,15 @@
 
         // Open modal with blur effects
         addDishBtn.addEventListener('click', async () => {
-            // Add blur to entire content
-            document.body.classList.add('blur-effect');
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
             
             modal.classList.remove('hidden');
-            modal.classList.add('show');
+            setTimeout(() => {
+                modal.querySelector('.modal-container').style.opacity = '1';
+                modal.querySelector('.modal-container').style.transform = 'translateY(0)';
+            }, 50);
             
             // Fetch and populate ingredients
             const ingredients = await fetchIngredients();
@@ -1071,10 +1013,13 @@
 
         // Close modal functions with blur effects
         const closeModalFunction = () => {
-            // Remove blur from content
-            document.body.classList.remove('blur-effect');
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            modal.classList.remove('show');
+            const modal = document.getElementById('dish-modal');
+            modal.querySelector('.modal-container').style.opacity = '0';
+            modal.querySelector('.modal-container').style.transform = 'translateY(20px)';
             setTimeout(() => {
                 modal.classList.add('hidden');
                 // Reset form
@@ -1629,23 +1574,30 @@
 
         // Initialize when modal opens
         addPackageBtn.addEventListener('click', async () => {
-            // Add blur to entire content
-            document.body.classList.add('blur-effect');
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
             
             packageModal.classList.remove('hidden');
-            packageModal.classList.add('show');
+            setTimeout(() => {
+                packageModal.querySelector('.modal-container').style.opacity = '1';
+                packageModal.querySelector('.modal-container').style.transform = 'translateY(0)';
+            }, 50);
             
             await populateDishes();
         });
 
-        // Close package modal functions with blur effects
+        // Close modal functions with blur effects
         const closePackageModalFunction = () => {
-            // Remove blur from content
-            document.body.classList.remove('blur-effect');
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            packageModal.classList.remove('show');
+            const modal = document.getElementById('package-modal');
+            modal.querySelector('.modal-container').style.opacity = '0';
+            modal.querySelector('.modal-container').style.transform = 'translateY(20px)';
             setTimeout(() => {
-                packageModal.classList.add('hidden');
+                modal.classList.add('hidden');
                 // Reset form
                 document.getElementById('package-form').reset();
                 const initialDish = dishesContainer.querySelector('.dish-row');
