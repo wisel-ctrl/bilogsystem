@@ -127,15 +127,15 @@
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
             <div class="p-6 border-b border-warm-cream/20">
                 <div>
-                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                    </div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                </div>
             </div>
             
             <nav class="mt-8 px-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-chart-pie w-5"></i>
                             <span class="sidebar-text font-baskerville">Dashboard</span>
                         </a>
@@ -147,7 +147,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Menu Management</span>
                         </a>
@@ -175,7 +175,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
             <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
                 <div class="flex items-center justify-between">
@@ -183,7 +183,7 @@
                         <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Menu Management</h2>
                     </div>
                     <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
                         <i class="fas fa-calendar-alt mr-2"></i>
