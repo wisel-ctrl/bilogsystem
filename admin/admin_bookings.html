@@ -33,6 +33,33 @@
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
         
+        /* Add blur effect class */
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* Add this to your existing styles */
+        #booking-modal, #decline-modal, #success-modal {
+            z-index: 1000 !important; /* Higher than anything else */
+        }
+        
+        /* Ensure the main content doesn't create stacking context */
+        .flex-1 {
+            position: static;
+        }
+        
+        /* Sidebar should have lower z-index than modals */
+        #sidebar {
+            z-index: 40;
+        }
+        
+        /* Header should have lower z-index than modals */
+        header {
+            z-index: 50;
+        }
+
         .chart-container {
             position: relative;
             height: 300px;
@@ -118,6 +145,55 @@
         
         .sidebar-link:hover::after {
             width: 100%;
+        }
+
+        /* Add this to your existing styles */
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        /* Improved scrollbar for modal body */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
         }
     </style>
     <script>
@@ -343,15 +419,15 @@
 
         <!-- MODAL SECTION -->
          <!-- Booking Details Modal -->
-                <div id="booking-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-                    <div class="dashboard-card rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <div id="booking-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+                    <div class="dashboard-card rounded-lg max-w-md w-full modal-container">
+                        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-deep-brown">Booking Details</h3>
                             <button onclick="closeBookingModal()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
                                 <i class="fas fa-times text-xl"></i>
                             </button>
                         </div>
-                        <div class="px-6 py-4 space-y-4">
+                        <div class="modal-body px-6 py-4 space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Booking ID</label>
                                 <p id="modal-booking-id" class="text-sm text-gray-900 bg-gray-50 p-2 rounded"></p>
@@ -385,7 +461,7 @@
                                 <p id="modal-notes" class="text-sm text-gray-900 bg-gray-50 p-3 rounded"></p>
                             </div>
                         </div>
-                        <div class="px-6 py-4 border-t border-gray-200 flex space-x-3">
+                        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
                             <button onclick="acceptBooking()" class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium">
                                 <i class="fas fa-check mr-2"></i>Accept
                             </button>
@@ -397,19 +473,19 @@
                 </div>
 
                 <!-- Decline Reason Modal -->
-                <div id="decline-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-                    <div class="dashboard-card rounded-lg max-w-md w-full">
-                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <div id="decline-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+                    <div class="dashboard-card rounded-lg max-w-md w-full modal-container">
+                        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-deep-brown">Decline Booking</h3>
                             <button onclick="closeDeclineModal()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
                                 <i class="fas fa-times text-xl"></i>
                             </button>
                         </div>
-                        <div class="px-6 py-4">
+                        <div class="modal-body px-6 py-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Reason for declining:</label>
                             <textarea id="decline-reason" rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Please provide a reason for declining this booking..."></textarea>
                         </div>
-                        <div class="px-6 py-4 border-t border-gray-200 flex space-x-3">
+                        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
                             <button onclick="closeDeclineModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-200 font-medium">
                                 Cancel
                             </button>
@@ -421,9 +497,9 @@
                 </div>
 
                 <!-- Success Modal -->
-                <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-                    <div class="dashboard-card rounded-lg max-w-sm w-full">
-                        <div class="px-6 py-4 text-center">
+                <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+                    <div class="dashboard-card rounded-lg max-w-sm w-full modal-container">
+                        <div class="modal-body px-6 py-4 text-center">
                             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                                 <i class="fas fa-check text-green-600 text-xl"></i>
                             </div>
@@ -500,6 +576,10 @@
 
         // --- Modal Functions with improved transitions ---
         function openBookingDetails(bookingId, clientName, phone, menu, price, datetime, pax, notes) {
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
             // Set modal fields
             document.getElementById('modal-booking-id').textContent = bookingId;
             document.getElementById('modal-client-name').textContent = clientName;
@@ -547,6 +627,10 @@
 
         // --- Modal Closing Functions with fade out ---
         function closeBookingModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
             const modal = document.getElementById('booking-modal');
             modal.querySelector('.dashboard-card').style.opacity = '0';
             modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
@@ -556,6 +640,10 @@
         }
 
         function closeDeclineModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
             const modal = document.getElementById('decline-modal');
             modal.querySelector('.dashboard-card').style.opacity = '0';
             modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
@@ -565,6 +653,10 @@
         }
 
         function closeSuccessModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
             const modal = document.getElementById('success-modal');
             modal.querySelector('.dashboard-card').style.opacity = '0';
             modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';

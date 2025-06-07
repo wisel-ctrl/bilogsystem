@@ -9,8 +9,8 @@
                     'accent-brown': '#A0522D'
                 },
                 fontFamily: {
-                    'serif': ['Georgia', 'serif'],
-                    'script': ['Brush Script MT', 'cursive']
+                    'playfair': ['Playfair Display', 'serif'],
+                    'baskerville': ['Libre Baskerville', 'serif']
                 }
             }
         }
@@ -31,7 +31,11 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
     <style>
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
         .chart-container {
             position: relative;
             height: 300px;
@@ -63,73 +67,122 @@
         .delay-400 {
             transition-delay: 400ms;
         }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'script': ['Brush Script MT', 'cursive']
-                    }
-                }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Improved hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+        
+        /* Card styles */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar improvements */
+        .sidebar-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #E8E0D5;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    </script>
+    </style>
 </head>
-<body class="bg-warm-cream font-serif">
+<body class="bg-warm-cream/50 font-baskerville">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-accent-brown">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                    <h1 id="cafe-title" class="text-xl font-bold text-warm-cream font-script">Cafe Lilio</h1>
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                 </div>
             </div>
             
             <nav class="mt-8 px-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="admin_dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream transition-colors duration-200">
+                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-chart-pie w-5"></i>
-                            <span class="sidebar-text">Dashboard</span>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_bookings.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-calendar-check w-5"></i>
-                            <span class="sidebar-text">Booking Requests</span>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
-                            <span class="sidebar-text">Menu Management</span>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_inventory.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-boxes w-5"></i>
-                            <span class="sidebar-text">Inventory</span>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_expenses.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-receipt w-5"></i>
-                            <span class="sidebar-text">Expenses</span>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_employee_creation.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text">Employee Creation</span>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
                         </a>
                     </li>
                 </ul>
@@ -139,37 +192,47 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-deep-brown font-script">Menu Management</h2>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Menu Management</h2>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-sm text-rich-brown">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            <span id="current-date"></span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
-                            <span class="text-sm font-medium text-deep-brown">Admin</span>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </header>
 
             <!-- Main Content Area -->
-                        <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
                 <!-- Menu Management Section -->
-                <div class="bg-white rounded-xl shadow-lg p-6 animate-on-scroll">
+                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-script">Dish Management</h3>
-                        <button id="add-dish-btn" class="bg-rich-brown hover:bg-deep-brown text-white px-6 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Dish Management</h3>
+                        <button id="add-dish-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                             <i class="fas fa-plus"></i>
-                            <span>Add New Dish</span>
+                            <span class="font-baskerville">Add New Dish</span>
                         </button>
                     </div>
 
@@ -177,14 +240,14 @@
                     <div class="overflow-x-auto">
                         <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr class="border-b-2 border-accent-brown">
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Dish ID</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Dish Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Category</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Status</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Capital</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Actions</th>
+                                <tr class="border-b-2 border-accent-brown/30">
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Capital</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,12 +257,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 mt-8 animate-on-scroll delay-100">
+                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mt-8">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-script">Menu Packages</h3>
-                        <button id="add-package-btn" class="bg-rich-brown hover:bg-deep-brown text-white px-6 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Packages</h3>
+                        <button id="add-package-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                             <i class="fas fa-plus"></i>
-                            <span>Create New Package</span>
+                            <span class="font-baskerville">Create New Package</span>
                         </button>
                     </div>
 
@@ -207,13 +270,13 @@
                     <div class="overflow-x-auto">
                         <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr class="border-b-2 border-accent-brown">
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Package ID</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Package Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Type</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Status</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Actions</th>
+                                <tr class="border-b-2 border-accent-brown/30">
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Type</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -224,11 +287,11 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-script">Create New Dish</h3>
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
                                 <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -237,19 +300,19 @@
                             <form id="dish-form" class="space-y-6">
                                 <!-- Dish Name -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Name</label>
-                                    <input type="text" id="dish-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Name</label>
+                                    <input type="text" id="dish-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish name" required>
                                 </div>
 
                                 <!-- Dish Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
-                                    <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish description"></textarea>
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Category</label>
-                                    <select id="dish-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
+                                    <select id="dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                                         <option value="">Select category</option>
                                         <option value="italian-dish">Italian Dish</option>
                                         <option value="spanish-dish">Spanish Dish</option>
@@ -268,60 +331,60 @@
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
-                                        <input type="number" id="dish-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="dish-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
-                                        <input type="number" id="dish-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="dish-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                 </div>
 
                                 <!-- Dish Image Upload -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Image</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
                                     <div class="flex items-center space-x-4">
                                         <div class="relative flex-1">
                                             <input type="file" id="dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                            <div class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
                                                 <i class="fas fa-upload mr-2"></i>
                                                 <span id="file-name">Choose an image file</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="image-preview-container" class="mt-4 hidden">
-                                        <p class="text-sm text-gray-500 mb-2">Image Preview:</p>
-                                        <img id="image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-gray-200">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
+                                        <img id="image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
                                     </div>
                                 </div>
 
                                 <!-- Ingredients Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Ingredients</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Ingredients</label>
                                     <div id="ingredients-container">
                                         <div class="ingredient-row flex items-center space-x-2 mb-2">
-                                            <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-select">
+                                            <select class="flex-1 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-select">
                                                 <option value="">Select ingredient</option>
                                                 <!-- Options will be populated by JavaScript -->
                                             </select>
-                                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0" value="">
+                                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <button type="button" id="add-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                    <button type="button" id="add-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
                                         <i class="fas fa-plus"></i>
                                         <span>Add Another Ingredient</span>
                                     </button>
                                 </div>
 
                                 <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                         Create Dish
                                     </button>
                                 </div>
@@ -330,11 +393,11 @@
                     </div>
                 </div>
     
-                <div id="package-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-script">Create New Package</h3>
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
                                 <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -343,32 +406,32 @@
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Package Name</label>
-                                    <input type="text" id="package-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package name" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Name</label>
+                                    <input type="text" id="package-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package name" required>
                                 </div>
 
                                 <!-- Package Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
-                                    <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package description"></textarea>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
                                 </div>
 
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
-                                        <input type="number" id="package-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
-                                        <input type="number" id="package-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required readonly>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required readonly>
                                     </div>
                                 </div>
 
                                 <!-- Status -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Menu Type</label>
-                                    <select id="package-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Menu Type</label>
+                                    <select id="package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
                                         <option value="buffet">Buffet</option>
                                         <option value="per_plate">Sit - On's</option>
                                     </select>
@@ -376,41 +439,41 @@
 
                                 <!-- Dishes Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Add Dishes</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Add Dishes</label>
                                     <div id="dishes-container">
                                         <div class="dish-row flex items-center space-x-2 mb-2">
-                                            <select class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-select">
+                                            <select class="flex-1 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-select">
                                                 <option value="">Select Category</option>
-                                                    <option value="italian-dish">Italian Dish</option>
-                                                    <option value="spanish-dish">Spanish Dish</option>
-                                                    <option value="house-salad">House Salad</option>
-                                                    <option value="pizza">Pizza</option>
-                                                    <option value="burgers">Burgers</option>
-                                                    <option value="pasta">Pasta</option>
-                                                    <option value="pasta_caza">Pasta e Caza</option>
-                                                    <option value="desserts">Desserts</option>
-                                                    <option value="main-course">Main Course</option>
-                                                    <option value="drinks">Drinks</option>
-                                                    <option value="coffee">Coffee</option>
+                                                <option value="italian-dish">Italian Dish</option>
+                                                <option value="spanish-dish">Spanish Dish</option>
+                                                <option value="house-salad">House Salad</option>
+                                                <option value="pizza">Pizza</option>
+                                                <option value="burgers">Burgers</option>
+                                                <option value="pasta">Pasta</option>
+                                                <option value="pasta_caza">Pasta e Caza</option>
+                                                <option value="desserts">Desserts</option>
+                                                <option value="main-course">Main Course</option>
+                                                <option value="drinks">Drinks</option>
+                                                <option value="coffee">Coffee</option>
                                             </select>
-                                            <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-quantity" min="1" value="1">
+                                            <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-quantity" min="1" value="1">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-dish hidden">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <button type="button" id="add-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                    <button type="button" id="add-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
                                         <i class="fas fa-plus"></i>
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
 
                                 <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                         Create Package
                                     </button>
                                 </div>
@@ -419,12 +482,12 @@
                     </div>
                 </div>
 
-                <!-- Add this modal right after the dish creation modal in your HTML -->
-                <div id="edit-dish-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <!-- Edit Dish Modal -->
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-script">Edit Dish</h3>
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
                                 <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -435,51 +498,51 @@
                                 
                                 <!-- Dish Name -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Name</label>
-                                    <input type="text" id="edit-dish-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Name</label>
+                                    <input type="text" id="edit-dish-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish name" required>
                                 </div>
 
                                 <!-- Dish Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
-                                    <textarea id="edit-dish-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="edit-dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish description"></textarea>
                                 </div>
 
                                 <!-- Dish Category -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Category</label>
-                                    <select id="edit-dish-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
+                                    <select id="edit-dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                                         <option value="">Select category</option>
-                                            <option value="italian-dish">Italian Dish</option>
-                                            <option value="spanish-dish">Spanish Dish</option>
-                                            <option value="house-salad">House Salad</option>
-                                            <option value="pizza">Pizza</option>
-                                            <option value="burgers">Burgers</option>
-                                            <option value="pasta">Pasta</option>
-                                            <option value="pasta_caza">Pasta e Caza</option>
-                                            <option value="desserts">Desserts</option>
-                                            <option value="main-course">Main Course</option>
-                                            <option value="drinks">Drinks</option>
-                                            <option value="coffee">Coffee</option>
+                                        <option value="italian-dish">Italian Dish</option>
+                                        <option value="spanish-dish">Spanish Dish</option>
+                                        <option value="house-salad">House Salad</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="burgers">Burgers</option>
+                                        <option value="pasta">Pasta</option>
+                                        <option value="pasta_caza">Pasta e Caza</option>
+                                        <option value="desserts">Desserts</option>
+                                        <option value="main-course">Main Course</option>
+                                        <option value="drinks">Drinks</option>
+                                        <option value="coffee">Coffee</option>
                                     </select>
                                 </div>
 
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
-                                        <input type="number" id="edit-dish-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="edit-dish-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
-                                        <input type="number" id="edit-dish-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="edit-dish-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                 </div>
 
                                 <!-- Dish Status -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
-                                    <select id="edit-dish-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Status</label>
+                                    <select id="edit-dish-status" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
                                         <option value="active">Available</option>
                                         <option value="unavailable">Unavailable</option>
                                     </select>
@@ -487,40 +550,40 @@
 
                                 <!-- Dish Image Upload -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dish Image</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
                                     <div class="flex items-center space-x-4">
                                         <div class="relative flex-1">
                                             <input type="file" id="edit-dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                            <div class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
                                                 <i class="fas fa-upload mr-2"></i>
                                                 <span id="edit-file-name">Choose an image file</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="edit-image-preview-container" class="mt-4">
-                                        <p class="text-sm text-gray-500 mb-2">Current Image:</p>
-                                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-gray-200">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Current Image:</p>
+                                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
                                     </div>
                                 </div>
 
                                 <!-- Ingredients Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Ingredients</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Ingredients</label>
                                     <div id="edit-ingredients-container">
                                         <!-- Ingredients will be populated here -->
                                     </div>
-                                    <button type="button" id="add-edit-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                    <button type="button" id="add-edit-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
                                         <i class="fas fa-plus"></i>
                                         <span>Add Another Ingredient</span>
                                     </button>
                                 </div>
 
                                 <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                                    <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                         Update Dish
                                     </button>
                                 </div>
@@ -530,11 +593,11 @@
                 </div>
 
                 <!-- View Package Modal -->
-                <div id="view-package-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-script">Package Details</h3>
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
                                 <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -544,43 +607,43 @@
                                 <!-- Package Info -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1">Package Name</label>
-                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown">-</p>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
+                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1">Type</label>
-                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown">-</p>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Type</label>
+                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1">Price</label>
-                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown">-</p>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
+                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-1">Status</label>
-                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown">-</p>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
+                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
                                     </div>
                                 </div>
 
                                 <!-- Package Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-1">Description</label>
-                                    <p id="view-package-description" class="text-gray-700">-</p>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
+                                    <p id="view-package-description" class="text-gray-700 font-baskerville">-</p>
                                 </div>
 
                                 <!-- Dishes Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dishes Included</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes Included</label>
                                     <div id="view-dishes-container" class="space-y-4">
                                         <!-- Dishes will be grouped by category here -->
                                     </div>
                                 </div>
 
                                 <!-- Close Button -->
-                                <div class="flex justify-end pt-4 border-t border-gray-200">
-                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                <div class="flex justify-end pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                         Close
                                     </button>
                                 </div>
@@ -590,11 +653,11 @@
                 </div>
 
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-script">Edit Package</h3>
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
                                 <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -605,40 +668,40 @@
                                 
                                 <!-- Package Name -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Package Name</label>
-                                    <input type="text" id="edit-package-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package name" required>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Name</label>
+                                    <input type="text" id="edit-package-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package name" required>
                                 </div>
 
                                 <!-- Package Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Description</label>
-                                    <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package description"></textarea>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
                                 </div>
 
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Price (₱)</label>
-                                        <input type="number" id="edit-package-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="edit-package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Capital (₱)</label>
-                                        <input type="number" id="edit-package-capital" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required readonly>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="edit-package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required readonly>
                                     </div>
                                 </div>
 
                                 <!-- Status and Type -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
-                                        <select id="edit-package-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Status</label>
+                                        <select id="edit-package-status" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
                                             <option value="active">Available</option>
                                             <option value="inactive">Unavailable</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-deep-brown mb-2">Menu Type</label>
-                                        <select id="edit-package-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Menu Type</label>
+                                        <select id="edit-package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
                                             <option value="buffet">Buffet</option>
                                             <option value="per_plate">Sit - On's</option>
                                         </select>
@@ -647,22 +710,22 @@
 
                                 <!-- Dishes Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2">Dishes in Package</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes in Package</label>
                                     <div id="edit-package-dishes-container">
                                         <!-- Dishes will be populated here -->
                                     </div>
-                                    <button type="button" id="add-edit-package-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2">
+                                    <button type="button" id="add-edit-package-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
                                         <i class="fas fa-plus"></i>
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
 
                                 <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                                    <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-white transition-colors duration-200">
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-6 py-2 bg-rich-brown text-white rounded-lg hover:bg-deep-brown transition-colors duration-200">
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                         Update Package
                                     </button>
                                 </div>
