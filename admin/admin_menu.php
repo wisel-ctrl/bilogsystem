@@ -1357,6 +1357,18 @@
                 dishes: []
             };
             
+            // Validate price and capital are not negative
+            if (packageData.price < 0 || packageData.capital < 0) {
+                alert('Price and capital cannot be negative values');
+                return;
+            }
+            
+            // Validate price is greater than capital
+            if (packageData.price <= packageData.capital) {
+                alert('Price must be greater than capital cost');
+                return;
+            }
+
             // Collect dish data
             document.querySelectorAll('.dish-row').forEach(row => {
                 const select = row.querySelector('.dish-select');
@@ -1385,6 +1397,7 @@
                     alert('Package created successfully!');
                     closePackageModalFunction();
                     // You might want to refresh the packages list here
+                    $('#packages-table').DataTable().ajax.reload(null, false);
                 } else {
                     alert('Error creating package: ' + (result.message || 'Unknown error'));
                 }
@@ -1847,6 +1860,18 @@
                 dishes: []
             };
             
+            // Validate price and capital are not negative
+            if (packageData.price < 0 || packageData.capital < 0) {
+                alert('Price and capital cannot be negative values');
+                return;
+            }
+            
+            // Validate price is greater than capital
+            if (packageData.price <= packageData.capital) {
+                alert('Price must be greater than capital cost');
+                return;
+            }
+
             // Collect dish data
             editPackageDishesContainer.querySelectorAll('.dish-row').forEach(row => {
                 const select = row.querySelector('.dish-select');
@@ -1883,6 +1908,32 @@
                 console.error('Error:', error);
                 alert('Failed to update package. Please try again.');
             }
+        });
+
+        // Add this near the top of your script section to prevent negative inputs
+        document.addEventListener('DOMContentLoaded', () => {
+            // Prevent negative values in price and capital fields
+            const preventNegativeInputs = (inputId) => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('change', function() {
+                        if (this.value < 0) {
+                            this.value = 0;
+                            alert('Value cannot be negative');
+                        }
+                    });
+                }
+            };
+
+            // Apply to all relevant fields
+            preventNegativeInputs('package-price');
+            preventNegativeInputs('package-capital');
+            preventNegativeInputs('edit-package-price');
+            preventNegativeInputs('edit-package-capital');
+            preventNegativeInputs('dish-price');
+            preventNegativeInputs('dish-capital');
+            preventNegativeInputs('edit-dish-price');
+            preventNegativeInputs('edit-dish-capital');
         });
 
     </script>

@@ -5,6 +5,16 @@ require_once '../../db_connect.php';
 $data = json_decode(file_get_contents('php://input'), true);
 
 try {
+
+    // Validate that price and capital are positive numbers
+    if (!is_numeric($data['price']) || $data['price'] <= 0) {
+        throw new Exception('Price must be a positive number');
+    }
+
+    if (!is_numeric($data['capital']) || $data['capital'] <= 0) {
+        throw new Exception('Capital must be a positive number');
+    }
+
     $conn->beginTransaction();
     
     // Update package info

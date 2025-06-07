@@ -19,7 +19,16 @@ try {
     if (empty($data['name']) || empty($data['price']) || empty($data['capital']) || empty($data['type'])) {
         throw new Exception('Required fields are missing');
     }
-    
+
+    // Validate that price and capital are greater than 0
+    if (!is_numeric($data['price']) || $data['price'] <= 0) {
+        throw new Exception('Price must be a positive number');
+    }
+
+    if (!is_numeric($data['capital']) || $data['capital'] <= 0) {
+        throw new Exception('Capital must be a positive number');
+    }
+
     // Start transaction
     $conn->beginTransaction();
     
