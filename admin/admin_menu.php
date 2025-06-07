@@ -230,17 +230,17 @@
                     </div>
 
                     <!-- Menu Table -->
-                    <div class="overflow-x-auto">
-                        <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
+                    <div class="overflow-x-auto bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6">
+                        <table id="menu-table" class="w-full table-auto display nowrap hover" style="width:100%">
                             <thead>
                                 <tr class="border-b-2 border-accent-brown/30">
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish ID</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Capital</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">ID</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Dish Name</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Category</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Status</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Price</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Capital</th>
+                                    <th class="text-center py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -260,16 +260,16 @@
                     </div>
 
                     <!-- Packages Table -->
-                    <div class="overflow-x-auto">
-                        <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
+                    <div class="overflow-x-auto bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6 mt-8">
+                        <table id="packages-table" class="w-full table-auto display nowrap hover" style="width:100%">
                             <thead>
                                 <tr class="border-b-2 border-accent-brown/30">
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package ID</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Type</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">ID</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Package Name</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Price</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Type</th>
+                                    <th class="text-left py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Status</th>
+                                    <th class="text-center py-4 px-6 font-semibold text-deep-brown font-playfair whitespace-nowrap">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1048,58 +1048,223 @@
             var table = $('#menu-table').DataTable({
                 responsive: true,
                 ajax: {
-                    url: 'menu_handlers/get_dishes.php', // Your PHP endpoint that returns JSON data
+                    url: 'menu_handlers/get_dishes.php',
                     type: 'GET',
                     dataSrc: ''
                 },
                 columns: [
-                    { data: 'dish_id' },
-                    { data: 'dish_name' },
-                    { data: 'dish_category' },
+                    { 
+                        data: 'dish_id',
+                        className: 'py-4 px-6 align-middle'
+                    },
+                    { 
+                        data: 'dish_name',
+                        className: 'py-4 px-6 align-middle font-medium'
+                    },
+                    { 
+                        data: 'dish_category',
+                        className: 'py-4 px-6 align-middle',
+                        render: function(data) {
+                            return data.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        }
+                    },
                     { 
                         data: 'status',
+                        className: 'py-4 px-6 align-middle',
                         render: function(data, type, row) {
-                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
-                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
-                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                            var statusClass = data === 'active' 
+                                ? 'bg-green-100 text-green-800 border border-green-200' 
+                                : 'bg-red-100 text-red-800 border border-red-200';
+                            var statusText = data === 'active' ? 'Available' : 'Unavailable';
+                            return `<span class="px-3 py-1.5 rounded-full text-sm font-medium ${statusClass}">${statusText}</span>`;
                         }
                     },
                     { 
                         data: 'price',
+                        className: 'py-4 px-6 align-middle',
                         render: function(data) {
                             return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     { 
                         data: 'capital',
+                        className: 'py-4 px-6 align-middle',
                         render: function(data) {
                             return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     {
                         data: 'dish_id',
+                        className: 'py-4 px-6 align-middle text-center',
                         render: function(data) {
-                            return `<button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
+                            return `
+                                <div class="flex items-center justify-center space-x-3">
+                                    <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn bg-warm-cream/10 hover:bg-warm-cream/20 p-2 rounded-lg" data-id="${data}" title="Edit Dish">
                                         <i class="fas fa-edit"></i>
-                                    </button>`;
+                                    </button>
+                                </div>`;
                         },
                         orderable: false
                     }
                 ],
                 columnDefs: [
-                    { responsivePriority: 1, targets: 1 }, // Dish Name
-                    { responsivePriority: 2, targets: 3 }, // Status
-                    { responsivePriority: 3, targets: 4 }, // Price
-                    { responsivePriority: 4, targets: -1 } // Actions
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 4 },
+                    { responsivePriority: 4, targets: -1 }
+                ],
+                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"flex items-center space-x-4"l<"ml-4"B>>f>rtip',
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: '<i class="fas fa-download mr-2"></i>Export',
+                        className: 'bg-deep-brown text-warm-cream px-4 py-2 rounded-lg hover:bg-rich-brown transition-colors duration-200',
+                        buttons: [
+                            {
+                                extend: 'excel',
+                                text: '<i class="fas fa-file-excel mr-2"></i>Excel',
+                                className: 'bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 mb-2'
+                            },
+                            {
+                                extend: 'pdf',
+                                text: '<i class="fas fa-file-pdf mr-2"></i>PDF',
+                                className: 'bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200'
+                            }
+                        ]
+                    }
                 ],
                 language: {
                     search: "_INPUT_",
                     searchPlaceholder: "Search dishes...",
-                    lengthMenu: "Show _MENU_ dishes per page",
-                    zeroRecords: "No dishes found",
+                    lengthMenu: '<span class="mr-2 font-medium">Show</span> _MENU_ <span class="ml-2 font-medium">dishes</span>',
                     info: "Showing _START_ to _END_ of _TOTAL_ dishes",
                     infoEmpty: "No dishes available",
-                    infoFiltered: "(filtered from _MAX_ total dishes)"
+                    infoFiltered: "(filtered from _MAX_ total dishes)",
+                    paginate: {
+                        first: '<i class="fas fa-angle-double-left"></i>',
+                        previous: '<i class="fas fa-angle-left"></i>',
+                        next: '<i class="fas fa-angle-right"></i>',
+                        last: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                },
+                drawCallback: function() {
+                    // Add hover effect to table rows
+                    $('#menu-table tbody tr').hover(
+                        function() { $(this).addClass('bg-warm-cream/5'); },
+                        function() { $(this).removeClass('bg-warm-cream/5'); }
+                    );
+                }
+            });
+
+            // Initialize Packages Table with similar styling
+            var packagesTable = $('#packages-table').DataTable({
+                responsive: true,
+                ajax: {
+                    url: 'menu_handlers/get_packages.php',
+                    type: 'GET',
+                    dataSrc: ''
+                },
+                columns: [
+                    { 
+                        data: 'package_id',
+                        className: 'py-4 px-6 align-middle'
+                    },
+                    { 
+                        data: 'package_name',
+                        className: 'py-4 px-6 align-middle font-medium'
+                    },
+                    { 
+                        data: 'price',
+                        className: 'py-4 px-6 align-middle',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'type',
+                        className: 'py-4 px-6 align-middle',
+                        render: function(data) {
+                            const typeClass = data === 'buffet' 
+                                ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                                : 'bg-purple-100 text-purple-800 border border-purple-200';
+                            const typeText = data === 'buffet' ? 'Buffet' : 'Per Plate';
+                            return `<span class="px-3 py-1.5 rounded-full text-sm font-medium ${typeClass}">${typeText}</span>`;
+                        }
+                    },
+                    { 
+                        data: 'status',
+                        className: 'py-4 px-6 align-middle',
+                        render: function(data, type, row) {
+                            var statusClass = data === 'active' 
+                                ? 'bg-green-100 text-green-800 border border-green-200' 
+                                : 'bg-red-100 text-red-800 border border-red-200';
+                            var statusText = data === 'active' ? 'Available' : 'Unavailable';
+                            return `<span class="px-3 py-1.5 rounded-full text-sm font-medium ${statusClass}">${statusText}</span>`;
+                        }
+                    },
+                    {
+                        data: 'package_id',
+                        className: 'py-4 px-6 align-middle text-center',
+                        render: function(data) {
+                            return `
+                                <div class="flex items-center justify-center space-x-3">
+                                    <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn bg-warm-cream/10 hover:bg-warm-cream/20 p-2 rounded-lg" data-id="${data}" title="View Package">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn bg-warm-cream/10 hover:bg-warm-cream/20 p-2 rounded-lg" data-id="${data}" title="Edit Package">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>`;
+                        },
+                        orderable: false
+                    }
+                ],
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 2 },
+                    { responsivePriority: 4, targets: -1 }
+                ],
+                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"flex items-center space-x-4"l<"ml-4"B>>f>rtip',
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: '<i class="fas fa-download mr-2"></i>Export',
+                        className: 'bg-deep-brown text-warm-cream px-4 py-2 rounded-lg hover:bg-rich-brown transition-colors duration-200',
+                        buttons: [
+                            {
+                                extend: 'excel',
+                                text: '<i class="fas fa-file-excel mr-2"></i>Excel',
+                                className: 'bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 mb-2'
+                            },
+                            {
+                                extend: 'pdf',
+                                text: '<i class="fas fa-file-pdf mr-2"></i>PDF',
+                                className: 'bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200'
+                            }
+                        ]
+                    }
+                ],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search packages...",
+                    lengthMenu: '<span class="mr-2 font-medium">Show</span> _MENU_ <span class="ml-2 font-medium">packages</span>',
+                    info: "Showing _START_ to _END_ of _TOTAL_ packages",
+                    infoEmpty: "No packages available",
+                    infoFiltered: "(filtered from _MAX_ total packages)",
+                    paginate: {
+                        first: '<i class="fas fa-angle-double-left"></i>',
+                        previous: '<i class="fas fa-angle-left"></i>',
+                        next: '<i class="fas fa-angle-right"></i>',
+                        last: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                },
+                drawCallback: function() {
+                    // Add hover effect to table rows
+                    $('#packages-table tbody tr').hover(
+                        function() { $(this).addClass('bg-warm-cream/5'); },
+                        function() { $(this).removeClass('bg-warm-cream/5'); }
+                    );
                 }
             });
 
