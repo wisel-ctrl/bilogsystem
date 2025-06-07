@@ -1,21 +1,3 @@
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    'warm-cream': '#E8E0D5',
-                    'rich-brown': '#8B4513',
-                    'deep-brown': '#5D2F0F',
-                    'accent-brown': '#A0522D'
-                },
-                fontFamily: {
-                    'playfair': ['Playfair Display', 'serif'],
-                    'baskerville': ['Libre Baskerville', 'serif']
-                }
-            }
-        }
-    }
-</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +14,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
+    <script src="../tailwind.js"></script>
     <style>
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
