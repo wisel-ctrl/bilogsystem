@@ -412,10 +412,15 @@ header {
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <!-- Revenue Analysis Chart -->
                     <div class="dashboard-card fade-in bg-white rounded-xl p-6">
-                        <h3 class="text-xl font-bold text-deep-brown mb-4 font-playfair flex items-center">
-                            <i class="fas fa-chart-line mr-2 text-accent-brown"></i>
-                            Revenue Analysis
-                        </h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                                <i class="fas fa-chart-line mr-2 text-accent-brown"></i>
+                                Revenue Analysis
+                            </h3>
+                            <button onclick="exportChart('revenueChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-download mr-2"></i> Export
+                            </button>
+                        </div>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
                         </div>
@@ -423,10 +428,15 @@ header {
                     
                     <!-- Menu Sales Chart -->
                     <div class="dashboard-card fade-in bg-white rounded-xl p-6">
-                        <h3 class="text-xl font-bold text-deep-brown mb-4 font-playfair flex items-center">
-                            <i class="fas fa-utensils mr-2 text-accent-brown"></i>
-                            Top Menu Items
-                        </h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                                <i class="fas fa-utensils mr-2 text-accent-brown"></i>
+                                Top Menu Items
+                            </h3>
+                            <button onclick="exportChart('menuChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-download mr-2"></i> Export
+                            </button>
+                        </div>
                         <div class="chart-container">
                             <canvas id="menuChart"></canvas>
                         </div>
@@ -437,10 +447,15 @@ header {
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <!-- Season Trends Chart -->
                     <div class="dashboard-card fade-in bg-white rounded-xl p-6">
-                        <h3 class="text-xl font-bold text-deep-brown mb-4 font-playfair flex items-center">
-                            <i class="fas fa-sun mr-2 text-accent-brown"></i>
-                            Seasonal Trends
-                        </h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                                <i class="fas fa-sun mr-2 text-accent-brown"></i>
+                                Seasonal Trends
+                            </h3>
+                            <button onclick="exportChart('seasonChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-download mr-2"></i> Export
+                            </button>
+                        </div>
                         <div class="chart-container">
                             <canvas id="seasonChart"></canvas>
                         </div>
@@ -804,6 +819,33 @@ header {
                 dropdownIcon.classList.remove('rotate-180');
             }
         });
+
+        // Add this function at the beginning of your script section
+        function exportChart(chartId) {
+            const canvas = document.getElementById(chartId);
+            const link = document.createElement('a');
+            
+            // Add a white background to the chart
+            const context = canvas.getContext('2d');
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const savedData = imageData;
+            
+            context.save();
+            context.globalCompositeOperation = 'destination-over';
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Convert the canvas to a data URL and trigger download
+            const image = canvas.toDataURL('image/png');
+            link.download = `${chartId}-export.png`;
+            link.href = image;
+            link.click();
+            
+            // Restore the original chart
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.putImageData(savedData, 0, 0);
+            context.restore();
+        }
     </script>
 </body>
 </html>
