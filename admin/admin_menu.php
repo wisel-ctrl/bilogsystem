@@ -633,7 +633,7 @@
                                         <label class="block text-sm font-medium text-deep-brown mb-2">Status</label>
                                         <select id="edit-package-status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
                                             <option value="active">Available</option>
-                                            <option value="unavailable">Unavailable</option>
+                                            <option value="inactive">Unavailable</option>
                                         </select>
                                     </div>
                                     <div>
