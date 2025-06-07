@@ -222,18 +222,18 @@
                 <!-- Menu Management Section -->
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center space-x-4 flex-1">
-                            <h3 class="text-2xl font-bold text-deep-brown font-playfair">Dish Management</h3>
-                            <div class="flex-1 max-w-md">
-                                <div class="relative">
-                                    <input type="text" id="menu-search" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search dishes...">
-                                </div>
-                            </div>
-                            <button id="add-dish-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                <i class="fas fa-plus"></i>
-                                <span class="font-baskerville">Add New Dish</span>
-                            </button>
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Dish Management</h3>
+                    </div>
+
+                    <!-- Menu Table Controls -->
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="w-64">
+                            <input type="text" id="menu-search" class="w-full h-10 px-4 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search dishes...">
                         </div>
+                        <button id="add-dish-btn" class="w-64 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
+                            <i class="fas fa-plus"></i>
+                            <span class="font-baskerville">Add New Dish</span>
+                        </button>
                     </div>
 
                     <!-- Menu Table -->
@@ -259,18 +259,18 @@
 
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mt-8">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center space-x-4 flex-1">
-                            <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Packages</h3>
-                            <div class="flex-1 max-w-md">
-                                <div class="relative">
-                                    <input type="text" id="packages-search" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search packages...">
-                                </div>
-                            </div>
-                            <button id="add-package-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                <i class="fas fa-plus"></i>
-                                <span class="font-baskerville">Create New Package</span>
-                            </button>
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Packages</h3>
+                    </div>
+
+                    <!-- Package Table Controls -->
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="w-64">
+                            <input type="text" id="packages-search" class="w-full h-10 px-4 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search packages...">
                         </div>
+                        <button id="add-package-btn" class="w-64 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
+                            <i class="fas fa-plus"></i>
+                            <span class="font-baskerville">Create New Package</span>
+                        </button>
                     </div>
 
                     <!-- Packages Table -->
@@ -1061,9 +1061,10 @@
         $(document).ready(function() {
             var table = $('#menu-table').DataTable({
                 responsive: true,
-                dom: '<"flex items-center justify-between"f>rt<"flex items-center justify-between"ip>',
+                dom: 'rt<"flex items-center justify-between"ip>',
                 lengthChange: false,
                 pageLength: 10,
+                searching: true,
                 ajax: {
                     url: 'menu_handlers/get_dishes.php',
                     type: 'GET',
@@ -1575,9 +1576,10 @@
         $(document).ready(function() {
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
-                dom: '<"flex items-center justify-between"f>rt<"flex items-center justify-between"ip>',
+                dom: 'rt<"flex items-center justify-between"ip>',
                 lengthChange: false,
                 pageLength: 10,
+                searching: true,
                 ajax: {
                     url: 'menu_handlers/get_packages.php',
                     type: 'GET',
