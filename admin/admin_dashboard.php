@@ -137,6 +137,45 @@ header {
         ::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
         }
+
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .print-table th,
+            .print-table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+            }
+            .print-table th {
+                background-color: #f0f0f0;
+            }
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .print-date {
+                text-align: right;
+                margin-bottom: 20px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -417,8 +456,8 @@ header {
                                 <i class="fas fa-chart-line mr-2 text-accent-brown"></i>
                                 Revenue Analysis
                             </h3>
-                            <button onclick="exportChart('revenueChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-download mr-2"></i> Export
+                            <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-print mr-2"></i> Print Data
                             </button>
                         </div>
                         <div class="chart-container">
@@ -433,8 +472,8 @@ header {
                                 <i class="fas fa-utensils mr-2 text-accent-brown"></i>
                                 Top Menu Items
                             </h3>
-                            <button onclick="exportChart('menuChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-download mr-2"></i> Export
+                            <button onclick="printChartData('menuChart', 'Menu Sales Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-print mr-2"></i> Print Data
                             </button>
                         </div>
                         <div class="chart-container">
@@ -452,8 +491,8 @@ header {
                                 <i class="fas fa-sun mr-2 text-accent-brown"></i>
                                 Seasonal Trends
                             </h3>
-                            <button onclick="exportChart('seasonChart')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-download mr-2"></i> Export
+                            <button onclick="printChartData('seasonChart', 'Seasonal Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                <i class="fas fa-print mr-2"></i> Print Data
                             </button>
                         </div>
                         <div class="chart-container">
@@ -820,31 +859,67 @@ header {
             }
         });
 
-        // Add this function at the beginning of your script section
-        function exportChart(chartId) {
-            const canvas = document.getElementById(chartId);
-            const link = document.createElement('a');
+        function printChartData(chartId, title) {
+            const chart = Chart.getChart(chartId);
+            const data = chart.data;
             
-            // Add a white background to the chart
-            const context = canvas.getContext('2d');
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const savedData = imageData;
+            // Create print section if it doesn't exist
+            let printSection = document.getElementById('printSection');
+            if (!printSection) {
+                printSection = document.createElement('div');
+                printSection.id = 'printSection';
+                document.body.appendChild(printSection);
+            }
             
-            context.save();
-            context.globalCompositeOperation = 'destination-over';
-            context.fillStyle = 'white';
-            context.fillRect(0, 0, canvas.width, canvas.height);
+            // Generate table HTML
+            let tableHtml = `
+                <div class="print-header">
+                    <h1 style="font-size: 24px; font-weight: bold; font-family: 'Playfair Display', serif;">${title}</h1>
+                    <h2 style="font-size: 16px; color: #666; margin-top: 5px;">Caffè Lilio</h2>
+                </div>
+                <div class="print-date">
+                    Generated on: ${new Date().toLocaleString()}
+                </div>
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #8B4513; color: white;">Category</th>
+                            <th style="background-color: #8B4513; color: white;">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
             
-            // Convert the canvas to a data URL and trigger download
-            const image = canvas.toDataURL('image/png');
-            link.download = `${chartId}-export.png`;
-            link.href = image;
-            link.click();
+            // Add data rows
+            data.labels.forEach((label, index) => {
+                const value = data.datasets[0].data[index];
+                tableHtml += `
+                    <tr>
+                        <td>${label}</td>
+                        <td>${chartId === 'revenueChart' || chartId === 'seasonChart' ? '₱' + value.toLocaleString() : value}</td>
+                    </tr>
+                `;
+            });
             
-            // Restore the original chart
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.putImageData(savedData, 0, 0);
-            context.restore();
+            // Add total if applicable
+            if (chartId === 'revenueChart' || chartId === 'seasonChart') {
+                const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                tableHtml += `
+                    <tr style="font-weight: bold; background-color: #f5f5f5;">
+                        <td>Total</td>
+                        <td>₱${total.toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+            
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            
+            // Set the content and print
+            printSection.innerHTML = tableHtml;
+            window.print();
         }
     </script>
 </body>
