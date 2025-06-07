@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,6 +117,17 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* Add this to your existing style section */
+        #profileMenu {
+            z-index: 9999 !important;
+            transform: translateY(0) !important;
+        }
+
+        header {
+            position: relative;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -743,12 +753,45 @@
             }
         });
 
-        // Set current date
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        // Set current date with time
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeString = now.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) + ' ' + now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('current-date').textContent = dateTimeString;
+        }
+        
+        // Update time every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Profile Dropdown functionality
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
+
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            setTimeout(() => {
+                profileMenu.classList.toggle('opacity-0');
+                dropdownIcon.classList.toggle('rotate-180');
+            }, 50);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                dropdownIcon.classList.remove('rotate-180');
+            }
         });
 
         // Scroll animation observer
