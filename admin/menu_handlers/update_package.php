@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once '../db_connection.php';
+require_once '../../db_connect.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -10,7 +10,7 @@ try {
     // Update package info
     $stmt = $conn->prepare("
         UPDATE menu_packages_tb 
-        SET package_name = ?, description = ?, price = ?, capital = ?, type = ?, status = ?
+        SET package_name = ?, package_description = ?, price = ?, capital = ?, type = ?, status = ?
         WHERE package_id = ?
     ");
     $stmt->execute([

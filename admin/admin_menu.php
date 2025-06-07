@@ -1543,7 +1543,7 @@
                 
                 // Populate basic info
                 document.getElementById('view-package-name').textContent = packageData.package_name;
-                document.getElementById('view-package-description').textContent = packageData.description || 'No description available';
+                document.getElementById('view-package-description').textContent = packageData.package_description || 'No description available';
                 document.getElementById('view-package-price').textContent = '₱' + parseFloat(packageData.price).toFixed(2);
                 
                 // Set type
@@ -1670,7 +1670,7 @@
                 // Populate form fields
                 document.getElementById('edit-package-id').value = packageData.package_id;
                 document.getElementById('edit-package-name').value = packageData.package_name;
-                document.getElementById('edit-package-description').value = packageData.description || '';
+                document.getElementById('edit-package-description').value = packageData.package_description || '';
                 document.getElementById('edit-package-price').value = packageData.price;
                 document.getElementById('edit-package-capital').value = packageData.capital;
                 document.getElementById('edit-package-status').value = packageData.status;
