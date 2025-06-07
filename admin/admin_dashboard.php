@@ -599,7 +599,7 @@ header {
         // Sidebar Toggle with smooth animation
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.getElementById('cafe-title');
+        const cafeTitle = document.querySelector('.nav-title');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
         sidebarToggle.addEventListener('click', () => {
