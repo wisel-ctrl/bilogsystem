@@ -9,7 +9,36 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-cream': '#E8E0D5',
+                        'rich-brown': '#8B4513',
+                        'deep-brown': '#5D2F0F',
+                        'accent-brown': '#A0522D'
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'baskerville': ['Libre Baskerville', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
         
         /* Animation classes */
         .animate-on-scroll {
@@ -35,6 +64,83 @@
         }
         .delay-400 {
             transition-delay: 400ms;
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Improved hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+        
+        /* Card styles */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar improvements */
+        .sidebar-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #E8E0D5;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add this to your existing style section */
+        #profileMenu {
+            z-index: 9999 !important;
+            transform: translateY(0) !important;
+        }
+
+        header {
+            z-index: 50;
         }
         
         /* DataTables custom styling */
@@ -63,72 +169,54 @@
             border-color: #A0522D;
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'script': ['Brush Script MT', 'cursive']
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-warm-cream font-serif">
+<body class="bg-warm-cream/50 font-baskerville">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-accent-brown">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                    <h1 id="cafe-title" class="text-xl font-bold text-warm-cream font-script">Cafe Lilio</h1>
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                 </div>
             </div>
             
             <nav class="mt-8 px-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="admin_dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream transition-colors duration-200">
+                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-chart-pie w-5"></i>
-                            <span class="sidebar-text">Dashboard</span>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_bookings.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-calendar-check w-5"></i>
-                            <span class="sidebar-text">Booking Requests</span>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_menu.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
-                            <span class="sidebar-text">Menu Management</span>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/20 text-warm-cream transition-all duration-200">
                             <i class="fas fa-boxes w-5"></i>
-                            <span class="sidebar-text">Inventory</span>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_expenses.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-receipt w-5"></i>
-                            <span class="sidebar-text">Expenses</span>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_employee_creation.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text">Employee Creation</span>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
                         </a>
                     </li>
                 </ul>
@@ -138,22 +226,33 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-deep-brown font-script">Inventory Management</h2>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Management</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <div class="text-sm text-rich-brown">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            <span id="current-date"></span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
-                            <span class="text-sm font-medium text-deep-brown">Admin</span>
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,27 +260,28 @@
 
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
-                <div class="bg-white rounded-lg shadow-md p-6 animate-on-scroll">
+                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-deep-brown">Inventory Items</h3>
-                        <button id="add-ingredient-btn" class="bg-accent-brown hover:bg-deep-brown text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
-                            <i class="fas fa-plus mr-2"></i> Add Ingredient
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
+                        <button id="add-ingredient-btn" class="w-52 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
+                            <i class="fas fa-plus"></i>
+                            <span class="font-baskerville">Add Ingredient</span>
                         </button>
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table id="ingredients-table" class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-warm-cream">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Category</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Quantity</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Total Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-deep-brown uppercase tracking-wider">Actions</th>
+                        <table id="ingredients-table" class="w-full table-auto display nowrap" style="width:100%">
+                            <thead>
+                                <tr class="border-b-2 border-accent-brown/30">
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Quantity</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Total Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody>
                                 <!-- Data will be loaded via DataTables -->
                             </tbody>
                         </table>
@@ -192,25 +292,25 @@
     </div>
 
     <!-- Add Ingredient Modal -->
-    <div id="add-ingredient-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
             <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-deep-brown">Add New Ingredient</h3>
-                    <button id="close-add-modal" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Ingredient</h3>
+                    <button id="close-add-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
                 
-                <form id="add-ingredient-form">
-                    <div class="mb-4">
-                        <label for="ingredient-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                        <input type="text" id="ingredient-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                <form id="add-ingredient-form" class="space-y-6">
+                    <div>
+                        <label for="ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
+                        <input type="text" id="ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter ingredient name" required>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <select id="ingredient-category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                    <div>
+                        <label for="ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                        <select id="ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                             <option value="produce" title="Fresh fruits and vegetables">Produce</option>
                             <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
                             <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
@@ -227,30 +327,27 @@
                         </select>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="ingredient-quantity" class="block text-sm font-medium text-gray-700 mb-1">
-                            Quantity
+                    <div>
+                        <label for="ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">
+                            Quantity (kg)
                         </label>
-                        <div class="relative rounded-md shadow-sm">
+                        <div class="relative rounded-md">
                             <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" step="0.01" min="0"
-                                class="w-full px-3 py-2 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
-                                kg
-                            </div>
+                                class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                            <p class="mt-1 text-xs text-gray-500 font-baskerville">1 kg = 1000 grams</p>
                         </div>
-                        <p class="mt-1 text-xs text-gray-500">1 kg = 1000 grams</p>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="ingredient-price" class="block text-sm font-medium text-gray-700 mb-1">Price (per unit)</label>
-                        <input type="text" id="ingredient-price" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                    <div>
+                        <label for="ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
+                        <input type="text" id="ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter price" required>
                     </div>
                     
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button type="button" id="cancel-add-ingredient" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                        <button type="button" id="cancel-add-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                             Cancel
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-accent-brown text-white rounded-md hover:bg-deep-brown transition-colors duration-200">
+                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                             Add Ingredient
                         </button>
                     </div>
@@ -260,27 +357,27 @@
     </div>
 
     <!-- Edit Ingredient Modal -->
-    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
             <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-deep-brown">Edit Ingredient</h3>
-                    <button id="close-edit-modal" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Ingredient</h3>
+                    <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
                 
-                <form id="edit-ingredient-form">
+                <form id="edit-ingredient-form" class="space-y-6">
                     <input type="hidden" id="edit-ingredient-id">
                     
-                    <div class="mb-4">
-                        <label for="edit-ingredient-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                        <input type="text" id="edit-ingredient-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                    <div>
+                        <label for="edit-ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
+                        <input type="text" id="edit-ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="edit-ingredient-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <select id="edit-ingredient-category" class="w-full">
+                    <div>
+                        <label for="edit-ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                        <select id="edit-ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                             <option value="produce" title="Fresh fruits and vegetables">Produce</option>
                             <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
                             <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
@@ -297,21 +394,21 @@
                         </select>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="edit-ingredient-quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                        <input type="text" id="edit-ingredient-quantity" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                    <div>
+                        <label for="edit-ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity (kg)</label>
+                        <input type="text" id="edit-ingredient-quantity" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                     </div>
                     
-                    <div class="mb-4">
-                        <label for="edit-ingredient-price" class="block text-sm font-medium text-gray-700 mb-1">Price (per unit)</label>
-                        <input type="text" id="edit-ingredient-price" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
+                    <div>
+                        <label for="edit-ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
+                        <input type="text" id="edit-ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                     </div>
                     
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button type="button" id="cancel-edit-ingredient" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                        <button type="button" id="cancel-edit-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                             Cancel
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-accent-brown text-white rounded-md hover:bg-deep-brown transition-colors duration-200">
+                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                             Save Changes
                         </button>
                     </div>
@@ -321,25 +418,25 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-deep-brown">Confirm Deletion</h3>
-                    <button id="close-delete-modal" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
+                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
                 
                 <div class="mb-6">
-                    <p class="text-gray-700">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
+                    <p class="text-gray-700 font-baskerville">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
                 </div>
                 
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-delete" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                         Cancel
                     </button>
-                    <button type="button" id="confirm-delete" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200">
+                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                         Delete
                     </button>
                 </div>
@@ -349,26 +446,48 @@
     </div>
 
     <script>
+        // Profile Menu Toggle
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            profileMenu.classList.toggle('opacity-0');
+            const chevron = profileDropdown.querySelector('.fa-chevron-down');
+            chevron.style.transform = profileMenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!profileDropdown.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                const chevron = profileDropdown.querySelector('.fa-chevron-down');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        });
+
         // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.getElementById('cafe-title');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const navTitle = document.querySelector('.nav-title');
+        const navSubtitle = document.querySelector('.nav-subtitle');
 
         sidebarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('w-64');
             sidebar.classList.toggle('w-16');
             
             if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.display = 'none';
                 sidebarTexts.forEach(text => text.style.display = 'none');
+                navTitle.style.display = 'none';
+                navSubtitle.style.display = 'none';
             } else {
-                cafeTitle.style.display = 'block';
                 sidebarTexts.forEach(text => text.style.display = 'block');
+                navTitle.style.display = 'block';
+                navSubtitle.style.display = 'block';
             }
         });
 
-        // Set current date
+        // Set current date with a more elegant format
         document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
             weekday: 'long',
             year: 'numeric',
@@ -393,7 +512,7 @@
             observer.observe(element);
         });
 
-        // Initialize DataTable
+        // Initialize DataTable with improved styling
         $(document).ready(function() {
             var table = $('#ingredients-table').DataTable({
                 "processing": true,
@@ -411,11 +530,13 @@
                             });
                         }
                     },
-                    {   "data": "category" },
-                    { "data": "quantity", 
+                    { "data": "category" },
+                    { 
+                        "data": "quantity", 
                         "render": function(data, type, row) {
-                    return parseFloat(data).toFixed(2) + ' kg'; // Add kg suffix
-                        } },
+                            return parseFloat(data).toFixed(2) + ' kg';
+                        }
+                    },
                     { 
                         "data": "price",
                         "render": function(data, type, row) {
@@ -432,10 +553,10 @@
                         "data": "ingredient_id",
                         "render": function(data, type, row) {
                             return `
-                                <button onclick="editIngredient(${data})" class="text-accent-brown hover:text-deep-brown mr-3">
+                                <button onclick="editIngredient(${data})" class="text-accent-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button onclick="confirmDelete(${data})" class="text-red-500 hover:text-red-700">
+                                <button onclick="confirmDelete(${data})" class="text-red-500 hover:text-red-700 transition-colors duration-200 ml-3">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             `;
@@ -455,6 +576,11 @@
                         "previous": "<i class='fas fa-chevron-left'></i>",
                         "next": "<i class='fas fa-chevron-right'></i>"
                     }
+                },
+                "drawCallback": function() {
+                    // Add animation classes to newly rendered elements
+                    $('.dataTable tbody tr').addClass('animate-on-scroll');
+                    observer.observe($('.dataTable tbody')[0]);
                 }
             });
 
