@@ -48,9 +48,8 @@ require_once 'admin_auth.php';
 }
 
 header {
-    position: relative;
-    z-index: 1000;
-}
+            z-index: 50;
+        }
         
         /* Smooth transitions */
         .transition-all {

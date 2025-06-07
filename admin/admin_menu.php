@@ -126,8 +126,7 @@
         }
 
         header {
-            position: relative;
-            z-index: 1000;
+            z-index: 50;
         }
     </style>
 </head>
