@@ -128,6 +128,102 @@
         header {
             z-index: 50;
         }
+
+        /* Add this to your existing style section */
+        /* Improved scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Add blur effect class */
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* Modal container structure */
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        /* Improved scrollbar for modal body */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Add this to your existing styles */
+        #dish-modal, #package-modal, #edit-dish-modal, #edit-package-modal, #view-package-modal {
+            z-index: 1000 !important; /* Higher than anything else */
+        }
+        
+        /* Ensure the main content doesn't create stacking context */
+        .flex-1 {
+            position: static;
+        }
+        
+        /* Sidebar should have lower z-index than modals */
+        #sidebar {
+            z-index: 40;
+        }
+        
+        /* Header should have lower z-index than modals */
+        header {
+            z-index: 50;
+        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -290,16 +386,18 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
-                        <div class="p-6">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
+                        <div class="modal-header p-6">
                             <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
                                 <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
+                        </div>
 
+                        <div class="modal-body p-6">
                             <form id="dish-form" class="space-y-6">
                                 <!-- Dish Name -->
                                 <div>
@@ -381,31 +479,35 @@
                                         <span>Add Another Ingredient</span>
                                     </button>
                                 </div>
-
-                                <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
-                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                        Create Dish
-                                    </button>
-                                </div>
                             </form>
+                        </div>
+
+                        <div class="modal-footer px-6 py-4 border-t border-warm-cream/20">
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                    Cancel
+                                </button>
+                                <button type="submit" form="dish-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                    Create Dish
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
     
-                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
-                        <div class="p-6">
+                <!-- Package Modal -->
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
+                        <div class="modal-header p-6">
                             <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
                                 <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
+                        </div>
 
+                        <div class="modal-body p-6">
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
                                 <div>
@@ -470,17 +572,18 @@
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
-
-                                <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
-                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                        Create Package
-                                    </button>
-                                </div>
                             </form>
+                        </div>
+
+                        <div class="modal-footer px-6 py-4 border-t border-warm-cream/20">
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                    Cancel
+                                </button>
+                                <button type="submit" form="package-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                    Create Package
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -872,11 +975,18 @@
             }
         }
 
-        // Open modal
+        // Open modal with blur effects
         addDishBtn.addEventListener('click', async () => {
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
             modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-
+            setTimeout(() => {
+                modal.querySelector('.modal-container').style.opacity = '1';
+                modal.querySelector('.modal-container').style.transform = 'translateY(0)';
+            }, 50);
+            
             // Fetch and populate ingredients
             const ingredients = await fetchIngredients();
             populateIngredientDropdowns(ingredients);
@@ -901,28 +1011,36 @@
             });
         }
 
-        // Close modal functions
+        // Close modal functions with blur effects
         const closeModalFunction = () => {
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Re-enable background scrolling
-            // Reset form
-            document.getElementById('dish-form').reset();
-            // Reset ingredients to initial state
-            const initialIngredient = ingredientsContainer.querySelector('.ingredient-row');
-            ingredientsContainer.innerHTML = '';
-            const newRow = initialIngredient.cloneNode(true);
-            newRow.querySelector('.ingredient-quantity').value = ''; // Reset quantity
-            ingredientsContainer.appendChild(newRow);
-
-            const dishImageInput = document.getElementById('dish-image');
-            const fileNameSpan = document.getElementById('file-name');
-            const imagePreviewContainer = document.getElementById('image-preview-container');
-            const imagePreview = document.getElementById('image-preview');
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            dishImageInput.value = ''; // Clear the file input
-            fileNameSpan.textContent = 'Choose an image file';
-            imagePreviewContainer.classList.add('hidden');
-            imagePreview.src = '#';
+            const modal = document.getElementById('dish-modal');
+            modal.querySelector('.modal-container').style.opacity = '0';
+            modal.querySelector('.modal-container').style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset form
+                document.getElementById('dish-form').reset();
+                // Reset ingredients to initial state
+                const initialIngredient = ingredientsContainer.querySelector('.ingredient-row');
+                ingredientsContainer.innerHTML = '';
+                const newRow = initialIngredient.cloneNode(true);
+                newRow.querySelector('.ingredient-quantity').value = ''; // Reset quantity
+                ingredientsContainer.appendChild(newRow);
+
+                const dishImageInput = document.getElementById('dish-image');
+                const fileNameSpan = document.getElementById('file-name');
+                const imagePreviewContainer = document.getElementById('image-preview-container');
+                const imagePreview = document.getElementById('image-preview');
+                
+                dishImageInput.value = ''; // Clear the file input
+                fileNameSpan.textContent = 'Choose an image file';
+                imagePreviewContainer.classList.add('hidden');
+                imagePreview.src = '#';
+            }, 300);
         };
 
         closeModal.addEventListener('click', closeModalFunction);
@@ -1456,9 +1574,46 @@
 
         // Initialize when modal opens
         addPackageBtn.addEventListener('click', async () => {
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
             packageModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                packageModal.querySelector('.modal-container').style.opacity = '1';
+                packageModal.querySelector('.modal-container').style.transform = 'translateY(0)';
+            }, 50);
+            
             await populateDishes();
+        });
+
+        // Close modal functions with blur effects
+        const closePackageModalFunction = () => {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            const modal = document.getElementById('package-modal');
+            modal.querySelector('.modal-container').style.opacity = '0';
+            modal.querySelector('.modal-container').style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset form
+                document.getElementById('package-form').reset();
+                const initialDish = dishesContainer.querySelector('.dish-row');
+                dishesContainer.innerHTML = '';
+                dishesContainer.appendChild(initialDish.cloneNode(true));
+            }, 300);
+        };
+
+        closePackageModal.addEventListener('click', closePackageModalFunction);
+        cancelPackage.addEventListener('click', closePackageModalFunction);
+
+        // Close modal when clicking outside
+        packageModal.addEventListener('click', (e) => {
+            if (e.target === packageModal) {
+                closePackageModalFunction();
+            }
         });
 
         // Form submission
@@ -1531,26 +1686,6 @@
             const initialDish = dishesContainer.querySelector('.dish-row');
             dishesContainer.innerHTML = '';
             dishesContainer.appendChild(initialDish.cloneNode(true));
-        });
-
-        // Close modal functions
-        const closePackageModalFunction = () => {
-            packageModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            document.getElementById('package-form').reset();
-            const initialDish = dishesContainer.querySelector('.dish-row');
-            dishesContainer.innerHTML = '';
-            dishesContainer.appendChild(initialDish.cloneNode(true));
-        };
-
-        closePackageModal.addEventListener('click', closePackageModalFunction);
-        cancelPackage.addEventListener('click', closePackageModalFunction);
-
-        // Close modal when clicking outside
-        packageModal.addEventListener('click', (e) => {
-            if (e.target === packageModal) {
-                closePackageModalFunction();
-            }
         });
 
         // Add new dish row
