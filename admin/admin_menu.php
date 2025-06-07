@@ -205,65 +205,19 @@
 
                     <!-- Packages Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full table-auto">
+                        <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
                                 <tr class="border-b-2 border-accent-brown">
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Package ID</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Package Name</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown">Type</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Status</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown">Capital</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Breakfast Combo</td>
-                                    <td class="p-4 text-deep-brown">₱350</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
-                                    </td>
-                                    <td class="p-4 text-rich-brown">₱150</td>
-                                    <td class="p-4 flex space-x-2">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Coffee Lover's Set</td>
-                                    <td class="p-4 text-deep-brown">₱450</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">Active</span>
-                                    </td>
-                                    <td class="p-4 text-rich-brown">₱200</td>
-                                    <td class="p-4 flex space-x-2">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-200 hover:bg-warm-cream/50 transition-colors duration-200">
-                                    <td class="p-4 font-medium text-deep-brown">Afternoon Tea</td>
-                                    <td class="p-4 text-deep-brown">₱500</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">Unavailable</span>
-                                    </td>
-                                    <td class="p-4 text-rich-brown">₱220</td>
-                                    <td class="p-4 flex space-x-2">
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <!-- Data will be loaded via AJAX -->
                             </tbody>
                         </table>
                     </div>
@@ -1344,6 +1298,93 @@
                 calculateTotals();
             }
         });
+
+        //menu package table
+        // Initialize Packages DataTable
+        $(document).ready(function() {
+            var packagesTable = $('#packages-table').DataTable({
+                responsive: true,
+                ajax: {
+                    url: 'menu_handlers/get_packages.php', // Your PHP endpoint that returns JSON data
+                    type: 'GET',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'package_id' },
+                    { data: 'package_name' },
+                    { 
+                        data: 'price',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'type',
+                        render: function(data) {
+                            // Convert type value to display text
+                            if (data === 'buffet') {
+                                return 'Buffet';
+                            } else if (data === 'per_plate') {
+                                return 'Per Plate';
+                            }
+                            return data; // Fallback
+                        }
+                    },
+                    { 
+                        data: 'status',
+                        render: function(data, type, row) {
+                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                        }
+                    },
+                    {
+                        data: 'package_id',
+                        render: function(data) {
+                            return `
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn" data-id="${data}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            `;
+                        },
+                        orderable: false
+                    }
+                ],
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 }, // Package Name
+                    { responsivePriority: 2, targets: 3 }, // Type
+                    { responsivePriority: 3, targets: 2 }, // Price
+                    { responsivePriority: 4, targets: -1 } // Actions
+                ],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search packages...",
+                    lengthMenu: "Show _MENU_ packages per page",
+                    zeroRecords: "No packages found",
+                    info: "Showing _START_ to _END_ of _TOTAL_ packages",
+                    infoEmpty: "No packages available",
+                    infoFiltered: "(filtered from _MAX_ total packages)"
+                }
+            });
+
+            // Handle edit package button clicks
+            $('#packages-table').on('click', '.edit-package-btn', function() {
+                var packageId = $(this).data('id');
+                // Handle edit functionality here
+                console.log('Edit package with ID:', packageId);
+            });
+
+            // Handle view package button clicks
+            $('#packages-table').on('click', '.view-package-btn', function() {
+                var packageId = $(this).data('id');
+                // Handle view functionality here
+                console.log('View package with ID:', packageId);
+            });
+        });
+
     </script>
 </body>
 </html>
