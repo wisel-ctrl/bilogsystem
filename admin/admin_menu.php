@@ -222,11 +222,18 @@
                 <!-- Menu Management Section -->
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Dish Management</h3>
-                        <button id="add-dish-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                            <i class="fas fa-plus"></i>
-                            <span class="font-baskerville">Add New Dish</span>
-                        </button>
+                        <div class="flex items-center space-x-4 flex-1">
+                            <h3 class="text-2xl font-bold text-deep-brown font-playfair">Dish Management</h3>
+                            <div class="flex-1 max-w-md">
+                                <div class="relative">
+                                    <input type="text" id="menu-search" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search dishes...">
+                                </div>
+                            </div>
+                            <button id="add-dish-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-plus"></i>
+                                <span class="font-baskerville">Add New Dish</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Menu Table -->
@@ -252,11 +259,18 @@
 
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mt-8">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Packages</h3>
-                        <button id="add-package-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                            <i class="fas fa-plus"></i>
-                            <span class="font-baskerville">Create New Package</span>
-                        </button>
+                        <div class="flex items-center space-x-4 flex-1">
+                            <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Packages</h3>
+                            <div class="flex-1 max-w-md">
+                                <div class="relative">
+                                    <input type="text" id="packages-search" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search packages...">
+                                </div>
+                            </div>
+                            <button id="add-package-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-6 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-plus"></i>
+                                <span class="font-baskerville">Create New Package</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Packages Table -->
@@ -1047,8 +1061,11 @@
         $(document).ready(function() {
             var table = $('#menu-table').DataTable({
                 responsive: true,
+                dom: '<"flex items-center justify-between"f>rt<"flex items-center justify-between"ip>',
+                lengthChange: false,
+                pageLength: 10,
                 ajax: {
-                    url: 'menu_handlers/get_dishes.php', // Your PHP endpoint that returns JSON data
+                    url: 'menu_handlers/get_dishes.php',
                     type: 'GET',
                     dataSrc: ''
                 },
@@ -1087,26 +1104,31 @@
                     }
                 ],
                 columnDefs: [
-                    { responsivePriority: 1, targets: 1 }, // Dish Name
-                    { responsivePriority: 2, targets: 3 }, // Status
-                    { responsivePriority: 3, targets: 4 }, // Price
-                    { responsivePriority: 4, targets: -1 } // Actions
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 4 },
+                    { responsivePriority: 4, targets: -1 }
                 ],
                 language: {
-                    search: "_INPUT_",
+                    search: "",
                     searchPlaceholder: "Search dishes...",
-                    lengthMenu: "Show _MENU_ dishes per page",
-                    zeroRecords: "No dishes found",
                     info: "Showing _START_ to _END_ of _TOTAL_ dishes",
                     infoEmpty: "No dishes available",
-                    infoFiltered: "(filtered from _MAX_ total dishes)"
+                    infoFiltered: "(filtered from _MAX_ total dishes)",
+                    paginate: {
+                        previous: '<i class="fas fa-arrow-left"></i>',
+                        next: '<i class="fas fa-arrow-right"></i>'
+                    }
                 }
             });
 
-            // You might want to add this to handle edit button clicks
+            // Move the search box to the custom input
+            $('#menu-search').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
             $('#menu-table').on('click', '.edit-dish-btn', function() {
                 var dishId = $(this).data('id');
-                // Handle edit functionality here
                 openEditDishModal(dishId);
                 console.log('Edit dish with ID:', dishId);
             });
@@ -1553,8 +1575,11 @@
         $(document).ready(function() {
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
+                dom: '<"flex items-center justify-between"f>rt<"flex items-center justify-between"ip>',
+                lengthChange: false,
+                pageLength: 10,
                 ajax: {
-                    url: 'menu_handlers/get_packages.php', // Your PHP endpoint that returns JSON data
+                    url: 'menu_handlers/get_packages.php',
                     type: 'GET',
                     dataSrc: ''
                 },
@@ -1570,13 +1595,12 @@
                     { 
                         data: 'type',
                         render: function(data) {
-                            // Convert type value to display text
                             if (data === 'buffet') {
                                 return 'Buffet';
                             } else if (data === 'per_plate') {
                                 return 'Per Plate';
                             }
-                            return data; // Fallback
+                            return data;
                         }
                     },
                     { 
@@ -1603,34 +1627,37 @@
                     }
                 ],
                 columnDefs: [
-                    { responsivePriority: 1, targets: 1 }, // Package Name
-                    { responsivePriority: 2, targets: 3 }, // Type
-                    { responsivePriority: 3, targets: 2 }, // Price
-                    { responsivePriority: 4, targets: -1 } // Actions
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 2 },
+                    { responsivePriority: 4, targets: -1 }
                 ],
                 language: {
-                    search: "_INPUT_",
+                    search: "",
                     searchPlaceholder: "Search packages...",
-                    lengthMenu: "Show _MENU_ packages per page",
-                    zeroRecords: "No packages found",
                     info: "Showing _START_ to _END_ of _TOTAL_ packages",
                     infoEmpty: "No packages available",
-                    infoFiltered: "(filtered from _MAX_ total packages)"
+                    infoFiltered: "(filtered from _MAX_ total packages)",
+                    paginate: {
+                        previous: '<i class="fas fa-arrow-left"></i>',
+                        next: '<i class="fas fa-arrow-right"></i>'
+                    }
                 }
             });
 
-            // Handle edit package button clicks
+            // Move the search box to the custom input
+            $('#packages-search').on('keyup', function() {
+                packagesTable.search(this.value).draw();
+            });
+
             $('#packages-table').on('click', '.edit-package-btn', function() {
                 var packageId = $(this).data('id');
-                // Handle edit functionality here
                 console.log('Edit package with ID:', packageId);
                 openEditPackageModal(packageId);
             });
 
-            // Handle view package button clicks
             $('#packages-table').on('click', '.view-package-btn', function() {
                 var packageId = $(this).data('id');
-                // Handle view functionality here
                 console.log('View package with ID:', packageId);
                 openViewPackageModal(packageId);
             });
