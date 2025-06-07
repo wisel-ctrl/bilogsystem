@@ -1113,8 +1113,10 @@
                     infoEmpty: "No dishes available",
                     infoFiltered: "(filtered from _MAX_ total dishes)",
                     paginate: {
-                        previous: '<i class="fas fa-arrow-left"></i>',
-                        next: '<i class="fas fa-arrow-right"></i>'
+                        first: '<<',
+                        previous: '<',
+                        next: '>',
+                        last: '>>'
                     }
                 }
             });
@@ -1637,8 +1639,10 @@
                     infoEmpty: "No packages available",
                     infoFiltered: "(filtered from _MAX_ total packages)",
                     paginate: {
-                        previous: '<i class="fas fa-arrow-left"></i>',
-                        next: '<i class="fas fa-arrow-right"></i>'
+                        first: '<<',
+                        previous: '<',
+                        next: '>',
+                        last: '>>'
                     }
                 }
             });
