@@ -20,203 +20,6 @@
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
 
-        /* Enhanced DataTables Styling */
-        .dataTables_wrapper {
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-        }
-
-        .dataTables_filter input {
-            border: 2px solid #E8E0D5 !important;
-            border-radius: 0.5rem !important;
-            padding: 0.5rem 1rem !important;
-            transition: all 0.3s ease !important;
-            width: 250px !important;
-            font-family: 'Libre Baskerville', serif !important;
-        }
-
-        .dataTables_filter input:focus {
-            border-color: #8B4513 !important;
-            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2) !important;
-            outline: none !important;
-        }
-
-        .dataTables_length select {
-            border: 2px solid #E8E0D5 !important;
-            border-radius: 0.5rem !important;
-            padding: 0.5rem 2rem 0.5rem 1rem !important;
-            font-family: 'Libre Baskerville', serif !important;
-            background-position: right 0.5rem center !important;
-        }
-
-        .dataTables_length select:focus {
-            border-color: #8B4513 !important;
-            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2) !important;
-            outline: none !important;
-        }
-
-        table.dataTable {
-            border-collapse: separate !important;
-            border-spacing: 0 0.5rem !important;
-            margin: 1rem 0 !important;
-        }
-
-        table.dataTable thead th {
-            padding: 1rem !important;
-            background: linear-gradient(to right, #8B4513, #A0522D) !important;
-            color: #E8E0D5 !important;
-            font-family: 'Playfair Display', serif !important;
-            font-weight: 600 !important;
-            letter-spacing: 0.5px !important;
-            border: none !important;
-        }
-
-        table.dataTable thead th:first-child {
-            border-top-left-radius: 0.5rem !important;
-            border-bottom-left-radius: 0.5rem !important;
-        }
-
-        table.dataTable thead th:last-child {
-            border-top-right-radius: 0.5rem !important;
-            border-bottom-right-radius: 0.5rem !important;
-        }
-
-        table.dataTable tbody tr {
-            background: rgba(255, 255, 255, 0.8) !important;
-            transition: all 0.3s ease !important;
-            border-radius: 0.5rem !important;
-        }
-
-        table.dataTable tbody tr:hover {
-            background: rgba(232, 224, 213, 0.3) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1) !important;
-        }
-
-        table.dataTable tbody td {
-            padding: 1rem !important;
-            vertical-align: middle !important;
-            border: none !important;
-            font-family: 'Libre Baskerville', serif !important;
-        }
-
-        table.dataTable tbody tr td:first-child {
-            border-top-left-radius: 0.5rem !important;
-            border-bottom-left-radius: 0.5rem !important;
-        }
-
-        table.dataTable tbody tr td:last-child {
-            border-top-right-radius: 0.5rem !important;
-            border-bottom-right-radius: 0.5rem !important;
-        }
-
-        .dataTables_info {
-            font-family: 'Libre Baskerville', serif !important;
-            color: #8B4513 !important;
-            padding: 1rem 0 !important;
-        }
-
-        .dataTables_paginate {
-            padding: 1rem 0 !important;
-        }
-
-        .dataTables_paginate .paginate_button {
-            padding: 0.5rem 1rem !important;
-            margin: 0 0.25rem !important;
-            border: 2px solid #E8E0D5 !important;
-            border-radius: 0.5rem !important;
-            background: white !important;
-            color: #8B4513 !important;
-            font-family: 'Libre Baskerville', serif !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .dataTables_paginate .paginate_button:hover {
-            background: #E8E0D5 !important;
-            color: #8B4513 !important;
-            border-color: #8B4513 !important;
-        }
-
-        .dataTables_paginate .paginate_button.current {
-            background: linear-gradient(to right, #8B4513, #A0522D) !important;
-            color: #E8E0D5 !important;
-            border-color: #8B4513 !important;
-        }
-
-        .dataTables_paginate .paginate_button.disabled {
-            opacity: 0.5 !important;
-            cursor: not-allowed !important;
-        }
-
-        /* Action Buttons Styling */
-        .edit-dish-btn, .view-package-btn, .edit-package-btn {
-            padding: 0.5rem !important;
-            margin: 0 0.25rem !important;
-            border-radius: 0.5rem !important;
-            transition: all 0.3s ease !important;
-            background: rgba(139, 69, 19, 0.1) !important;
-        }
-
-        .edit-dish-btn:hover, .view-package-btn:hover, .edit-package-btn:hover {
-            background: rgba(139, 69, 19, 0.2) !important;
-            transform: translateY(-2px) !important;
-        }
-
-        /* Status Badge Styling */
-        .status-badge {
-            padding: 0.5rem 1rem !important;
-            border-radius: 2rem !important;
-            font-weight: 500 !important;
-            text-transform: capitalize !important;
-            letter-spacing: 0.5px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
-        }
-
-        .status-badge.active {
-            background: rgba(34, 197, 94, 0.1) !important;
-            color: rgb(34, 197, 94) !important;
-        }
-
-        .status-badge.inactive {
-            background: rgba(239, 68, 68, 0.1) !important;
-            color: rgb(239, 68, 68) !important;
-        }
-
-        /* Empty State Styling */
-        .dataTables_empty {
-            padding: 3rem !important;
-            text-align: center !important;
-            font-family: 'Playfair Display', serif !important;
-            color: #8B4513 !important;
-            background: rgba(232, 224, 213, 0.3) !important;
-            border-radius: 0.5rem !important;
-        }
-
-        /* Responsive Improvements */
-        @media (max-width: 768px) {
-            .dataTables_wrapper {
-                padding: 1rem !important;
-            }
-
-            .dataTables_filter input {
-                width: 100% !important;
-                margin-bottom: 1rem !important;
-            }
-
-            .dataTables_length select {
-                width: 100% !important;
-                margin-bottom: 1rem !important;
-            }
-
-            table.dataTable tbody td {
-                padding: 0.75rem !important;
-            }
-        }
-
         .chart-container {
             position: relative;
             height: 300px;
@@ -428,16 +231,16 @@
 
                     <!-- Menu Table -->
                     <div class="overflow-x-auto">
-                        <table id="menu-table" class="w-full table-auto display nowrap hover:table-hover" style="width:100%">
+                        <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Dish ID</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Dish Name</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Category</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Status</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Price</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Capital</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Actions</th>
+                                <tr class="border-b-2 border-accent-brown/30">
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Capital</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -458,15 +261,15 @@
 
                     <!-- Packages Table -->
                     <div class="overflow-x-auto">
-                        <table id="packages-table" class="w-full table-auto display nowrap hover:table-hover" style="width:100%">
+                        <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Package ID</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Package Name</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Price</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Type</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Status</th>
-                                    <th class="text-left p-4 font-semibold text-warm-cream">Actions</th>
+                                <tr class="border-b-2 border-accent-brown/30">
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Type</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1245,75 +1048,67 @@
             var table = $('#menu-table').DataTable({
                 responsive: true,
                 ajax: {
-                    url: 'menu_handlers/get_dishes.php',
+                    url: 'menu_handlers/get_dishes.php', // Your PHP endpoint that returns JSON data
                     type: 'GET',
                     dataSrc: ''
                 },
                 columns: [
                     { data: 'dish_id' },
                     { data: 'dish_name' },
-                    { 
-                        data: 'dish_category',
-                        render: function(data) {
-                            return data.split('-').map(word => 
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            ).join(' ');
-                        }
-                    },
+                    { data: 'dish_category' },
                     { 
                         data: 'status',
                         render: function(data, type, row) {
-                            var statusClass = data === 'active' ? 'status-badge active' : 'status-badge inactive';
-                            var statusText = data === 'active' ? 'Available' : 'Unavailable';
-                            var icon = data === 'active' ? 
-                                '<i class="fas fa-check-circle"></i>' : 
-                                '<i class="fas fa-times-circle"></i>';
-                            return `<span class="${statusClass}">${icon} ${statusText}</span>`;
+                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
                         }
                     },
                     { 
                         data: 'price',
                         render: function(data) {
-                            return '₱' + parseFloat(data).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     { 
                         data: 'capital',
                         render: function(data) {
-                            return '₱' + parseFloat(data).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     {
                         data: 'dish_id',
                         render: function(data) {
-                            return `
-                                <div class="flex items-center justify-center space-x-2">
-                                    <button class="edit-dish-btn" data-id="${data}" title="Edit Dish">
+                            return `<button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
                                         <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            `;
+                                    </button>`;
                         },
                         orderable: false
                     }
                 ],
-                order: [[1, 'asc']], // Sort by dish name by default
-                pageLength: 10,
-                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"flex-1"l><"flex-1 text-right"f>>rtip',
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 }, // Dish Name
+                    { responsivePriority: 2, targets: 3 }, // Status
+                    { responsivePriority: 3, targets: 4 }, // Price
+                    { responsivePriority: 4, targets: -1 } // Actions
+                ],
                 language: {
-                    search: "<span class='font-playfair text-deep-brown'>Search:</span> _INPUT_",
+                    search: "_INPUT_",
                     searchPlaceholder: "Search dishes...",
-                    lengthMenu: "<span class='font-playfair text-deep-brown'>Show</span> _MENU_ <span class='font-playfair text-deep-brown'>dishes</span>",
+                    lengthMenu: "Show _MENU_ dishes per page",
+                    zeroRecords: "No dishes found",
                     info: "Showing _START_ to _END_ of _TOTAL_ dishes",
-                    emptyTable: "<div class='text-center py-8'><i class='fas fa-utensils text-4xl text-gray-400 mb-4'></i><br>No dishes available</div>",
-                    zeroRecords: "<div class='text-center py-8'><i class='fas fa-search text-4xl text-gray-400 mb-4'></i><br>No matching dishes found</div>"
+                    infoEmpty: "No dishes available",
+                    infoFiltered: "(filtered from _MAX_ total dishes)"
                 }
+            });
+
+            // You might want to add this to handle edit button clicks
+            $('#menu-table').on('click', '.edit-dish-btn', function() {
+                var dishId = $(this).data('id');
+                // Handle edit functionality here
+                openEditDishModal(dishId);
+                console.log('Edit dish with ID:', dishId);
             });
         });
 
@@ -1759,7 +1554,7 @@
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
                 ajax: {
-                    url: 'menu_handlers/get_packages.php',
+                    url: 'menu_handlers/get_packages.php', // Your PHP endpoint that returns JSON data
                     type: 'GET',
                     dataSrc: ''
                 },
@@ -1769,59 +1564,58 @@
                     { 
                         data: 'price',
                         render: function(data) {
-                            return '₱' + parseFloat(data).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     { 
                         data: 'type',
                         render: function(data) {
-                            const icon = data === 'buffet' ? 
-                                '<i class="fas fa-utensils mr-2"></i>' : 
-                                '<i class="fas fa-concierge-bell mr-2"></i>';
-                            return `<span class="flex items-center">${icon}${data === 'buffet' ? 'Buffet' : 'Per Plate'}</span>`;
+                            // Convert type value to display text
+                            if (data === 'buffet') {
+                                return 'Buffet';
+                            } else if (data === 'per_plate') {
+                                return 'Per Plate';
+                            }
+                            return data; // Fallback
                         }
                     },
                     { 
                         data: 'status',
                         render: function(data, type, row) {
-                            var statusClass = data === 'active' ? 'status-badge active' : 'status-badge inactive';
-                            var statusText = data === 'active' ? 'Available' : 'Unavailable';
-                            var icon = data === 'active' ? 
-                                '<i class="fas fa-check-circle"></i>' : 
-                                '<i class="fas fa-times-circle"></i>';
-                            return `<span class="${statusClass}">${icon} ${statusText}</span>`;
+                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
                         }
                     },
                     {
                         data: 'package_id',
                         render: function(data) {
                             return `
-                                <div class="flex items-center justify-center space-x-2">
-                                    <button class="view-package-btn" data-id="${data}" title="View Package">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="edit-package-btn" data-id="${data}" title="Edit Package">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn" data-id="${data}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
                             `;
                         },
                         orderable: false
                     }
                 ],
-                order: [[1, 'asc']], // Sort by package name by default
-                pageLength: 10,
-                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"flex-1"l><"flex-1 text-right"f>>rtip',
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 }, // Package Name
+                    { responsivePriority: 2, targets: 3 }, // Type
+                    { responsivePriority: 3, targets: 2 }, // Price
+                    { responsivePriority: 4, targets: -1 } // Actions
+                ],
                 language: {
-                    search: "<span class='font-playfair text-deep-brown'>Search:</span> _INPUT_",
+                    search: "_INPUT_",
                     searchPlaceholder: "Search packages...",
-                    lengthMenu: "<span class='font-playfair text-deep-brown'>Show</span> _MENU_ <span class='font-playfair text-deep-brown'>packages</span>",
+                    lengthMenu: "Show _MENU_ packages per page",
+                    zeroRecords: "No packages found",
                     info: "Showing _START_ to _END_ of _TOTAL_ packages",
-                    emptyTable: "<div class='text-center py-8'><i class='fas fa-box-open text-4xl text-gray-400 mb-4'></i><br>No packages available</div>",
-                    zeroRecords: "<div class='text-center py-8'><i class='fas fa-search text-4xl text-gray-400 mb-4'></i><br>No matching packages found</div>"
+                    infoEmpty: "No packages available",
+                    infoFiltered: "(filtered from _MAX_ total packages)"
                 }
             });
 
