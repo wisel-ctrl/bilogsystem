@@ -149,6 +149,18 @@
             background: #5D2F0F;
         }
 
+        /* Blur effect for background */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 9999; /* Just below the modal */
+}
+
         /* Add blur effect class */
         .blur-effect {
             filter: blur(5px);
@@ -156,12 +168,13 @@
             pointer-events: none;
         }
 
-        /* Modal container structure */
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-        }
+        /* Modal container adjustments */
+.modal-container {
+    position: relative;
+    z-index: 10001; /* Higher than backdrop */
+    max-height: calc(100vh - 100px); /* Account for header and padding */
+    overflow-y: auto;
+}
 
         .modal-header {
             position: sticky;
@@ -207,8 +220,17 @@
 
         /* Add this to your existing styles */
         #dish-modal, #package-modal, #edit-dish-modal, #edit-package-modal, #view-package-modal {
-            z-index: 1000 !important; /* Higher than anything else */
-        }
+    z-index: 10000 !important; /* Higher than header */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 70px; /* Adjust based on header height */
+}
         
         /* Ensure the main content doesn't create stacking context */
         .flex-1 {
@@ -221,9 +243,11 @@
         }
         
         /* Header should have lower z-index than modals */
-        header {
-            z-index: 50;
-        }
+        /* Header z-index adjustment */
+header {
+    z-index: 50; /* Lower than modals */
+    position: relative; /* Ensure stacking context */
+}
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -386,8 +410,9 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full modal-container">
+                <div id="dish-modal" class="hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full">
                         <div class="modal-header p-6">
                             <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
