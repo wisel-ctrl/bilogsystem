@@ -121,13 +121,10 @@
 
         /* Add this to your existing style section */
         #profileMenu {
-            z-index: 9999 !important;
-            transform: translateY(0) !important;
+            z-index: 9999;
+            transform: translateY(0);
         }
 
-        header {
-            z-index: 50;
-        }
 
         /* Add this to your existing styles */
         #add-ingredient-modal, #edit-ingredient-modal, #delete-confirm-modal, #dish-modal, #edit-dish-modal, #package-modal, #edit-package-modal, #view-package-modal {
