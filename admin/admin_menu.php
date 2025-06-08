@@ -963,20 +963,6 @@
     }, 300);
 }
 
-// Function to apply blur effect
-function applyBlurEffect() {
-    document.getElementById('sidebar').classList.add('blur-effect');
-    document.querySelector('header').classList.add('blur-effect');
-    document.querySelector('main').classList.add('blur-effect');
-}
-
-// Function to remove blur effect
-function removeBlurEffect() {
-    document.getElementById('sidebar').classList.remove('blur-effect');
-    document.querySelector('header').classList.remove('blur-effect');
-    document.querySelector('main').classList.remove('blur-effect');
-}
-
         // Update your openModalWithAnimation function:
 function openModalWithAnimation(modal) {
     applyBlurEffect();
