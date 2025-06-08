@@ -6,9 +6,6 @@
     <title>Cafe Lilio - Inventory Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -155,6 +152,33 @@
             background: #A0522D;
             color: white !important;
             border-color: #A0522D;
+        }
+
+        /* Fix sorting icons */
+        table.dataTable thead th {
+            position: relative;
+            background-image: none !important;
+        }
+       
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            position: absolute;
+            right: 8px;
+            color: #A0522D;
+        }
+
+        table.dataTable thead th.sorting:after {
+            content: "↕";
+            opacity: 0.4;
+        }
+        
+        table.dataTable thead th.sorting_asc:after {
+            content: "↑";
+        }
+        
+        table.dataTable thead th.sorting_desc:after {
+            content: "↓";
         }
     </style>
     <script>
@@ -558,6 +582,10 @@
                 "order": [[0, 'asc']],
                 "responsive": true,
                 "dom": 'rt<"flex justify-between items-center mt-4"ip>',
+                "columnDefs": [
+                    { "orderable": false, "targets": 5 }, // Actions column
+                    { "orderSequence": ["asc", "desc"], "targets": [0,1,2,3,4] } // All other columns
+                ],
                 "language": {
                     "search": "_INPUT_",
                     "searchPlaceholder": "Search ingredients...",
