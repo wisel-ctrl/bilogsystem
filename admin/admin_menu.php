@@ -136,9 +136,15 @@
             pointer-events: none;
         }
 
-        /* Add this to your existing styles */
+        /* Prevent blur on modals */
         #dish-modal, #package-modal, #edit-dish-modal, #edit-package-modal, #view-package-modal, #success-modal {
             z-index: 1000 !important; /* Higher than anything else */
+            filter: none !important; /* Prevent blur effect on modals */
+        }
+
+        .modal-container {
+            filter: none !important; /* Ensure modal content is never blurred */
+            backdrop-filter: none !important; /* Prevent backdrop blur from affecting modal content */
         }
 
         /* Ensure the main content doesn't create stacking context */
@@ -2140,9 +2146,10 @@
 
         // Modal transition functions
         function showModal(modalId) {
-            // Add blur to main content
-            document.querySelector('.flex-1').classList.add('blur-effect');
+            // Add blur to main content and sidebar only
+            document.querySelector('main').classList.add('blur-effect');
             document.querySelector('#sidebar').classList.add('blur-effect');
+            document.querySelector('header').classList.add('blur-effect');
             
             // Show modal with fade effect
             const modal = document.getElementById(modalId);
@@ -2154,9 +2161,10 @@
         }
 
         function hideModal(modalId) {
-            // Remove blur from main content
-            document.querySelector('.flex-1').classList.remove('blur-effect');
+            // Remove blur from main content and sidebar only
+            document.querySelector('main').classList.remove('blur-effect');
             document.querySelector('#sidebar').classList.remove('blur-effect');
+            document.querySelector('header').classList.remove('blur-effect');
             
             const modal = document.getElementById(modalId);
             modal.querySelector('.dashboard-card').style.opacity = '0';
