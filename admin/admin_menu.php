@@ -132,21 +132,14 @@
         }
 
         /* Sidebar should have lower z-index than modals */
-#sidebar {
-    z-index: 40;
-    position: relative; /* Ensure it creates a stacking context */
-}
+        #sidebar {
+            z-index: 40;
+        }
 
         /* Header should have lower z-index than modals */
-header {
-    z-index: 50;
-    position: relative; /* Ensure it creates a stacking context */
-}
-/* Main content should be below modals */
-main {
-    position: relative;
-    z-index: 10;
-}
+        header {
+            z-index: 50;
+        }
 
         /* Add blur effect class */
         .blur-effect {
@@ -163,32 +156,18 @@ main {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    z-index: 1000; /* Higher than sidebar and header */
+    z-index: 999;
 }
 
-    .modal-container {
-    position: fixed;
-    z-index: 1001; /* Above the backdrop */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        .modal-container {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
     max-height: 90vh;
     background: white;
     border-radius: 0.5rem;
-    width: 90%;
-    max-width: 800px;
 }
-
-body.modal-open {
-    overflow: hidden;
-}
-
-body.modal-open #sidebar,
-body.modal-open header {
-    filter: blur(5px);
-    pointer-events: none;
-}
-
         .modal-header {
             position: sticky;
             top: 0;
@@ -971,19 +950,18 @@ body.modal-open header {
             }
         }
 
-        // Update your closeModalWithAnimation function:
-function closeModalWithAnimation(modal) {
-    document.body.classList.remove('modal-open');
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
+        // Function to close modal with animation
+        function closeModalWithAnimation(modal) {
+            removeBlurEffect();
+            modal.querySelector('.dashboard-card').style.opacity = '0';
+            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
 
         // Update your openModalWithAnimation function:
 function openModalWithAnimation(modal) {
-    document.body.classList.add('modal-open');
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.querySelector('.dashboard-card').style.opacity = '1';
