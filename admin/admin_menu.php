@@ -1002,7 +1002,9 @@
 
         // Open modal
         addDishBtn.addEventListener('click', async () => {
-            openModal('dish-modal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
             // Fetch and populate ingredients
             const ingredients = await fetchIngredients();
             populateIngredientDropdowns(ingredients);
@@ -1029,7 +1031,8 @@
 
         // Close modal functions
         const closeModalFunction = () => {
-            closeModal('dish-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Re-enable background scrolling
             // Reset form
             document.getElementById('dish-form').reset();
             // Reset ingredients to initial state
@@ -1312,7 +1315,8 @@
                 }
                 
                 // Show modal
-                openModal('edit-dish-modal');
+                editDishModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching dish data:', error);
                 alert('Failed to load dish data for editing');
@@ -1342,7 +1346,8 @@
 
         // Close modal functions
         const closeEditModalFunction = () => {
-            closeModal('edit-dish-modal');
+            editDishModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
             document.getElementById('edit-dish-form').reset();
             editIngredientsContainer.innerHTML = '';
             document.getElementById('edit-dish-image').value = '';
@@ -1577,7 +1582,8 @@
 
         // Initialize when modal opens
         addPackageBtn.addEventListener('click', async () => {
-            openModal('package-modal');
+            packageModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
             await populateDishes();
         });
 
@@ -1655,7 +1661,8 @@
 
         // Close modal functions
         const closePackageModalFunction = () => {
-            closeModal('package-modal');
+            packageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
             document.getElementById('package-form').reset();
             const initialDish = dishesContainer.querySelector('.dish-row');
             dishesContainer.innerHTML = '';
@@ -1882,7 +1889,8 @@
                 }
                 
                 // Show modal
-                openModal('view-package-modal');
+                viewPackageModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package details');
@@ -1891,7 +1899,8 @@
 
         // Close view modal functions
         const closeViewPackageModalFunction = () => {
-            closeModal('view-package-modal');
+            viewPackageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
         };
 
         closeViewPackageModal.addEventListener('click', closeViewPackageModalFunction);
@@ -1954,7 +1963,8 @@
                 }
                 
                 // Show modal
-                openModal('edit-package-modal');
+                editPackageModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package data for editing');
@@ -2015,7 +2025,8 @@
 
         // Close modal functions
         const closeEditPackageModalFunction = () => {
-            closeModal('edit-package-modal');
+            editPackageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
             document.getElementById('edit-package-form').reset();
             editPackageDishesContainer.innerHTML = '';
         };
