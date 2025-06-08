@@ -955,17 +955,16 @@
 
         // Function to close modal with animation
         function closeModalWithAnimation(modal) {
-    removeBlurEffect();
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
+            removeBlurEffect();
+            modal.querySelector('.dashboard-card').style.opacity = '0';
+            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
 
         // Update your openModalWithAnimation function:
 function openModalWithAnimation(modal) {
-    applyBlurEffect();
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.querySelector('.dashboard-card').style.opacity = '1';
