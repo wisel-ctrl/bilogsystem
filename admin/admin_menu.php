@@ -166,9 +166,20 @@ main {
     z-index: 1000; /* Higher than sidebar and header */
 }
 
+#dish-modal,
+#edit-dish-modal,
+#package-modal,
+#edit-package-modal,
+#view-package-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
     .modal-container {
     position: fixed;
-    z-index: 1001; /* Above the backdrop */
+    z-index: 1001;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -177,6 +188,8 @@ main {
     border-radius: 0.5rem;
     width: 90%;
     max-width: 800px;
+    overflow-y: auto;
+    margin: auto;
 }
 
 body.modal-open {
@@ -971,23 +984,30 @@ body.modal-open header {
             }
         }
 
-        // Update your closeModalWithAnimation function:
-function closeModalWithAnimation(modal) {
+        function closeModalWithAnimation(modal) {
     document.body.classList.remove('modal-open');
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
+    const modalCard = modal.querySelector('.dashboard-card');
+    modalCard.style.opacity = '0';
+    modalCard.style.transform = 'translateY(20px)';
+    
     setTimeout(() => {
         modal.classList.add('hidden');
+        // Reset styles after closing
+        modalCard.style.opacity = '';
+        modalCard.style.transform = '';
     }, 300);
 }
 
-        // Update your openModalWithAnimation function:
-function openModalWithAnimation(modal) {
+        function openModalWithAnimation(modal) {
     document.body.classList.add('modal-open');
+    const modalCard = modal.querySelector('.dashboard-card');
+    modalCard.style.opacity = '0';
+    modalCard.style.transform = 'translateY(20px)';
     modal.classList.remove('hidden');
+    
     setTimeout(() => {
-        modal.querySelector('.dashboard-card').style.opacity = '1';
-        modal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+        modalCard.style.opacity = '1';
+        modalCard.style.transform = 'translateY(0)';
     }, 50);
 }
 
