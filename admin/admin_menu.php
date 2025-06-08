@@ -119,11 +119,6 @@
             }
         }
 
-        /* Add this to your existing style section */
-        #profileMenu {
-            z-index: 9999;
-            transform: translateY(0);
-        }
 
 
         /* Add this to your existing styles */
