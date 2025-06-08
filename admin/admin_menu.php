@@ -128,93 +128,6 @@
         header {
             z-index: 50;
         }
-
-        /* Replace the existing .blur-effect with this */
-.blur-effect {
-    filter: blur(5px);
-    transition: filter 0.3s ease;
-    pointer-events: none;
-    user-select: none;
-}
-        
-
-        /* Add this to your existing styles */
-#dish-modal, #package-modal, #edit-dish-modal, #edit-package-modal, #view-package-modal, #success-modal {
-    z-index: 1000 !important;
-}
-
-/* Ensure the blurred elements stay behind the modal */
-main, header, #sidebar {
-    position: relative;
-    z-index: 1;
-}
-
-        /* Ensure the main content doesn't create stacking context */
-        .flex-1 {
-            position: static;
-        }
-
-        /* Sidebar should have lower z-index than modals */
-        #sidebar {
-            z-index: 40;
-        }
-
-        /* Header should have lower z-index than modals */
-        header {
-            z-index: 50;
-        }
-
-        /* Add this to your existing styles */
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-        }
-
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            z-index: 10;
-            border-bottom-left-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-        }
-
-        /* Improved scrollbar for modal body */
-        .modal-body::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
-        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -965,9 +878,12 @@ main, header, #sidebar {
 
         // Open modal
         addDishBtn.addEventListener('click', async () => {
-            showModal('dish-modal');
-            document.body.style.overflow = 'hidden';
-            await populateIngredients();
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Fetch and populate ingredients
+            const ingredients = await fetchIngredients();
+            populateIngredientDropdowns(ingredients);
         });
 
         function populateIngredientDropdowns(ingredients) {
@@ -991,7 +907,7 @@ main, header, #sidebar {
 
         // Close modal functions
         const closeModalFunction = () => {
-            hideModal('dish-modal');
+            modal.classList.add('hidden');
             document.body.style.overflow = 'auto'; // Re-enable background scrolling
             // Reset form
             document.getElementById('dish-form').reset();
@@ -1275,7 +1191,7 @@ main, header, #sidebar {
                 }
                 
                 // Show modal
-                showModal('edit-dish-modal');
+                editDishModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching dish data:', error);
@@ -1306,7 +1222,7 @@ main, header, #sidebar {
 
         // Close modal functions
         const closeEditModalFunction = () => {
-            hideModal('edit-dish-modal');
+            editDishModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
             document.getElementById('edit-dish-form').reset();
             editIngredientsContainer.innerHTML = '';
@@ -1542,7 +1458,7 @@ main, header, #sidebar {
 
         // Initialize when modal opens
         addPackageBtn.addEventListener('click', async () => {
-            showModal('package-modal');
+            packageModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             await populateDishes();
         });
@@ -1621,7 +1537,7 @@ main, header, #sidebar {
 
         // Close modal functions
         const closePackageModalFunction = () => {
-            hideModal('package-modal');
+            packageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
             document.getElementById('package-form').reset();
             const initialDish = dishesContainer.querySelector('.dish-row');
@@ -1849,7 +1765,7 @@ main, header, #sidebar {
                 }
                 
                 // Show modal
-                showModal('view-package-modal');
+                viewPackageModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
@@ -1859,7 +1775,7 @@ main, header, #sidebar {
 
         // Close view modal functions
         const closeViewPackageModalFunction = () => {
-            hideModal('view-package-modal');
+            viewPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         };
 
@@ -1923,7 +1839,7 @@ main, header, #sidebar {
                 }
                 
                 // Show modal
-                showModal('edit-package-modal');
+                editPackageModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
@@ -1985,7 +1901,7 @@ main, header, #sidebar {
 
         // Close modal functions
         const closeEditPackageModalFunction = () => {
-            hideModal('edit-package-modal');
+            editPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
             document.getElementById('edit-package-form').reset();
             editPackageDishesContainer.innerHTML = '';
@@ -2145,47 +2061,6 @@ main, header, #sidebar {
             preventNegativeInputs('edit-dish-price');
             preventNegativeInputs('edit-dish-capital');
         });
-
-        // Modal transition functions
-        function showModal(modalId) {
-    // Add blur to main content and sidebar only (not the modal)
-    document.querySelector('main').classList.add('blur-effect');
-    document.querySelector('header').classList.add('blur-effect');
-    document.querySelector('#sidebar').classList.add('blur-effect');
-    
-    // Show modal with fade effect
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-        modal.querySelector('.dashboard-card').style.opacity = '1';
-        modal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-    }, 50);
-}
-
-
-        function hideModal(modalId) {
-    // Remove blur from main content and sidebar
-    document.querySelector('main').classList.remove('blur-effect');
-    document.querySelector('header').classList.remove('blur-effect');
-    document.querySelector('#sidebar').classList.remove('blur-effect');
-    
-    const modal = document.getElementById(modalId);
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
-
-        // Update success modal functions
-        function showSuccessModal(message) {
-            document.getElementById('success-message').textContent = message;
-            showModal('success-modal');
-        }
-
-        function closeSuccessModal() {
-            hideModal('success-modal');
-        }
 
     </script>
 </body>
