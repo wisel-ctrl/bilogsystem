@@ -10,7 +10,13 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
         .chart-container {
             position: relative;
             height: 300px;
@@ -42,6 +48,192 @@
         .delay-400 {
             transition-delay: 400ms;
         }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Improved hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+        
+        /* Card styles */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar improvements */
+        .sidebar-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #E8E0D5;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add this to your existing style section */
+        #profileMenu {
+            z-index: 9999 !important;
+            transform: translateY(0) !important;
+        }
+
+        header {
+            z-index: 50;
+        }
+
+        /* DataTables custom styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #d1d5db;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #d1d5db;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #d1d5db;
+            margin-left: 0.25rem;
+            border-radius: 0.375rem;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #A0522D;
+            color: white !important;
+            border-color: #A0522D;
+        }
+
+        /* Fix sorting icons */
+        table.dataTable thead th {
+            position: relative;
+            background-image: none !important;
+        }
+       
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            position: absolute;
+            right: 8px;
+            color: #A0522D;
+        }
+
+        table.dataTable thead th.sorting:after {
+            content: "↕";
+            opacity: 0.4;
+        }
+        
+        table.dataTable thead th.sorting_asc:after {
+            content: "↑";
+        }
+        
+        table.dataTable thead th.sorting_desc:after {
+            content: "↓";
+        }
+
+        /* Modal styles */
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        /* Improved scrollbar for modal body */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Blur effect class */
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+            pointer-events: none;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -62,7 +254,7 @@
         }
     </script>
 </head>
-<body class="bg-warm-cream font-serif">
+<body class="bg-warm-cream/50 font-baskerville">
     <!-- Modal for adding expenses -->
     <div id="expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -182,50 +374,50 @@
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-accent-brown">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                    <h1 id="cafe-title" class="text-xl font-bold text-warm-cream font-script">Cafe Lilio</h1>
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                 </div>
             </div>
             
             <nav class="mt-8 px-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="admin_dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream transition-colors duration-200">
+                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-chart-pie w-5"></i>
-                            <span class="sidebar-text">Dashboard</span>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_bookings.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-calendar-check w-5"></i>
-                            <span class="sidebar-text">Booking Requests</span>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_menu.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
-                            <span class="sidebar-text">Menu Management</span>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_inventory.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-boxes w-5"></i>
-                            <span class="sidebar-text">Inventory</span>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_expenses.php" class="flex items-center space-x-3 p-3 rounded-lg bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
                             <i class="fas fa-receipt w-5"></i>
-                            <span class="sidebar-text">Expenses</span>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_employee_creation.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200">
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text">Employee Creation</span>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
                         </a>
                     </li>
                 </ul>
@@ -235,22 +427,33 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-deep-brown font-script">Expense Management</h2>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Expense Management</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <div class="text-sm text-rich-brown">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            <span id="current-date"></span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full border-2 border-accent-brown">
-                            <span class="text-sm font-medium text-deep-brown">Admin</span>
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -258,11 +461,12 @@
 
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
-                <div class="bg-white rounded-lg shadow-md p-6 animate-on-scroll">
+                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-deep-brown">Expense Records</h3>
-                        <button id="add-expense-btn" class="bg-accent-brown hover:bg-deep-brown text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center">
-                            <i class="fas fa-plus mr-2"></i> Add Expense
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
+                        <button id="add-expense-btn" class="bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center shadow-md hover:shadow-lg">
+                            <i class="fas fa-plus mr-2"></i>
+                            <span class="font-baskerville">Add Expense</span>
                         </button>
                     </div>
                     
@@ -295,10 +499,8 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </main>
-
         </div>
     </div>
 
