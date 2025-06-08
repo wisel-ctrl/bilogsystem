@@ -133,13 +133,15 @@
 
         /* Sidebar should have lower z-index than modals */
         #sidebar {
-            z-index: 40;
-        }
+        z-index: 40;
+        position: relative; /* Add this to establish stacking context */
+    }
 
         /* Header should have lower z-index than modals */
         header {
-            z-index: 50;
-        }
+        z-index: 50;
+        position: relative; /* Add this to establish stacking context */
+    }
 
         /* Add blur effect class */
         .blur-effect {
@@ -148,20 +150,21 @@
     pointer-events: none;
 }
 
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 999;
-}
+ /* Modal backdrop should cover everything */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 999; /* Higher than sidebar and header */
+    }
 
         .modal-container {
     position: relative;
-    z-index: 1000;
+        z-index: 1000;
     display: flex;
     flex-direction: column;
     max-height: 90vh;
@@ -952,16 +955,31 @@
 
         // Function to close modal with animation
         function closeModalWithAnimation(modal) {
-            removeBlurEffect();
-            modal.querySelector('.dashboard-card').style.opacity = '0';
-            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
+    removeBlurEffect();
+    modal.querySelector('.dashboard-card').style.opacity = '0';
+    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+// Function to apply blur effect
+function applyBlurEffect() {
+    document.getElementById('sidebar').classList.add('blur-effect');
+    document.querySelector('header').classList.add('blur-effect');
+    document.querySelector('main').classList.add('blur-effect');
+}
+
+// Function to remove blur effect
+function removeBlurEffect() {
+    document.getElementById('sidebar').classList.remove('blur-effect');
+    document.querySelector('header').classList.remove('blur-effect');
+    document.querySelector('main').classList.remove('blur-effect');
+}
 
         // Update your openModalWithAnimation function:
 function openModalWithAnimation(modal) {
+    applyBlurEffect();
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.querySelector('.dashboard-card').style.opacity = '1';
