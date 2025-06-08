@@ -587,14 +587,17 @@
                     { "orderSequence": ["asc", "desc"], "targets": [0,1,2,3,4] } // All other columns
                 ],
                 "language": {
-                    "search": "_INPUT_",
-                    "searchPlaceholder": "Search ingredients...",
                     "info": "Showing _START_ to _END_ of _TOTAL_ entries",
                     "paginate": {
                         "previous": "<i class='fas fa-chevron-left'></i>",
                         "next": "<i class='fas fa-chevron-right'></i>"
                     }
                 }
+            });
+
+            // Connect custom search input to DataTable
+            $('#inventory-search').on('keyup', function() {
+                table.search(this.value).draw();
             });
 
             // Refresh table after adding/editing
