@@ -1152,10 +1152,21 @@
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
+                processing: true,
                 ajax: {
                     url: 'menu_handlers/get_dishes.php',
                     type: 'GET',
-                    dataSrc: ''
+                    dataSrc: function(json) {
+                        // Check if there's an error
+                        if (json.error) {
+                            console.error('Error loading dishes:', json.error);
+                            return [];
+                        }
+                        return json || [];
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.error('Error loading dishes:', error);
+                    }
                 },
                 columns: [
                     { data: 'dish_id' },
@@ -1217,10 +1228,21 @@
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
+                processing: true,
                 ajax: {
                     url: 'menu_handlers/get_packages.php',
                     type: 'GET',
-                    dataSrc: ''
+                    dataSrc: function(json) {
+                        // Check if there's an error
+                        if (json.error) {
+                            console.error('Error loading packages:', json.error);
+                            return [];
+                        }
+                        return json || [];
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.error('Error loading packages:', error);
+                    }
                 },
                 columns: [
                     { data: 'package_id' },
@@ -1756,10 +1778,21 @@
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
+                processing: true,
                 ajax: {
                     url: 'menu_handlers/get_packages.php',
                     type: 'GET',
-                    dataSrc: ''
+                    dataSrc: function(json) {
+                        // Check if there's an error
+                        if (json.error) {
+                            console.error('Error loading packages:', json.error);
+                            return [];
+                        }
+                        return json || [];
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.error('Error loading packages:', error);
+                    }
                 },
                 columns: [
                     { data: 'package_id' },
