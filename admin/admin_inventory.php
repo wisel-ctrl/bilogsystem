@@ -557,11 +557,10 @@
                 ],
                 "order": [[0, 'asc']],
                 "responsive": true,
-                "dom": '<"flex justify-between items-center mb-4"lf>rt<"flex justify-between items-center mt-4"ip>',
+                "dom": 'rt<"flex justify-between items-center mt-4"ip>',
                 "language": {
                     "search": "_INPUT_",
                     "searchPlaceholder": "Search ingredients...",
-                    "lengthMenu": "Show _MENU_ entries",
                     "info": "Showing _START_ to _END_ of _TOTAL_ entries",
                     "paginate": {
                         "previous": "<i class='fas fa-chevron-left'></i>",
