@@ -1143,9 +1143,10 @@
             }
         });
 
-        // Initialize DataTable
+        // Initialize DataTables
         $(document).ready(function() {
-            var table = $('#menu-table').DataTable({
+            // Menu table initialization
+            var menuTable = $('#menu-table').DataTable({
                 responsive: true,
                 dom: 'rt<"flex items-center justify-between"ip>',
                 lengthChange: false,
@@ -1209,15 +1210,104 @@
                 }
             });
 
-            // Move the search box to the custom input
-            $('#menu-search').on('keyup', function() {
-                table.search(this.value).draw();
+            // Packages table initialization
+            var packagesTable = $('#packages-table').DataTable({
+                responsive: true,
+                dom: 'rt<"flex items-center justify-between"ip>',
+                lengthChange: false,
+                pageLength: 10,
+                searching: true,
+                ajax: {
+                    url: 'menu_handlers/get_packages.php',
+                    type: 'GET',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'package_id' },
+                    { data: 'package_name' },
+                    { 
+                        data: 'price',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'type',
+                        render: function(data) {
+                            if (data === 'buffet') {
+                                return 'Buffet';
+                            } else if (data === 'per_plate') {
+                                return 'Per Plate';
+                            }
+                            return data;
+                        }
+                    },
+                    { 
+                        data: 'status',
+                        render: function(data, type, row) {
+                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                        }
+                    },
+                    {
+                        data: 'package_id',
+                        render: function(data) {
+                            return `
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn" data-id="${data}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            `;
+                        },
+                        orderable: false
+                    }
+                ],
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 2 },
+                    { responsivePriority: 4, targets: -1 }
+                ],
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search packages...",
+                    info: "Showing _START_ to _END_ of _TOTAL_ packages",
+                    infoEmpty: "No packages available",
+                    infoFiltered: "(filtered from _MAX_ total packages)",
+                    paginate: {
+                        previous: '<i class="fas fa-arrow-left"></i>',
+                        next: '<i class="fas fa-arrow-right"></i>'
+                    }
+                }
             });
 
+            // Move the search box to the custom input for menu table
+            $('#menu-search').on('keyup', function() {
+                menuTable.search(this.value).draw();
+            });
+
+            // Move the search box to the custom input for packages table
+            $('#packages-search').on('keyup', function() {
+                packagesTable.search(this.value).draw();
+            });
+
+            // Event handlers for edit buttons
             $('#menu-table').on('click', '.edit-dish-btn', function() {
                 var dishId = $(this).data('id');
                 openEditDishModal(dishId);
-                console.log('Edit dish with ID:', dishId);
+            });
+
+            $('#packages-table').on('click', '.edit-package-btn', function() {
+                var packageId = $(this).data('id');
+                openEditPackageModal(packageId);
+            });
+
+            $('#packages-table').on('click', '.view-package-btn', function() {
+                var packageId = $(this).data('id');
+                openViewPackageModal(packageId);
             });
         });
 
