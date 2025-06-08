@@ -121,23 +121,15 @@
 
 
 
-        /* Add these to your existing styles */
-#add-ingredient-modal, 
-#edit-ingredient-modal, 
-#delete-confirm-modal, 
-#dish-modal, 
-#edit-dish-modal, 
-#package-modal, 
-#edit-package-modal, 
-#view-package-modal {
-    z-index: 1100 !important; /* Higher than header and sidebar */
-}
+        /* Add this to your existing styles */
+        #add-ingredient-modal, #edit-ingredient-modal, #delete-confirm-modal, #dish-modal, #edit-dish-modal, #package-modal, #edit-package-modal, #view-package-modal {
+            z-index: 1000 !important; /* Higher than anything else */
+        }
 
         /* Ensure the main content doesn't create stacking context */
         .flex-1 {
-    position: static;
-    z-index: 10; /* Lower than sidebar and header */
-}
+            position: static;
+        }
 
         /* Sidebar should have lower z-index than modals */
         #sidebar {
@@ -164,12 +156,12 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-     z-index: 1099 !important; 
+    z-index: 999;
 }
 
         .modal-container {
     position: relative;
-     z-index: 1100 !important; /* Same as modal wrapper */
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     max-height: 90vh;
@@ -379,7 +371,7 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4">
+                <div id="dish-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
                     <!-- This is the blurred background -->
     <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
@@ -485,7 +477,7 @@
                 </div>
     
                 <!-- Package Modal -->
-                <div id="package-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4">
+                <div id="package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
                     <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -573,7 +565,7 @@
                 </div>
 
                 <!-- Edit Dish Modal -->
-                <div id="edit-dish-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4">
+                <div id="edit-dish-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
                     <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -681,7 +673,7 @@
                 </div>
 
                 <!-- View Package Modal -->
-                <div id="view-package-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4">
+                <div id="view-package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
                     <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -739,7 +731,7 @@
                 </div>
 
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4">
+                <div id="edit-package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
                     <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
