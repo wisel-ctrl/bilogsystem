@@ -133,15 +133,13 @@
 
         /* Sidebar should have lower z-index than modals */
         #sidebar {
-        z-index: 40;
-        position: relative; /* Add this to establish stacking context */
-    }
+            z-index: 40;
+        }
 
         /* Header should have lower z-index than modals */
         header {
-        z-index: 50;
-        position: relative; /* Add this to establish stacking context */
-    }
+            z-index: 50;
+        }
 
         /* Add blur effect class */
         .blur-effect {
@@ -150,21 +148,20 @@
     pointer-events: none;
 }
 
- /* Modal backdrop should cover everything */
-    .modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(5px);
-        z-index: 999; /* Higher than sidebar and header */
-    }
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+}
 
         .modal-container {
     position: relative;
-        z-index: 1000;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     max-height: 90vh;
