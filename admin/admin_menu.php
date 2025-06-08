@@ -186,7 +186,7 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-10">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
@@ -746,6 +746,27 @@
     </div>
 
     <script>
+        // Add these functions at the beginning of your script section
+        function applyBackgroundBlur() {
+            const header = document.querySelector('header');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('main');
+            
+            header.classList.add('blur-sm', 'transition-all', 'duration-300');
+            sidebar.classList.add('blur-sm', 'transition-all', 'duration-300');
+            mainContent.classList.add('blur-sm', 'transition-all', 'duration-300');
+        }
+
+        function removeBackgroundBlur() {
+            const header = document.querySelector('header');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('main');
+            
+            header.classList.remove('blur-sm', 'transition-all', 'duration-300');
+            sidebar.classList.remove('blur-sm', 'transition-all', 'duration-300');
+            mainContent.classList.remove('blur-sm', 'transition-all', 'duration-300');
+        }
+
         // Sidebar Toggle with smooth animation
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -879,8 +900,8 @@
         // Open modal
         addDishBtn.addEventListener('click', async () => {
             modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-
+            document.body.style.overflow = 'hidden';
+            applyBackgroundBlur();
             // Fetch and populate ingredients
             const ingredients = await fetchIngredients();
             populateIngredientDropdowns(ingredients);
@@ -908,7 +929,8 @@
         // Close modal functions
         const closeModalFunction = () => {
             modal.classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Re-enable background scrolling
+            document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
             // Reset form
             document.getElementById('dish-form').reset();
             // Reset ingredients to initial state
@@ -1193,6 +1215,7 @@
                 // Show modal
                 editDishModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                applyBackgroundBlur();
             } catch (error) {
                 console.error('Error fetching dish data:', error);
                 alert('Failed to load dish data for editing');
@@ -1224,6 +1247,7 @@
         const closeEditModalFunction = () => {
             editDishModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
             document.getElementById('edit-dish-form').reset();
             editIngredientsContainer.innerHTML = '';
             document.getElementById('edit-dish-image').value = '';
@@ -1460,6 +1484,7 @@
         addPackageBtn.addEventListener('click', async () => {
             packageModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            applyBackgroundBlur();
             await populateDishes();
         });
 
@@ -1539,6 +1564,7 @@
         const closePackageModalFunction = () => {
             packageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
             document.getElementById('package-form').reset();
             const initialDish = dishesContainer.querySelector('.dish-row');
             dishesContainer.innerHTML = '';
@@ -1767,6 +1793,7 @@
                 // Show modal
                 viewPackageModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                applyBackgroundBlur();
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package details');
@@ -1777,6 +1804,7 @@
         const closeViewPackageModalFunction = () => {
             viewPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
         };
 
         closeViewPackageModal.addEventListener('click', closeViewPackageModalFunction);
@@ -1841,6 +1869,7 @@
                 // Show modal
                 editPackageModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                applyBackgroundBlur();
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package data for editing');
@@ -1903,6 +1932,7 @@
         const closeEditPackageModalFunction = () => {
             editPackageModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
             document.getElementById('edit-package-form').reset();
             editPackageDishesContainer.innerHTML = '';
         };
@@ -2061,6 +2091,22 @@
             preventNegativeInputs('edit-dish-price');
             preventNegativeInputs('edit-dish-capital');
         });
+
+        // Success Modal
+        function closeSuccessModal() {
+            const successModal = document.getElementById('success-modal');
+            successModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            removeBackgroundBlur();
+        }
+
+        function showSuccessModal(message) {
+            const successModal = document.getElementById('success-modal');
+            document.getElementById('success-message').textContent = message;
+            successModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            applyBackgroundBlur();
+        }
 
     </script>
 </body>
