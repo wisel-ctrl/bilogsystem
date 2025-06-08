@@ -289,457 +289,453 @@
                     </div>
                 </div>
 
-                <!-- MODAL SECTION -->
-<!-- Dish Creation Modal -->
-<div id="dish-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Dish</h3>
-            <button id="close-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4 space-y-4">
-            <form id="dish-form" class="space-y-4">
-                <!-- Dish Name -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Name</label>
-                    <input type="text" id="dish-name" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
-                </div>
+                <!-- Dish Creation Modal -->
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
+                                <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
-                <!-- Dish Description -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                    <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
-                </div>
+                            <form id="dish-form" class="space-y-6">
+                                <!-- Dish Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Name</label>
+                                    <input type="text" id="dish-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish name" required>
+                                </div>
 
-                <!-- Dish Category -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Category</label>
-                    <select id="dish-category" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
-                        <option value="">Select category</option>
-                        <option value="italian-dish">Italian Dish</option>
-                        <option value="spanish-dish">Spanish Dish</option>
-                        <option value="house-salad">House Salad</option>
-                        <option value="pizza">Pizza</option>
-                        <option value="burgers">Burgers</option>
-                        <option value="pasta">Pasta</option>
-                        <option value="pasta_caza">Pasta e Caza</option>
-                        <option value="desserts">Desserts</option>
-                        <option value="main-course">Main Course</option>
-                        <option value="drinks">Drinks</option>
-                        <option value="coffee">Coffee</option>
-                    </select>
-                </div>
+                                <!-- Dish Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish description"></textarea>
+                                </div>
 
-                <!-- Price and Capital -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price (₱)</label>
-                        <input type="number" id="dish-price" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
+                                    <select id="dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                        <option value="">Select category</option>
+                                        <option value="italian-dish">Italian Dish</option>
+                                        <option value="spanish-dish">Spanish Dish</option>
+                                        <option value="house-salad">House Salad</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="burgers">Burgers</option>
+                                        <option value="pasta">Pasta</option>
+                                        <option value="pasta_caza">Pasta e Caza</option>
+                                        <option value="desserts">Desserts</option>
+                                        <option value="main-course">Main Course</option>
+                                        <option value="drinks">Drinks</option>
+                                        <option value="coffee">Coffee</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="dish-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="dish-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Image Upload -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative flex-1">
+                                            <input type="file" id="dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
+                                                <i class="fas fa-upload mr-2"></i>
+                                                <span id="file-name">Choose an image file</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="image-preview-container" class="mt-4 hidden">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
+                                        <img id="image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                    </div>
+                                </div>
+
+                                <!-- Ingredients Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Ingredients</label>
+                                    <div id="ingredients-container">
+                                        <div class="ingredient-row flex items-center space-x-2 mb-2">
+                                            <select class="flex-1 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-select">
+                                                <option value="">Select ingredient</option>
+                                                <!-- Options will be populated by JavaScript -->
+                                            </select>
+                                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
+                                            <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="add-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Ingredient</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Create Dish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Capital (₱)</label>
-                        <input type="number" id="dish-capital" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
+                </div>
+    
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
+                                <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <form id="package-form" class="space-y-6">
+                                <!-- Package Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Name</label>
+                                    <input type="text" id="package-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package name" required>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Status -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Menu Type</label>
+                                    <select id="package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                        <option value="buffet">Buffet</option>
+                                        <option value="per_plate">Sit - On's</option>
+                                    </select>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Add Dishes</label>
+                                    <div id="dishes-container">
+                                        <div class="dish-row flex items-center space-x-2 mb-2">
+                                            <select class="flex-1 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-select">
+                                                <option value="">Select Category</option>
+                                                <option value="italian-dish">Italian Dish</option>
+                                                <option value="spanish-dish">Spanish Dish</option>
+                                                <option value="house-salad">House Salad</option>
+                                                <option value="pizza">Pizza</option>
+                                                <option value="burgers">Burgers</option>
+                                                <option value="pasta">Pasta</option>
+                                                <option value="pasta_caza">Pasta e Caza</option>
+                                                <option value="desserts">Desserts</option>
+                                                <option value="main-course">Main Course</option>
+                                                <option value="drinks">Drinks</option>
+                                                <option value="coffee">Coffee</option>
+                                            </select>
+                                            <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-quantity" min="1" value="1">
+                                            <button type="button" class="text-red-500 hover:text-red-700 remove-dish hidden">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="add-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Dish</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Create Package
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Dish Image Upload -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Image</label>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative flex-1">
-                            <input type="file" id="dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                            <div class="px-4 py-2 border border-warm-cream rounded-lg bg-white text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
-                                <i class="fas fa-upload mr-2"></i>
-                                <span id="file-name">Choose an image file</span>
+                <!-- Edit Dish Modal -->
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
+                                <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <form id="edit-dish-form" class="space-y-6">
+                                <input type="hidden" id="edit-dish-id">
+                                
+                                <!-- Dish Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Name</label>
+                                    <input type="text" id="edit-dish-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish name" required>
+                                </div>
+
+                                <!-- Dish Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="edit-dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter dish description"></textarea>
+                                </div>
+
+                                <!-- Dish Category -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
+                                    <select id="edit-dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                        <option value="">Select category</option>
+                                        <option value="italian-dish">Italian Dish</option>
+                                        <option value="spanish-dish">Spanish Dish</option>
+                                        <option value="house-salad">House Salad</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="burgers">Burgers</option>
+                                        <option value="pasta">Pasta</option>
+                                        <option value="pasta_caza">Pasta e Caza</option>
+                                        <option value="desserts">Desserts</option>
+                                        <option value="main-course">Main Course</option>
+                                        <option value="drinks">Drinks</option>
+                                        <option value="coffee">Coffee</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="edit-dish-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="edit-dish-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Status -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Status</label>
+                                    <select id="edit-dish-status" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                        <option value="active">Available</option>
+                                        <option value="unavailable">Unavailable</option>
+                                    </select>
+                                </div>
+
+                                <!-- Dish Image Upload -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative flex-1">
+                                            <input type="file" id="edit-dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
+                                                <i class="fas fa-upload mr-2"></i>
+                                                <span id="edit-file-name">Choose an image file</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="edit-image-preview-container" class="mt-4">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Current Image:</p>
+                                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                    </div>
+                                </div>
+
+                                <!-- Ingredients Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Ingredients</label>
+                                    <div id="edit-ingredients-container">
+                                        <!-- Ingredients will be populated here -->
+                                    </div>
+                                    <button type="button" id="add-edit-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Ingredient</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Update Dish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Package Modal -->
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
+                                <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+
+                            <div class="space-y-6">
+                                <!-- Package Info -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
+                                        <p id="view-package-name" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Type</label>
+                                        <p id="view-package-type" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
+                                        <p id="view-package-price" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
+                                        <p id="view-package-status" class="text-lg font-semibold text-rich-brown font-baskerville">-</p>
+                                    </div>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
+                                    <p id="view-package-description" class="text-gray-700 font-baskerville">-</p>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes Included</label>
+                                    <div id="view-dishes-container" class="space-y-4">
+                                        <!-- Dishes will be grouped by category here -->
+                                    </div>
+                                </div>
+
+                                <!-- Close Button -->
+                                <div class="flex justify-end pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="image-preview-container" class="mt-4 hidden">
-                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
-                        <img id="image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream">
-                    </div>
                 </div>
 
-                <!-- Ingredients Section -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Ingredients</label>
-                    <div id="ingredients-container">
-                        <div class="ingredient-row flex items-center space-x-2 mb-2">
-                            <select class="flex-1 px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-select">
-                                <option value="">Select ingredient</option>
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent ingredient-quantity" step="0.01" min="0" value="">
-                            <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="button" id="add-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Another Ingredient</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button id="cancel-dish" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-200 font-medium">
-                Cancel
-            </button>
-            <button type="submit" form="dish-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown text-white py-2 px-4 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-colors duration-200 font-medium">
-                Create Dish
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Package Creation Modal -->
-<div id="package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Package</h3>
-            <button id="close-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4 space-y-4">
-            <form id="package-form" class="space-y-4">
-                <!-- Package Name -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
-                    <input type="text" id="package-name" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package name" required>
-                </div>
-
-                <!-- Package Description -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                    <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package description"></textarea>
-                </div>
-
-                <!-- Price and Capital -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price (₱)</label>
-                        <input type="number" id="package-price" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Capital (₱)</label>
-                        <input type="number" id="package-capital" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required readonly>
-                    </div>
-                </div>
-
-                <!-- Package Type -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Menu Type</label>
-                    <select id="package-type" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                        <option value="buffet">Buffet</option>
-                        <option value="per_plate">Sit - On's</option>
-                    </select>
-                </div>
-
-                <!-- Dishes Section -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Add Dishes</label>
-                    <div id="dishes-container">
-                        <div class="dish-row flex items-center space-x-2 mb-2">
-                            <select class="flex-1 px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-select">
-                                <option value="">Select Category</option>
-                                <option value="italian-dish">Italian Dish</option>
-                                <option value="spanish-dish">Spanish Dish</option>
-                                <option value="house-salad">House Salad</option>
-                                <option value="pizza">Pizza</option>
-                                <option value="burgers">Burgers</option>
-                                <option value="pasta">Pasta</option>
-                                <option value="pasta_caza">Pasta e Caza</option>
-                                <option value="desserts">Desserts</option>
-                                <option value="main-course">Main Course</option>
-                                <option value="drinks">Drinks</option>
-                                <option value="coffee">Coffee</option>
-                            </select>
-                            <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent dish-quantity" min="1" value="1">
-                            <button type="button" class="text-red-500 hover:text-red-700 remove-dish hidden">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="button" id="add-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Another Dish</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button id="cancel-package" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-200 font-medium">
-                Cancel
-            </button>
-            <button type="submit" form="package-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown text-white py-2 px-4 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-colors duration-200 font-medium">
-                Create Package
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Dish Modal -->
-<div id="edit-dish-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Dish</h3>
-            <button id="close-edit-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4 space-y-4">
-            <form id="edit-dish-form" class="space-y-4">
-                <input type="hidden" id="edit-dish-id">
-                
-                <!-- Dish Name -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Name</label>
-                    <input type="text" id="edit-dish-name" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish name" required>
-                </div>
-
-                <!-- Dish Description -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                    <textarea id="edit-dish-description" rows="3" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter dish description"></textarea>
-                </div>
-
-                <!-- Dish Category -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Category</label>
-                    <select id="edit-dish-category" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" required>
-                        <option value="">Select category</option>
-                        <option value="italian-dish">Italian Dish</option>
-                        <option value="spanish-dish">Spanish Dish</option>
-                        <option value="house-salad">House Salad</option>
-                        <option value="pizza">Pizza</option>
-                        <option value="burgers">Burgers</option>
-                        <option value="pasta">Pasta</option>
-                        <option value="pasta_caza">Pasta e Caza</option>
-                        <option value="desserts">Desserts</option>
-                        <option value="main-course">Main Course</option>
-                        <option value="drinks">Drinks</option>
-                        <option value="coffee">Coffee</option>
-                    </select>
-                </div>
-
-                <!-- Price and Capital -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price (₱)</label>
-                        <input type="number" id="edit-dish-price" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Capital (₱)</label>
-                        <input type="number" id="edit-dish-capital" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
-                    </div>
-                </div>
-
-                <!-- Dish Status -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
-                    <select id="edit-dish-status" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                        <option value="active">Available</option>
-                        <option value="unavailable">Unavailable</option>
-                    </select>
-                </div>
-
-                <!-- Dish Image Upload -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dish Image</label>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative flex-1">
-                            <input type="file" id="edit-dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                            <div class="px-4 py-2 border border-warm-cream rounded-lg bg-white text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
-                                <i class="fas fa-upload mr-2"></i>
-                                <span id="edit-file-name">Choose an image file</span>
+                <!-- Edit Package Modal -->
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
+                                <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
                             </div>
+
+                            <form id="edit-package-form" class="space-y-6">
+                                <input type="hidden" id="edit-package-id">
+                                
+                                <!-- Package Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Name</label>
+                                    <input type="text" id="edit-package-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package name" required>
+                                </div>
+
+                                <!-- Package Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="edit-package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="edit-package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Status and Type -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Status</label>
+                                        <select id="edit-package-status" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                            <option value="active">Available</option>
+                                            <option value="inactive">Unavailable</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Menu Type</label>
+                                        <select id="edit-package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                            <option value="buffet">Buffet</option>
+                                            <option value="per_plate">Sit - On's</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Dishes Section -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes in Package</label>
+                                    <div id="edit-package-dishes-container">
+                                        <!-- Dishes will be populated here -->
+                                    </div>
+                                    <button type="button" id="add-edit-package-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Another Dish</span>
+                                    </button>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Update Package
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div id="edit-image-preview-container" class="mt-4">
-                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Current Image:</p>
-                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream">
-                    </div>
                 </div>
-
-                <!-- Ingredients Section -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Ingredients</label>
-                    <div id="edit-ingredients-container">
-                        <!-- Ingredients will be populated here -->
-                    </div>
-                    <button type="button" id="add-edit-ingredient" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Another Ingredient</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button id="cancel-edit-dish" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-200 font-medium">
-                Cancel
-            </button>
-            <button type="submit" form="edit-dish-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown text-white py-2 px-4 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-colors duration-200 font-medium">
-                Update Dish
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- View Package Modal -->
-<div id="view-package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Package Details</h3>
-            <button id="close-view-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4 space-y-4">
-            <div class="space-y-4">
-                <!-- Package Info -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
-                        <p id="view-package-name" class="text-sm text-gray-900">-</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Type</label>
-                        <p id="view-package-type" class="text-sm text-gray-900">-</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
-                        <p id="view-package-price" class="text-sm font-semibold text-accent-brown">-</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
-                        <p id="view-package-status" class="text-sm text-gray-900">-</p>
-                    </div>
-                </div>
-
-                <!-- Package Description -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                    <p id="view-package-description" class="text-sm text-gray-900 bg-gray-50 p-3 rounded">-</p>
-                </div>
-
-                <!-- Dishes Section -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dishes Included</label>
-                    <div id="view-dishes-container" class="space-y-4">
-                        <!-- Dishes will be grouped by category here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200">
-            <button id="close-view-package-btn" class="w-full bg-gradient-to-r from-deep-brown to-rich-brown text-white py-2 px-4 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-colors duration-200 font-medium">
-                Close
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Package Modal -->
-<div id="edit-package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Package</h3>
-            <button id="close-edit-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4 space-y-4">
-            <form id="edit-package-form" class="space-y-4">
-                <input type="hidden" id="edit-package-id">
-                
-                <!-- Package Name -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Name</label>
-                    <input type="text" id="edit-package-name" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package name" required>
-                </div>
-
-                <!-- Package Description -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Description</label>
-                    <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="Enter package description"></textarea>
-                </div>
-
-                <!-- Price and Capital -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price (₱)</label>
-                        <input type="number" id="edit-package-price" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Capital (₱)</label>
-                        <input type="number" id="edit-package-capital" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent" placeholder="0.00" step="0.01" required readonly>
-                    </div>
-                </div>
-
-                <!-- Status and Type -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Status</label>
-                        <select id="edit-package-status" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                            <option value="active">Available</option>
-                            <option value="inactive">Unavailable</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Menu Type</label>
-                        <select id="edit-package-type" class="w-full px-4 py-2 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent">
-                            <option value="buffet">Buffet</option>
-                            <option value="per_plate">Sit - On's</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Dishes Section -->
-                <div>
-                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Dishes in Package</label>
-                    <div id="edit-package-dishes-container">
-                        <!-- Dishes will be populated here -->
-                    </div>
-                    <button type="button" id="add-edit-package-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Another Dish</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button id="cancel-edit-package" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-200 font-medium">
-                Cancel
-            </button>
-            <button type="submit" form="edit-package-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown text-white py-2 px-4 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-colors duration-200 font-medium">
-                Update Package
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Success Modal -->
-<div id="success-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-sm w-full modal-container">
-        <div class="modal-body px-6 py-4 text-center">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <i class="fas fa-check text-green-600 text-xl"></i>
-            </div>
-            <h3 class="text-lg font-semibold text-deep-brown mb-2">Success!</h3>
-            <p id="success-message" class="text-sm text-gray-600 mb-4"></p>
-            <button onclick="closeSuccessModal()" class="w-full bg-accent-brown text-white py-2 px-4 rounded-lg hover:bg-deep-brown transition-colors duration-200 font-medium">
-                OK
-            </button>
-        </div>
-    </div>
-</div>
 
             </main>
         </div>
