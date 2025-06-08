@@ -291,7 +291,7 @@
 
                 <!-- MODAL SECTION -->
 <!-- Dish Creation Modal -->
-<div id="dish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="dish-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Dish</h3>
@@ -396,7 +396,7 @@
 </div>
 
 <!-- Package Creation Modal -->
-<div id="package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Package</h3>
@@ -483,7 +483,7 @@
 </div>
 
 <!-- Edit Dish Modal -->
-<div id="edit-dish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="edit-dish-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Dish</h3>
@@ -590,7 +590,7 @@
 </div>
 
 <!-- View Package Modal -->
-<div id="view-package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="view-package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-deep-brown font-playfair">Package Details</h3>
@@ -647,7 +647,7 @@
 </div>
 
 <!-- Edit Package Modal -->
-<div id="edit-package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="edit-package-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Package</h3>
@@ -726,7 +726,7 @@
 </div>
 
 <!-- Success Modal -->
-<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
+<div id="success-modal" class="fixed inset-0 backdrop-blur-sm bg-black/30 hidden z-[1000] flex items-center justify-center p-4">
     <div class="dashboard-card rounded-lg max-w-sm w-full modal-container">
         <div class="modal-body px-6 py-4 text-center">
             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
