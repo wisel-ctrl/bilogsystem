@@ -143,18 +143,31 @@
 
         /* Add blur effect class */
         .blur-effect {
-            filter: blur(5px);
-            transition: filter 0.3s ease;
-            pointer-events: none;
-        }
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+    pointer-events: none;
+}
 
-        /* Add this to your existing styles */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+}
+
         .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-        }
-
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    background: white;
+    border-radius: 0.5rem;
+}
         .modal-header {
             position: sticky;
             top: 0;
@@ -358,7 +371,9 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                <div id="dish-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
+                    <!-- This is the blurred background -->
+    <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
@@ -462,7 +477,8 @@
                 </div>
     
                 <!-- Package Modal -->
-                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                <div id="package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
@@ -549,7 +565,8 @@
                 </div>
 
                 <!-- Edit Dish Modal -->
-                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                <div id="edit-dish-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
@@ -656,7 +673,8 @@
                 </div>
 
                 <!-- View Package Modal -->
-                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                <div id="view-package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
@@ -713,7 +731,8 @@
                 </div>
 
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
+                <div id="edit-package-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center p-4">
+                    <div class="modal-backdrop"></div>
                     <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
                         <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
@@ -931,18 +950,6 @@
             }
         }
 
-        // Function to add blur effect
-        function addBlurEffect() {
-            document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
-        }
-
-        // Function to remove blur effect
-        function removeBlurEffect() {
-            document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
-        }
-
         // Function to close modal with animation
         function closeModalWithAnimation(modal) {
             removeBlurEffect();
@@ -953,15 +960,14 @@
             }, 300);
         }
 
-        // Function to open modal with animation
-        function openModalWithAnimation(modal) {
-            addBlurEffect();
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.querySelector('.dashboard-card').style.opacity = '1';
-                modal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
-        }
+        // Update your openModalWithAnimation function:
+function openModalWithAnimation(modal) {
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.querySelector('.dashboard-card').style.opacity = '1';
+        modal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+    }, 50);
+}
 
         // Dish Modal
         addDishBtn.addEventListener('click', async () => {
