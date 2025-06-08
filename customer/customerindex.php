@@ -21,14 +21,18 @@ require_once 'customer_auth.php';
                         'accent-brown': '#A0522D'
                     },
                     fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'script': ['Brush Script MT', 'cursive']
+                        'playfair': ['Playfair Display', 'serif'],
+                        'baskerville': ['Libre Baskerville', 'serif']
                     }
                 }
             }
         }
     </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
         .glass-effect {
             backdrop-filter: blur(10px);
             background: rgba(232, 224, 213, 0.8);
@@ -69,16 +73,16 @@ require_once 'customer_auth.php';
         }
     </style>
 </head>
-<body class="bg-warm-cream font-serif">
+<body class="bg-warm-cream font-baskerville">
     <!-- Navigation -->
     <nav class="glass-effect fixed w-full top-0 z-50 border-b border-accent-brown/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center">
-                        <span class="text-warm-cream font-script text-xl">BV</span>
+                        <span class="text-warm-cream font-playfair text-xl">BV</span>
                     </div>
-                    <h1 class="text-2xl font-script text-deep-brown">Bella Vista</h1>
+                    <h1 class="text-2xl font-playfair text-deep-brown">Bella Vista</h1>
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#home" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Home</a>
@@ -102,7 +106,7 @@ require_once 'customer_auth.php';
         <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
         
         <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl font-script text-deep-brown mb-6 animate-fade-in">
+            <h1 class="text-6xl md:text-8xl font-playfair text-deep-brown mb-6 animate-fade-in">
                 Unforgettable Events
             </h1>
             <p class="text-xl md:text-2xl text-accent-brown mb-8 animate-slide-in max-w-2xl mx-auto">
@@ -118,7 +122,7 @@ require_once 'customer_auth.php';
     <section id="events" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-script text-deep-brown mb-4">Choose Your Experience</h2>
+                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Choose Your Experience</h2>
                 <p class="text-xl text-accent-brown max-w-2xl mx-auto">From intimate gatherings to grand celebrations, we craft every detail to perfection</p>
             </div>
 
@@ -377,7 +381,7 @@ require_once 'customer_auth.php';
         <div class="glass-effect rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="p-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-3xl font-script text-deep-brown">Book Your Event</h3>
+                    <h3 class="text-3xl font-playfair text-deep-brown">Book Your Event</h3>
                     <button onclick="closeBookingForm()" class="text-accent-brown hover:text-deep-brown transition-colors">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -448,7 +452,7 @@ require_once 'customer_auth.php';
     <section id="contact" class="py-20 bg-gradient-to-b from-warm-cream to-accent-brown/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-script text-deep-brown mb-4">Get in Touch</h2>
+                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Get in Touch</h2>
                 <p class="text-xl text-accent-brown">Let's create something extraordinary together</p>
             </div>
             
@@ -494,9 +498,9 @@ require_once 'customer_auth.php';
                 <div class="col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
-                            <span class="text-warm-cream font-script text-xl">BV</span>
+                            <span class="text-warm-cream font-playfair text-xl">BV</span>
                         </div>
-                        <h3 class="text-2xl font-script">Bella Vista</h3>
+                        <h3 class="text-2xl font-playfair">Bella Vista</h3>
                     </div>
                     <p class="text-warm-cream/80 mb-4 max-w-md">Where authentic Italian and Spanish flavors meet exceptional hospitality. Creating unforgettable moments one celebration at a time.</p>
                     <div class="flex space-x-4">
@@ -512,7 +516,7 @@ require_once 'customer_auth.php';
                         </a>
                         <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
                     </div>
