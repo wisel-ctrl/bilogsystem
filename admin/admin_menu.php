@@ -186,7 +186,7 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-10 transition-all duration-300">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
@@ -746,122 +746,32 @@
     </div>
 
     <script>
-        // Function to handle modal state and blur effect
-        function toggleModalState(isOpen) {
-            const header = document.querySelector('header');
-            const mainContent = document.querySelector('main');
-            
-            if (isOpen) {
-                header.classList.add('blur-sm');
-                mainContent.classList.add('blur-sm');
-                document.body.style.overflow = 'hidden';
-            } else {
-                header.classList.remove('blur-sm');
-                mainContent.classList.remove('blur-sm');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
         // Sidebar Toggle with smooth animation
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const cafeTitle = document.querySelector('.nav-title');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-        // Function to handle modal state
-        function toggleModalBlur(isOpen) {
-            if (isOpen) {
-                header.classList.add('blur-sm');
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-16');
+            
+            if (sidebar.classList.contains('w-16')) {
+                cafeTitle.style.opacity = '0';
+                sidebarTexts.forEach(text => text.style.opacity = '0');
+                setTimeout(() => {
+                    cafeTitle.style.display = 'none';
+                    sidebarTexts.forEach(text => text.style.display = 'none');
+                }, 300);
             } else {
-                header.classList.remove('blur-sm');
+                cafeTitle.style.display = 'block';
+                sidebarTexts.forEach(text => text.style.display = 'block');
+                setTimeout(() => {
+                    cafeTitle.style.opacity = '1';
+                    sidebarTexts.forEach(text => text.style.opacity = '1');
+                }, 50);
             }
-        }
-
-        // Update all modal open/close handlers
-        const modals = ['dish-modal', 'package-modal', 'edit-dish-modal', 'view-package-modal', 'edit-package-modal', 'success-modal'];
-        
-        modals.forEach(modalId => {
-            const modal = document.getElementById(modalId);
-            const closeBtn = modal.querySelector('[id^="close"]');
-            const cancelBtn = modal.querySelector('[id^="cancel"]');
-            
-            // Open modal handlers
-            if (modalId === 'dish-modal') {
-                addDishBtn.addEventListener('click', async () => {
-                    modal.classList.remove('hidden');
-                    toggleModalState(true);
-                    // ... rest of your existing open modal code ...
-                });
-            }
-            
-            if (modalId === 'package-modal') {
-                addPackageBtn.addEventListener('click', async () => {
-                    modal.classList.remove('hidden');
-                    toggleModalState(true);
-                    // ... rest of your existing open modal code ...
-                });
-            }
-            
-            // Close modal handlers
-            const closeModalFunction = () => {
-                modal.classList.add('hidden');
-                toggleModalState(false);
-                // ... rest of your existing close modal code ...
-            };
-            
-            if (closeBtn) closeBtn.addEventListener('click', closeModalFunction);
-            if (cancelBtn) cancelBtn.addEventListener('click', closeModalFunction);
-            
-            // Close on outside click
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModalFunction();
-                }
-            });
         });
-
-        // Update the openEditDishModal function
-        async function openEditDishModal(dishId) {
-            try {
-                // ... existing code ...
-                editDishModal.classList.remove('hidden');
-                toggleModalState(true);
-            } catch (error) {
-                console.error('Error fetching dish data:', error);
-                alert('Failed to load dish data for editing');
-            }
-        }
-
-        // Update the openViewPackageModal function
-        async function openViewPackageModal(packageId) {
-            try {
-                // ... existing code ...
-                viewPackageModal.classList.remove('hidden');
-                toggleModalState(true);
-            } catch (error) {
-                console.error('Error fetching package data:', error);
-                alert('Failed to load package details');
-            }
-        }
-
-        // Update the openEditPackageModal function
-        async function openEditPackageModal(packageId) {
-            try {
-                // ... existing code ...
-                editPackageModal.classList.remove('hidden');
-                toggleModalState(true);
-            } catch (error) {
-                console.error('Error fetching package data:', error);
-                alert('Failed to load package data for editing');
-            }
-        }
-
-        // Update success modal close function
-        function closeSuccessModal() {
-            const successModal = document.getElementById('success-modal');
-            successModal.classList.add('hidden');
-            toggleModalState(false);
-        }
 
         // Set current date with time
         function updateDateTime() {
@@ -969,7 +879,8 @@
         // Open modal
         addDishBtn.addEventListener('click', async () => {
             modal.classList.remove('hidden');
-            toggleModalState(true);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
             // Fetch and populate ingredients
             const ingredients = await fetchIngredients();
             populateIngredientDropdowns(ingredients);
@@ -997,7 +908,7 @@
         // Close modal functions
         const closeModalFunction = () => {
             modal.classList.add('hidden');
-            toggleModalState(false);
+            document.body.style.overflow = 'auto'; // Re-enable background scrolling
             // Reset form
             document.getElementById('dish-form').reset();
             // Reset ingredients to initial state
@@ -1281,7 +1192,7 @@
                 
                 // Show modal
                 editDishModal.classList.remove('hidden');
-                toggleModalState(true);
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching dish data:', error);
                 alert('Failed to load dish data for editing');
@@ -1312,7 +1223,7 @@
         // Close modal functions
         const closeEditModalFunction = () => {
             editDishModal.classList.add('hidden');
-            toggleModalState(false);
+            document.body.style.overflow = 'auto';
             document.getElementById('edit-dish-form').reset();
             editIngredientsContainer.innerHTML = '';
             document.getElementById('edit-dish-image').value = '';
@@ -1548,7 +1459,7 @@
         // Initialize when modal opens
         addPackageBtn.addEventListener('click', async () => {
             packageModal.classList.remove('hidden');
-            toggleModalState(true);
+            document.body.style.overflow = 'hidden';
             await populateDishes();
         });
 
@@ -1627,7 +1538,7 @@
         // Close modal functions
         const closePackageModalFunction = () => {
             packageModal.classList.add('hidden');
-            toggleModalState(false);
+            document.body.style.overflow = 'auto';
             document.getElementById('package-form').reset();
             const initialDish = dishesContainer.querySelector('.dish-row');
             dishesContainer.innerHTML = '';
@@ -1855,7 +1766,7 @@
                 
                 // Show modal
                 viewPackageModal.classList.remove('hidden');
-                toggleModalState(true);
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package details');
@@ -1865,7 +1776,7 @@
         // Close view modal functions
         const closeViewPackageModalFunction = () => {
             viewPackageModal.classList.add('hidden');
-            toggleModalState(false);
+            document.body.style.overflow = 'auto';
         };
 
         closeViewPackageModal.addEventListener('click', closeViewPackageModalFunction);
@@ -1929,7 +1840,7 @@
                 
                 // Show modal
                 editPackageModal.classList.remove('hidden');
-                toggleModalState(true);
+                document.body.style.overflow = 'hidden';
             } catch (error) {
                 console.error('Error fetching package data:', error);
                 alert('Failed to load package data for editing');
@@ -1991,7 +1902,7 @@
         // Close modal functions
         const closeEditPackageModalFunction = () => {
             editPackageModal.classList.add('hidden');
-            toggleModalState(false);
+            document.body.style.overflow = 'auto';
             document.getElementById('edit-package-form').reset();
             editPackageDishesContainer.innerHTML = '';
         };
