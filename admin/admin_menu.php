@@ -128,79 +128,6 @@
         header {
             z-index: 50;
         }
-
-        /* Add blur effect class */
-    .blur-effect {
-        filter: blur(5px);
-        transition: filter 0.3s ease;
-        pointer-events: none;
-    }
-
-    /* Modal z-index and positioning */
-    #dish-modal, #package-modal, #edit-dish-modal, 
-    #view-package-modal, #edit-package-modal {
-        z-index: 1000 !important;
-    }
-    
-    /* Ensure the main content doesn't create stacking context */
-    .flex-1 {
-        position: static;
-    }
-    
-    /* Modal container improvements */
-    .modal-container {
-        display: flex;
-        flex-direction: column;
-        max-height: 90vh;
-    }
-
-    .modal-header {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 10;
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-    }
-
-    .modal-body {
-        flex: 1;
-        overflow-y: auto;
-    }
-
-    .modal-footer {
-        position: sticky;
-        bottom: 0;
-        background: white;
-        z-index: 10;
-        border-bottom-left-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
-    }
-
-    /* Improved scrollbar for modal body */
-    .modal-body::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .modal-body::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
-
-    .modal-body::-webkit-scrollbar-thumb {
-        background: #8B4513;
-        border-radius: 3px;
-    }
-
-    .modal-body::-webkit-scrollbar-thumb:hover {
-        background: #5D2F0F;
-    }
-
-    /* Success modal styles */
-    .success-icon {
-        background-color: #E8E0D5;
-        color: #8B4513;
-    }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -363,16 +290,15 @@
                 </div>
 
                 <!-- Dish Creation Modal -->
-                <!-- Dish Creation Modal -->
-<div id="dish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Dish</h3>
-            <button id="close-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Dish</h3>
+                                <button id="close-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
                             <form id="dish-form" class="space-y-6">
                                 <!-- Dish Name -->
@@ -467,27 +393,18 @@
                                 </div>
                             </form>
                         </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button type="button" id="cancel-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                Cancel
-            </button>
-            <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-baskerville">
-                Create Dish
-            </button>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
     
-                <!-- Package Creation Modal -->
-<div id="package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Create New Package</h3>
-            <button id="close-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4">
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
+                                <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
@@ -565,43 +482,19 @@
                                 </div>
                             </form>
                         </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                Cancel
-            </button>
-            <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-baskerville">
-                Create Package
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Success Modal (same as admin_bookings) -->
-<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-sm w-full">
-        <div class="px-6 py-4 text-center">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <i class="fas fa-check text-green-600 text-xl"></i>
-            </div>
-            <h3 class="text-lg font-semibold text-deep-brown mb-2">Success!</h3>
-            <p id="success-message" class="text-sm text-gray-600 mb-4"></p>
-            <button onclick="closeSuccessModal()" class="w-full bg-accent-brown text-white py-2 px-4 rounded-lg hover:bg-deep-brown transition-colors duration-200 font-medium">
-                OK
-            </button>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
 
                 <!-- Edit Dish Modal -->
-<div id="edit-dish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Dish</h3>
-            <button id="close-edit-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4">
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Dish</h3>
+                                <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
                             <form id="edit-dish-form" class="space-y-6">
                                 <input type="hidden" id="edit-dish-id">
@@ -699,27 +592,19 @@
                                 </div>
                             </form>
                         </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button type="button" id="cancel-edit-dish" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                Cancel
-            </button>
-            <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-baskerville">
-                Update Dish
-            </button>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
 
                 <!-- View Package Modal -->
-<div id="view-package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Package Details</h3>
-            <button id="close-view-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4">
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Package Details</h3>
+                                <button id="close-view-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
                             <div class="space-y-6">
                                 <!-- Package Info -->
@@ -766,25 +651,20 @@
                                     </button>
                                 </div>
                             </div>
-                         </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex justify-end">
-            <button id="close-view-package-btn" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-baskerville">
-                Close
-            </button>
-        </div>
-    </div>
-</div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Edit Package Modal -->
-<div id="edit-package-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center p-4">
-    <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-        <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-deep-brown font-playfair">Edit Package</h3>
-            <button id="close-edit-package-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="modal-body px-6 py-4">
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Package</h3>
+                                <button id="close-edit-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
 
                             <form id="edit-package-form" class="space-y-6">
                                 <input type="hidden" id="edit-package-id">
@@ -854,16 +734,8 @@
                                 </div>
                             </form>
                         </div>
-        <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-            <button type="button" id="cancel-edit-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                Cancel
-            </button>
-            <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-baskerville">
-                Update Package
-            </button>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
 
             </main>
         </div>
@@ -2185,63 +2057,6 @@
             preventNegativeInputs('edit-dish-price');
             preventNegativeInputs('edit-dish-capital');
         });
-
-
-        // --- Modal Functions with improved transitions ---
-function openModal(modalId) {
-    // Add blur to main content
-    document.querySelector('.flex-1').classList.add('blur-effect');
-    document.querySelector('#sidebar').classList.add('blur-effect');
-    
-    // Show modal with fade effect
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-        modal.querySelector('.dashboard-card').style.opacity = '1';
-        modal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-    }, 50);
-}
-
-function closeModal(modalId) {
-    // Remove blur from main content
-    document.querySelector('.flex-1').classList.remove('blur-effect');
-    document.querySelector('#sidebar').classList.remove('blur-effect');
-    
-    const modal = document.getElementById(modalId);
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
-
-function showSuccess(message) {
-    // Add blur to main content
-    document.querySelector('.flex-1').classList.add('blur-effect');
-    document.querySelector('#sidebar').classList.add('blur-effect');
-    
-    // Show success modal with message and animation
-    const successModal = document.getElementById('success-modal');
-    document.getElementById('success-message').textContent = message;
-    successModal.classList.remove('hidden');
-    setTimeout(() => {
-        successModal.querySelector('.dashboard-card').style.opacity = '1';
-        successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-    }, 50);
-}
-
-function closeSuccessModal() {
-    // Remove blur from main content
-    document.querySelector('.flex-1').classList.remove('blur-effect');
-    document.querySelector('#sidebar').classList.remove('blur-effect');
-    
-    const modal = document.getElementById('success-modal');
-    modal.querySelector('.dashboard-card').style.opacity = '0';
-    modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
 
     </script>
 </body>
