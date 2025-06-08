@@ -179,15 +179,6 @@ main {
     max-width: 800px;
 }
 
-body.modal-open {
-    overflow: hidden;
-}
-
-body.modal-open #sidebar,
-body.modal-open header {
-    filter: blur(5px);
-    pointer-events: none;
-}
 
         .modal-header {
             position: sticky;
