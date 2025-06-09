@@ -121,12 +121,12 @@
 
         /* Add this to your existing style section */
         #profileMenu {
-            z-index: 9999 !important;
+            z-index: 49 !important;
             transform: translateY(0) !important;
         }
 
         header {
-            z-index: 50;
+            z-index: 45;
         }
     </style>
 </head>
