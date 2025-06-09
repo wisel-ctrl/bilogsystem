@@ -244,50 +244,6 @@ require_once 'customer_auth.php';
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-amber-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="fade-in">
-                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
-                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
-                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
-                        <p>
-                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
-                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
-                        </p>
-                        <p>
-                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
-                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
-                        </p>
-                        <p>
-                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
-                            and reputation as a premier dining destination in Liliw.
-                        </p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 fade-in">
-                    <div class="space-y-4">
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about1.jpg" alt="Restaurant Interior" class="w-full h-64 object-cover">
-                        </div>
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about2.jpg" alt="Signature Dish" class="w-full h-48 object-cover">
-                        </div>
-                    </div>
-                    <div class="space-y-4 pt-8">
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about3.jpg" alt="Coffee Service" class="w-full h-48 object-cover">
-                        </div>
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about4.jpg" alt="Restaurant Ambiance" class="w-full h-64 object-cover">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
