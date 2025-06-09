@@ -599,7 +599,7 @@ require_once 'customer_auth.php'; ?>
 
         <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
             <!-- Main Footer Content -->
-            <div class="py-4">
+            <div class="py-2">
                 <!-- Brand Section -->
                 <div class="text-center mb-12">
                     <div class="inline-flex items-center space-x-3 mb-4">
