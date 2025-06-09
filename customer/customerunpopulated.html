@@ -207,17 +207,16 @@
                                     aria-label="Notifications"
                                     id="notifications-button">
                                 <i class="fas fa-bell text-warm-cream"></i>
-                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                             </button>
                             <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
                                 <div class="px-4 py-2 border-b border-deep-brown/10">
                                     <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
                                 </div>
                                 <div class="max-h-96 overflow-y-auto">
-                                    <!-- Notification items will be dynamically loaded -->
-                                    <div class="animate-pulse p-4">
-                                        <div class="skeleton-text w-3/4"></div>
-                                        <div class="skeleton-text w-1/2"></div>
+                                    <!-- Empty state for notifications -->
+                                    <div class="p-4 text-center">
+                                        <i class="fas fa-bell-slash text-deep-brown/50 text-2xl mb-2"></i>
+                                        <p class="text-deep-brown/60">No notifications yet</p>
                                     </div>
                                 </div>
                             </div>
@@ -228,10 +227,10 @@
                             <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300"
                                     aria-label="User menu"
                                     id="user-menu-button">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=8B4513" 
+                                <img src="https://ui-avatars.com/api/?name=New+User&background=E8E0D5&color=8B4513" 
                                      alt="Profile" 
                                      class="w-8 h-8 rounded-full border border-warm-cream/30">
-                                <span class="font-baskerville">John Doe</span>
+                                <span class="font-baskerville">New User</span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
                             </button>
                             <div class="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
@@ -301,8 +300,8 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Welcome Section -->
         <section class="mb-12 animate-fade-in">
-            <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome back, <span class="text-gradient">John</span>!</h2>
-            <p class="font-baskerville text-lg text-deep-brown/80">Here's what's happening with your reservations and upcoming events.</p>
+            <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome, <span class="text-gradient">New User</span>!</h2>
+            <p class="font-baskerville text-lg text-deep-brown/80">Get started by making your first reservation or exploring our menu.</p>
         </section>
 
         <!-- Quick Actions -->
@@ -355,72 +354,14 @@
                 </button>
             </div>
             <div class="bg-card rounded-xl p-6 shadow-md">
-                <div class="overflow-x-auto">
-                    <table class="w-full" role="table">
-                        <thead>
-                            <tr class="border-b border-deep-brown/20">
-                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Date & Time</th>
-                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
-                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Guests</th>
-                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Status</th>
-                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
-                                <td class="py-4 px-4">
-                                    <div class="font-baskerville text-deep-brown">March 15, 2024</div>
-                                    <div class="text-sm text-deep-brown/60">7:00 PM</div>
-                                </td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">Dinner Reservation</td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">4</td>
-                                <td class="py-4 px-4">
-                                    <span class="bg-green-100/50 text-green-800 px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                                        Confirmed
-                                    </span>
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex space-x-2">
-                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-deep-brown/10"
-                                                data-tippy-content="Edit reservation">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50"
-                                                data-tippy-content="Cancel reservation">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-deep-brown/5 transition-colors duration-300">
-                                <td class="py-4 px-4">
-                                    <div class="font-baskerville text-deep-brown">March 20, 2024</div>
-                                    <div class="text-sm text-deep-brown/60">6:30 PM</div>
-                                </td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">Birthday Celebration</td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">12</td>
-                                <td class="py-4 px-4">
-                                    <span class="bg-yellow-100/50 text-yellow-800 px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center">
-                                        <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex space-x-2">
-                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-deep-brown/10"
-                                                data-tippy-content="Edit reservation">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50"
-                                                data-tippy-content="Cancel reservation">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="text-center py-8">
+                    <i class="fas fa-calendar-plus text-deep-brown/30 text-4xl mb-4"></i>
+                    <h4 class="font-playfair text-xl font-bold text-deep-brown mb-2">No Reservations Yet</h4>
+                    <p class="text-deep-brown/60 mb-4">Make your first reservation to get started</p>
+                    <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 inline-flex items-center space-x-2">
+                        <span>Make a Reservation</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -509,57 +450,10 @@
                 </button>
             </div>
             <div class="bg-card rounded-xl p-6 shadow-md">
-                <div class="space-y-4">
-                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                            <i class="fas fa-calendar-check text-deep-brown text-lg"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <div class="flex items-center justify-between">
-                                <p class="font-baskerville font-bold text-deep-brown">Reservation Confirmed</p>
-                                <span class="text-sm text-deep-brown/60">2 hours ago</span>
-                            </div>
-                            <p class="text-sm text-deep-brown/60 mt-1">Your reservation for March 15 has been confirmed.</p>
-                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                                <span>View Details</span>
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                            <i class="fas fa-receipt text-deep-brown text-lg"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <div class="flex items-center justify-between">
-                                <p class="font-baskerville font-bold text-deep-brown">Payment Processed</p>
-                                <span class="text-sm text-deep-brown/60">1 day ago</span>
-                            </div>
-                            <p class="text-sm text-deep-brown/60 mt-1">Payment for Birthday Celebration deposit received.</p>
-                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                                <span>View Receipt</span>
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                            <i class="fas fa-star text-deep-brown text-lg"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <div class="flex items-center justify-between">
-                                <p class="font-baskerville font-bold text-deep-brown">Review Posted</p>
-                                <span class="text-sm text-deep-brown/60">3 days ago</span>
-                            </div>
-                            <p class="text-sm text-deep-brown/60 mt-1">Thank you for reviewing your last visit!</p>
-                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                                <span>View Review</span>
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
+                <div class="text-center py-8">
+                    <i class="fas fa-history text-deep-brown/30 text-4xl mb-4"></i>
+                    <h4 class="font-playfair text-xl font-bold text-deep-brown mb-2">No Activity Yet</h4>
+                    <p class="text-deep-brown/60">Your activity will appear here once you start using our services</p>
                 </div>
             </div>
         </section>
@@ -713,58 +607,6 @@
                 }, 3000);
             }
 
-            // Handle reservation cancellation with improved UX
-            document.querySelectorAll('.fa-trash').forEach(button => {
-                button.addEventListener('click', function() {
-                    const confirmDialog = document.createElement('div');
-                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-                    confirmDialog.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
-                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
-                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
-                            <div class="flex justify-end space-x-4">
-                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
-                                    Keep Reservation
-                                </button>
-                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
-                                    Yes, Cancel
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(confirmDialog);
-                    document.body.classList.add('overflow-hidden');
-
-                    document.getElementById('cancel-dialog').addEventListener('click', () => {
-                        confirmDialog.remove();
-                        document.body.classList.remove('overflow-hidden');
-                    });
-
-                    document.getElementById('confirm-cancel').addEventListener('click', () => {
-                        NProgress.start();
-                        setTimeout(() => {
-                            confirmDialog.remove();
-                            document.body.classList.remove('overflow-hidden');
-                            showToast('Reservation cancelled successfully');
-                            NProgress.done();
-                        }, 1000);
-                    });
-                });
-            });
-
-            // Handle reservation editing
-            document.querySelectorAll('.fa-edit').forEach(button => {
-                button.addEventListener('click', function() {
-                    showToast('Opening reservation editor...', 'success');
-                    NProgress.start();
-                    
-                    setTimeout(() => {
-                        NProgress.done();
-                    }, 1000);
-                });
-            });
-
             // Add smooth scroll behavior
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
@@ -778,22 +620,6 @@
                     }
                 });
             });
-
-            // Simulate loading states for dynamic content
-            function loadNotifications() {
-                const notificationsContainer = document.querySelector('#notifications-button + div .animate-pulse');
-                setTimeout(() => {
-                    notificationsContainer.innerHTML = `
-                        <div class="p-4 border-b border-deep-brown/10">
-                            <p class="font-baskerville text-deep-brown">New special offer available!</p>
-                            <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
-                        </div>
-                    `;
-                }, 1000);
-            }
-
-            // Initialize dynamic content loading
-            loadNotifications();
         });
     </script>
 </body>
