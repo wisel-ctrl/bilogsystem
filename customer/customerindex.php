@@ -601,11 +601,8 @@ require_once 'customer_auth.php'; ?>
             <!-- Main Footer Content -->
             <div class="py-12">
                 <!-- Brand Section -->
-                <div class="text-center mb-4">
+                <div class="text-center mb-12">
                     <div class="inline-flex items-center space-x-3 mb-4">
-                        <div class="w-12 h-12 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20">
-                            <i class="fas fa-coffee text-lg text-warm-cream"></i>
-                        </div>
                         <div>
                             <h2 class="font-playfair font-bold text-2xl tracking-tight">Caffè Lilio</h2>
                             <p class="text-xs tracking-[0.2em] text-warm-cream/80 uppercase font-inter font-light">Ristorante</p>
