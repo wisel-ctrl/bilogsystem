@@ -175,10 +175,20 @@ require_once 'customer_auth.php';
                 
                 <div class="pt-4 border-t border-deep-brown/10">
                     <a href="profile.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
-                        My Profile
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span>My Profile</span>
+                        </div>
                     </a>
                     <a href="../logout.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
-                        Logout
+                        <div class="flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            <span>Logout</span>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -810,160 +820,6 @@ require_once 'customer_auth.php';
             }
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const elementsToAnimate = document.querySelectorAll('.hover-lift, .glass-effect');
-            elementsToAnimate.forEach(el => observer.observe(el));
-        });
-
-        // Add smooth hover effects to navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
-            });
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const headerOffset = 80; // Adjust this value based on your navbar height
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const navUnderlines = document.querySelectorAll('.nav-link span');
-        const navTitle = document.querySelector('.nav-title');
-        const navSubtitle = document.querySelector('.nav-subtitle');
-        const navButton = document.querySelector('.nav-button');
-
-        window.addEventListener('scroll', () => {
-            const isHeroSection = window.scrollY === 0;
-
-            if (window.scrollY > 0) {
-                navbar.classList.add('glass-effect');
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('glass-effect');
-                navbar.classList.remove('shadow-lg');
-            }
-
-            // Update nav links color based on section
-            navLinks.forEach(link => {
-                if (isHeroSection) {
-                    link.classList.remove('text-deep-brown', 'hover:text-deep-brown/80');
-                    link.classList.add('text-warm-cream', 'hover:text-warm-cream/80');
-                } else {
-                    link.classList.remove('text-warm-cream', 'hover:text-warm-cream/80');
-                    link.classList.add('text-deep-brown', 'hover:text-deep-brown/80');
-                }
-            });
-
-            // Update underline color based on section
-            navUnderlines.forEach(underline => {
-                if (isHeroSection) {
-                    underline.classList.remove('bg-deep-brown');
-                    underline.classList.add('bg-warm-cream');
-                } else {
-                    underline.classList.remove('bg-warm-cream');
-                    underline.classList.add('bg-deep-brown');
-                }
-            });
-
-            // Update nav title and subtitle colors
-            if (isHeroSection) {
-                navTitle.classList.remove('text-deep-brown');
-                navTitle.classList.add('text-warm-cream');
-                navSubtitle.classList.remove('text-deep-brown');
-                navSubtitle.classList.add('text-warm-cream');
-                // Update logout button colors for hero section
-                if (navButton) {
-                    navButton.classList.remove('bg-deep-brown', 'text-warm-cream');
-                    navButton.classList.add('bg-warm-cream', 'text-deep-brown');
-                }
-            } else {
-                navTitle.classList.remove('text-warm-cream');
-                navTitle.classList.add('text-deep-brown');
-                navSubtitle.classList.remove('text-warm-cream');
-                navSubtitle.classList.add('text-deep-brown');
-                // Update logout button colors for scrolled section
-                if (navButton) {
-                    navButton.classList.remove('bg-warm-cream', 'text-deep-brown');
-                    navButton.classList.add('bg-deep-brown', 'text-warm-cream');
-                }
-            }
-        });
-
-        // Add active state to navigation links
-        const sections = document.querySelectorAll('section[id]');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            const scrollPosition = window.pageYOffset;
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 150; // Adjusted offset for better UX
-                const sectionHeight = section.clientHeight;
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                const underline = link.querySelector('span');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                    underline.style.width = '100%';
-                } else {
-                    underline.style.width = '0';
-                }
-            });
-        });
-
         // Intersection Observer for fade-in animations
         const observerOptions = {
             threshold: 0.1,
@@ -983,44 +839,46 @@ require_once 'customer_auth.php';
             observer.observe(el);
         });
 
-        // Profile Dropdown functionality
-        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
-        const profileDropdown = document.getElementById('profileDropdown');
-        let isDropdownOpen = false;
+        // Initialize Profile Dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            let isDropdownOpen = false;
 
-        profileDropdownBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            isDropdownOpen = !isDropdownOpen;
-            if (isDropdownOpen) {
-                profileDropdown.classList.remove('hidden');
-                // Add animation classes
-                profileDropdown.classList.add('animate-fade-in');
-            } else {
-                profileDropdown.classList.add('hidden');
-                profileDropdown.classList.remove('animate-fade-in');
-            }
-        });
+            if (profileDropdownBtn && profileDropdown) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    isDropdownOpen = !isDropdownOpen;
+                    if (isDropdownOpen) {
+                        profileDropdown.classList.remove('hidden');
+                        profileDropdown.classList.add('animate-fade-in');
+                    } else {
+                        profileDropdown.classList.add('hidden');
+                        profileDropdown.classList.remove('animate-fade-in');
+                    }
+                });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (isDropdownOpen && !profileDropdown.contains(e.target)) {
-                isDropdownOpen = false;
-                profileDropdown.classList.add('hidden');
-                profileDropdown.classList.remove('animate-fade-in');
-            }
-        });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (isDropdownOpen && !profileDropdown.contains(e.target) && e.target !== profileDropdownBtn) {
+                        isDropdownOpen = false;
+                        profileDropdown.classList.add('hidden');
+                        profileDropdown.classList.remove('animate-fade-in');
+                    }
+                });
 
-        // Update dropdown colors based on scroll position
-        window.addEventListener('scroll', () => {
-            const isHeroSection = window.scrollY === 0;
-            const dropdownButton = document.getElementById('profileDropdownBtn');
-            
-            if (isHeroSection) {
-                dropdownButton.classList.remove('text-deep-brown');
-                dropdownButton.classList.add('text-warm-cream');
-            } else {
-                dropdownButton.classList.remove('text-warm-cream');
-                dropdownButton.classList.add('text-deep-brown');
+                // Update dropdown colors based on scroll position
+                window.addEventListener('scroll', () => {
+                    const isHeroSection = window.scrollY === 0;
+                    
+                    if (isHeroSection) {
+                        profileDropdownBtn.classList.remove('text-deep-brown');
+                        profileDropdownBtn.classList.add('text-warm-cream');
+                    } else {
+                        profileDropdownBtn.classList.remove('text-warm-cream');
+                        profileDropdownBtn.classList.add('text-deep-brown');
+                    }
+                });
             }
         });
     </script>
