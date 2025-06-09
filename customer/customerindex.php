@@ -588,7 +588,7 @@ require_once 'customer_auth.php'; ?>
     </main>
 
     <!-- Modern Footer -->
-    <footer class="bg-gradient-to-br from-deep-brown via-rich-brown to-accent-brown text-warm-cream relative overflow-hidden">
+    <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
         <!-- Decorative background elements -->
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
