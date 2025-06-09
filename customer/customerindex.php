@@ -8,113 +8,176 @@ require_once 'customer_auth.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista - Event Management</title>
+    <title>Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'baskerville': ['Libre Baskerville', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="tailwind.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(232, 224, 213, 0.8);
-        }
-        .hover-lift {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hover-lift:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(93, 47, 15, 0.3);
-        }
+        
         .parallax-bg {
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out;
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(232, 224, 213, 0.9);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .animate-slide-in {
-            animation: slideIn 0.6s ease-out;
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
         }
-        .floating {
-            animation: floating 6s ease-in-out infinite;
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Customer Support Widget Styles */
+        .support-widget {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(0);
+        }
+
+        .support-widget.closed {
+            transform: translateX(calc(100% + 1rem));
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .support-widget.open {
+            transform: translateX(0);
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .support-toggle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
-<body class="bg-warm-cream font-baskerville">
+<body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Navigation -->
-    <nav class="glass-effect fixed w-full top-0 z-50 border-b border-accent-brown/20">
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+            <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center">
-                        <span class="text-warm-cream font-playfair text-xl">BV</span>
+                    <div>
+                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                     </div>
-                    <h1 class="text-2xl font-playfair text-deep-brown">Bella Vista</h1>
                 </div>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Home</a>
-                    <a href="#menu" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Menu</a>
-                    <a href="#events" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Events</a>
-                    <a href="#contact" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Contact</a>
+                    <a href="#home" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Home
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        About Us
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Menu & Packages
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#services" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        What We Offer
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
                 </div>
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-rich-brown text-warm-cream">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="login.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Login
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="register.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
+                        Register
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden focus:outline-none" id="mobile-menu-btn">
+                    <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                    </div>
                 </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden glass-effect" id="mobile-menu">
+            <div class="px-4 py-4 space-y-4">
+                <a href="#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
+                <a href="#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
+                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu & Packages</a>
+                <a href="#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
+                
+                <div class="pt-4 border-t border-deep-brown/10">
+                    <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
+                        Login
+                    </a>
+                    <a href="register.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
+                        Register
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
-        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
-        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         
-        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl font-playfair text-deep-brown mb-6 animate-fade-in">
-                Unforgettable Events
-            </h1>
-            <p class="text-xl md:text-2xl text-accent-brown mb-8 animate-slide-in max-w-2xl mx-auto">
-                Experience the authentic flavors of Italy and Spain in an atmosphere designed for your most special moments
-            </p>
-            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
-                Plan Your Event
-            </button>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="fade-in">
+                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
+                    Caffè Lilio
+                </h1>
+                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
+                    RISTORANTE
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Savor the Flavors of Spain and Italy
+                </p>
+                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
+                    <a href="register.php" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
+                        Make Reservation
+                    </a>
+                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
+                        View Our Menu
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -370,6 +433,538 @@ require_once 'customer_auth.php';
                         <button onclick="openBookingForm('grand')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
                             Book Now
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
+                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
+                        </p>
+                        <p>
+                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
+                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
+                        </p>
+                        <p>
+                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
+                            and reputation as a premier dining destination in Liliw.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">3+</div>
+                            <div class="font-baskerville text-deep-brown">Years of Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">5★</div>
+                            <div class="font-baskerville text-deep-brown">Customer Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">30+</div>
+                            <div class="font-baskerville text-deep-brown">Signature Dishes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="relative">
+                        <div class="bg-deep-brown/50 rounded-3xl p-8 shadow-2xl">
+                            <div class="bg-warm-cream rounded-2xl p-8">
+                                <h6 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">
+                                    We're Here for You – Online & On-site
+                                </h6>
+                                
+                                <div class="space-y-4 font-baskerville text-deep-brown">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📍</span>
+                                        <div>
+                                            <div class="font-bold">Address</div>
+                                            <div>Brgy. Rizal st. cr. 4th St., Liliw Laguna, Liliw, Philippines, 4004</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📞</span>
+                                        <div>
+                                            <div class="font-bold">Phone</div>
+                                            <div>+49 2542 084</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">✉️</span>
+                                        <div>
+                                            <div class="font-bold">Email</div>
+                                            <div>caffelilio.liliw@gmail.com</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Map Section -->
+                                <div class="mt-6">
+                                    <section class="map w-full rounded-xl overflow-hidden shadow-lg">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+                                            width="100%"
+                                            height="250"
+                                            style="border:0;"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </section>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <a href="register.php" class="block w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300 text-center">
+                                        Make Reservation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
+                    Discover our carefully curated menu featuring the finest Italian and Spanish dishes. From classic favorites to unique specialties.
+                </p>
+            </div>
+
+            <div class="relative">
+                <!-- Previous Button -->
+                <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div id="menuCarousel" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Slide 1 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_bestseller.jpg', 'Best Sellers Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/01_bestseller.jpg" alt="Best Sellers Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_italian.jpg', 'Italian Dishes Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/02_italian.jpg" alt="Italian Dishes Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/03_spanish.jpg" alt="Spanish Dishes Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_salad_soup.jpg', 'Salads and Soups Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/04_salad_soup.jpg" alt="Salads and Soups Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_burger.jpg', 'Burgers Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/05_burger.jpg" alt="Burgers Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_pizza.jpg', 'Pizza Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/06_pizza.jpg" alt="Pizza Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_pasta.jpg', 'Pasta Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/07_pasta.jpg" alt="Pasta Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/08_pasta_2.jpg', 'Special Pasta Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/08_pasta_2.jpg" alt="Special Pasta Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/09_dessert.jpg', 'Dessert Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/09_dessert.jpg" alt="Dessert Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/10_maincourse_fish.jpg', 'Fish Main Course Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/10_maincourse_fish.jpg" alt="Fish Main Course Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/11_maincourse_chicken.jpg', 'Chicken Main Course Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/11_maincourse_chicken.jpg" alt="Chicken Main Course Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/12_maincourse_pork.jpg', 'Pork Main Course Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/12_maincourse_pork.jpg" alt="Pork Main Course Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/13_maincourse_beef.jpg', 'Beef Main Course Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/13_maincourse_beef.jpg" alt="Beef Main Course Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/14_drinks.jpg', 'Drinks Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/14_drinks.jpg" alt="Drinks Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/15_coffee.jpg', 'Coffee Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/15_coffee.jpg" alt="Coffee Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 6 -->
+                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/16_liquor.jpg', 'Liquor Menu')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/16_liquor.jpg" alt="Liquor Menu" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cheesewheelpasta.jpg', 'Cheese Wheel Pasta')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/cheesewheelpasta.jpg" alt="Cheese Wheel Pasta" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cochinillo.jpg', 'Cochinillo')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/cochinillo.jpg" alt="Cochinillo" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Button -->
+                <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Carousel Indicators -->
+                <div class="flex justify-center mt-8 space-x-2">
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="0"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="1"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="2"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="3"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="4"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="5"></button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in">
+                <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    Download Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <div class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="text-center mb-16 fade-in">
+            <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Buffet Packages</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+            <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
+                Choose from our carefully curated packages, perfect for any occasion. From intimate gatherings to grand celebrations.
+            </p>
+        </div>
+
+        <!-- Packages Carousel Section -->
+        <div class="relative max-w-6xl mx-auto">
+            <!-- Previous Button -->
+            <button id="prevBtnPackages" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <!-- Carousel Container -->
+            <div class="overflow-hidden">
+                <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Slide 1 -->
+                    <div class="w-full flex-shrink-0 px-4 flex justify-center space-x-4">
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 7</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 1</h3>
+                                        <p class="font-baskerville text-sm">₱2,200 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 2</h3>
+                                        <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="w-full flex-shrink-0 px-4 flex space-x-4">
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 3</h3>
+                                        <p class="font-baskerville text-sm">₱1,500 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 4</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/3">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                        <h3 class="font-playfair text-lg font-bold">Buffet 5</h3>
+                                        <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="w-full flex-shrink-0 px-4">
+                        <div class="flex justify-center items-center gap-8 max-w-4xl mx-auto">
+                            <div class="w-1/2 max-w-sm">
+                                <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                            <h3 class="font-playfair text-lg font-bold">Buffet 6</h3>
+                                            <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 max-w-sm">
+                                <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
+                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                        <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-4">
+                                            <h3 class="font-playfair text-lg font-bold">Sit-down Plated</h3>
+                                            <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Button -->
+            <button id="nextBtnPackages" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <!-- Carousel Indicators -->
+            <div class="flex justify-center mt-8 space-x-2">
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="0"></button>
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="1"></button>
+                <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="2"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- What We Offer Section -->
+    <section id="services" class="py-20 bg-warm-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">What We Offer</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <div class="relative">
+                        <!-- Services Carousel Container -->
+                        <div class="overflow-hidden rounded-xl shadow-2xl">
+                            <div id="servicesCarousel" class="flex transition-transform duration-500 ease-in-out">
+                                <!-- Slide 1 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_2.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 2 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_1.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 3 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_3.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 4 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_4.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_5.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_6.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_7.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_8.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carousel Indicators -->
+                        <div class="flex justify-center mt-4 space-x-2">
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="0"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="1"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="2"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="3"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="4"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="5"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="6"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="7"></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            At Caffè Lilio, we believe that every occasion—big or small—deserves a memorable setting and flavorful experience. 
+                            That's why we offer a range of services designed to bring people together through food, ambiance, and thoughtful service.
+                        </p>
+                        <p>
+                            Whether you're planning an intimate family gathering, a corporate event, or a grand celebration, we're here to make it seamless. 
+                            Our team provides customizable event packages, catering services, and venue reservations tailored to your guest count and preferred setup.
+                        </p>
+                        <p>
+                            We have various venue options, each with a different ambiance and capacity, so you can choose the space that fits your celebration best. 
+                            From classic sit-down dinners to themed celebrations, we're ready to help you design a setting that reflects your taste.
+                        </p>
+                        <p>
+                            Our goal is to make hosting easier for you—whether that means delivering delicious food to your location or taking care of everything 
+                            from the table setup to the last toast of the night.
+                        </p>
                     </div>
                 </div>
             </div>
