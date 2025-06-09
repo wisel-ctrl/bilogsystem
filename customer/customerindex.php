@@ -234,10 +234,7 @@ require_once 'customer_auth.php';
         <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
         
         <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-3xl md:text-6xl font-script text-deep-brown mb-6 animate-fade-in">
-            <h1 class="text-3xl md:text-6xl font-playfair text-deep-brown mb-6 animate-fade-in">
-                Savor the Flavors of Spain and Italy
-            </h1>
+            
             <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream font-playfair px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
                 Plan Your Event
             </button>
