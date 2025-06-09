@@ -119,7 +119,8 @@
             }
         }
 
-        /* Add this to your existing style section */
+        /* Add this to your existing style section 
+        BEFORE z-index: 9999 */
         #profileMenu {
             z-index: 49 !important;
             transform: translateY(0) !important;
@@ -289,7 +290,13 @@
                     </div>
                 </div>
 
-                <!-- Dish Creation Modal -->
+                
+
+            </main>
+        </div>
+    </div>
+
+<!-- Dish Creation Modal -->
                 <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
@@ -736,10 +743,6 @@
                         </div>
                     </div>
                 </div>
-
-            </main>
-        </div>
-    </div>
 
     <script>
         // Sidebar Toggle with smooth animation
