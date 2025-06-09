@@ -1,7 +1,5 @@
 <?php
 require_once 'customer_auth.php'; 
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +8,8 @@ require_once 'customer_auth.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="../tailwind.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -33,47 +33,68 @@ require_once 'customer_auth.php';
         
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(232, 224, 213, 0.8);
-        }
-        .hover-lift {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hover-lift:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(93, 47, 15, 0.3);
-        }
+        
         .parallax-bg {
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out;
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(232, 224, 213, 0.9);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .animate-slide-in {
-            animation: slideIn 0.6s ease-out;
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
         }
-        .floating {
-            animation: floating 6s ease-in-out infinite;
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Customer Support Widget Styles */
+        .support-widget {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(0);
+        }
+
+        .support-widget.closed {
+            transform: translateX(calc(100% + 1rem));
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .support-widget.open {
+            transform: translateX(0);
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .support-toggle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
-<body class="bg-warm-cream font-baskerville">
+<body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,15 +126,32 @@ require_once 'customer_auth.php';
                     </a>
                 </div>
                 
-                <!-- Auth Buttons -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="login.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        Login
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <a href="register.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
-                        Register
-                    </a>
+                <!-- Profile Dropdown -->
+                <div class="hidden md:block relative">
+                    <button id="profileDropdownBtn" class="flex items-center space-x-2 text-warm-cream hover:text-warm-cream/80 transition-colors duration-300">
+                        <span class="font-baskerville">My Profile</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl overflow-hidden shadow-lg glass-effect border border-accent-brown/20 z-50">
+                        <a href="profile.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>View Profile</span>
+                            </div>
+                        </a>
+                        <a href="../logout.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                <span>Logout</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -136,11 +174,11 @@ require_once 'customer_auth.php';
                 <a href="#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
                 
                 <div class="pt-4 border-t border-deep-brown/10">
-                    <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
-                        Login
+                    <a href="profile.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
+                        My Profile
                     </a>
-                    <a href="register.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
-                        Register
+                    <a href="../logout.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
+                        Logout
                     </a>
                 </div>
             </div>
@@ -148,34 +186,88 @@ require_once 'customer_auth.php';
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
-        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
-        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('../images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         
-        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl font-playfair text-deep-brown mb-6 animate-fade-in">
-                Unforgettable Events
-            </h1>
-            <p class="text-xl md:text-2xl text-accent-brown mb-8 animate-slide-in max-w-2xl mx-auto">
-                Experience the authentic flavors of Italy and Spain in an atmosphere designed for your most special moments
-            </p>
-            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
-                Plan Your Event
-            </button>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="fade-in">
+                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
+                    Caffè Lilio
+                </h1>
+                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
+                    RISTORANTE
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Savor the Flavors of Spain and Italy
+                </p>
+                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
+                    <a href="#menu" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
+                        Make Reservation
+                    </a>
+                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
+                        View Our Menu
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Event Categories -->
-    <section id="events" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
+                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
+                        </p>
+                        <p>
+                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
+                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
+                        </p>
+                        <p>
+                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
+                            and reputation as a premier dining destination in Liliw.
+                        </p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 fade-in">
+                    <div class="space-y-4">
+                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
+                            <img src="../images/about1.jpg" alt="Restaurant Interior" class="w-full h-64 object-cover">
+                        </div>
+                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
+                            <img src="../images/about2.jpg" alt="Signature Dish" class="w-full h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="space-y-4 pt-8">
+                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
+                            <img src="../images/about3.jpg" alt="Coffee Service" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
+                            <img src="../images/about4.jpg" alt="Restaurant Ambiance" class="w-full h-64 object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Choose Your Experience</h2>
-                <p class="text-xl text-accent-brown max-w-2xl mx-auto">From intimate gatherings to grand celebrations, we craft every detail to perfection</p>
+                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Our Menu</h2>
+                <p class="text-xl text-accent-brown max-w-2xl mx-auto">Experience our carefully curated selection of authentic Italian and Spanish dishes</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <!-- Individual Food Items -->
+                <!-- À La Carte -->
                 <div class="glass-effect rounded-3xl p-8 hover-lift border border-accent-brown/20">
                     <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-2xl flex items-center justify-center mb-6 mx-auto">
                         <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +302,7 @@ require_once 'customer_auth.php';
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-semibold text-deep-brown mb-4 text-center">Full Events</h3>
+                    <h3 class="text-2xl font-semibold text-deep-brown mb-4 text-center">Event Packages</h3>
                     <p class="text-accent-brown text-center mb-6">Complete celebration packages with dining, decor, and entertainment</p>
                     <button onclick="showCategory('events')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
                         Plan Event
@@ -226,34 +318,34 @@ require_once 'customer_auth.php';
             <!-- À La Carte Menu -->
             <div id="alacarte-content" class="hidden">
                 <div class="text-center mb-12">
-                    <h3 class="text-4xl font-script text-deep-brown mb-4">Signature Dishes</h3>
-                    <p class="text-xl text-accent-brown">Authentic flavors crafted with passion</p>
+                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Our Signature Dishes</h3>
+                    <p class="text-xl text-accent-brown">Authentic Italian and Spanish flavors crafted with passion</p>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-12 mb-12">
                     <div>
-                        <h4 class="text-2xl font-semibold text-rich-brown mb-6 border-b-2 border-accent-brown/30 pb-2">Italian Classics</h4>
+                        <h4 class="text-2xl font-semibold text-rich-brown mb-6 border-b-2 border-accent-brown/30 pb-2">Italian Specialties</h4>
                         <div class="space-y-6">
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h5 class="text-lg font-semibold text-deep-brown">Risotto ai Funghi Porcini</h5>
                                     <p class="text-accent-brown">Creamy Arborio rice with wild porcini mushrooms and truffle oil</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€28</span>
+                                <span class="text-rich-brown font-bold ml-4">₱580</span>
                             </div>
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h5 class="text-lg font-semibold text-deep-brown">Osso Buco alla Milanese</h5>
                                     <p class="text-accent-brown">Braised veal shanks with saffron risotto and gremolata</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€35</span>
+                                <span class="text-rich-brown font-bold ml-4">₱850</span>
                             </div>
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h5 class="text-lg font-semibold text-deep-brown">Tiramisu della Casa</h5>
                                     <p class="text-accent-brown">Traditional mascarpone dessert with espresso and cocoa</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€12</span>
+                                <span class="text-rich-brown font-bold ml-4">₱280</span>
                             </div>
                         </div>
                     </div>
@@ -266,21 +358,21 @@ require_once 'customer_auth.php';
                                     <h5 class="text-lg font-semibold text-deep-brown">Paella Valenciana</h5>
                                     <p class="text-accent-brown">Traditional saffron rice with chicken, rabbit, and vegetables</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€32</span>
+                                <span class="text-rich-brown font-bold ml-4">₱750</span>
                             </div>
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h5 class="text-lg font-semibold text-deep-brown">Jamón Ibérico Selection</h5>
                                     <p class="text-accent-brown">Premium acorn-fed ham with Manchego cheese and quince</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€42</span>
+                                <span class="text-rich-brown font-bold ml-4">₱980</span>
                             </div>
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h5 class="text-lg font-semibold text-deep-brown">Crema Catalana</h5>
                                     <p class="text-accent-brown">Creamy custard with caramelized sugar and cinnamon</p>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">€10</span>
+                                <span class="text-rich-brown font-bold ml-4">₱250</span>
                             </div>
                         </div>
                     </div>
@@ -290,7 +382,7 @@ require_once 'customer_auth.php';
             <!-- Food Packages -->
             <div id="packages-content" class="hidden">
                 <div class="text-center mb-12">
-                    <h3 class="text-4xl font-script text-deep-brown mb-4">Curated Dining Packages</h3>
+                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Curated Dining Packages</h3>
                     <p class="text-xl text-accent-brown">Perfect combinations for every occasion</p>
                 </div>
                 
@@ -305,7 +397,7 @@ require_once 'customer_auth.php';
                             <li>• Bottle of Italian or Spanish wine</li>
                         </ul>
                         <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">€85</span>
+                            <span class="text-3xl font-bold text-rich-brown">₱2,500</span>
                             <p class="text-sm text-accent-brown">per couple</p>
                         </div>
                     </div>
@@ -320,7 +412,7 @@ require_once 'customer_auth.php';
                             <li>• Selection of desserts</li>
                         </ul>
                         <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">€180</span>
+                            <span class="text-3xl font-bold text-rich-brown">₱3,800</span>
                             <p class="text-sm text-accent-brown">serves 4-6</p>
                         </div>
                     </div>
@@ -335,7 +427,7 @@ require_once 'customer_auth.php';
                             <li>• 90-minute time slot</li>
                         </ul>
                         <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">€35</span>
+                            <span class="text-3xl font-bold text-rich-brown">₱850</span>
                             <p class="text-sm text-accent-brown">per person</p>
                         </div>
                     </div>
@@ -345,7 +437,7 @@ require_once 'customer_auth.php';
             <!-- Event Packages -->
             <div id="events-content" class="hidden">
                 <div class="text-center mb-12">
-                    <h3 class="text-4xl font-script text-deep-brown mb-4">Complete Event Packages</h3>
+                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Complete Event Packages</h3>
                     <p class="text-xl text-accent-brown">Everything you need for unforgettable celebrations</p>
                 </div>
                 
@@ -374,7 +466,7 @@ require_once 'customer_auth.php';
                         </div>
                         
                         <div class="text-center mb-6">
-                            <span class="text-4xl font-bold text-rich-brown">€75</span>
+                            <span class="text-4xl font-bold text-rich-brown">₱1,800</span>
                             <p class="text-accent-brown">per person</p>
                         </div>
                         
@@ -411,7 +503,7 @@ require_once 'customer_auth.php';
                         </div>
                         
                         <div class="text-center mb-6">
-                            <span class="text-4xl font-bold text-rich-brown">€125</span>
+                            <span class="text-4xl font-bold text-rich-brown">₱2,500</span>
                             <p class="text-accent-brown">per person</p>
                         </div>
                         
@@ -513,7 +605,7 @@ require_once 'customer_auth.php';
                         </svg>
                     </div>
                     <h4 class="text-xl font-semibold text-deep-brown mb-2">Visit Us</h4>
-                    <p class="text-accent-brown">Via Roma 123<br>Milano, Italy 20121</p>
+                    <p class="text-accent-brown">123 Gat Tayaw St.<br>Liliw, Laguna 4004</p>
                 </div>
                 
                 <div class="text-center">
@@ -523,7 +615,7 @@ require_once 'customer_auth.php';
                         </svg>
                     </div>
                     <h4 class="text-xl font-semibold text-deep-brown mb-2">Call Us</h4>
-                    <p class="text-accent-brown">+39 02 1234 5678<br>Mon-Sun: 11:00-23:00</p>
+                    <p class="text-accent-brown">+63 49 123 4567<br>Mon-Sun: 10:00-22:00</p>
                 </div>
                 
                 <div class="text-center">
@@ -533,7 +625,7 @@ require_once 'customer_auth.php';
                         </svg>
                     </div>
                     <h4 class="text-xl font-semibold text-deep-brown mb-2">Email Us</h4>
-                    <p class="text-accent-brown">events@bellavista.com<br>info@bellavista.com</p>
+                    <p class="text-accent-brown">events@caffelilio.com<br>info@caffelilio.com</p>
                 </div>
             </div>
         </div>
@@ -546,11 +638,11 @@ require_once 'customer_auth.php';
                 <div class="col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
-                            <span class="text-warm-cream font-playfair text-xl">BV</span>
+                            <span class="text-warm-cream font-playfair text-xl">CL</span>
                         </div>
-                        <h3 class="text-2xl font-playfair">Bella Vista</h3>
+                        <h3 class="text-2xl font-playfair">Caffè Lilio</h3>
                     </div>
-                    <p class="text-warm-cream/80 mb-4 max-w-md">Where authentic Italian and Spanish flavors meet exceptional hospitality. Creating unforgettable moments one celebration at a time.</p>
+                    <p class="text-warm-cream/80 mb-4 max-w-md">Experience the finest Italian and Spanish cuisine in Liliw, Laguna. Where authentic flavors meet warm hospitality, creating memorable dining experiences.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -559,7 +651,7 @@ require_once 'customer_auth.php';
                         </a>
                         <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.118.112.219.083.402-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z.017-.001z"/>
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 2.567-1.645 0-1.029-.653-1.682-.653-2.748z"/>
                             </svg>
                         </a>
                         <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
@@ -574,25 +666,25 @@ require_once 'customer_auth.php';
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-warm-cream/80">
                         <li><a href="#home" class="hover:text-warm-cream transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-warm-cream transition-colors">About Us</a></li>
                         <li><a href="#menu" class="hover:text-warm-cream transition-colors">Menu</a></li>
-                        <li><a href="#events" class="hover:text-warm-cream transition-colors">Events</a></li>
-                        <li><a href="#contact" class="hover:text-warm-cream transition-colors">Contact</a></li>
+                        <li><a href="#services" class="hover:text-warm-cream transition-colors">Services</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Services</h4>
                     <ul class="space-y-2 text-warm-cream/80">
-                        <li>Private Dining</li>
-                        <li>Wedding Events</li>
-                        <li>Corporate Catering</li>
-                        <li>Wine Tastings</li>
+                        <li>À La Carte Dining</li>
+                        <li>Private Events</li>
+                        <li>Corporate Functions</li>
+                        <li>Special Celebrations</li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-warm-cream/20 mt-8 pt-8 text-center text-warm-cream/60">
-                <p>&copy; 2025 Bella Vista Restaurant. All rights reserved. | Privacy Policy | Terms of Service</p>
+                <p>&copy; 2024 Caffè Lilio Ristorante. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
@@ -745,6 +837,191 @@ require_once 'customer_auth.php';
                 const targetId = this.getAttribute('href').substring(1);
                 scrollToSection(targetId);
             });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80; // Adjust this value based on your navbar height
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navUnderlines = document.querySelectorAll('.nav-link span');
+        const navTitle = document.querySelector('.nav-title');
+        const navSubtitle = document.querySelector('.nav-subtitle');
+        const navButton = document.querySelector('.nav-button');
+
+        window.addEventListener('scroll', () => {
+            const isHeroSection = window.scrollY === 0;
+
+            if (window.scrollY > 0) {
+                navbar.classList.add('glass-effect');
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('glass-effect');
+                navbar.classList.remove('shadow-lg');
+            }
+
+            // Update nav links color based on section
+            navLinks.forEach(link => {
+                if (isHeroSection) {
+                    link.classList.remove('text-deep-brown', 'hover:text-deep-brown/80');
+                    link.classList.add('text-warm-cream', 'hover:text-warm-cream/80');
+                } else {
+                    link.classList.remove('text-warm-cream', 'hover:text-warm-cream/80');
+                    link.classList.add('text-deep-brown', 'hover:text-deep-brown/80');
+                }
+            });
+
+            // Update underline color based on section
+            navUnderlines.forEach(underline => {
+                if (isHeroSection) {
+                    underline.classList.remove('bg-deep-brown');
+                    underline.classList.add('bg-warm-cream');
+                } else {
+                    underline.classList.remove('bg-warm-cream');
+                    underline.classList.add('bg-deep-brown');
+                }
+            });
+
+            // Update nav title and subtitle colors
+            if (isHeroSection) {
+                navTitle.classList.remove('text-deep-brown');
+                navTitle.classList.add('text-warm-cream');
+                navSubtitle.classList.remove('text-deep-brown');
+                navSubtitle.classList.add('text-warm-cream');
+                // Update logout button colors for hero section
+                if (navButton) {
+                    navButton.classList.remove('bg-deep-brown', 'text-warm-cream');
+                    navButton.classList.add('bg-warm-cream', 'text-deep-brown');
+                }
+            } else {
+                navTitle.classList.remove('text-warm-cream');
+                navTitle.classList.add('text-deep-brown');
+                navSubtitle.classList.remove('text-warm-cream');
+                navSubtitle.classList.add('text-deep-brown');
+                // Update logout button colors for scrolled section
+                if (navButton) {
+                    navButton.classList.remove('bg-warm-cream', 'text-deep-brown');
+                    navButton.classList.add('bg-deep-brown', 'text-warm-cream');
+                }
+            }
+        });
+
+        // Add active state to navigation links
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPosition = window.pageYOffset;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150; // Adjusted offset for better UX
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const underline = link.querySelector('span');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    underline.style.width = '100%';
+                } else {
+                    underline.style.width = '0';
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Profile Dropdown functionality
+        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        let isDropdownOpen = false;
+
+        profileDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isDropdownOpen = !isDropdownOpen;
+            if (isDropdownOpen) {
+                profileDropdown.classList.remove('hidden');
+                // Add animation classes
+                profileDropdown.classList.add('animate-fade-in');
+            } else {
+                profileDropdown.classList.add('hidden');
+                profileDropdown.classList.remove('animate-fade-in');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isDropdownOpen && !profileDropdown.contains(e.target)) {
+                isDropdownOpen = false;
+                profileDropdown.classList.add('hidden');
+                profileDropdown.classList.remove('animate-fade-in');
+            }
+        });
+
+        // Update dropdown colors based on scroll position
+        window.addEventListener('scroll', () => {
+            const isHeroSection = window.scrollY === 0;
+            const dropdownButton = document.getElementById('profileDropdownBtn');
+            
+            if (isHeroSection) {
+                dropdownButton.classList.remove('text-deep-brown');
+                dropdownButton.classList.add('text-warm-cream');
+            } else {
+                dropdownButton.classList.remove('text-warm-cream');
+                dropdownButton.classList.add('text-deep-brown');
+            }
         });
     </script>
 </body>
