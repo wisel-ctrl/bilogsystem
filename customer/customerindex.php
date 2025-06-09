@@ -34,6 +34,33 @@ require_once 'customer_auth.php';
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
         
+        /* Add new navigation transition styles */
+        nav {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        nav.scrolled {
+            background-color: rgba(232, 224, 213, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav.scrolled .nav-link,
+        nav.scrolled .nav-title,
+        nav.scrolled .nav-subtitle {
+            color: #5D2F0F;
+        }
+        
+        nav:not(.scrolled) {
+            background-color: transparent;
+        }
+        
+        nav:not(.scrolled) .nav-link,
+        nav:not(.scrolled) .nav-title,
+        nav:not(.scrolled) .nav-subtitle {
+            color: #E8E0D5;
+        }
+        
         .parallax-bg {
             background-attachment: fixed;
             background-position: center;
@@ -771,11 +798,13 @@ require_once 'customer_auth.php';
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.classList.add('backdrop-blur-md');
+            const scrollPosition = window.scrollY;
+            
+            if (scrollPosition > 50) {
+                nav.classList.add('scrolled');
                 nav.classList.remove('glass-effect');
             } else {
-                nav.classList.remove('backdrop-blur-md');
+                nav.classList.remove('scrolled');
                 nav.classList.add('glass-effect');
             }
         });
