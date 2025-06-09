@@ -1,3 +1,6 @@
+<?php
+require_once 'customer_auth.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
