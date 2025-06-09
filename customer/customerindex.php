@@ -599,138 +599,103 @@ require_once 'customer_auth.php'; ?>
 
         <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
             <!-- Main Footer Content -->
-            <div class="py-16">
+            <div class="py-12">
                 <!-- Brand Section -->
-                <div class="text-center mb-16">
-                    <div class="inline-flex items-center justify-center mb-6">
-                        <div class="relative">
-                            <div class="w-16 h-16 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20">
-                                <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                            </div>
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20">
+                            <i class="fas fa-coffee text-lg text-warm-cream"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-playfair font-bold text-2xl tracking-tight">Caffè Lilio</h2>
+                            <p class="text-xs tracking-[0.2em] text-warm-cream/80 uppercase font-inter font-light">Ristorante</p>
                         </div>
                     </div>
-                    <h2 class="font-playfair font-bold text-4xl mb-2 tracking-tight">Caffè Lilio</h2>
-                    <p class="text-sm tracking-[0.3em] text-warm-cream/80 uppercase font-inter font-light">Ristorante</p>
-                    <div class="w-24 h-px bg-gradient-to-r from-transparent via-warm-cream/50 to-transparent mx-auto mt-4"></div>
                 </div>
 
                 <!-- Info Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                     <!-- Contact Info -->
                     <div class="lg:col-span-1">
-                        <h3 class="font-playfair font-semibold text-xl mb-6 relative">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Contact
-                            <div class="absolute -bottom-2 left-0 w-8 h-0.5 bg-warm-cream/60"></div>
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
                         </h3>
-                        <div class="space-y-4 font-inter">
-                            <div class="flex items-start space-x-3 group">
-                                <div class="w-5 h-5 mt-0.5 flex items-center justify-center">
-                                    <i class="fas fa-map-marker-alt text-warm-cream/70 group-hover:text-warm-cream transition-colors"></i>
-                                </div>
-                                <p class="text-warm-cream/90 group-hover:text-warm-cream transition-colors leading-relaxed">
-                                    123 Restaurant St.<br>Food District
-                                </p>
+                        <div class="space-y-3 font-inter text-sm">
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-map-marker-alt text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">123 Restaurant St., Food District</p>
                             </div>
-                            <div class="flex items-center space-x-3 group">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="fas fa-phone text-warm-cream/70 group-hover:text-warm-cream transition-colors"></i>
-                                </div>
-                                <p class="text-warm-cream/90 group-hover:text-warm-cream transition-colors">+63 912 345 6789</p>
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-phone text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">+63 912 345 6789</p>
                             </div>
-                            <div class="flex items-center space-x-3 group">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="fas fa-envelope text-warm-cream/70 group-hover:text-warm-cream transition-colors"></i>
-                                </div>
-                                <p class="text-warm-cream/90 group-hover:text-warm-cream transition-colors">info@caffelilio.com</p>
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-envelope text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">info@caffelilio.com</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Quick Links -->
                     <div class="lg:col-span-1">
-                        <h3 class="font-playfair font-semibold text-xl mb-6 relative">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Navigate
-                            <div class="absolute -bottom-2 left-0 w-8 h-0.5 bg-warm-cream/60"></div>
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
                         </h3>
-                        <nav class="space-y-3 font-inter">
-                            <a href="#about" class="block text-warm-cream/90 hover:text-warm-cream hover:translate-x-1 transition-all duration-300 group">
-                                <span class="relative">
-                                    About Us
-                                    <div class="absolute -bottom-0.5 left-0 w-0 h-px bg-warm-cream group-hover:w-full transition-all duration-300"></div>
-                                </span>
-                            </a>
-                            <a href="#menu" class="block text-warm-cream/90 hover:text-warm-cream hover:translate-x-1 transition-all duration-300 group">
-                                <span class="relative">
-                                    Our Menu
-                                    <div class="absolute -bottom-0.5 left-0 w-0 h-px bg-warm-cream group-hover:w-full transition-all duration-300"></div>
-                                </span>
-                            </a>
-                            <a href="#reservations" class="block text-warm-cream/90 hover:text-warm-cream hover:translate-x-1 transition-all duration-300 group">
-                                <span class="relative">
-                                    Reservations
-                                    <div class="absolute -bottom-0.5 left-0 w-0 h-px bg-warm-cream group-hover:w-full transition-all duration-300"></div>
-                                </span>
-                            </a>
-                            <a href="#contact" class="block text-warm-cream/90 hover:text-warm-cream hover:translate-x-1 transition-all duration-300 group">
-                                <span class="relative">
-                                    Visit Us
-                                    <div class="absolute -bottom-0.5 left-0 w-0 h-px bg-warm-cream group-hover:w-full transition-all duration-300"></div>
-                                </span>
-                            </a>
+                        <nav class="space-y-2 font-inter text-sm">
+                            <a href="#about" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">About Us</a>
+                            <a href="#menu" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Our Menu</a>
+                            <a href="#reservations" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Reservations</a>
+                            <a href="#contact" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Visit Us</a>
                         </nav>
                     </div>
 
                     <!-- Hours -->
                     <div class="lg:col-span-1">
-                        <h3 class="font-playfair font-semibold text-xl mb-6 relative">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Hours
-                            <div class="absolute -bottom-2 left-0 w-8 h-0.5 bg-warm-cream/60"></div>
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
                         </h3>
-                        <div class="space-y-4 font-inter">
-                            <div class="flex flex-col space-y-1">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-warm-cream/90 font-medium">Weekdays</span>
-                                    <span class="text-warm-cream/70 text-sm">Mon - Fri</span>
-                                </div>
-                                <div class="text-warm-cream font-medium">11:00 AM - 10:00 PM</div>
+                        <div class="space-y-2 font-inter text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-warm-cream/90">Mon - Fri</span>
+                                <span class="text-warm-cream">11AM - 10PM</span>
                             </div>
-                            <div class="flex flex-col space-y-1">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-warm-cream/90 font-medium">Weekends</span>
-                                    <span class="text-warm-cream/70 text-sm">Sat - Sun</span>
-                                </div>
-                                <div class="text-warm-cream font-medium">10:00 AM - 11:00 PM</div>
+                            <div class="flex justify-between">
+                                <span class="text-warm-cream/90">Sat - Sun</span>
+                                <span class="text-warm-cream">10AM - 11PM</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Social & Newsletter -->
+                    <!-- Social & Connect -->
                     <div class="lg:col-span-1">
-                        <h3 class="font-playfair font-semibold text-xl mb-6 relative">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Connect
-                            <div class="absolute -bottom-2 left-0 w-8 h-0.5 bg-warm-cream/60"></div>
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
                         </h3>
                         
                         <!-- Social Links -->
-                        <div class="flex space-x-4 mb-6">
+                        <div class="flex space-x-3 mb-4">
                             <a href="https://web.facebook.com/caffelilio.ph" target="_blank" 
-                               class="w-12 h-12 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 hover:scale-110 transition-all duration-300 group">
-                                <i class="fab fa-facebook-f text-warm-cream group-hover:text-warm-cream transition-colors"></i>
+                               class="w-10 h-10 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 transition-colors">
+                                <i class="fab fa-facebook-f text-warm-cream text-sm"></i>
                             </a>
                             <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" 
-                               class="w-12 h-12 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 hover:scale-110 transition-all duration-300 group">
-                                <i class="fab fa-instagram text-warm-cream group-hover:text-warm-cream transition-colors"></i>
+                               class="w-10 h-10 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 transition-colors">
+                                <i class="fab fa-instagram text-warm-cream text-sm"></i>
                             </a>
                         </div>
 
-                        <!-- Newsletter Signup -->
-                        <div class="space-y-3">
-                            <p class="text-warm-cream/80 text-sm font-inter">Stay updated with our latest offerings</p>
+                        <!-- Simple Newsletter -->
+                        <div class="space-y-2">
+                            <p class="text-warm-cream/80 text-xs font-inter">Stay updated</p>
                             <div class="flex">
-                                <input type="email" placeholder="Your email" 
-                                       class="flex-1 px-4 py-2 bg-warm-cream/10 border border-warm-cream/20 rounded-l-lg text-warm-cream placeholder-warm-cream/50 focus:outline-none focus:border-warm-cream/40 backdrop-blur-sm">
-                                <button class="px-4 py-2 bg-warm-cream/20 border border-warm-cream/20 border-l-0 rounded-r-lg hover:bg-warm-cream/30 transition-colors backdrop-blur-sm">
-                                    <i class="fas fa-arrow-right text-warm-cream"></i>
+                                <input type="email" placeholder="Email" 
+                                       class="flex-1 px-3 py-2 bg-warm-cream/10 border border-warm-cream/20 rounded-l text-sm text-warm-cream placeholder-warm-cream/50 focus:outline-none focus:border-warm-cream/40 backdrop-blur-sm">
+                                <button class="px-3 py-2 bg-warm-cream/20 border border-warm-cream/20 border-l-0 rounded-r hover:bg-warm-cream/30 transition-colors backdrop-blur-sm">
+                                    <i class="fas fa-arrow-right text-warm-cream text-xs"></i>
                                 </button>
                             </div>
                         </div>
@@ -739,14 +704,14 @@ require_once 'customer_auth.php'; ?>
             </div>
 
             <!-- Bottom Bar -->
-            <div class="border-t border-warm-cream/10 py-8">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <p class="font-inter text-warm-cream/70 text-sm">
+            <div class="border-t border-warm-cream/10 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+                    <p class="font-inter text-warm-cream/70 text-xs">
                         © 2024 Caffè Lilio Ristorante. All rights reserved.
                     </p>
-                    <div class="flex space-x-6 text-sm font-inter">
-                        <a href="#privacy" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Privacy Policy</a>
-                        <a href="#terms" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Terms of Service</a>
+                    <div class="flex space-x-4 text-xs font-inter">
+                        <a href="#privacy" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Privacy</a>
+                        <a href="#terms" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Terms</a>
                     </div>
                 </div>
             </div>
