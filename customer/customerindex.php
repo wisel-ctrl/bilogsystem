@@ -1,14 +1,21 @@
 <?php
 require_once 'customer_auth.php'; ?>
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caffè Lilio</title>
+    <title>Customer Dashboard - Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="../tailwind.js"></script>
+    <!-- Add loading animation library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+    <!-- Add tooltip library -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -20,8 +27,8 @@ require_once 'customer_auth.php'; ?>
                         'accent-brown': '#A0522D'
                     },
                     fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'baskerville': ['Libre Baskerville', 'serif']
+                        'playfair': ['Playfair Display', serif],
+                        'baskerville': ['Libre Baskerville', serif]
                     }
                 }
             }
@@ -33,615 +40,622 @@ require_once 'customer_auth.php'; ?>
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
         
-        /* Update navigation transition styles */
-        nav {
-            transition: all 0.3s ease-in-out;
-        }
-        
-        nav.scrolled {
-            background-color: rgba(232, 224, 213, 0.95);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        nav.scrolled .nav-link,
-        nav.scrolled .nav-title,
-        nav.scrolled .nav-subtitle {
-            color: #5D2F0F;
-        }
-        
-        nav:not(.scrolled) {
-            background-color: rgba(93, 47, 15, 0.8); /* Semi-transparent deep brown */
-            backdrop-filter: blur(4px);
-        }
-        
-        nav:not(.scrolled) .nav-link,
-        nav:not(.scrolled) .nav-title,
-        nav:not(.scrolled) .nav-subtitle {
-            color: #E8E0D5;
-        }
-        
-        nav:not(.scrolled) .nav-link:hover {
-            color: rgba(232, 224, 213, 0.8);
-        }
-        
-        .parallax-bg {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(232, 224, 213, 0.9);
-        }
-        
+        /* Enhanced hover effect */
         .hover-lift {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
         }
         
         .hover-lift:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(93, 47, 15, 0.15);
         }
-        
-        .smooth-scroll {
-            scroll-behavior: smooth;
+
+        /* Improved background gradients */
+        .bg-warm-gradient {
+            background: linear-gradient(135deg, #E8E0D5, #d4c8b9);
         }
-        
-        .fade-in {
+
+        .bg-card {
+            background: linear-gradient(145deg, #E8E0D5, #d6c7b6);
+            backdrop-filter: blur(8px);
+        }
+
+        .bg-nav {
+            background: linear-gradient(to bottom, #5D2F0F, #4a260d);
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Loading skeleton animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #E8E0D5 25%, #d4c8b9 50%, #E8E0D5 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Accessibility improvements */
+        :focus {
+            outline: 2px solid #8B4513;
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #E8E0D5;
+            box-shadow: 0 4px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(100%);
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transition: all 0.3s ease-in-out;
         }
-        
-        .fade-in.visible {
-            opacity: 1;
+
+        .toast.show {
             transform: translateY(0);
-        }
-        
-        /* Customer Support Widget Styles */
-        .support-widget {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            transform: translateX(0);
-        }
-
-        .support-widget.closed {
-            transform: translateX(calc(100% + 1rem));
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .support-widget.open {
-            transform: translateX(0);
-            pointer-events: auto;
             opacity: 1;
         }
 
-        .support-toggle {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        /* Button animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            background: #8B4513;
+            color: #E8E0D5;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(232, 224, 213, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:active::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        /* Improved mobile menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Skeleton loading placeholder */
+        .skeleton-text {
+            height: 1em;
+            background: #e0e0e0;
+            margin: 0.5em 0;
+            border-radius: 4px;
+        }
+
+        /* Improved form inputs */
+        input, select, textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
         }
     </style>
 </head>
-<body class="smooth-scroll bg-warm-cream text-deep-brown">
+<body class="bg-warm-gradient text-deep-brown min-h-screen">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+    <nav class="bg-nav text-warm-cream shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <div>
-                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                    </div>
+                <div class="flex-1 flex items-center justify-start">
+                    <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
+                        <div>
+                            <h1 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                            <p class="text-xs tracking-widest text-warm-cream/90">RISTORANTE</p>
+                        </div>
+                    </a>
                 </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex flex-1 justify-center space-x-8">
+                    <a href="#dashboard" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
                         Home
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        About Us
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    <a href="#reservations" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        My Reservations
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        Menu & Packages
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    <a href="#menu" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Menu
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#services" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        What We Offer
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    <a href="#contact" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Contact
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                 </div>
-                
-                <!-- Profile Dropdown -->
-                <div class="hidden md:block relative">
-                    <button id="profileDropdownBtn" class="flex items-center space-x-2 text-warm-cream hover:text-warm-cream/80 transition-colors duration-300">
-                        <span class="font-baskerville">My Profile</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
+                <div class="flex-1 flex items-center justify-end">
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-warm-cream hover:text-warm-cream/80 transition-colors duration-300" 
+                            aria-label="Toggle menu"
+                            id="mobile-menu-button">
+                        <i class="fas fa-bars text-2xl"></i>
                     </button>
-                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl overflow-hidden shadow-lg glass-effect border border-accent-brown/20 z-50">
-                        <a href="profile.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                                <span>View Profile</span>
+
+                    <div class="hidden md:flex items-center space-x-0">
+                        <!-- Notifications -->
+                        <div class="relative group">
+                            <button class="p-2 hover:bg-warm-cream/10 rounded-full transition-colors duration-300" 
+                                    aria-label="Notifications"
+                                    id="notifications-button">
+                                <i class="fas fa-bell text-warm-cream"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
+                                <div class="px-4 py-2 border-b border-deep-brown/10">
+                                    <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    <!-- Notification items will be dynamically loaded -->
+                                    <div class="animate-pulse p-4">
+                                        <div class="skeleton-text w-3/4"></div>
+                                        <div class="skeleton-text w-1/2"></div>
+                                    </div>
+                                </div>
                             </div>
-                        </a>
-                        <a href="../logout.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                </svg>
-                                <span>Logout</span>
+                        </div>
+
+                        <!-- User Profile -->
+                        <div class="relative group">
+                            <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-warm-cream hover:text-warm-cream/80"
+                                    aria-label="User menu"
+                                    id="user-menu-button">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
+                                     alt="Profile" 
+                                     class="w-8 h-8 rounded-full border border-warm-cream/30">
+                                <span class="font-baskerville">John Doe</span>
+                                <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
+                                <a href="#profile" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                                    <i class="fas fa-user-circle w-5"></i>
+                                    <span>Profile Settings</span>
+                                </a>
+                                <a href="#notifications" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                                    <i class="fas fa-bell w-5"></i>
+                                    <span>Notifications</span>
+                                </a>
+                                <hr class="my-2 border-deep-brown/20">
+                                <a href="logout.php" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    <span>Logout</span>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden focus:outline-none" id="mobile-menu-btn">
-                    <div class="w-6 h-6 flex flex-col justify-center space-y-1">
-                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                    </div>
-                </button>
             </div>
         </div>
-        
+
         <!-- Mobile Menu -->
-        <div class="md:hidden hidden glass-effect" id="mobile-menu">
-            <div class="px-4 py-4 space-y-4">
-                <a href="#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
-                <a href="#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
-                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu & Packages</a>
-                <a href="#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
-                
-                <div class="pt-4 border-t border-deep-brown/10">
-                    <a href="profile.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
-                        <div class="flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span>My Profile</span>
-                        </div>
-                    </a>
-                    <a href="../logout.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
-                        <div class="flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                            </svg>
-                            <span>Logout</span>
-                        </div>
+        <div class="md:hidden mobile-menu fixed inset-0 bg-deep-brown/95 z-40" id="mobile-menu">
+            <div class="flex flex-col h-full">
+                <div class="flex justify-between items-center p-4 border-b border-warm-cream/10">
+                    <h2 class="font-playfair text-xl text-warm-cream">Menu</h2>
+                    <button class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300" 
+                            aria-label="Close menu"
+                            id="close-mobile-menu">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <nav class="flex-1 overflow-y-auto p-4">
+                    <div class="space-y-4">
+                        <a href="#dashboard" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-home w-8"></i> Home
+                        </a>
+                        <a href="#reservations" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
+                        </a>
+                        <a href="#menu" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-utensils w-8"></i> Menu
+                        </a>
+                        <a href="#contact" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-envelope w-8"></i> Contact
+                        </a>
+                    </div>
+                </nav>
+                <div class="p-4 border-t border-warm-cream/10">
+                    <a href="logout.php" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
+                        <i class="fas fa-sign-out-alt w-8"></i> Logout
                     </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
-        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
-        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
-        
-        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-3xl md:text-6xl font-script text-deep-brown mb-6 animate-fade-in">
-            <h1 class="text-3xl md:text-6xl font-playfair text-deep-brown mb-6 animate-fade-in">
-                Savor the Flavors of Spain and Italy
-            </h1>
-            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream font-playfair px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
-                Plan Your Event
-            </button>
-        </div>
-    </section>
+    <!-- Loading Progress Bar -->
+    <div id="nprogress-container"></div>
 
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
 
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Section -->
+        <section class="mb-12 animate-fade-in">
+            <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome back, <span class="text-gradient">John</span>!</h2>
+            <p class="font-baskerville text-lg text-deep-brown/80">Here's what's happening with your reservations and upcoming events.</p>
+        </section>
 
-    <!-- Menu Section -->
-    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Our Menu</h2>
-                <p class="text-xl text-accent-brown max-w-2xl mx-auto">Experience our carefully curated selection of authentic Italian and Spanish dishes</p>
+        <!-- Quick Actions -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-warm-cream/80 backdrop-blur-md rounded-xl p-6 shadow-md hover-lift border border-deep-brown/10" data-tippy-content="Make a new reservation">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-playfair text-xl font-bold text-deep-brown">New Reservation</h3>
+                    <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
+                </div>
+                <p class="font-baskerville mb-4 text-deep-brown/80">Book a table or plan your next event with us.</p>
+                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                    <span>Make Reservation</span>
+                    <i class="fas fa-arrow-right transition-transform transform group-hover:translate-x-1"></i>
+                </button>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <!-- À La Carte -->
-                <div class="glass-effect rounded-3xl p-8 hover-lift border border-accent-brown/20">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-deep-brown mb-4 text-center">À La Carte</h3>
-                    <p class="text-accent-brown text-center mb-6">Handpicked specialties from our authentic Italian and Spanish kitchen</p>
-                    <button onclick="showCategory('alacarte')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                        Explore Menu
-                    </button>
+            <div class="bg-card rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-playfair text-xl font-bold text-deep-brown">View Menu</h3>
+                    <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
                 </div>
+                <p class="font-baskerville mb-4 text-deep-brown/80">Explore our latest dishes and seasonal specials.</p>
+                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                    <span>Browse Menu</span>
+                    <i class="fas fa-utensils ml-2"></i>
+                </button>
+            </div>
 
-                <!-- Food Packages -->
-                <div class="glass-effect rounded-3xl p-8 hover-lift border border-accent-brown/20">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-deep-brown mb-4 text-center">Food Packages</h3>
-                    <p class="text-accent-brown text-center mb-6">Curated dining experiences perfect for groups and special occasions</p>
-                    <button onclick="showCategory('packages')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                        View Packages
-                    </button>
+            <div class="bg-card rounded-xl p-6 shadow-md hover-lift" data-tippy-content="Get assistance from our support team">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-playfair text-xl font-bold text-deep-brown">Contact Support</h3>
+                    <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
                 </div>
+                <p class="font-baskerville mb-4 text-deep-brown/80">Need help? Our team is here to assist you.</p>
+                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                    <span>Get Help</span>
+                    <i class="fas fa-headset ml-2"></i>
+                </button>
+            </div>
+        </section>
 
-                <!-- Event Packages -->
-                <div class="glass-effect rounded-3xl p-8 hover-lift border border-accent-brown/20">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-deep-brown mb-4 text-center">Event Packages</h3>
-                    <p class="text-accent-brown text-center mb-6">Complete celebration packages with dining, decor, and entertainment</p>
-                    <button onclick="showCategory('events')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                        Plan Event
-                    </button>
+        <!-- Upcoming Reservations -->
+        <section class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-playfair text-2xl font-bold text-deep-brown">Upcoming Reservations</h3>
+                <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
+                        data-tippy-content="Refresh reservations">
+                    <i class="fas fa-sync-alt"></i>
+                    <span class="font-baskerville text-sm">Refresh</span>
+                </button>
+            </div>
+            <div class="bg-card rounded-xl p-6 shadow-md">
+                <div class="overflow-x-auto">
+                    <table class="w-full" role="table">
+                        <thead>
+                            <tr class="border-b border-deep-brown/20">
+                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Date & Time</th>
+                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
+                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Guests</th>
+                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Status</th>
+                                <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
+                                <td class="py-4 px-4">
+                                    <div class="font-baskerville text-deep-brown">March 15, 2024</div>
+                                    <div class="text-sm text-deep-brown/60">7:00 PM</div>
+                                </td>
+                                <td class="py-4 px-4 font-baskerville text-deep-brown">Dinner Reservation</td>
+                                <td class="py-4 px-4 font-baskerville text-deep-brown">4</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-warm-cream/50 text-deep-brown px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                        Confirmed
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"
+                                                data-tippy-content="Edit reservation">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"
+                                                data-tippy-content="Cancel reservation">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-deep-brown/5 transition-colors duration-300">
+                                <td class="py-4 px-4">
+                                    <div class="font-baskerville text-deep-brown">March 20, 2024</div>
+                                    <div class="text-sm text-deep-brown/60">6:30 PM</div>
+                                </td>
+                                <td class="py-4 px-4 font-baskerville text-deep-brown">Birthday Celebration</td>
+                                <td class="py-4 px-4 font-baskerville text-deep-brown">12</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-yellow-100/50 text-yellow-800 px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center">
+                                        <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-deep-brown/10"
+                                                data-tippy-content="Edit reservation">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50"
+                                                data-tippy-content="Cancel reservation">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Dynamic Content Area -->
-    <section id="content-area" class="py-20 bg-warm-cream">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- À La Carte Menu -->
-            <div id="alacarte-content" class="hidden">
-                <div class="text-center mb-12">
-                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Our Signature Dishes</h3>
-                    <p class="text-xl text-accent-brown">Authentic Italian and Spanish flavors crafted with passion</p>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-12 mb-12">
-                    <div>
-                        <h4 class="text-2xl font-semibold text-rich-brown mb-6 border-b-2 border-accent-brown/30 pb-2">Italian Specialties</h4>
-                        <div class="space-y-6">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Risotto ai Funghi Porcini</h5>
-                                    <p class="text-accent-brown">Creamy Arborio rice with wild porcini mushrooms and truffle oil</p>
+        <!-- Special Offers -->
+        <section class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-playfair text-2xl font-bold text-deep-brown">Special Offers</h3>
+                <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
+                        data-tippy-content="View all offers">
+                    <span class="font-baskerville text-sm">View All</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-card rounded-xl overflow-hidden shadow-md hover-lift group">
+                    <div class="relative">
+                        <img src="../images/01_buffet.jpg" alt="Special Buffet Offer" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            20% OFF
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">Weekend Buffet Special</h4>
+                        <p class="font-baskerville mb-4 text-deep-brown/80">Enjoy our premium buffet selection at 20% off every weekend.</p>
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-1">
+                                <span class="font-baskerville font-bold text-lg text-deep-brown">₱1,760/person</span>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star-half-alt text-yellow-500"></i>
+                                    <span class="text-sm text-deep-brown/60 ml-1">(4.8)</span>
                                 </div>
-                                <span class="text-rich-brown font-bold ml-4">₱580</span>
                             </div>
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Osso Buco alla Milanese</h5>
-                                    <p class="text-accent-brown">Braised veal shanks with saffron risotto and gremolata</p>
-                                </div>
-                                <span class="text-rich-brown font-bold ml-4">₱850</span>
-                            </div>
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Tiramisu della Casa</h5>
-                                    <p class="text-accent-brown">Traditional mascarpone dessert with espresso and cocoa</p>
-                                </div>
-                                <span class="text-rich-brown font-bold ml-4">₱280</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-2xl font-semibold text-rich-brown mb-6 border-b-2 border-accent-brown/30 pb-2">Spanish Favorites</h4>
-                        <div class="space-y-6">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Paella Valenciana</h5>
-                                    <p class="text-accent-brown">Traditional saffron rice with chicken, rabbit, and vegetables</p>
-                                </div>
-                                <span class="text-rich-brown font-bold ml-4">₱750</span>
-                            </div>
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Jamón Ibérico Selection</h5>
-                                    <p class="text-accent-brown">Premium acorn-fed ham with Manchego cheese and quince</p>
-                                </div>
-                                <span class="text-rich-brown font-bold ml-4">₱980</span>
-                            </div>
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h5 class="text-lg font-semibold text-deep-brown">Crema Catalana</h5>
-                                    <p class="text-accent-brown">Creamy custard with caramelized sugar and cinnamon</p>
-                                </div>
-                                <span class="text-rich-brown font-bold ml-4">₱250</span>
-                            </div>
+                            <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 flex items-center space-x-2 group">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Food Packages -->
-            <div id="packages-content" class="hidden">
-                <div class="text-center mb-12">
-                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Curated Dining Packages</h3>
-                    <p class="text-xl text-accent-brown">Perfect combinations for every occasion</p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="glass-effect rounded-2xl p-8 border border-accent-brown/20 hover-lift">
-                        <h4 class="text-2xl font-semibold text-deep-brown mb-4">Romantic Dinner</h4>
-                        <p class="text-accent-brown mb-6">Perfect for two, includes appetizer, main course, dessert, and wine pairing</p>
-                        <ul class="text-sm text-deep-brown space-y-2 mb-6">
-                            <li>• Antipasti selection for two</li>
-                            <li>• Choice of signature main courses</li>
-                            <li>• Shared dessert</li>
-                            <li>• Bottle of Italian or Spanish wine</li>
-                        </ul>
-                        <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">₱2,500</span>
-                            <p class="text-sm text-accent-brown">per couple</p>
+                <div class="bg-card rounded-xl overflow-hidden shadow-md hover-lift group">
+                    <div class="relative">
+                        <img src="../images/cheesewheelpasta.jpg" alt="Cheese Wheel Pasta" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-4 right-4 bg-deep-brown text-warm-cream px-3 py-1 rounded-full text-sm font-bold">
+                            SPECIAL
                         </div>
                     </div>
-                    
-                    <div class="glass-effect rounded-2xl p-8 border border-accent-brown/20 hover-lift">
-                        <h4 class="text-2xl font-semibold text-deep-brown mb-4">Family Feast</h4>
-                        <p class="text-accent-brown mb-6">Generous portions for 4-6 people with variety and sharing dishes</p>
-                        <ul class="text-sm text-deep-brown space-y-2 mb-6">
-                            <li>• Large antipasti platter</li>
-                            <li>• Paella for the table</li>
-                            <li>• Pasta course to share</li>
-                            <li>• Selection of desserts</li>
-                        </ul>
-                        <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">₱3,800</span>
-                            <p class="text-sm text-accent-brown">serves 4-6</p>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect rounded-2xl p-8 border border-accent-brown/20 hover-lift">
-                        <h4 class="text-2xl font-semibold text-deep-brown mb-4">Business Lunch</h4>
-                        <p class="text-accent-brown mb-6">Professional dining experience with efficient service</p>
-                        <ul class="text-sm text-deep-brown space-y-2 mb-6">
-                            <li>• Express antipasti</li>
-                            <li>• Choice of signature mains</li>
-                            <li>• Coffee and petit fours</li>
-                            <li>• 90-minute time slot</li>
-                        </ul>
-                        <div class="text-center">
-                            <span class="text-3xl font-bold text-rich-brown">₱850</span>
-                            <p class="text-sm text-accent-brown">per person</p>
+                    <div class="p-6">
+                        <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">Cheese Wheel Experience</h4>
+                        <p class="font-baskerville mb-4 text-deep-brown/80">Try our famous cheese wheel pasta preparation, now with a complimentary glass of wine.</p>
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-1">
+                                <span class="font-baskerville font-bold text-lg text-deep-brown">₱850/person</span>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <span class="text-sm text-deep-brown/60 ml-1">(5.0)</span>
+                                </div>
+                            </div>
+                            <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 flex items-center space-x-2 group">
+                                <span>Reserve Now</span>
+                                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Event Packages -->
-            <div id="events-content" class="hidden">
-                <div class="text-center mb-12">
-                    <h3 class="text-4xl font-playfair text-deep-brown mb-4">Complete Event Packages</h3>
-                    <p class="text-xl text-accent-brown">Everything you need for unforgettable celebrations</p>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="glass-effect rounded-2xl p-8 border border-accent-brown/20">
-                        <h4 class="text-3xl font-semibold text-deep-brown mb-6">Intimate Celebration</h4>
-                        <p class="text-accent-brown mb-6">Perfect for birthdays, anniversaries, or small gatherings (15-30 guests)</p>
-                        
-                        <div class="space-y-4 mb-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Private dining area with custom decorations</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">3-course menu with wine pairing</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Professional photography (1 hour)</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Dedicated event coordinator</span>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center mb-6">
-                            <span class="text-4xl font-bold text-rich-brown">₱1,800</span>
-                            <p class="text-accent-brown">per person</p>
-                        </div>
-                        
-                        <button onclick="openBookingForm('intimate')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                            Book Now
-                        </button>
-                    </div>
-                    
-                    <div class="glass-effect rounded-2xl p-8 border border-accent-brown/20">
-                        <h4 class="text-3xl font-semibold text-deep-brown mb-6">Grand Celebration</h4>
-                        <p class="text-accent-brown mb-6">Luxury events for weddings, corporate events, or large parties (50+ guests)</p>
-                        
-                        <div class="space-y-4 mb-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Full venue exclusive use</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">5-course chef's tasting menu</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Live acoustic music performance</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Premium bar service with sommelier</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-2 h-2 bg-rich-brown rounded-full"></div>
-                                <span class="text-deep-brown">Complete event planning and coordination</span>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center mb-6">
-                            <span class="text-4xl font-bold text-rich-brown">₱2,500</span>
-                            <p class="text-accent-brown">per person</p>
-                        </div>
-                        
-                        <button onclick="openBookingForm('grand')" class="w-full bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                            Book Now
-                        </button>
-                    </div>
-                </div>
+        <!-- Recent Activity -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-playfair text-2xl font-bold text-deep-brown">Recent Activity</h3>
+                <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
+                        data-tippy-content="View all activity">
+                    <span class="font-baskerville text-sm">View All</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-        </div>
-    </section>
+            <div class="bg-card rounded-xl p-6 shadow-md">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
+                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
+                            <i class="fas fa-calendar-check text-deep-brown text-lg"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between">
+                                <p class="font-baskerville font-bold text-deep-brown">Reservation Confirmed</p>
+                                <span class="text-sm text-deep-brown/60">2 hours ago</span>
+                            </div>
+                            <p class="text-sm text-deep-brown/60 mt-1">Your reservation for March 15 has been confirmed.</p>
+                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
+                                <span>View Details</span>
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
 
-    <!-- Booking Modal -->
-    <div id="booking-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-effect rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-3xl font-playfair text-deep-brown">Book Your Event</h3>
-                    <button onclick="closeBookingForm()" class="text-accent-brown hover:text-deep-brown transition-colors">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                
-                <form id="booking-form" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">First Name</label>
-                            <input type="text" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
+                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
+                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
+                            <i class="fas fa-receipt text-deep-brown text-lg"></i>
                         </div>
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">Last Name</label>
-                            <input type="text" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between">
+                                <p class="font-baskerville font-bold text-deep-brown">Payment Processed</p>
+                                <span class="text-sm text-deep-brown/60">1 day ago</span>
+                            </div>
+                            <p class="text-sm text-deep-brown/60 mt-1">Payment for Birthday Celebration deposit received.</p>
+                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
+                                <span>View Receipt</span>
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">Email</label>
-                            <input type="email" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
-                        </div>
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">Phone</label>
-                            <input type="tel" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
-                        </div>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">Event Date</label>
-                            <input type="date" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
-                        </div>
-                        <div>
-                            <label class="block text-deep-brown font-semibold mb-2">Number of Guests</label>
-                            <select class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors" required>
-                                <option value="">Select guest count</option>
-                                <option value="15-20">15-20 guests</option>
-                                <option value="21-30">21-30 guests</option>
-                                <option value="31-50">31-50 guests</option>
-                                <option value="51-100">51-100 guests</option>
-                                <option value="100+">100+ guests</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-deep-brown font-semibold mb-2">Special Requirements</label>
-                        <textarea rows="4" class="w-full p-3 rounded-xl border border-accent-brown/30 bg-warm-cream/50 focus:outline-none focus:border-rich-brown transition-colors resize-none" placeholder="Dietary restrictions, decorations, entertainment preferences..."></textarea>
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <button type="button" onclick="closeBookingForm()" class="flex-1 border-2 border-accent-brown text-accent-brown py-3 rounded-xl hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300 font-semibold">
-                            Cancel
-                        </button>
-                        <button type="submit" class="flex-1 bg-rich-brown text-warm-cream py-3 rounded-xl hover:bg-accent-brown transition-colors duration-300 font-semibold">
-                            Submit Request
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gradient-to-b from-warm-cream to-accent-brown/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-playfair text-deep-brown mb-4">Get in Touch</h2>
-                <p class="text-xl text-accent-brown">Let's create something extraordinary together</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
+                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
+                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
+                            <i class="fas fa-star text-deep-brown text-lg"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between">
+                                <p class="font-baskerville font-bold text-deep-brown">Review Posted</p>
+                                <span class="text-sm text-deep-brown/60">3 days ago</span>
+                            </div>
+                            <p class="text-sm text-deep-brown/60 mt-1">Thank you for reviewing your last visit!</p>
+                            <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
+                                <span>View Review</span>
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-semibold text-deep-brown mb-2">Visit Us</h4>
-                    <p class="text-accent-brown">123 Gat Tayaw St.<br>Liliw, Laguna 4004</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="text-xl font-semibold text-deep-brown mb-2">Call Us</h4>
-                    <p class="text-accent-brown">+63 49 123 4567<br>Mon-Sun: 10:00-22:00</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <svg class="w-8 h-8 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="text-xl font-semibold text-deep-brown mb-2">Email Us</h4>
-                    <p class="text-accent-brown">events@caffelilio.com<br>info@caffelilio.com</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="bg-deep-brown text-warm-cream py-12">
+    <footer class="bg-deep-brown text-warm-cream py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex items-center justify-center space-x-3 mb-6">
                     <div>
-                        <h3 class="font-playfair font-bold text-xl">Caffè Lilio</h3>
-                        <p class="text-xs tracking-widest opacity-75">RISTORANTE</p>
+                        <h3 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h3>
+                        <p class="text-xs tracking-widest text-warm-cream/90">RISTORANTE</p>
                     </div>
                 </div>
                 
                 <div class="flex justify-center space-x-6 mb-8">
-                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" 
+                       class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 p-2 hover:bg-warm-cream/10 rounded-full"
+                       data-tippy-content="Follow us on Facebook">
                         <i class="fab fa-facebook-f text-2xl"></i>
                     </a>
-                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" 
+                       class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 p-2 hover:bg-warm-cream/10 rounded-full"
+                       data-tippy-content="Follow us on Instagram">
                         <i class="fab fa-instagram text-2xl"></i>
                     </a>
                 </div>
                 
-                <div class="border-t border-rich-brown pt-8">
-                    <p class="font-baskerville opacity-75">
-                        © 2024 Caffè Lilio Ristorante. All rights reserved. | 
-                        <span class="italic">Authentically Italian and Spanish since 2021</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-left">
+                    <div>
+                        <h4 class="font-playfair font-bold mb-4">Contact Us</h4>
+                        <div class="space-y-2">
+                            <p class="flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt w-5"></i>
+                                <span>123 Restaurant St., Food District</span>
+                            </p>
+                            <p class="flex items-center space-x-2">
+                                <i class="fas fa-phone w-5"></i>
+                                <span>+63 912 345 6789</span>
+                            </p>
+                            <p class="flex items-center space-x-2">
+                                <i class="fas fa-envelope w-5"></i>
+                                <span>info@caffelilio.com</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-playfair font-bold mb-4">Quick Links</h4>
+                        <div class="space-y-2">
+                            <a href="#about" class="block hover:text-warm-cream/80 transition-colors duration-300">About Us</a>
+                            <a href="#menu" class="block hover:text-warm-cream/80 transition-colors duration-300">Menu</a>
+                            <a href="#reservations" class="block hover:text-warm-cream/80 transition-colors duration-300">Reservations</a>
+                            <a href="#contact" class="block hover:text-warm-cream/80 transition-colors duration-300">Contact</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-playfair font-bold mb-4">Opening Hours</h4>
+                        <div class="space-y-2">
+                            <p class="flex justify-between">
+                                <span>Monday - Friday</span>
+                                <span>11:00 AM - 10:00 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Saturday - Sunday</span>
+                                <span>10:00 AM - 11:00 PM</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-warm-cream/10 pt-8">
+                    <p class="font-baskerville text-warm-cream/90">
+                        © 2024 Caffè Lilio Ristorante. All rights reserved.
                     </p>
                 </div>
             </div>
@@ -649,188 +663,159 @@ require_once 'customer_auth.php'; ?>
     </footer>
 
     <script>
-        // Global state
-        let currentCategory = null;
-        let bookingData = {};
-
-        // Mobile menu functionality
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            // Mobile menu implementation would go here
-            alert('Mobile menu functionality - implement dropdown menu');
-        });
-
-        // Smooth scrolling function
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-
-        // Show category content
-        function showCategory(category) {
-            // Hide all content sections
-            const contentSections = ['alacarte-content', 'packages-content', 'events-content'];
-            contentSections.forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-
-            // Show selected content
-            const targetContent = category + '-content';
-            const element = document.getElementById(targetContent);
-            if (element) {
-                element.classList.remove('hidden');
-                element.classList.add('animate-fade-in');
-                
-                // Scroll to content area
-                document.getElementById('content-area').scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-
-            currentCategory = category;
-        }
-
-        // Open booking form
-        function openBookingForm(packageType) {
-            bookingData.packageType = packageType;
-            document.getElementById('booking-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        }
-
-        // Close booking form
-        function closeBookingForm() {
-            document.getElementById('booking-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Restore scrolling
-            document.getElementById('booking-form').reset();
-        }
-
-        // Handle form submission
-        document.getElementById('booking-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Add package type to data
-            data.packageType = bookingData.packageType;
-            
-            // Simulate form submission
-            showSuccessMessage();
-            closeBookingForm();
-        });
-
-        // Show success message
-        function showSuccessMessage() {
-            // Create and show success notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 animate-fade-in';
-            notification.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-semibold">Booking Request Sent!</h4>
-                        <p class="text-sm">We'll contact you within 24 hours to confirm your event details.</p>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remove notification after 5 seconds
-            setTimeout(() => {
-                notification.remove();
-            }, 5000);
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('booking-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBookingForm();
-            }
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            const scrollPosition = window.scrollY;
-            
-            if (scrollPosition > 50) {
-                nav.classList.add('scrolled');
-                nav.classList.remove('glass-effect');
-            } else {
-                nav.classList.remove('scrolled');
-                nav.classList.add('glass-effect');
-            }
-        });
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all fade-in elements
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Initialize Profile Dropdown functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            let isDropdownOpen = false;
+            // Initialize tooltips
+            tippy('[data-tippy-content]', {
+                theme: 'custom',
+                animation: 'scale',
+                duration: [200, 150],
+                placement: 'bottom'
+            });
 
-            if (profileDropdownBtn && profileDropdown) {
-                profileDropdownBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    isDropdownOpen = !isDropdownOpen;
-                    if (isDropdownOpen) {
-                        profileDropdown.classList.remove('hidden');
-                        profileDropdown.classList.add('animate-fade-in');
-                    } else {
-                        profileDropdown.classList.add('hidden');
-                        profileDropdown.classList.remove('animate-fade-in');
-                    }
-                });
+            // Initialize loading bar
+            NProgress.configure({ 
+                showSpinner: false,
+                minimum: 0.3,
+                easing: 'ease',
+                speed: 500
+            });
 
-                // Close dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (isDropdownOpen && !profileDropdown.contains(e.target) && e.target !== profileDropdownBtn) {
-                        isDropdownOpen = false;
-                        profileDropdown.classList.add('hidden');
-                        profileDropdown.classList.remove('animate-fade-in');
-                    }
-                });
+            // Mobile menu functionality
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
 
-                // Update dropdown colors based on scroll position
-                window.addEventListener('scroll', () => {
-                    const isHeroSection = window.scrollY === 0;
-                    
-                    if (isHeroSection) {
-                        profileDropdownBtn.classList.remove('text-deep-brown');
-                        profileDropdownBtn.classList.add('text-warm-cream');
-                    } else {
-                        profileDropdownBtn.classList.remove('text-warm-cream');
-                        profileDropdownBtn.classList.add('text-deep-brown');
-                    }
-                });
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('overflow-hidden');
             }
+
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            closeMobileMenu.addEventListener('click', toggleMobileMenu);
+
+            // Show loading bar on navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    NProgress.start();
+
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // Simulate loading time
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 500);
+                });
+            });
+
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-${type === 'success' ? 'check-circle text-green-500' : 'exclamation-circle text-red-500'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                document.getElementById('toast-container').appendChild(toast);
+                
+                // Show toast
+                setTimeout(() => toast.classList.add('show'), 100);
+                
+                // Remove toast
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Handle reservation cancellation with improved UX
+            document.querySelectorAll('.fa-trash').forEach(button => {
+                button.addEventListener('click', function() {
+                    const confirmDialog = document.createElement('div');
+                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    confirmDialog.innerHTML = `
+                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
+                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+                            <div class="flex justify-end space-x-4">
+                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
+                                    Keep Reservation
+                                </button>
+                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
+                                    Yes, Cancel
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(confirmDialog);
+                    document.body.classList.add('overflow-hidden');
+
+                    document.getElementById('cancel-dialog').addEventListener('click', () => {
+                        confirmDialog.remove();
+                        document.body.classList.remove('overflow-hidden');
+                    });
+
+                    document.getElementById('confirm-cancel').addEventListener('click', () => {
+                        NProgress.start();
+                        setTimeout(() => {
+                            confirmDialog.remove();
+                            document.body.classList.remove('overflow-hidden');
+                            showToast('Reservation cancelled successfully');
+                            NProgress.done();
+                        }, 1000);
+                    });
+                });
+            });
+
+            // Handle reservation editing
+            document.querySelectorAll('.fa-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    showToast('Opening reservation editor...', 'success');
+                    NProgress.start();
+                    
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 1000);
+                });
+            });
+
+            // Add smooth scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Simulate loading states for dynamic content
+            function loadNotifications() {
+                const notificationsContainer = document.querySelector('#notifications-button + div .animate-pulse');
+                setTimeout(() => {
+                    notificationsContainer.innerHTML = `
+                        <div class="p-4 border-b border-deep-brown/10">
+                            <p class="font-baskerville text-deep-brown">New special offer available!</p>
+                            <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
+                        </div>
+                    `;
+                }, 1000);
+            }
+
+            // Initialize dynamic content loading
+            loadNotifications();
         });
     </script>
 </body>
