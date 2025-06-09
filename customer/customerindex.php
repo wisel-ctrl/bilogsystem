@@ -834,24 +834,4 @@ require_once 'customer_auth.php'; ?>
         });
     </script>
 </body>
-</html>  }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const elementsToAnimate = document.querySelectorAll('.hover-lift, .glass-effect');
-            elementsToAnimate.forEach(el => observer.observe(el));
-        });
-
-        // Add smooth hover effects to navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
-            });
-        });
-    </script>
-</body>
 </html>
