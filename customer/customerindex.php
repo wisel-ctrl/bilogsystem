@@ -602,7 +602,7 @@ require_once 'customer_auth.php'; ?>
             <div class="py-2">
                 <!-- Brand Section -->
                 <div class="text-center mb-12">
-                    <div class="inline-flex items-center space-x-3 mb-4">
+                    <div class="inline-flex items-center space-x-3 mt-4 mb-4">
                         <div>
                             <h2 class="font-playfair font-bold text-2xl tracking-tight">Caffè Lilio</h2>
                             <p class="text-xs tracking-[0.2em] text-warm-cream/80 uppercase font-inter font-light">Ristorante</p>
