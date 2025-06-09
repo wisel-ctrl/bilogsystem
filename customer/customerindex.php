@@ -206,7 +206,7 @@ require_once 'customer_auth.php';
             <h1 class="text-3xl md:text-6xl font-playfair text-deep-brown mb-6 animate-fade-in">
                 Savor the Flavors of Spain and Italy
             </h1>
-            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
+            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream font-playfair px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
                 Plan Your Event
             </button>
         </div>
