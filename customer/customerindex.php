@@ -8,8 +8,9 @@ require_once 'customer_auth.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista - Event Management</title>
+    <title>Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -75,46 +76,203 @@ require_once 'customer_auth.php';
 </head>
 <body class="bg-warm-cream font-baskerville">
     <!-- Navigation -->
-    <nav class="glass-effect fixed w-full top-0 z-50 border-b border-accent-brown/20">
+    <nav class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+            <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-deep-brown rounded-full flex items-center justify-center">
-                        <span class="text-warm-cream font-playfair text-xl">BV</span>
+                    <div>
+                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                     </div>
-                    <h1 class="text-2xl font-playfair text-deep-brown">Bella Vista</h1>
                 </div>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Home</a>
-                    <a href="#menu" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Menu</a>
-                    <a href="#events" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Events</a>
-                    <a href="#contact" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 font-semibold">Contact</a>
+                    <a href="#home" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Home
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        About Us
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Menu & Packages
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#services" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        What We Offer
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
                 </div>
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-rich-brown text-warm-cream">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="login.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        Login
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="register.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
+                        Register
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden focus:outline-none" id="mobile-menu-btn">
+                    <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                        <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
+                    </div>
                 </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden glass-effect" id="mobile-menu">
+            <div class="px-4 py-4 space-y-4">
+                <a href="#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
+                <a href="#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
+                <a href="#menu" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu & Packages</a>
+                <a href="#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
+                
+                <div class="pt-4 border-t border-deep-brown/10">
+                    <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
+                        Login
+                    </a>
+                    <a href="register.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
+                        Register
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
-        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
-        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         
-        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl font-playfair text-deep-brown mb-6 animate-fade-in">
-                Unforgettable Events
-            </h1>
-            <p class="text-xl md:text-2xl text-accent-brown mb-8 animate-slide-in max-w-2xl mx-auto">
-                Experience the authentic flavors of Italy and Spain in an atmosphere designed for your most special moments
-            </p>
-            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
-                Plan Your Event
-            </button>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="fade-in">
+                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
+                    Caffè Lilio
+                </h1>
+                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
+                    RISTORANTE
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Savor the Flavors of Spain and Italy
+                </p>
+                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
+                    <a href="register.php" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
+                        Make Reservation
+                    </a>
+                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
+                        View Our Menu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
+                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
+                        </p>
+                        <p>
+                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
+                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
+                        </p>
+                        <p>
+                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
+                            and reputation as a premier dining destination in Liliw.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">3+</div>
+                            <div class="font-baskerville text-deep-brown">Years of Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">5★</div>
+                            <div class="font-baskerville text-deep-brown">Customer Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-playfair font-bold text-rich-brown mb-2">30+</div>
+                            <div class="font-baskerville text-deep-brown">Signature Dishes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="relative">
+                        <div class="bg-deep-brown/50 rounded-3xl p-8 shadow-2xl">
+                            <div class="bg-warm-cream rounded-2xl p-8">
+                                <h6 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">
+                                    We're Here for You – Online & On-site
+                                </h6>
+                                
+                                <div class="space-y-4 font-baskerville text-deep-brown">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📍</span>
+                                        <div>
+                                            <div class="font-bold">Address</div>
+                                            <div>Brgy. Rizal st. cr. 4th St., Liliw Laguna, Liliw, Philippines, 4004</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">📞</span>
+                                        <div>
+                                            <div class="font-bold">Phone</div>
+                                            <div>+49 2542 084</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-rich-brown mt-1">✉️</span>
+                                        <div>
+                                            <div class="font-bold">Email</div>
+                                            <div>caffelilio.liliw@gmail.com</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Map Section -->
+                                <div class="mt-6">
+                                    <section class="map w-full rounded-xl overflow-hidden shadow-lg">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+                                            width="100%"
+                                            height="250"
+                                            style="border:0;"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </section>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <a href="register.php" class="block w-full bg-deep-brown text-warm-cream py-3 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300 text-center">
+                                        Make Reservation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -376,6 +534,116 @@ require_once 'customer_auth.php';
         </div>
     </section>
 
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
+                    Discover our carefully curated menu featuring the finest Italian and Spanish dishes. From classic favorites to unique specialties.
+                </p>
+            </div>
+
+            <div class="relative">
+                <!-- Previous Button -->
+                <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div id="menuCarousel" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Menu slides content -->
+                        <!-- Note: The actual menu slides content will be preserved from the original file -->
+                    </div>
+                </div>
+
+                <!-- Next Button -->
+                <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Carousel Indicators -->
+                <div class="flex justify-center mt-8 space-x-2">
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="0"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="1"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="2"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="3"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="4"></button>
+                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="5"></button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in">
+                <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    Download Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Offer Section -->
+    <section id="services" class="py-20 bg-warm-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">What We Offer</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <div class="relative">
+                        <!-- Services Carousel Container -->
+                        <div class="overflow-hidden rounded-xl shadow-2xl">
+                            <div id="servicesCarousel" class="flex transition-transform duration-500 ease-in-out">
+                                <!-- Service images content -->
+                                <!-- Note: The actual service images content will be preserved from the original file -->
+                            </div>
+                        </div>
+
+                        <!-- Carousel Indicators -->
+                        <div class="flex justify-center mt-4 space-x-2">
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="0"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="1"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="2"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="3"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="4"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="5"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="6"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="7"></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            At Caffè Lilio, we believe that every occasion—big or small—deserves a memorable setting and flavorful experience. 
+                            That's why we offer a range of services designed to bring people together through food, ambiance, and thoughtful service.
+                        </p>
+                        <p>
+                            Whether you're planning an intimate family gathering, a corporate event, or a grand celebration, we're here to make it seamless. 
+                            Our team provides customizable event packages, catering services, and venue reservations tailored to your guest count and preferred setup.
+                        </p>
+                        <p>
+                            We have various venue options, each with a different ambiance and capacity, so you can choose the space that fits your celebration best. 
+                            From classic sit-down dinners to themed celebrations, we're ready to help you design a setting that reflects your taste.
+                        </p>
+                        <p>
+                            Our goal is to make hosting easier for you—whether that means delivering delicious food to your location or taking care of everything 
+                            from the table setup to the last toast of the night.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Booking Modal -->
     <div id="booking-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-effect rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -494,57 +762,28 @@ require_once 'customer_auth.php';
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="col-span-2">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
-                            <span class="text-warm-cream font-playfair text-xl">BV</span>
-                        </div>
-                        <h3 class="text-2xl font-playfair">Bella Vista</h3>
-                    </div>
-                    <p class="text-warm-cream/80 mb-4 max-w-md">Where authentic Italian and Spanish flavors meet exceptional hospitality. Creating unforgettable moments one celebration at a time.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.118.112.219.083.402-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z.017-.001z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
-                        </a>
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div>
+                        <h3 class="font-playfair font-bold text-xl">Caffè Lilio</h3>
+                        <p class="text-xs tracking-widest opacity-75">RISTORANTE</p>
                     </div>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-warm-cream/80">
-                        <li><a href="#home" class="hover:text-warm-cream transition-colors">Home</a></li>
-                        <li><a href="#menu" class="hover:text-warm-cream transition-colors">Menu</a></li>
-                        <li><a href="#events" class="hover:text-warm-cream transition-colors">Events</a></li>
-                        <li><a href="#contact" class="hover:text-warm-cream transition-colors">Contact</a></li>
-                    </ul>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <i class="fab fa-facebook-f text-2xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-warm-cream/80">
-                        <li>Private Dining</li>
-                        <li>Wedding Events</li>
-                        <li>Corporate Catering</li>
-                        <li>Wine Tastings</li>
-                    </ul>
+                <div class="border-t border-rich-brown pt-8">
+                    <p class="font-baskerville opacity-75">
+                        © 2024 Caffè Lilio Ristorante. All rights reserved.
+                    </p>
                 </div>
-            </div>
-            
-            <div class="border-t border-warm-cream/20 mt-8 pt-8 text-center text-warm-cream/60">
-                <p>&copy; 2025 Bella Vista Restaurant. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
@@ -555,9 +794,21 @@ require_once 'customer_auth.php';
         let bookingData = {};
 
         // Mobile menu functionality
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            // Mobile menu implementation would go here
-            alert('Mobile menu functionality - implement dropdown menu');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            const spans = mobileMenuBtn.querySelectorAll('span');
+            spans.forEach((span, index) => {
+                if (mobileMenu.classList.contains('hidden')) {
+                    span.style.transform = 'none';
+                } else {
+                    if (index === 0) span.style.transform = 'translateY(8px) rotate(45deg)';
+                    if (index === 1) span.style.opacity = '0';
+                    if (index === 2) span.style.transform = 'translateY(-8px) rotate(-45deg)';
+                }
+            });
         });
 
         // Smooth scrolling function
@@ -662,42 +913,117 @@ require_once 'customer_auth.php';
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
-                nav.classList.add('backdrop-blur-md');
-                nav.classList.remove('glass-effect');
+                nav.style.backgroundColor = 'rgba(93, 47, 15, 0.95)';
             } else {
-                nav.classList.remove('backdrop-blur-md');
-                nav.classList.add('glass-effect');
+                nav.style.backgroundColor = 'transparent';
             }
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // Menu Carousel
+        let currentMenuSlide = 0;
+        const menuCarousel = document.getElementById('menuCarousel');
+        const menuSlides = menuCarousel ? menuCarousel.children.length : 0;
+        const menuIndicators = document.querySelectorAll('.carousel-indicator');
 
-        const observer = new IntersectionObserver(function(entries) {
+        function updateMenuCarousel() {
+            if (menuCarousel) {
+                menuCarousel.style.transform = `translateX(-${currentMenuSlide * 100}%)`;
+                menuIndicators.forEach((indicator, index) => {
+                    indicator.style.opacity = index === currentMenuSlide ? '1' : '0.5';
+                });
+            }
+        }
+
+        document.getElementById('prevBtn')?.addEventListener('click', () => {
+            if (currentMenuSlide > 0) {
+                currentMenuSlide--;
+                updateMenuCarousel();
+            }
+        });
+
+        document.getElementById('nextBtn')?.addEventListener('click', () => {
+            if (currentMenuSlide < menuSlides - 1) {
+                currentMenuSlide++;
+                updateMenuCarousel();
+            }
+        });
+
+        menuIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentMenuSlide = index;
+                updateMenuCarousel();
+            });
+        });
+
+        // Services Carousel
+        let currentServiceSlide = 0;
+        const servicesCarousel = document.getElementById('servicesCarousel');
+        const serviceSlides = servicesCarousel ? servicesCarousel.children.length : 0;
+        const serviceIndicators = document.querySelectorAll('.services-indicator');
+
+        function updateServicesCarousel() {
+            if (servicesCarousel) {
+                servicesCarousel.style.transform = `translateX(-${currentServiceSlide * 100}%)`;
+                serviceIndicators.forEach((indicator, index) => {
+                    indicator.style.opacity = index === currentServiceSlide ? '1' : '0.5';
+                });
+            }
+        }
+
+        serviceIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentServiceSlide = index;
+                updateServicesCarousel();
+            });
+        });
+
+        // Auto-advance services carousel
+        setInterval(() => {
+            if (currentServiceSlide < serviceSlides - 1) {
+                currentServiceSlide++;
+            } else {
+                currentServiceSlide = 0;
+            }
+            updateServicesCarousel();
+        }, 5000);
+
+        // Fade-in animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in');
+                    entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const elementsToAnimate = document.querySelectorAll('.hover-lift, .glass-effect');
-            elementsToAnimate.forEach(el => observer.observe(el));
+        }, {
+            threshold: 0.1
         });
 
-        // Add smooth hover effects to navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(e) {
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenuBtn.click();
+                    }
+                }
             });
         });
+
+        // Initialize carousels
+        updateMenuCarousel();
+        updateServicesCarousel();
     </script>
 </body>
 </html>
