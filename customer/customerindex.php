@@ -588,75 +588,134 @@ require_once 'customer_auth.php'; ?>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-deep-brown text-warm-cream py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <div class="flex items-center justify-center space-x-3 mb-6">
-                    <div>
-                        <h3 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h3>
-                        <p class="text-xs tracking-widest text-warm-cream/90">RISTORANTE</p>
-                    </div>
+    <footer class="bg-gradient-to-br from-deep-brown to-rich-brown text-warm-cream py-16 mt-12 relative overflow-hidden">
+        <!-- Decorative background pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Logo and Social Section -->
+            <div class="flex flex-col items-center justify-center mb-12 space-y-6">
+                <div class="transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="font-playfair font-bold text-2xl text-warm-cream">Caffè Lilio</h3>
+                    <p class="text-sm tracking-widest text-warm-cream/90 text-center">RISTORANTE</p>
                 </div>
                 
-                <div class="flex justify-center space-x-6 mb-8">
+                <div class="flex justify-center space-x-8">
                     <a href="https://web.facebook.com/caffelilio.ph" target="_blank" 
-                       class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 p-2 hover:bg-warm-cream/10 rounded-full"
+                       class="group relative inline-block p-3"
                        data-tippy-content="Follow us on Facebook">
-                        <i class="fab fa-facebook-f text-2xl"></i>
+                        <div class="absolute inset-0 bg-warm-cream/10 rounded-lg transform group-hover:scale-110 transition-transform duration-300"></div>
+                        <i class="fab fa-facebook-f text-2xl relative z-10 group-hover:text-warm-cream/80 transition-colors duration-300"></i>
                     </a>
                     <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" 
-                       class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 p-2 hover:bg-warm-cream/10 rounded-full"
+                       class="group relative inline-block p-3"
                        data-tippy-content="Follow us on Instagram">
-                        <i class="fab fa-instagram text-2xl"></i>
+                        <div class="absolute inset-0 bg-warm-cream/10 rounded-lg transform group-hover:scale-110 transition-transform duration-300"></div>
+                        <i class="fab fa-instagram text-2xl relative z-10 group-hover:text-warm-cream/80 transition-colors duration-300"></i>
                     </a>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-left">
-                    <div>
-                        <h4 class="font-playfair font-bold mb-4">Contact Us</h4>
-                        <div class="space-y-2">
-                            <p class="flex items-center space-x-2">
-                                <i class="fas fa-map-marker-alt w-5"></i>
-                                <span>123 Restaurant St., Food District</span>
-                            </p>
-                            <p class="flex items-center space-x-2">
-                                <i class="fas fa-phone w-5"></i>
-                                <span>+63 912 345 6789</span>
-                            </p>
-                            <p class="flex items-center space-x-2">
-                                <i class="fas fa-envelope w-5"></i>
-                                <span>info@caffelilio.com</span>
+            </div>
+            
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Contact Section -->
+                <div class="space-y-6">
+                    <h4 class="font-playfair font-bold text-xl mb-6 relative inline-block">
+                        Contact Us
+                        <span class="absolute bottom-0 left-0 w-1/2 h-0.5 bg-warm-cream/30"></span>
+                    </h4>
+                    <div class="space-y-4">
+                        <a href="#" class="flex items-center space-x-4 group">
+                            <div class="p-3 bg-warm-cream/10 rounded-lg group-hover:bg-warm-cream/20 transition-colors duration-300">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span class="group-hover:text-warm-cream/80 transition-colors duration-300">123 Restaurant St., Food District</span>
+                        </a>
+                        <a href="tel:+639123456789" class="flex items-center space-x-4 group">
+                            <div class="p-3 bg-warm-cream/10 rounded-lg group-hover:bg-warm-cream/20 transition-colors duration-300">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <span class="group-hover:text-warm-cream/80 transition-colors duration-300">+63 912 345 6789</span>
+                        </a>
+                        <a href="mailto:info@caffelilio.com" class="flex items-center space-x-4 group">
+                            <div class="p-3 bg-warm-cream/10 rounded-lg group-hover:bg-warm-cream/20 transition-colors duration-300">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span class="group-hover:text-warm-cream/80 transition-colors duration-300">info@caffelilio.com</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-6">
+                    <h4 class="font-playfair font-bold text-xl mb-6 relative inline-block">
+                        Quick Links
+                        <span class="absolute bottom-0 left-0 w-1/2 h-0.5 bg-warm-cream/30"></span>
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="#about" class="group">
+                            <span class="relative inline-block">
+                                About Us
+                                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-warm-cream/50 group-hover:w-full transition-all duration-300"></span>
+                            </span>
+                        </a>
+                        <a href="#menu" class="group">
+                            <span class="relative inline-block">
+                                Menu
+                                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-warm-cream/50 group-hover:w-full transition-all duration-300"></span>
+                            </span>
+                        </a>
+                        <a href="#reservations" class="group">
+                            <span class="relative inline-block">
+                                Reservations
+                                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-warm-cream/50 group-hover:w-full transition-all duration-300"></span>
+                            </span>
+                        </a>
+                        <a href="#contact" class="group">
+                            <span class="relative inline-block">
+                                Contact
+                                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-warm-cream/50 group-hover:w-full transition-all duration-300"></span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Opening Hours -->
+                <div class="space-y-6">
+                    <h4 class="font-playfair font-bold text-xl mb-6 relative inline-block">
+                        Opening Hours
+                        <span class="absolute bottom-0 left-0 w-1/2 h-0.5 bg-warm-cream/30"></span>
+                    </h4>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-warm-cream/10 rounded-lg backdrop-blur-sm">
+                            <p class="flex justify-between items-center">
+                                <span class="font-baskerville">Monday - Friday</span>
+                                <span class="text-warm-cream/80">11:00 AM - 10:00 PM</span>
                             </p>
                         </div>
-                    </div>
-                    <div>
-                        <h4 class="font-playfair font-bold mb-4">Quick Links</h4>
-                        <div class="space-y-2">
-                            <a href="#about" class="block hover:text-warm-cream/80 transition-colors duration-300">About Us</a>
-                            <a href="#menu" class="block hover:text-warm-cream/80 transition-colors duration-300">Menu</a>
-                            <a href="#reservations" class="block hover:text-warm-cream/80 transition-colors duration-300">Reservations</a>
-                            <a href="#contact" class="block hover:text-warm-cream/80 transition-colors duration-300">Contact</a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-playfair font-bold mb-4">Opening Hours</h4>
-                        <div class="space-y-2">
-                            <p class="flex justify-between">
-                                <span>Monday - Friday</span>
-                                <span>11:00 AM - 10:00 PM</span>
-                            </p>
-                            <p class="flex justify-between">
-                                <span>Saturday - Sunday</span>
-                                <span>10:00 AM - 11:00 PM</span>
+                        <div class="p-4 bg-warm-cream/10 rounded-lg backdrop-blur-sm">
+                            <p class="flex justify-between items-center">
+                                <span class="font-baskerville">Saturday - Sunday</span>
+                                <span class="text-warm-cream/80">10:00 AM - 11:00 PM</span>
                             </p>
                         </div>
                     </div>
                 </div>
-                
-                <div class="border-t border-warm-cream/10 pt-8">
-                    <p class="font-baskerville text-warm-cream/90">
+            </div>
+            
+            <!-- Copyright Section -->
+            <div class="border-t border-warm-cream/10 pt-8 mt-12">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <p class="font-baskerville text-warm-cream/90 text-sm">
                         © 2024 Caffè Lilio Ristorante. All rights reserved.
                     </p>
+                    <div class="flex space-x-6 text-sm">
+                        <a href="#privacy" class="hover:text-warm-cream/80 transition-colors duration-300">Privacy Policy</a>
+                        <a href="#terms" class="hover:text-warm-cream/80 transition-colors duration-300">Terms of Service</a>
+                        <a href="#cookies" class="hover:text-warm-cream/80 transition-colors duration-300">Cookie Policy</a>
+                    </div>
                 </div>
             </div>
         </div>
