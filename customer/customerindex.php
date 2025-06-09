@@ -132,7 +132,7 @@ require_once 'customer_auth.php';
                         My Profile
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="logout.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
+                    <a href="../logout.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
                         Logout
                     </a>
                 </div>
