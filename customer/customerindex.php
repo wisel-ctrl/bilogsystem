@@ -1,7 +1,6 @@
 <?php
-require_once 'customer_auth.php'; 
-?>
-<!DOCTYPE html>
+require_once 'customer_auth.php'; ?>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,6 +32,38 @@ require_once 'customer_auth.php';
         
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
+        
+        /* Update navigation transition styles */
+        nav {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        nav.scrolled {
+            background-color: rgba(232, 224, 213, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav.scrolled .nav-link,
+        nav.scrolled .nav-title,
+        nav.scrolled .nav-subtitle {
+            color: #5D2F0F;
+        }
+        
+        nav:not(.scrolled) {
+            background-color: rgba(93, 47, 15, 0.8); /* Semi-transparent deep brown */
+            backdrop-filter: blur(4px);
+        }
+        
+        nav:not(.scrolled) .nav-link,
+        nav:not(.scrolled) .nav-title,
+        nav:not(.scrolled) .nav-subtitle {
+            color: #E8E0D5;
+        }
+        
+        nav:not(.scrolled) .nav-link:hover {
+            color: rgba(232, 224, 213, 0.8);
+        }
         
         .parallax-bg {
             background-attachment: fixed;
@@ -126,15 +157,32 @@ require_once 'customer_auth.php';
                     </a>
                 </div>
                 
-                <!-- Customer Profile -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="profile.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        My Profile
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <a href="logout.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
-                        Logout
-                    </a>
+                <!-- Profile Dropdown -->
+                <div class="hidden md:block relative">
+                    <button id="profileDropdownBtn" class="flex items-center space-x-2 text-warm-cream hover:text-warm-cream/80 transition-colors duration-300">
+                        <span class="font-baskerville">My Profile</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl overflow-hidden shadow-lg glass-effect border border-accent-brown/20 z-50">
+                        <a href="profile.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>View Profile</span>
+                            </div>
+                        </a>
+                        <a href="../logout.php" class="block px-4 py-3 text-deep-brown hover:bg-accent-brown hover:text-warm-cream transition-colors duration-300">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                <span>Logout</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -158,10 +206,20 @@ require_once 'customer_auth.php';
                 
                 <div class="pt-4 border-t border-deep-brown/10">
                     <a href="profile.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
-                        My Profile
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span>My Profile</span>
+                        </div>
                     </a>
-                    <a href="logout.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
-                        Logout
+                    <a href="../logout.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
+                        <div class="flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            <span>Logout</span>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -169,77 +227,23 @@ require_once 'customer_auth.php';
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('../images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
+        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
+        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
         
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            <div class="fade-in">
-                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
-                    Caffè Lilio
-                </h1>
-                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
-                    RISTORANTE
-                </p>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Savor the Flavors of Spain and Italy
-                </p>
-                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
-                    <a href="#menu" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
-                        Make Reservation
-                    </a>
-                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
-                        View Our Menu
-                    </a>
-                </div>
-            </div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+            <h1 class="text-3xl md:text-6xl font-script text-deep-brown mb-6 animate-fade-in">
+            <h1 class="text-3xl md:text-6xl font-playfair text-deep-brown mb-6 animate-fade-in">
+                Savor the Flavors of Spain and Italy
+            </h1>
+            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream font-playfair px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
+                Plan Your Event
+            </button>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-amber-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="fade-in">
-                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-8">About Caffè Lilio</h2>
-                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mb-8"></div>
-                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
-                        <p>
-                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
-                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
-                        </p>
-                        <p>
-                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
-                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
-                        </p>
-                        <p>
-                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
-                            and reputation as a premier dining destination in Liliw.
-                        </p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 fade-in">
-                    <div class="space-y-4">
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about1.jpg" alt="Restaurant Interior" class="w-full h-64 object-cover">
-                        </div>
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about2.jpg" alt="Signature Dish" class="w-full h-48 object-cover">
-                        </div>
-                    </div>
-                    <div class="space-y-4 pt-8">
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about3.jpg" alt="Coffee Service" class="w-full h-48 object-cover">
-                        </div>
-                        <div class="rounded-2xl overflow-hidden shadow-xl hover-lift">
-                            <img src="../images/about4.jpg" alt="Restaurant Ambiance" class="w-full h-64 object-cover">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-warm-cream/50">
@@ -617,57 +621,29 @@ require_once 'customer_auth.php';
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="col-span-2">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-rich-brown to-accent-brown rounded-full flex items-center justify-center">
-                            <span class="text-warm-cream font-playfair text-xl">CL</span>
-                        </div>
-                        <h3 class="text-2xl font-playfair">Caffè Lilio</h3>
-                    </div>
-                    <p class="text-warm-cream/80 mb-4 max-w-md">Experience the finest Italian and Spanish cuisine in Liliw, Laguna. Where authentic flavors meet warm hospitality, creating memorable dining experiences.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.118.112.219.083.402-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z.017-.001z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-rich-brown rounded-full flex items-center justify-center hover:bg-accent-brown transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
-                        </a>
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div>
+                        <h3 class="font-playfair font-bold text-xl">Caffè Lilio</h3>
+                        <p class="text-xs tracking-widest opacity-75">RISTORANTE</p>
                     </div>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-warm-cream/80">
-                        <li><a href="#home" class="hover:text-warm-cream transition-colors">Home</a></li>
-                        <li><a href="#about" class="hover:text-warm-cream transition-colors">About Us</a></li>
-                        <li><a href="#menu" class="hover:text-warm-cream transition-colors">Menu</a></li>
-                        <li><a href="#services" class="hover:text-warm-cream transition-colors">Services</a></li>
-                    </ul>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <i class="fab fa-facebook-f text-2xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-warm-cream/80">
-                        <li>À La Carte Dining</li>
-                        <li>Private Events</li>
-                        <li>Corporate Functions</li>
-                        <li>Special Celebrations</li>
-                    </ul>
+                <div class="border-t border-rich-brown pt-8">
+                    <p class="font-baskerville opacity-75">
+                        © 2024 Caffè Lilio Ristorante. All rights reserved. | 
+                        <span class="italic">Authentically Italian and Spanish since 2021</span>
+                    </p>
                 </div>
-            </div>
-            
-            <div class="border-t border-warm-cream/20 mt-8 pt-8 text-center text-warm-cream/60">
-                <p>&copy; 2024 Caffè Lilio Ristorante. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
@@ -784,26 +760,81 @@ require_once 'customer_auth.php';
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.classList.add('backdrop-blur-md');
+            const scrollPosition = window.scrollY;
+            
+            if (scrollPosition > 50) {
+                nav.classList.add('scrolled');
                 nav.classList.remove('glass-effect');
             } else {
-                nav.classList.remove('backdrop-blur-md');
+                nav.classList.remove('scrolled');
                 nav.classList.add('glass-effect');
             }
         });
 
-        // Intersection Observer for animations
+        // Intersection Observer for fade-in animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver(function(entries) {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in');
+                    entry.target.classList.add('visible');
                 }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize Profile Dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            let isDropdownOpen = false;
+
+            if (profileDropdownBtn && profileDropdown) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    isDropdownOpen = !isDropdownOpen;
+                    if (isDropdownOpen) {
+                        profileDropdown.classList.remove('hidden');
+                        profileDropdown.classList.add('animate-fade-in');
+                    } else {
+                        profileDropdown.classList.add('hidden');
+                        profileDropdown.classList.remove('animate-fade-in');
+                    }
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (isDropdownOpen && !profileDropdown.contains(e.target) && e.target !== profileDropdownBtn) {
+                        isDropdownOpen = false;
+                        profileDropdown.classList.add('hidden');
+                        profileDropdown.classList.remove('animate-fade-in');
+                    }
+                });
+
+                // Update dropdown colors based on scroll position
+                window.addEventListener('scroll', () => {
+                    const isHeroSection = window.scrollY === 0;
+                    
+                    if (isHeroSection) {
+                        profileDropdownBtn.classList.remove('text-deep-brown');
+                        profileDropdownBtn.classList.add('text-warm-cream');
+                    } else {
+                        profileDropdownBtn.classList.remove('text-warm-cream');
+                        profileDropdownBtn.classList.add('text-deep-brown');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>  }
             });
         }, observerOptions);
 
