@@ -34,7 +34,7 @@ require_once 'customer_auth.php';
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
         
-        /* Add new navigation transition styles */
+        /* Update navigation transition styles */
         nav {
             transition: all 0.3s ease-in-out;
         }
@@ -52,13 +52,18 @@ require_once 'customer_auth.php';
         }
         
         nav:not(.scrolled) {
-            background-color: transparent;
+            background-color: rgba(93, 47, 15, 0.8); /* Semi-transparent deep brown */
+            backdrop-filter: blur(4px);
         }
         
         nav:not(.scrolled) .nav-link,
         nav:not(.scrolled) .nav-title,
         nav:not(.scrolled) .nav-subtitle {
             color: #E8E0D5;
+        }
+        
+        nav:not(.scrolled) .nav-link:hover {
+            color: rgba(232, 224, 213, 0.8);
         }
         
         .parallax-bg {
