@@ -187,7 +187,7 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[45]">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
