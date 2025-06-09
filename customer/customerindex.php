@@ -196,31 +196,22 @@ require_once 'customer_auth.php';
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('../images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <div class="absolute inset-0 bg-gradient-to-br from-warm-cream via-warm-cream to-accent-brown/10"></div>
+        <div class="floating absolute top-1/4 left-1/4 w-32 h-32 bg-rich-brown/10 rounded-full blur-xl"></div>
+        <div class="floating absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent-brown/10 rounded-full blur-xl" style="animation-delay: -3s;"></div>
         
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            <div class="fade-in">
-                <h1 class="font-playfair text-6xl md:text-8xl font-bold text-warm-cream mb-6 leading-tight">
-                    Caffè Lilio
-                </h1>
-                <p class="font-baskerville text-xl md:text-2xl text-warm-cream mb-4 tracking-widest">
-                    RISTORANTE
-                </p>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-lg md:text-xl text-warm-cream mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Savor the Flavors of Spain and Italy
-                </p>
-                <div class="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
-                    <a href="#menu" class="bg-gradient-to-r from-warm-cream to-warm-cream text-rich-brown px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 block w-full md:w-auto text-center">
-                        Make Reservation
-                    </a>
-                    <a href="#menu" class="border-2 border-warm-cream text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:bg-rich-brown hover:text-warm-cream transition-all duration-300 block w-full md:w-auto text-center">
-                        View Our Menu
-                    </a>
-                </div>
-            </div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+            <h1 class="text-6xl md:text-8xl font-script text-deep-brown mb-6 animate-fade-in">
+            <h1 class="text-6xl md:text-8xl font-playfair text-deep-brown mb-6 animate-fade-in">
+                Unforgettable Events
+            </h1>
+            <p class="text-xl md:text-2xl text-accent-brown mb-8 animate-slide-in max-w-2xl mx-auto">
+                Experience the authentic flavors of Italy and Spain in an atmosphere designed for your most special moments
+            </p>
+            <button onclick="scrollToSection('events')" class="bg-gradient-to-r from-rich-brown to-accent-brown text-warm-cream px-12 py-4 rounded-full text-lg font-semibold hover-lift shadow-2xl">
+                Plan Your Event
+            </button>
         </div>
     </section>
 
