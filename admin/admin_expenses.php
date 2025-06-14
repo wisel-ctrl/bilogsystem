@@ -306,50 +306,57 @@
 </head>
 <body class="bg-warm-cream font-baskerville">
     <!-- Modal for adding expenses -->
-    <div id="expense-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Expense</h3>
-                    <button id="close-expense-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
+    <div id="expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-
-            <form id="expense-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
-                <div>
-                    <label for="expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
-                    <input type="text" id="expense-name" name="expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+            
+            <!-- Modal content -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
+                                Add New Expense
+                            </h3>
+                            <div class="mt-4">
+                                <form id="expense-form">
+                                    <div class="mb-4">
+                                        <label for="expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
+                                        <input type="text" id="expense-name" name="expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
+                                        <select id="expense-category" name="expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                            <option value="utilities">Utilities</option>
+                                            <option value="rent">Rent</option>
+                                            <option value="salaries">Salaries</option>
+                                            <option value="equipment">Equipment</option>
+                                            <option value="ingredients">Ingredients</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
+                                        <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
+                                        <textarea id="expense-notes" name="expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label for="expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
-                    <select id="expense-category" name="expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                        <option value="utilities">Utilities</option>
-                        <option value="rent">Rent</option>
-                        <option value="salaries">Salaries</option>
-                        <option value="equipment">Equipment</option>
-                        <option value="ingredients">Ingredients</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
-                    <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                </div>
-                <div>
-                    <label for="expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
-                    <textarea id="expense-notes" name="expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                </div>
-            </form>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                        Cancel
+                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="save-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
+                        Save Expense
                     </button>
-                    <button type="submit" form="expense-form" id="save-expense" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                        Add Expense
+                    <button type="button" id="cancel-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
+                        Cancel
                     </button>
                 </div>
             </div>
@@ -357,84 +364,61 @@
     </div>
 
     <!-- Modal for editing expenses -->
-    <div id="edit-expense-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Expense</h3>
-                    <button id="close-edit-expense-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
+    <div id="edit-expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-
-            <form id="edit-expense-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
-                <input type="hidden" id="edit-expense-id">
-                <div>
-                    <label for="edit-expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
-                    <input type="text" id="edit-expense-name" name="edit-expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+            
+            <!-- Modal content -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
+                                Edit Expense
+                            </h3>
+                            <div class="mt-4">
+                                <form id="edit-expense-form">
+                                    <input type="hidden" id="edit-expense-id">
+                                    <div class="mb-4">
+                                        <label for="edit-expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
+                                        <input type="text" id="edit-expense-name" name="edit-expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="edit-expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
+                                        <select id="edit-expense-category" name="edit-expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                            <option value="utilities">Utilities</option>
+                                            <option value="rent">Rent</option>
+                                            <option value="salaries">Salaries</option>
+                                            <option value="equipment">Equipment</option>
+                                            <option value="ingredients">Ingredients</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="edit-expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
+                                        <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="edit-expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
+                                        <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label for="edit-expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
-                    <select id="edit-expense-category" name="edit-expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                        <option value="utilities">Utilities</option>
-                        <option value="rent">Rent</option>
-                        <option value="salaries">Salaries</option>
-                        <option value="equipment">Equipment</option>
-                        <option value="ingredients">Ingredients</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="edit-expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
-                    <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                </div>
-                <div>
-                    <label for="edit-expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
-                    <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                </div>
-            </form>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-edit-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="update-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
+                        Update Expense
+                    </button>
+                    <button type="button" id="cancel-edit-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
                         Cancel
                     </button>
-                    <button type="submit" form="edit-expense-form" id="update-expense" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                        Save Changes
-                    </button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
-                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="modal-body flex-1 overflow-y-auto p-6">
-                <p class="text-gray-700 font-baskerville">Are you sure you want to delete this expense? This action cannot be undone.</p>
-            </div>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                        Cancel
-                    </button>
-                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville">
-                        Delete
-                    </button>
-                </div>
-            </div>
-            <input type="hidden" id="expense-to-delete">
         </div>
     </div>
 
@@ -899,108 +883,6 @@
                 menu.classList.add('hidden');
                 menu.classList.add('opacity-0');
                 dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-            }
-        });
-
-        // Modal handling
-        const addExpenseBtn = document.getElementById('add-expense-btn');
-        const expenseModal = document.getElementById('expense-modal');
-        const expenseForm = document.getElementById('expense-form');
-        const closeExpenseModal = document.getElementById('close-expense-modal');
-        const cancelExpense = document.getElementById('cancel-expense');
-
-        const editExpenseModal = document.getElementById('edit-expense-modal');
-        const closeEditExpenseModal = document.getElementById('close-edit-expense-modal');
-        const cancelEditExpense = document.getElementById('cancel-edit-expense');
-
-        const deleteConfirmModal = document.getElementById('delete-confirm-modal');
-        const closeDeleteModal = document.getElementById('close-delete-modal');
-        const cancelDelete = document.getElementById('cancel-delete');
-        const confirmDeleteBtn = document.getElementById('confirm-delete');
-
-        // Show add expense modal
-        addExpenseBtn.addEventListener('click', () => {
-            // Add blur to main content
-            document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
-            
-            // Show modal
-            expenseModal.classList.remove('hidden');
-        });
-
-        // Close add expense modal
-        function closeAddExpenseModal() {
-            // Remove blur from main content
-            document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
-            
-            // Hide modal
-            expenseModal.classList.add('hidden');
-            
-            // Reset form
-            expenseForm.reset();
-        }
-
-        closeExpenseModal.addEventListener('click', closeAddExpenseModal);
-        cancelExpense.addEventListener('click', closeAddExpenseModal);
-
-        // Close edit expense modal
-        function closeEditExpenseModal() {
-            // Remove blur from main content
-            document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
-            
-            // Hide modal
-            editExpenseModal.classList.add('hidden');
-            
-            // Reset form
-            document.getElementById('edit-expense-form').reset();
-        }
-
-        closeEditExpenseModal.addEventListener('click', closeEditExpenseModal);
-        cancelEditExpense.addEventListener('click', closeEditExpenseModal);
-
-        // Close delete confirmation modal
-        function closeDeleteConfirmModal() {
-            // Remove blur from main content
-            document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
-            
-            // Hide modal
-            deleteConfirmModal.classList.add('hidden');
-            
-            // Clear the expense ID
-            document.getElementById('expense-to-delete').value = '';
-        }
-
-        closeDeleteModal.addEventListener('click', closeDeleteConfirmModal);
-        cancelDelete.addEventListener('click', closeDeleteConfirmModal);
-
-        // Close modals when clicking outside
-        window.addEventListener('click', (event) => {
-            if (event.target === expenseModal) {
-                closeAddExpenseModal();
-            }
-            if (event.target === editExpenseModal) {
-                closeEditExpenseModal();
-            }
-            if (event.target === deleteConfirmModal) {
-                closeDeleteConfirmModal();
-            }
-        });
-
-        // Close modals when pressing Escape key
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                if (!expenseModal.classList.contains('hidden')) {
-                    closeAddExpenseModal();
-                }
-                if (!editExpenseModal.classList.contains('hidden')) {
-                    closeEditExpenseModal();
-                }
-                if (!deleteConfirmModal.classList.contains('hidden')) {
-                    closeDeleteConfirmModal();
-                }
             }
         });
     </script>
