@@ -608,17 +608,15 @@
 </div>
     
                 <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-                        <div class="modal-header p-6 border-b border-warm-cream/20">
-                            <div class="flex items-center justify-between">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
                                 <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="modal-body flex-1 overflow-y-auto p-6">
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
                                 <div>
@@ -626,71 +624,74 @@
                                     <input type="text" id="package-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package name" required>
                                 </div>
 
-                                <!-- Package Type -->
+                                <!-- Package Description -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Type</label>
-                                    <select id="package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                        <option value="">Select package type</option>
-                                        <option value="Breakfast">Breakfast</option>
-                                        <option value="Lunch">Lunch</option>
-                                        <option value="Dinner">Dinner</option>
-                                        <option value="Snacks">Snacks</option>
-                                        <option value="Drinks">Drinks</option>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Description</label>
+                                    <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
+                                </div>
+
+                                <!-- Price and Capital -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (₱)</label>
+                                        <input type="number" id="package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Capital (₱)</label>
+                                        <input type="number" id="package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="0.00" step="0.01" required readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Status -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Menu Type</label>
+                                    <select id="package-type" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                        <option value="buffet">Buffet</option>
+                                        <option value="per_plate">Sit - On's</option>
                                     </select>
                                 </div>
 
-                                <!-- Package Price -->
+                                <!-- Dishes Section -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Price</label>
-                                    <input type="number" id="package-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package price" min="0" step="0.01" required>
-                                </div>
-
-                                <!-- Package Capital -->
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Capital</label>
-                                    <input type="number" id="package-capital" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package capital" min="0" step="0.01" required>
-                                </div>
-
-                                <!-- Package Description -->
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Description</label>
-                                    <textarea id="package-description" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" rows="3" placeholder="Enter package description"></textarea>
-                                </div>
-
-                                <!-- Package Dishes -->
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Dishes</label>
-                                    <div id="package-dishes-container" class="space-y-4">
-                                        <!-- Initial dish selection -->
-                                        <div class="package-dish-entry flex gap-4 items-start">
-                                            <div class="flex-1">
-                                                <select class="package-dish-select w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                                    <option value="">Select a dish</option>
-                                                    <!-- Options will be populated dynamically -->
-                                                </select>
-                                            </div>
-                                            <button type="button" class="remove-dish-btn text-red-600 hover:text-red-800 p-2" style="display: none;">
-                                                <i class="fas fa-times"></i>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Add Dishes</label>
+                                    <div id="dishes-container">
+                                        <div class="dish-row flex items-center space-x-2 mb-2">
+                                            <select class="flex-1 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-select">
+                                                <option value="">Select Category</option>
+                                                <option value="italian-dish">Italian Dish</option>
+                                                <option value="spanish-dish">Spanish Dish</option>
+                                                <option value="house-salad">House Salad</option>
+                                                <option value="pizza">Pizza</option>
+                                                <option value="burgers">Burgers</option>
+                                                <option value="pasta">Pasta</option>
+                                                <option value="pasta_caza">Pasta e Caza</option>
+                                                <option value="desserts">Desserts</option>
+                                                <option value="main-course">Main Course</option>
+                                                <option value="drinks">Drinks</option>
+                                                <option value="coffee">Coffee</option>
+                                            </select>
+                                            <input type="number" placeholder="Quantity" class="w-24 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville dish-quantity" min="1" value="1">
+                                            <button type="button" class="text-red-500 hover:text-red-700 remove-dish hidden">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <button type="button" id="add-dish-btn" class="mt-4 px-4 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville flex items-center gap-2">
+                                    <button type="button" id="add-dish" class="text-rich-brown hover:text-deep-brown transition-colors duration-200 flex items-center space-x-1 mt-2 font-baskerville">
                                         <i class="fas fa-plus"></i>
                                         <span>Add Another Dish</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div class="modal-footer p-6 border-t border-warm-cream/20">
-                            <div class="flex justify-end space-x-3">
-                                <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                    Cancel
-                                </button>
-                                <button type="submit" form="package-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                    Create Package
-                                </button>
-                            </div>
+                                <!-- Form Actions -->
+                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
+                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                        Create Package
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
