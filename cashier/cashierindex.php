@@ -951,12 +951,10 @@ require_once 'cashier_auth.php';
                 // Replace multiple consecutive spaces with a single space
                 value = value.replace(/\s+/g, ' ');
                 
-                // Only allow space if there are at least 2 characters before it
-                const parts = value.split(' ');
-                value = parts.map((part, index) => {
-                    if (index === 0) return part; // First part doesn't need validation
-                    return part.length >= 2 ? ' ' + part : '';
-                }).join('');
+                // Only allow space if there are at least 2 characters in the input
+                if (value.length < 2 && value.includes(' ')) {
+                    value = value.replace(/\s/g, '');
+                }
                 
                 // Update input value if it changed
                 if (value !== input.value) {
