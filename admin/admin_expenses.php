@@ -650,11 +650,6 @@
                 order: [[0, 'desc']] // Sort by date descending by default
             });
 
-            // Add search functionality
-            $('#expense-search').on('keyup', function() {
-                table.search(this.value).draw();
-            });
-
             // Refresh table every 30 seconds
             setInterval(function() {
                 table.ajax.reload(null, false);
