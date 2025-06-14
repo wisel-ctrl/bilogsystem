@@ -519,9 +519,9 @@ require_once 'cashier_auth.php';
             
             filteredItems.forEach(item => {
                 const itemElement = document.createElement('div');
-                itemElement.className = 'menu-item-card fade-in cursor-pointer';
+                itemElement.className = 'menu-item-card fade-in';
                 itemElement.innerHTML = `
-                    <div class="relative overflow-hidden group" onclick="addToCart(${item.id})">
+                    <div class="relative overflow-hidden group">
                         <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
                         <div class="absolute top-3 right-3">
@@ -864,19 +864,10 @@ require_once 'cashier_auth.php';
                 renderMenuItems(currentCategory, e.target.value);
             });
 
-            // Remove the old add to cart click handler since we're using onclick now
-            menuItemsContainer.removeEventListener('click', (e) => {
-                if (e.target.classList.contains('add-to-cart')) {
-                    const itemId = parseInt(e.target.dataset.id);
-                    addToCart(itemId);
-                }
-            });
-
-            // Add new event listener for the add button with better touch support
+            // Single event listener for the add button
             menuItemsContainer.addEventListener('click', (e) => {
                 const addButton = e.target.closest('.add-to-cart');
                 if (addButton) {
-                    e.stopPropagation(); // Prevent double triggering
                     const itemId = parseInt(addButton.dataset.id);
                     addToCart(itemId);
                 }
