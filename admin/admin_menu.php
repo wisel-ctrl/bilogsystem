@@ -705,15 +705,7 @@
                                     </button>
                                 </div>
 
-                                <!-- Form Actions -->
-                                <div class="flex justify-end space-x-3 pt-4 border-t border-warm-cream/20">
-                                    <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                                        Create Package
-                                    </button>
-                                </div>
+                                
                             </form>
                         </div>
 
