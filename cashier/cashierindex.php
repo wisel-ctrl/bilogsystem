@@ -7,194 +7,449 @@ require_once 'cashier_auth.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant POS System</title>
+    <title>Caffè Lilio - POS System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'script': ['Brush Script MT', 'cursive']
-                    }
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'warm-cream': '#E8E0D5',
+                    'rich-brown': '#8B4513',
+                    'deep-brown': '#5D2F0F',
+                    'accent-brown': '#A0522D'
+                },
+                fontFamily: {
+                    'playfair': ['Playfair Display', 'serif'],
+                    'baskerville': ['Libre Baskerville', 'serif']
                 }
             }
         }
+    }
     </script>
-</head>
-<body class="bg-warm-cream font-serif min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-4xl font-bold text-rich-brown">Restaurant POS System</h1>
-            <a href="../logout.php" class="bg-rich-brown hover:bg-deep-brown text-warm-cream px-4 py-2 rounded-lg transition-colors duration-300 font-baskerville">
-                Sign Out
-            </a>
-        </div>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
-         <div class="flex flex-col lg:flex-row gap-6">
-            <!-- Section 1: Sidebar with category filters -->
-            <div class="w-full lg:w-1/6 bg-rich-brown p-4 rounded-lg shadow-lg">
-                <h2 class="text-2xl text-warm-cream mb-4 font-bold">Categories</h2>
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Improved hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+        
+        /* Card styles */
+        .pos-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .pos-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Menu item card styles */
+        .menu-item-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+
+        .menu-item-card img {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Cart styles */
+        .cart-item {
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: rgba(232, 224, 213, 0.2);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal styles */
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Category button styles */
+        .category-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #E8E0D5;
+            transition: width 0.3s ease;
+        }
+        
+        .category-btn:hover::after {
+            width: 100%;
+        }
+
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-warm-cream/50 font-baskerville min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">POS SYSTEM</p>
+                </div>
+            </div>
+            
+            <nav class="mt-8 px-4">
+                <h2 class="text-xl font-bold text-warm-cream mb-4 font-playfair">Categories</h2>
                 <ul class="space-y-2">
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="all">All Items</button>
+                        <button class="category-btn w-full text-left px-4 py-3 bg-warm-cream/10 text-warm-cream rounded-lg hover:bg-warm-cream/20 transition-all duration-200 flex items-center space-x-3" data-category="all">
+                            <i class="fas fa-th-large w-5"></i>
+                            <span class="sidebar-text font-baskerville">All Items</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="italian-dish">Italian Dishes</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="italian-dish">
+                            <i class="fas fa-pizza-slice w-5"></i>
+                            <span class="sidebar-text font-baskerville">Italian Dishes</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="spanish-dish">Spanish Dishes</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="spanish-dish">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Spanish Dishes</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="house-salad">House Salads</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="house-salad">
+                            <i class="fas fa-leaf w-5"></i>
+                            <span class="sidebar-text font-baskerville">House Salads</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pizza">Pizza</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pizza">
+                            <i class="fas fa-circle-notch w-5"></i>
+                            <span class="sidebar-text font-baskerville">Pizza</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="burgers">Burgers</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="burgers">
+                            <i class="fas fa-hamburger w-5"></i>
+                            <span class="sidebar-text font-baskerville">Burgers</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pasta">Pasta</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Pasta</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="pasta_caza">Pasta e Caza</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta_caza">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Pasta e Caza</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="desserts">Desserts</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="desserts">
+                            <i class="fas fa-ice-cream w-5"></i>
+                            <span class="sidebar-text font-baskerville">Desserts</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="main">Main Courses</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main">
+                            <i class="fas fa-drumstick-bite w-5"></i>
+                            <span class="sidebar-text font-baskerville">Main Courses</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="drinks">Drinks</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="drinks">
+                            <i class="fas fa-glass-martini-alt w-5"></i>
+                            <span class="sidebar-text font-baskerville">Drinks</span>
+                        </button>
                     </li>
                     <li>
-                        <button class="category-btn w-full text-left px-3 py-2 bg-accent-brown text-warm-cream rounded hover:bg-deep-brown transition" data-category="coffee">Coffee</button>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="coffee">
+                            <i class="fas fa-coffee w-5"></i>
+                            <span class="sidebar-text font-baskerville">Coffee</span>
+                        </button>
                     </li>
                 </ul>
-            </div>
-            
-            <!-- Section 2: Main dishes display -->
-            <div class="w-full lg:w-3/6 p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl text-rich-brown font-bold">Menu Items</h2>
-                    <div class="relative w-1/2">
-                        <input type="text" id="menu-search" placeholder="Search menu items..." 
-                            class="w-full p-2 pl-8 pr-8 border border-rich-brown rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                        <svg class="absolute left-2 top-3 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <button id="clear-search" class="absolute right-2 top-3 h-4 w-4 text-gray-400 hidden">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-items">
-                    <!-- Menu items will be dynamically inserted here -->
-                </div>
-            </div>
-            
-            <!-- Section 3: Cart section -->
-            <div class="w-full lg:w-2/6 bg-rich-brown p-4 rounded-lg shadow-lg">
-                <h2 class="text-2xl text-warm-cream mb-4 font-bold">Order Summary</h2>
-                <div class="bg-warm-cream p-3 rounded mb-4">
-                    <div id="cart-items" class="space-y-2 max-h-96 overflow-y-auto">
-                        <!-- Cart items will be dynamically inserted here -->
-                        <p class="text-center text-gray-500 py-4">Your cart is empty</p>
-                    </div>
-                </div>
-                
-                <div class="bg-warm-cream p-3 rounded mb-4">
-                    <div class="flex justify-between py-2 border-b border-rich-brown">
-                        <span class="font-bold">Subtotal:</span>
-                        <span id="subtotal">₱0.00</span>
-                    </div>
-                    <div class="flex justify-between py-2 border-b border-rich-brown">
-                        <span class="font-bold">Tax (10%):</span>
-                        <span id="tax">₱0.00</span>
-                    </div>
-                    <div class="flex justify-between py-2 font-bold text-lg">
-                        <span>Total:</span>
-                        <span id="total">₱0.00</span>
-                    </div>
-                </div>
-                
-                <div class="flex space-x-2">
-                    <button id="clear-cart" class="flex-1 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition">Clear</button>
-                    <button id="checkout" class="flex-1 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition">Checkout</button>
-                </div>
-            </div>
+            </nav>
         </div>
 
-        <!-- Discount Modal -->
-        <div id="discount-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-            <div class="bg-white p-6 rounded-lg w-96">
-                <h3 class="text-xl font-bold text-rich-brown mb-4">Payment Details</h3>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">POS System</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="../logout.php" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-sign-out-alt text-deep-brown"></i>
+                            <span class="text-sm font-medium text-deep-brown font-baskerville">Sign Out</span>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Menu Items Section -->
+                    <div class="w-full lg:w-3/5">
+                        <div class="pos-card rounded-xl p-6 mb-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Items</h3>
+                                <div class="relative w-1/2">
+                                    <input type="text" id="menu-search" placeholder="Search menu items..." 
+                                        class="w-full p-3 pl-10 pr-10 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown bg-white/50 backdrop-blur-sm">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50"></i>
+                                    <button id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 hover:text-rich-brown hidden">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-items">
+                                <!-- Menu items will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Section -->
+                    <div class="w-full lg:w-2/5">
+                        <div class="pos-card rounded-xl p-6 sticky top-6">
+                            <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair">Order Summary</h3>
+                            <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
+                                <div id="cart-items" class="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
+                                    <!-- Cart items will be dynamically inserted here -->
+                                    <p class="text-center text-rich-brown/60 py-4">Your cart is empty</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
+                                <div class="space-y-3">
+                                    <div class="flex justify-between py-2 border-b border-rich-brown/20">
+                                        <span class="font-bold text-deep-brown">Subtotal:</span>
+                                        <span id="subtotal" class="font-bold text-deep-brown">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-rich-brown/20">
+                                        <span class="font-bold text-deep-brown">Tax (10%):</span>
+                                        <span id="tax" class="font-bold text-deep-brown">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 font-bold text-lg">
+                                        <span class="text-deep-brown">Total:</span>
+                                        <span id="total" class="text-deep-brown">₱0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button id="clear-cart" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span>Clear</span>
+                                </button>
+                                <button id="checkout" class="flex-1 bg-deep-brown hover:bg-rich-brown text-warm-cream py-3 px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-2">
+                                    <i class="fas fa-cash-register"></i>
+                                    <span>Checkout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Discount Modal -->
+    <div id="discount-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-[480px] max-w-[95vw] mx-4">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair">Payment Details</h3>
                 
                 <!-- Discount Options -->
-                <div class="space-y-3 mb-4">
-                    <h4 class="font-semibold">Discount Type:</h4>
-                    <div class="flex items-center">
-                        <input type="radio" id="none" name="discount" value="none" checked class="mr-2">
-                        <label for="none">None</label>
-                    </div>
-                    <div class="flex items-center">
-                        <input type="radio" id="senior" name="discount" value="senior" class="mr-2">
-                        <label for="senior">Senior Citizen (20%)</label>
-                    </div>
-                    <div class="flex items-center">
-                        <input type="radio" id="pwd" name="discount" value="PWD" class="mr-2">
-                        <label for="pwd">PWD (20%)</label>
+                <div class="space-y-4 mb-6">
+                    <h4 class="font-semibold text-deep-brown font-baskerville">Discount Type:</h4>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="relative">
+                            <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
+                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                                <i class="fas fa-times-circle mb-2 text-lg"></i>
+                                <div class="text-sm font-baskerville">None</div>
+                            </div>
+                        </label>
+                        <label class="relative">
+                            <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
+                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                                <i class="fas fa-user-tag mb-2 text-lg"></i>
+                                <div class="text-sm font-baskerville">Senior (20%)</div>
+                            </div>
+                        </label>
+                        <label class="relative">
+                            <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
+                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                                <i class="fas fa-wheelchair mb-2 text-lg"></i>
+                                <div class="text-sm font-baskerville">PWD (20%)</div>
+                            </div>
+                        </label>
                     </div>
                 </div>
                 
                 <!-- Payment Amount Input -->
-                <div class="mb-4">
-                    <label for="payment-amount" class="block font-semibold mb-1">Amount Paid:</label>
-                    <input type="number" id="payment-amount" class="w-full p-2 border rounded" min="0" step="0.01">
-                    <p id="payment-error" class="text-red-500 text-sm mt-1 hidden">Payment amount must be positive and cover the total amount</p>
+                <div class="mb-6">
+                    <label for="payment-amount" class="block font-semibold text-deep-brown mb-2 font-baskerville">Amount Paid:</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50">₱</span>
+                        <input type="number" id="payment-amount" class="w-full p-3 pl-8 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown" min="0" step="0.01">
+                    </div>
+                    <p id="payment-error" class="text-red-500 text-sm mt-2 hidden"></p>
                 </div>
                 
                 <!-- Summary Display -->
-                <div class="border-t pt-3 mb-4">
-                    <h4 class="font-semibold mb-2">Payment Summary:</h4>
-                    <div class="grid grid-cols-2 gap-2">
-                        <span>Subtotal:</span>
-                        <span id="summary-subtotal" class="text-right">₱0.00</span>
-                        
-                        <span>Tax (10%):</span>
-                        <span id="summary-tax" class="text-right">₱0.00</span>
-                        
-                        <span>Discount:</span>
-                        <span id="summary-discount" class="text-right">₱0.00</span>
-                        
-                        <span class="font-semibold">Total:</span>
-                        <span id="summary-total" class="text-right font-semibold">₱0.00</span>
-                        
-                        <span>Amount Paid:</span>
-                        <span id="summary-paid" class="text-right">₱0.00</span>
-                        
-                        <span class="font-semibold">Change:</span>
-                        <span id="summary-change" class="text-right font-semibold">₱0.00</span>
+                <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
+                    <h4 class="font-semibold text-deep-brown mb-3 font-baskerville">Payment Summary:</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Subtotal:</span>
+                            <span id="summary-subtotal" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Tax (10%):</span>
+                            <span id="summary-tax" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Discount:</span>
+                            <span id="summary-discount" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
+                            <span class="font-bold text-deep-brown">Total:</span>
+                            <span id="summary-total" class="font-bold text-deep-brown">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Amount Paid:</span>
+                            <span id="summary-paid" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
+                            <span class="font-bold text-deep-brown">Change:</span>
+                            <span id="summary-change" class="font-bold text-deep-brown">₱0.00</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="flex justify-end space-x-2">
-                    <button id="cancel-discount" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-                    <button id="apply-discount" class="px-4 py-2 bg-rich-brown text-white rounded hover:bg-deep-brown">Complete Payment</button>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-discount" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors duration-300 font-baskerville">
+                        Cancel
+                    </button>
+                    <button id="apply-discount" class="px-6 py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 font-baskerville">
+                        Complete Payment
+                    </button>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -237,76 +492,94 @@ require_once 'cashier_auth.php';
 
         // Render menu items based on category
         function renderMenuItems(category, searchTerm = '') {
-    menuItemsContainer.innerHTML = '';
-    currentCategory = category;
-    
-    // Debug logs
-    console.log('All categories:', [...new Set(menuItems.map(item => item.category))]);
-    console.log('Requested category:', category);
-    
-    const filteredItems = (category === 'all' 
-        ? menuItems 
-        : menuItems.filter(item => 
-            item.category.trim().toLowerCase() === category.trim().toLowerCase()
-        ))
-        .filter(item => {
-            if (!searchTerm) return true;
-            const term = searchTerm.toLowerCase();
-            return (
-                item.name.toLowerCase().includes(term) || 
-                item.description.toLowerCase().includes(term))
-        });
-    
-    console.log('Filtered items:', filteredItems);
-    
-    if (filteredItems.length === 0) {
-        menuItemsContainer.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-4">No items found</p>';
-        return;
-    }
-    
-    filteredItems.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer';
-        itemElement.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover">
-            <div class="p-4">
-                <h3 class="text-xl font-bold text-rich-brown">${item.name}</h3>
-                <p class="text-gray-600 mb-2">${item.description}</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-lg font-bold text-accent-brown">₱${item.price.toFixed(2)}</span>
-                    <button class="add-to-cart bg-rich-brown text-warm-cream px-3 py-1 rounded hover:bg-deep-brown transition" data-id="${item.id}">Add</button>
-                </div>
-            </div>
-        `;
-        menuItemsContainer.appendChild(itemElement);
-    });
-}
+            menuItemsContainer.innerHTML = '';
+            currentCategory = category;
+            
+            const filteredItems = (category === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => 
+                    item.category.trim().toLowerCase() === category.trim().toLowerCase()
+                ))
+                .filter(item => {
+                    if (!searchTerm) return true;
+                    const term = searchTerm.toLowerCase();
+                    return (
+                        item.name.toLowerCase().includes(term) || 
+                        item.description.toLowerCase().includes(term))
+                });
+            
+            if (filteredItems.length === 0) {
+                menuItemsContainer.innerHTML = `
+                    <div class="col-span-2 text-center py-12">
+                        <i class="fas fa-search text-4xl text-rich-brown/30 mb-4"></i>
+                        <p class="text-rich-brown/60 font-baskerville">No items found</p>
+                    </div>`;
+                return;
+            }
+            
+            filteredItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'menu-item-card fade-in';
+                itemElement.innerHTML = `
+                    <div class="relative overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover">
+                        <div class="absolute top-3 right-3">
+                            <button class="add-to-cart bg-deep-brown text-warm-cream px-4 py-2 rounded-lg hover:bg-rich-brown transition-colors duration-300 font-baskerville flex items-center space-x-2" data-id="${item.id}">
+                                <i class="fas fa-plus"></i>
+                                <span>Add</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-deep-brown font-playfair mb-2">${item.name}</h3>
+                        <p class="text-rich-brown/70 font-baskerville mb-3">${item.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-accent-brown font-baskerville">₱${item.price.toFixed(2)}</span>
+                        </div>
+                    </div>
+                `;
+                menuItemsContainer.appendChild(itemElement);
+            });
+        }
 
         // Render cart items
         function renderCart() {
             cartItemsContainer.innerHTML = '';
             
             if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Your cart is empty</p>';
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-shopping-cart text-4xl text-rich-brown/30 mb-4"></i>
+                        <p class="text-rich-brown/60 font-baskerville">Your cart is empty</p>
+                    </div>`;
                 updateTotals();
                 return;
             }
             
             cart.forEach(item => {
                 const cartItemElement = document.createElement('div');
-                cartItemElement.className = 'flex justify-between items-center border-b border-rich-brown pb-2';
+                cartItemElement.className = 'cart-item fade-in bg-white/50 rounded-lg p-4';
                 cartItemElement.innerHTML = `
-                    <div class="flex-1">
-                        <h4 class="font-bold">${item.name}</h4>
-                        <div class="flex items-center mt-1">
-                            <button class="quantity-btn decrease px-2 bg-gray-200 rounded" data-id="${item.id}">-</button>
-                            <span class="mx-2">${item.quantity}</span>
-                            <button class="quantity-btn increase px-2 bg-gray-200 rounded" data-id="${item.id}">+</button>
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-deep-brown font-playfair">${item.name}</h4>
+                            <p class="text-sm text-rich-brown/70 font-baskerville mt-1">₱${item.price.toFixed(2)} each</p>
+                            <div class="flex items-center mt-3 space-x-2">
+                                <button class="quantity-btn decrease px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="font-medium text-deep-brown">${item.quantity}</span>
+                                <button class="quantity-btn increase px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold">₱${(item.price * item.quantity).toFixed(2)}</div>
-                        <button class="remove-item text-xs text-red-500 hover:text-red-700" data-id="${item.id}">Remove</button>
+                        <div class="text-right">
+                            <div class="font-bold text-deep-brown font-baskerville">₱${(item.price * item.quantity).toFixed(2)}</div>
+                            <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition-colors duration-200" data-id="${item.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
                 cartItemsContainer.appendChild(cartItemElement);
@@ -608,6 +881,43 @@ require_once 'cashier_auth.php';
             // Checkout button
             checkoutBtn.addEventListener('click', checkout);
         }
+
+        // Add current date display
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Add sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const cafeTitle = document.querySelector('.nav-title');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-16');
+            
+            if (sidebar.classList.contains('w-16')) {
+                cafeTitle.style.opacity = '0';
+                sidebarTexts.forEach(text => text.style.opacity = '0');
+                setTimeout(() => {
+                    cafeTitle.style.display = 'none';
+                    sidebarTexts.forEach(text => text.style.display = 'none');
+                }, 300);
+            } else {
+                cafeTitle.style.display = 'block';
+                sidebarTexts.forEach(text => text.style.display = 'block');
+                setTimeout(() => {
+                    cafeTitle.style.opacity = '1';
+                    sidebarTexts.forEach(text => text.style.opacity = '1');
+                }, 50);
+            }
+        });
 
         // Initialize the application
         init();
