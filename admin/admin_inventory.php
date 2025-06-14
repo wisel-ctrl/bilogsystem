@@ -830,12 +830,8 @@
             document.querySelector('.flex-1').classList.add('blur-effect');
             document.querySelector('#sidebar').classList.add('blur-effect');
             
-            // Show modal with fade effect
+            // Show modal
             addIngredientModal.classList.remove('hidden');
-            setTimeout(() => {
-                addIngredientModal.querySelector('.dashboard-card').style.opacity = '1';
-                addIngredientModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
         });
 
         // Close add ingredient modal
@@ -844,12 +840,11 @@
             document.querySelector('.flex-1').classList.remove('blur-effect');
             document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            const modal = addIngredientModal;
-            modal.querySelector('.dashboard-card').style.opacity = '0';
-            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            // Hide modal
+            addIngredientModal.classList.add('hidden');
+            
+            // Reset form
+            addIngredientForm.reset();
         }
 
         closeAddModal.addEventListener('click', closeAddIngredientModal);
@@ -861,12 +856,11 @@
             document.querySelector('.flex-1').classList.remove('blur-effect');
             document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            const modal = editIngredientModal;
-            modal.querySelector('.dashboard-card').style.opacity = '0';
-            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            // Hide modal
+            editIngredientModal.classList.add('hidden');
+            
+            // Reset form
+            document.getElementById('edit-ingredient-form').reset();
         }
 
         closeEditModal.addEventListener('click', closeEditIngredientModal);
@@ -878,12 +872,11 @@
             document.querySelector('.flex-1').classList.remove('blur-effect');
             document.querySelector('#sidebar').classList.remove('blur-effect');
             
-            const modal = deleteConfirmModal;
-            modal.querySelector('.dashboard-card').style.opacity = '0';
-            modal.querySelector('.dashboard-card').style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            // Hide modal
+            deleteConfirmModal.classList.add('hidden');
+            
+            // Clear the ingredient ID
+            document.getElementById('ingredient-to-delete').value = '';
         }
 
         closeDeleteModal.addEventListener('click', closeDeleteConfirmModal);
@@ -899,6 +892,21 @@
             }
             if (event.target === deleteConfirmModal) {
                 closeDeleteConfirmModal();
+            }
+        });
+
+        // Close modals when pressing Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (!addIngredientModal.classList.contains('hidden')) {
+                    closeAddIngredientModal();
+                }
+                if (!editIngredientModal.classList.contains('hidden')) {
+                    closeEditIngredientModal();
+                }
+                if (!deleteConfirmModal.classList.contains('hidden')) {
+                    closeDeleteConfirmModal();
+                }
             }
         });
 
