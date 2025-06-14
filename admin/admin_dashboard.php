@@ -563,7 +563,7 @@ header {
                                 Revenue Analysis
                             </h3>
                             <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-print mr-2"></i> Print Data
+                                <i class="fas fa-print mr-2"></i> Export Data
                             </button>
                         </div>
                         <div class="chart-container">
@@ -579,7 +579,7 @@ header {
                                 Top Menu Items
                             </h3>
                             <button onclick="printChartData('menuChart', 'Menu Sales Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-print mr-2"></i> Print Data
+                                <i class="fas fa-print mr-2"></i> Export Data
                             </button>
                         </div>
                         <div class="chart-container">
@@ -598,7 +598,7 @@ header {
                                 Seasonal Trends
                             </h3>
                             <button onclick="printChartData('seasonChart', 'Seasonal Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-print mr-2"></i> Print Data
+                                <i class="fas fa-print mr-2"></i> Export Data
                             </button>
                         </div>
                         <div class="chart-container">
