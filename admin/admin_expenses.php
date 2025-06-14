@@ -500,14 +500,13 @@
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
                         <div class="flex items-center space-x-4">
-                            <button id="add-expense-btn" class="h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg px-4">
+                            <div class="w-64">
+                                <input type="text" id="expense-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search expenses...">
+                            </div>
+                            <button id="add-expense-btn" class="w-52 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
                                 <i class="fas fa-plus"></i>
                                 <span class="font-baskerville">Add New Expense</span>
                             </button>
-                            <div class="relative">
-                                <input type="text" id="expense-search" class="h-10 pl-10 pr-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville w-64" placeholder="Search expenses...">
-                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-deep-brown/60"></i>
-                            </div>
                         </div>
                     </div>
                     
