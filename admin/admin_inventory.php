@@ -486,9 +486,6 @@
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
                         <div class="flex items-center space-x-4">
-                            <div class="w-64">
-                                <input type="text" id="inventory-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search ingredients...">
-                            </div>
                             <button id="add-ingredient-btn" class="w-52 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
                                 <i class="fas fa-plus"></i>
                                 <span class="font-baskerville">Add Ingredient</span>
@@ -768,9 +765,10 @@
                 ],
                 "order": [[0, 'asc']],
                 "responsive": true,
-                "dom": '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                "dom": '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 "lengthChange": false,
                 "pageLength": 10,
+                "searching": false,
                 "language": {
                     "info": "Showing _START_ to _END_ of _TOTAL_ entries",
                     "paginate": {
@@ -778,11 +776,6 @@
                         "next": "<i class='fas fa-chevron-right'></i>"
                     }
                 }
-            });
-
-            // Connect custom search input to DataTable
-            $('#inventory-search').on('keyup', function() {
-                table.search(this.value).draw();
             });
 
             // Refresh table after adding/editing
