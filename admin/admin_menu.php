@@ -129,6 +129,156 @@
         header {
             z-index: 45;
         }
+
+        /* Add table styles from admin_bookings.html */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background-color: #f9fafb;
+        }
+
+        thead th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        tbody td {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* Status badge styles */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Action button styles */
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .action-btn i {
+            font-size: 1rem;
+        }
+
+        /* DataTables custom styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #8B4513 !important;
+            color: white !important;
+            border-color: #8B4513;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f3f4f6 !important;
+            border-color: #e5e7eb;
+            color: #374151 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 1rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Fix sorting icons */
+        table.dataTable thead th {
+            position: relative;
+            background-image: none !important;
+        }
+
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            position: absolute;
+            right: 8px;
+            color: #8B4513;
+        }
+
+        table.dataTable thead th.sorting:after {
+            content: "↕";
+            opacity: 0.4;
+        }
+
+        table.dataTable thead th.sorting_asc:after {
+            content: "↑";
+        }
+
+        table.dataTable thead th.sorting_desc:after {
+            content: "↓";
+        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">
@@ -239,7 +389,7 @@
                     <div class="overflow-x-auto">
                         <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr class="border-b-2 border-accent-brown/30">
+                                <tr>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish ID</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish Name</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
@@ -274,7 +424,7 @@
                     <div class="overflow-x-auto">
                         <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr class="border-b-2 border-accent-brown/30">
+                                <tr>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package ID</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package Name</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
@@ -1060,7 +1210,7 @@
         $(document).ready(function() {
             var table = $('#menu-table').DataTable({
                 responsive: true,
-                dom: 'rt<"flex items-center justify-between"ip>',
+                dom: 'rt<"flex items-center justify-between px-4 py-3"ip>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
@@ -1076,9 +1226,9 @@
                     { 
                         data: 'status',
                         render: function(data, type, row) {
-                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusClass = data === 'active' ? 'status-active' : 'status-inactive';
                             var statusText = data === 'active' ? 'Active' : 'Unavailable';
-                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                            return `<span class="status-badge ${statusClass}">${statusText}</span>`;
                         }
                     },
                     { 
@@ -1096,7 +1246,7 @@
                     {
                         data: 'dish_id',
                         render: function(data) {
-                            return `<button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
+                            return `<button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
                                         <i class="fas fa-edit"></i>
                                     </button>`;
                         },
@@ -1575,7 +1725,7 @@
         $(document).ready(function() {
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
-                dom: 'rt<"flex items-center justify-between"ip>',
+                dom: 'rt<"flex items-center justify-between px-4 py-3"ip>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
@@ -1596,30 +1746,25 @@
                     { 
                         data: 'type',
                         render: function(data) {
-                            if (data === 'buffet') {
-                                return 'Buffet';
-                            } else if (data === 'per_plate') {
-                                return 'Per Plate';
-                            }
-                            return data;
+                            return data === 'buffet' ? 'Buffet' : 'Per Plate';
                         }
                     },
                     { 
                         data: 'status',
                         render: function(data, type, row) {
-                            var statusClass = data === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            var statusClass = data === 'active' ? 'status-active' : 'status-inactive';
                             var statusText = data === 'active' ? 'Active' : 'Unavailable';
-                            return `<span class="px-3 py-1 rounded-full text-sm ${statusClass}">${statusText}</span>`;
+                            return `<span class="status-badge ${statusClass}">${statusText}</span>`;
                         }
                     },
                     {
                         data: 'package_id',
                         render: function(data) {
                             return `
-                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn" data-id="${data}">
+                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn mr-2" data-id="${data}">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
+                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             `;
