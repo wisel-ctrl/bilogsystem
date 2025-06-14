@@ -195,6 +195,128 @@
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
         }
+
+        /* Improved Sidebar styles */
+        #sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            transition: width 0.3s ease-in-out;
+            position: relative;
+            z-index: 40;
+        }
+
+        #sidebar.collapsed {
+            width: 4rem !important;
+        }
+
+        #sidebar .sidebar-header {
+            flex-shrink: 0;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+        }
+
+        #sidebar.collapsed .sidebar-header {
+            padding: 1.5rem 0.75rem;
+        }
+
+        #sidebar nav {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .sidebar-link {
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #sidebar.collapsed .sidebar-link {
+            padding: 0.75rem !important;
+            justify-content: center;
+        }
+
+        #sidebar.collapsed .sidebar-link i {
+            margin: 0 !important;
+        }
+
+        #sidebar.collapsed .sidebar-text,
+        #sidebar.collapsed .nav-title,
+        #sidebar.collapsed .nav-subtitle,
+        #sidebar.collapsed h2 {
+            display: none;
+        }
+
+        .sidebar-link .tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #5D2F0F;
+            color: #E8E0D5;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .sidebar-link .tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #5D2F0F;
+        }
+
+        #sidebar.collapsed .sidebar-link:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            left: calc(100% + 0.5rem);
+        }
+
+        /* Active state for sidebar links */
+        .sidebar-link.active {
+            background: rgba(232, 224, 213, 0.2) !important;
+            color: #E8E0D5 !important;
+        }
+
+        /* Improved hover effects */
+        .sidebar-link:hover {
+            background: rgba(232, 224, 213, 0.15) !important;
+        }
+
+        #sidebar.collapsed .sidebar-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* Custom scrollbar for sidebar */
+        #sidebar nav::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-track {
+            background: rgba(232, 224, 213, 0.1);
+            border-radius: 3px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-thumb {
+            background: rgba(232, 224, 213, 0.3);
+            border-radius: 3px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(232, 224, 213, 0.4);
+        }
     </style>
     <script>
         tailwind.config = {
@@ -219,49 +341,55 @@
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-warm-cream/20">
+            <div class="sidebar-header p-6 border-b border-warm-cream/20">
                 <div>
                     <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
                     <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                 </div>
             </div>
             
-            <nav class="mt-8 px-4">
+            <nav class="px-4">
                 <ul class="space-y-2">
                     <li>
                         <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-chart-pie w-5"></i>
                             <span class="sidebar-text font-baskerville">Dashboard</span>
+                            <div class="tooltip">Dashboard</div>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
                             <i class="fas fa-calendar-check w-5"></i>
                             <span class="sidebar-text font-baskerville">Booking Requests</span>
+                            <div class="tooltip">Booking Requests</div>
                         </a>
                     </li>
                     <li>
                         <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Menu Management</span>
+                            <div class="tooltip">Menu Management</div>
                         </a>
                     </li>
                     <li>
                         <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-boxes w-5"></i>
                             <span class="sidebar-text font-baskerville">Inventory</span>
+                            <div class="tooltip">Inventory</div>
                         </a>
                     </li>
                     <li>
                         <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-receipt w-5"></i>
                             <span class="sidebar-text font-baskerville">Expenses</span>
+                            <div class="tooltip">Expenses</div>
                         </a>
                     </li>
                     <li>
                         <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
                             <span class="sidebar-text font-baskerville">Employee Creation</span>
+                            <div class="tooltip">Employee Creation</div>
                         </a>
                     </li>
                 </ul>
@@ -532,24 +660,30 @@
         const cafeTitle = document.querySelector('.nav-title');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.opacity = '0';
-                sidebarTexts.forEach(text => text.style.opacity = '0');
-                setTimeout(() => {
-                    cafeTitle.style.display = 'none';
-                    sidebarTexts.forEach(text => text.style.display = 'none');
-                }, 300);
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-                setTimeout(() => {
-                    cafeTitle.style.opacity = '1';
-                    sidebarTexts.forEach(text => text.style.opacity = '1');
-                }, 50);
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Update event listeners
+        sidebarToggle.addEventListener('click', toggleSidebar);
+
+        // Update sidebar link click handler
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', () => {
+                // Remove active class from all links
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                link.classList.add('active');
+            });
+        });
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active link based on current page
+            const currentPath = window.location.pathname;
+            const currentLink = document.querySelector(`.sidebar-link[href="${currentPath.split('/').pop()}"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
             }
         });
 
