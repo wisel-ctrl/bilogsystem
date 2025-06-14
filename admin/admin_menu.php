@@ -607,7 +607,7 @@
     </div>
 </div>
     
-                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-6">
