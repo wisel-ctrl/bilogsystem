@@ -284,84 +284,6 @@
         .action-btn i {
             font-size: 1rem;
         }
-
-        /* Add this to your existing style section */
-        #expense-modal, #edit-expense-modal, #delete-confirm-modal {
-            z-index: 1000 !important; /* Higher than anything else */
-        }
-
-        /* Ensure the main content doesn't create stacking context */
-        .flex-1 {
-            position: static;
-        }
-
-        /* Sidebar should have lower z-index than modals */
-        #sidebar {
-            z-index: 40;
-        }
-
-        /* Header should have lower z-index than modals */
-        header {
-            z-index: 50;
-        }
-
-        /* Add blur effect class */
-        .blur-effect {
-            filter: blur(5px);
-            transition: filter 0.3s ease;
-            pointer-events: none;
-        }
-
-        /* Add this to your existing styles */
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-        }
-
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-        }
-
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            z-index: 10;
-            border-bottom-left-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-        }
-
-        /* Improved scrollbar for modal body */
-        .modal-body::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
-        }
-
-        /* Table styles */
     </style>
     <script>
         tailwind.config = {
@@ -400,7 +322,6 @@
                     <label for="expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
                     <input type="text" id="expense-name" name="expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                 </div>
-
                 <div>
                     <label for="expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
                     <select id="expense-category" name="expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
@@ -412,12 +333,10 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
                 <div>
                     <label for="expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
                     <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                 </div>
-
                 <div>
                     <label for="expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
                     <textarea id="expense-notes" name="expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
@@ -429,7 +348,7 @@
                     <button type="button" id="cancel-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                         Cancel
                     </button>
-                    <button type="submit" form="expense-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                    <button type="submit" form="expense-form" id="save-expense" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                         Add Expense
                     </button>
                 </div>
@@ -455,7 +374,6 @@
                     <label for="edit-expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
                     <input type="text" id="edit-expense-name" name="edit-expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                 </div>
-
                 <div>
                     <label for="edit-expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
                     <select id="edit-expense-category" name="edit-expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
@@ -467,12 +385,10 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
                 <div>
                     <label for="edit-expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
                     <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                 </div>
-
                 <div>
                     <label for="edit-expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
                     <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
@@ -484,7 +400,7 @@
                     <button type="button" id="cancel-edit-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                         Cancel
                     </button>
-                    <button type="submit" form="edit-expense-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                    <button type="submit" form="edit-expense-form" id="update-expense" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                         Save Changes
                     </button>
                 </div>
@@ -692,16 +608,311 @@
             observer.observe(element);
         });
 
+        // Expense Modal functionality
+        const expenseModal = document.getElementById('expense-modal');
+        const addExpenseBtn = document.getElementById('add-expense-btn');
+        const cancelExpenseBtn = document.getElementById('cancel-expense');
+        const saveExpenseBtn = document.getElementById('save-expense');
+
+        // Open modal
+        addExpenseBtn.addEventListener('click', () => {
+            expenseModal.classList.remove('hidden');
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expense-date').value = today;
+        });
+
+        // Close modal
+        function closeModal() {
+            expenseModal.classList.add('hidden');
+            // Reset form
+            document.getElementById('expense-form').reset();
+        }
+
+        // Close modal when clicking cancel
+        cancelExpenseBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside the modal content
+        expenseModal.addEventListener('click', (e) => {
+            if (e.target === expenseModal) {
+                closeModal();
+            }
+        });
+
+        // Initialize DataTable
+        $(document).ready(function() {
+            var table = $('#expenses-table').DataTable({
+                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                ajax: {
+                    url: 'expense_handlers/get_expenses.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'created_at' },
+                    { 
+                        data: 'expense_name',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
+                    { 
+                        data: 'expense_category',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
+                    { 
+                        data: 'amount',
+                        render: function(data, type, row) {
+                            return '$' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { data: 'notes' },
+                    {
+                        data: 'expense_id',
+                        render: function(data, type, row) {
+                            return `
+                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" onclick="editExpense(${data})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-500 hover:text-red-700 transition-colors duration-200" onclick="deleteExpense(${data})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            `;
+                        },
+                        "orderable": false
+                    }
+                ],
+                order: [[0, 'desc']], // Sort by date descending by default
+                "lengthChange": false,
+                "pageLength": 10,
+                "language": {
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            // Add search functionality
+            $('#expense-search').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            // Refresh table every 30 seconds
+            setInterval(function() {
+                table.ajax.reload(null, false);
+            }, 30000);
+        });
+
+        // Add expense
+        document.getElementById('save-expense').addEventListener('click', function() {
+            const name = document.getElementById('expense-name').value.trim();
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
+            }
+            
+            if (!category) {
+                alert('Category is required');
+                return;
+            }
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
+
+            const formData = {
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('expense-notes').value.trim()
+            };
+
+            fetch('expense_handlers/add_expense.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    $('#expenses-table').DataTable().ajax.reload();
+                    closeModal();
+                    alert('Expense added successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving the expense.');
+            });
+        });
+
+        // Edit expense
+        function editExpense(expenseId) {
+            fetch('expense_handlers/get_expense.php?id=' + expenseId)
+            .then(response => response.json())
+            .then(data => {
+                if(data) {
+                    document.getElementById('edit-expense-id').value = data.expense_id;
+                    document.getElementById('edit-expense-name').value = data.expense_name;
+                    document.getElementById('edit-expense-category').value = data.expense_category;
+                    document.getElementById('edit-expense-amount').value = data.amount;
+                    document.getElementById('edit-expense-notes').value = data.notes;
+                    
+                    document.getElementById('edit-expense-modal').classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching expense data.');
+            });
+        }
+
+        // Update expense
+        document.getElementById('update-expense').addEventListener('click', function() {
+            const name = document.getElementById('edit-expense-name').value.trim();
+            const category = document.getElementById('edit-expense-category').value;
+            const amount = parseFloat(document.getElementById('edit-expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
+            }
+            
+            if (!category) {
+                alert('Category is required');
+                return;
+            }
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
+
+            const formData = {
+                expense_id: document.getElementById('edit-expense-id').value,
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('edit-expense-notes').value.trim()
+            };
+
+            fetch('expense_handlers/update_expense.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    $('#expenses-table').DataTable().ajax.reload();
+                    document.getElementById('edit-expense-modal').classList.add('hidden');
+                    alert('Expense updated successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the expense.');
+            });
+        });
+
+        // Delete expense (actually just hide it)
+        function deleteExpense(expenseId) {
+            if(confirm('Are you sure you want to delete this expense?')) {
+                fetch('expense_handlers/delete_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ expense_id: expenseId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        $('#expenses-table').DataTable().ajax.reload();
+                        alert('Expense deleted successfully!');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the expense.');
+                });
+            }
+        }
+
+        // Close edit modal
+        document.getElementById('cancel-edit-expense').addEventListener('click', function() {
+            document.getElementById('edit-expense-modal').classList.add('hidden');
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !expenseModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Add profile dropdown functionality
+        document.getElementById('profileDropdown').addEventListener('click', function() {
+            const menu = document.getElementById('profileMenu');
+            const icon = this.querySelector('.fa-chevron-down');
+            
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('opacity-0');
+            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Close profile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profileDropdown');
+            const menu = document.getElementById('profileMenu');
+            
+            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+                menu.classList.add('opacity-0');
+                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+            }
+        });
+
         // Modal handling
         const addExpenseBtn = document.getElementById('add-expense-btn');
         const expenseModal = document.getElementById('expense-modal');
         const expenseForm = document.getElementById('expense-form');
         const closeExpenseModal = document.getElementById('close-expense-modal');
-        
+        const cancelExpense = document.getElementById('cancel-expense');
+
         const editExpenseModal = document.getElementById('edit-expense-modal');
         const closeEditExpenseModal = document.getElementById('close-edit-expense-modal');
         const cancelEditExpense = document.getElementById('cancel-edit-expense');
-        
+
         const deleteConfirmModal = document.getElementById('delete-confirm-modal');
         const closeDeleteModal = document.getElementById('close-delete-modal');
         const cancelDelete = document.getElementById('cancel-delete');
@@ -790,322 +1001,6 @@
                 if (!deleteConfirmModal.classList.contains('hidden')) {
                     closeDeleteConfirmModal();
                 }
-            }
-        });
-
-        // Form submissions
-        document.getElementById('expense-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('expense-name').value.trim();
-            const category = document.getElementById('expense-category').value;
-            const amountInput = document.getElementById('expense-amount').value;
-            const notes = document.getElementById('expense-notes').value.trim();
-            
-            // Validate amount
-            if (!/^\d*\.?\d+$/.test(amountInput)) {
-                alert('Amount must be a positive number (letters and symbols not allowed)');
-                return;
-            }
-            
-            const amount = parseFloat(amountInput);
-            if (amount <= 0) {
-                alert('Amount must be greater than zero');
-                return;
-            }
-            
-            // Basic validation for other fields
-            if (!name || !category) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            try {
-                // Send data to server
-                const response = await fetch('expense_handlers/add_expense.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        expense_name: name,
-                        expense_category: category,
-                        amount: amount,
-                        notes: notes
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to add expense');
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Close modal and reset form
-                    closeAddExpenseModal();
-                    expenseForm.reset();
-                    
-                    // Refresh the DataTable
-                    refreshTable();
-                    
-                    alert('Expense added successfully!');
-                } else {
-                    throw new Error(result.message || 'Failed to add expense');
-                }
-                
-            } catch (error) {
-                console.error('Error adding expense:', error);
-                alert('Error adding expense: ' + error.message);
-            }
-        });
-
-        // Function to open the edit modal with expense data
-        window.editExpense = async function(expenseId) {
-            try {
-                // Validate expenseId
-                if (!expenseId) {
-                    throw new Error('Expense ID is required');
-                }
-
-                // Fetch expense data
-                const response = await fetch(`expense_handlers/get_expense.php?id=${expenseId}`);
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
-                }
-                
-                const expense = await response.json();
-                
-                // Debug: log the received data
-                console.log('Received expense data:', expense);
-                
-                // Populate the form
-                if (expense) {
-                    document.getElementById('edit-expense-id').value = expense.expense_id || '';
-                    document.getElementById('edit-expense-name').value = expense.expense_name || '';
-                    document.getElementById('edit-expense-category').value = expense.expense_category || '';
-                    document.getElementById('edit-expense-amount').value = expense.amount || '';
-                    document.getElementById('edit-expense-notes').value = expense.notes || '';
-                    
-                    // Add blur to main content
-                    document.querySelector('.flex-1').classList.add('blur-effect');
-                    document.querySelector('#sidebar').classList.add('blur-effect');
-                    
-                    // Show modal
-                    editExpenseModal.classList.remove('hidden');
-                } else {
-                    throw new Error('Expense data is empty');
-                }
-                
-            } catch (error) {
-                console.error('Error fetching expense:', error);
-                alert('Error fetching expense data: ' + error.message);
-            }
-        };
-
-        // Form submission handler for edit
-        document.getElementById('edit-expense-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = {
-                expense_id: document.getElementById('edit-expense-id').value,
-                expense_name: document.getElementById('edit-expense-name').value.trim(),
-                expense_category: document.getElementById('edit-expense-category').value,
-                amount: document.getElementById('edit-expense-amount').value,
-                notes: document.getElementById('edit-expense-notes').value.trim()
-            };
-            
-            // Validate amount
-            if (!/^\d*\.?\d+$/.test(formData.amount)) {
-                alert('Amount must be a positive number (letters and symbols not allowed)');
-                return;
-            }
-            
-            const amount = parseFloat(formData.amount);
-            if (amount <= 0) {
-                alert('Amount must be greater than zero');
-                return;
-            }
-            
-            // Basic validation for other fields
-            if (!formData.expense_name || !formData.expense_category) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            try {
-                // Send data to server
-                const response = await fetch('expense_handlers/update_expense.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to update expense');
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Close modal and refresh the expenses list
-                    closeEditExpenseModal();
-                    
-                    // Refresh the DataTable
-                    refreshTable();
-                    
-                    alert('Expense updated successfully!');
-                } else {
-                    throw new Error(result.message || 'Failed to update expense');
-                }
-                
-            } catch (error) {
-                console.error('Error updating expense:', error);
-                alert('Error updating expense: ' + error.message);
-            }
-        });
-
-        // Delete confirmation
-        window.deleteExpense = function(expenseId) {
-            document.getElementById('expense-to-delete').value = expenseId;
-            
-            // Add blur to main content
-            document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
-            
-            // Show modal
-            deleteConfirmModal.classList.remove('hidden');
-        };
-
-        // Delete handler
-        confirmDeleteBtn.addEventListener('click', async function() {
-            const expenseId = document.getElementById('expense-to-delete').value;
-            
-            try {
-                const response = await fetch('expense_handlers/delete_expense.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ expense_id: expenseId })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to delete expense');
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Close modal and refresh the expenses list
-                    closeDeleteConfirmModal();
-                    
-                    // Refresh the DataTable
-                    refreshTable();
-                    
-                    alert('Expense deleted successfully!');
-                } else {
-                    throw new Error(result.message || 'Failed to delete expense');
-                }
-                
-            } catch (error) {
-                console.error('Error deleting expense:', error);
-                alert('Error deleting expense: ' + error.message);
-            }
-        });
-
-        // Initialize DataTable
-        $(document).ready(function() {
-            var table = $('#expenses-table').DataTable({
-                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
-                ajax: {
-                    url: 'expense_handlers/get_expenses.php',
-                    dataSrc: ''
-                },
-                columns: [
-                    { data: 'created_at' },
-                    { 
-                        data: 'expense_name',
-                        render: function(data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1);
-                        }
-                    },
-                    { 
-                        data: 'expense_category',
-                        render: function(data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1);
-                        }
-                    },
-                    { 
-                        data: 'amount',
-                        render: function(data, type, row) {
-                            return '$' + parseFloat(data).toFixed(2);
-                        }
-                    },
-                    { data: 'notes' },
-                    {
-                        data: 'expense_id',
-                        render: function(data, type, row) {
-                            return `
-                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" onclick="editExpense(${data})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn text-red-500 hover:text-red-700 transition-colors duration-200" onclick="deleteExpense(${data})">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            `;
-                        },
-                        "orderable": false
-                    }
-                ],
-                order: [[0, 'desc']], // Sort by date descending by default
-                "lengthChange": false,
-                "pageLength": 10,
-                "language": {
-                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                    "paginate": {
-                        "previous": "<i class='fas fa-chevron-left'></i>",
-                        "next": "<i class='fas fa-chevron-right'></i>"
-                    }
-                }
-            });
-
-            // Add search functionality
-            $('#expense-search').on('keyup', function() {
-                table.search(this.value).draw();
-            });
-
-            // Refresh table every 30 seconds
-            setInterval(function() {
-                table.ajax.reload(null, false);
-            }, 30000);
-        });
-
-        // Add profile dropdown functionality
-        document.getElementById('profileDropdown').addEventListener('click', function() {
-            const menu = document.getElementById('profileMenu');
-            const icon = this.querySelector('.fa-chevron-down');
-            
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('opacity-0');
-            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-        });
-
-        // Close profile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('profileDropdown');
-            const menu = document.getElementById('profileMenu');
-            
-            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
-                menu.classList.add('opacity-0');
-                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
             }
         });
     </script>
