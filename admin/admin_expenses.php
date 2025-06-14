@@ -269,6 +269,21 @@
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
         }
+
+        /* Action button styles */
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .action-btn i {
+            font-size: 1rem;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -641,10 +656,15 @@
                         data: 'expense_id',
                         render: function(data, type, row) {
                             return `
-                                <button onclick="editExpense(${data})" class="text-accent-brown hover:text-deep-brown mr-3">Edit</button>
-                                <button onclick="deleteExpense(${data})" class="text-red-600 hover:text-red-900">Delete</button>
+                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" onclick="editExpense(${data})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-500 hover:text-red-700 transition-colors duration-200" onclick="deleteExpense(${data})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             `;
-                        }
+                        },
+                        "orderable": false
                     }
                 ],
                 order: [[0, 'desc']], // Sort by date descending by default
