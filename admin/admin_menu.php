@@ -1,3 +1,4 @@
+@ -1,2211 +1,2478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -387,45 +388,23 @@
 
                     <!-- Menu Table -->
                     <div class="overflow-x-auto">
-                        <table id="menu-table" class="w-full">
-                            <thead class="bg-gray-50">
+                        <table id="menu-table" class="w-full table-auto display nowrap" style="width:100%">
+                            <thead>
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dish ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dish Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capital</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Dish Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Capital</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="menu-table-body">
+                            <tbody>
                                 <!-- Data will be loaded via AJAX -->
                             </tbody>
                         </table>
-                        <!-- Add pagination controls for Menu Table -->
-                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
-                                Showing <span id="menu-start">1</span> to <span id="menu-end">5</span> of <span id="menu-total">0</span> entries
-                            </div>
-                            <div class="flex space-x-2">
-                                <button onclick="changePage('menu', 'first')" id="menu-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;&lt;
-                                </button>
-                                <button onclick="changePage('menu', 'prev')" id="menu-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;
-                                </button>
-                                <div id="menu-pagination-numbers" class="flex space-x-1">
-                                    <!-- Pagination numbers will be inserted here -->
-                                </div>
-                                <button onclick="changePage('menu', 'next')" id="menu-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;
-                                </button>
-                                <button onclick="changePage('menu', 'last')" id="menu-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;&gt;
-                                </button>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -445,44 +424,22 @@
 
                     <!-- Packages Table -->
                     <div class="overflow-x-auto">
-                        <table id="packages-table" class="w-full">
-                            <thead class="bg-gray-50">
+                        <table id="packages-table" class="w-full table-auto display nowrap" style="width:100%">
+                            <thead>
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Package ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Package Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package ID</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Package Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Type</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Status</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="packages-table-body">
+                            <tbody>
                                 <!-- Data will be loaded via AJAX -->
                             </tbody>
                         </table>
-                        <!-- Add pagination controls for Packages Table -->
-                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
-                                Showing <span id="packages-start">1</span> to <span id="packages-end">5</span> of <span id="packages-total">0</span> entries
-                            </div>
-                            <div class="flex space-x-2">
-                                <button onclick="changePage('packages', 'first')" id="packages-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;&lt;
-                                </button>
-                                <button onclick="changePage('packages', 'prev')" id="packages-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;
-                                </button>
-                                <div id="packages-pagination-numbers" class="flex space-x-1">
-                                    <!-- Pagination numbers will be inserted here -->
-                                </div>
-                                <button onclick="changePage('packages', 'next')" id="packages-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;
-                                </button>
-                                <button onclick="changePage('packages', 'last')" id="packages-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;&gt;
-                                </button>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -2252,226 +2209,6 @@
             preventNegativeInputs('edit-dish-capital');
         });
 
-        // Add pagination state management
-        const paginationState = {
-            menu: {
-                currentPage: 1,
-                itemsPerPage: 5,
-                totalItems: 0,
-                data: []
-            },
-            packages: {
-                currentPage: 1,
-                itemsPerPage: 5,
-                totalItems: 0,
-                data: []
-            }
-        };
-
-        // Function to initialize pagination
-        function initializePagination() {
-            // Fetch menu data
-            fetch('menu_handlers/get_dishes.php')
-                .then(response => response.json())
-                .then(data => {
-                    paginationState.menu.data = data;
-                    paginationState.menu.totalItems = data.length;
-                    updateTableDisplay('menu');
-                });
-
-            // Fetch packages data
-            fetch('menu_handlers/get_packages.php')
-                .then(response => response.json())
-                .then(data => {
-                    paginationState.packages.data = data;
-                    paginationState.packages.totalItems = data.length;
-                    updateTableDisplay('packages');
-                });
-        }
-
-        // Function to update table display
-        function updateTableDisplay(tableType) {
-            const state = paginationState[tableType];
-            const tableBody = document.getElementById(`${tableType}-table-body`);
-            const startIndex = (state.currentPage - 1) * state.itemsPerPage;
-            const endIndex = Math.min(startIndex + state.itemsPerPage, state.totalItems);
-
-            // Clear current table content
-            tableBody.innerHTML = '';
-
-            // Add visible rows
-            for (let i = startIndex; i < endIndex; i++) {
-                if (state.data[i]) {
-                    const row = createTableRow(tableType, state.data[i]);
-                    tableBody.appendChild(row);
-                }
-            }
-
-            // Update pagination info
-            document.getElementById(`${tableType}-start`).textContent = state.totalItems === 0 ? 0 : startIndex + 1;
-            document.getElementById(`${tableType}-end`).textContent = endIndex;
-            document.getElementById(`${tableType}-total`).textContent = state.totalItems;
-
-            // Update pagination buttons
-            updatePaginationButtons(tableType);
-            updatePaginationNumbers(tableType);
-        }
-
-        // Function to create table row based on table type
-        function createTableRow(tableType, item) {
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-gray-50 transition-colors duration-200';
-
-            if (tableType === 'menu') {
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.dish_id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.dish_name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.dish_category}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                            ${item.status === 'active' ? 'Active' : 'Unavailable'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₱${parseFloat(item.price).toFixed(2)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₱${parseFloat(item.capital).toFixed(2)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onclick="openEditDishModal('${item.dish_id}')" class="text-accent-brown hover:text-deep-brown transition-colors duration-200">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
-                `;
-            } else {
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.package_id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.package_name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₱${parseFloat(item.price).toFixed(2)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.type === 'buffet' ? 'Buffet' : 'Per Plate'}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                            ${item.status === 'active' ? 'Active' : 'Unavailable'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onclick="openViewPackageModal('${item.package_id}')" class="text-accent-brown hover:text-deep-brown transition-colors duration-200 mr-2">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button onclick="openEditPackageModal('${item.package_id}')" class="text-accent-brown hover:text-deep-brown transition-colors duration-200">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
-                `;
-            }
-
-            return row;
-        }
-
-        // Function to update pagination buttons
-        function updatePaginationButtons(tableType) {
-            const state = paginationState[tableType];
-            const firstBtn = document.getElementById(`${tableType}-first-btn`);
-            const prevBtn = document.getElementById(`${tableType}-prev-btn`);
-            const nextBtn = document.getElementById(`${tableType}-next-btn`);
-            const lastBtn = document.getElementById(`${tableType}-last-btn`);
-            const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
-
-            // Disable first and prev buttons on first page
-            firstBtn.disabled = state.currentPage === 1;
-            prevBtn.disabled = state.currentPage === 1;
-
-            // Disable next and last buttons on last page
-            nextBtn.disabled = state.currentPage >= totalPages;
-            lastBtn.disabled = state.currentPage >= totalPages;
-        }
-
-        // Function to update pagination numbers
-        function updatePaginationNumbers(tableType) {
-            const state = paginationState[tableType];
-            const container = document.getElementById(`${tableType}-pagination-numbers`);
-            const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
-            
-            container.innerHTML = '';
-            
-            // Show max 5 page numbers
-            let startPage = Math.max(1, state.currentPage - 2);
-            let endPage = Math.min(totalPages, startPage + 4);
-            
-            if (endPage - startPage < 4) {
-                startPage = Math.max(1, endPage - 4);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                const button = document.createElement('button');
-                button.className = `px-3 py-1 rounded border text-sm ${
-                    i === state.currentPage
-                        ? 'bg-accent-brown text-white border-accent-brown'
-                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`;
-                button.textContent = i;
-                button.onclick = () => changePage(tableType, i);
-                container.appendChild(button);
-            }
-        }
-
-        // Function to change page
-        function changePage(tableType, action) {
-            const state = paginationState[tableType];
-            const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
-
-            switch(action) {
-                case 'first':
-                    state.currentPage = 1;
-                    break;
-                case 'prev':
-                    if (state.currentPage > 1) {
-                        state.currentPage--;
-                    }
-                    break;
-                case 'next':
-                    if (state.currentPage < totalPages) {
-                        state.currentPage++;
-                    }
-                    break;
-                case 'last':
-                    state.currentPage = totalPages;
-                    break;
-                default:
-                    if (typeof action === 'number') {
-                        state.currentPage = action;
-                    }
-            }
-
-            updateTableDisplay(tableType);
-        }
-
-        // Initialize pagination when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            initializePagination();
-        });
-
-        // Update search functionality
-        document.getElementById('menu-search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = paginationState.menu.data.filter(item => 
-                item.dish_name.toLowerCase().includes(searchTerm) ||
-                item.dish_category.toLowerCase().includes(searchTerm)
-            );
-            paginationState.menu.data = filteredData;
-            paginationState.menu.currentPage = 1;
-            paginationState.menu.totalItems = filteredData.length;
-            updateTableDisplay('menu');
-        });
-
-        document.getElementById('packages-search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = paginationState.packages.data.filter(item => 
-                item.package_name.toLowerCase().includes(searchTerm) ||
-                item.type.toLowerCase().includes(searchTerm)
-            );
-            paginationState.packages.data = filteredData;
-            paginationState.packages.currentPage = 1;
-            paginationState.packages.totalItems = filteredData.length;
-            updateTableDisplay('packages');
-        });
 
     </script>
 </body>
