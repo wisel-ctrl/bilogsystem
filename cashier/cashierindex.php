@@ -519,7 +519,8 @@ require_once 'cashier_auth.php';
             
             filteredItems.forEach(item => {
                 const itemElement = document.createElement('div');
-                itemElement.className = 'menu-item-card fade-in';
+                itemElement.className = 'menu-item-card fade-in cursor-pointer';
+                itemElement.dataset.id = item.id; // Add item ID to the card
                 itemElement.innerHTML = `
                     <div class="relative overflow-hidden group">
                         <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
@@ -605,16 +606,6 @@ require_once 'cashier_auth.php';
             const menuItem = menuItems.find(item => item.id === itemId);
             
             if (!menuItem) return;
-            
-            // Find the button that was clicked
-            const addButton = document.querySelector(`.add-to-cart[data-id="${itemId}"]`);
-            if (addButton) {
-                // Add visual feedback
-                addButton.classList.add('bg-green-600');
-                setTimeout(() => {
-                    addButton.classList.remove('bg-green-600');
-                }, 200);
-            }
             
             const existingItem = cart.find(item => item.id === itemId);
             
@@ -864,12 +855,25 @@ require_once 'cashier_auth.php';
                 renderMenuItems(currentCategory, e.target.value);
             });
 
-            // Single event listener for the add button
+            // Single event listener for both card and button clicks
             menuItemsContainer.addEventListener('click', (e) => {
+                // Check if either the card or the add button was clicked
+                const card = e.target.closest('.menu-item-card');
                 const addButton = e.target.closest('.add-to-cart');
-                if (addButton) {
-                    const itemId = parseInt(addButton.dataset.id);
-                    addToCart(itemId);
+                
+                if (card || addButton) {
+                    // Get the item ID from either the card or button
+                    const itemId = parseInt(card?.dataset.id || addButton?.dataset.id);
+                    if (itemId) {
+                        // Add visual feedback if the button was clicked
+                        if (addButton) {
+                            addButton.classList.add('bg-green-600');
+                            setTimeout(() => {
+                                addButton.classList.remove('bg-green-600');
+                            }, 200);
+                        }
+                        addToCart(itemId);
+                    }
                 }
             });
 
