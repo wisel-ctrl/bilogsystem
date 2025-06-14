@@ -608,15 +608,19 @@
 </div>
     
                 <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-6">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+                        <!-- Sticky Header -->
+                        <div class="p-6 border-b border-warm-cream/30 sticky top-0 bg-white/95 backdrop-blur-md rounded-t-xl">
+                            <div class="flex items-center justify-between">
                                 <h3 class="text-2xl font-bold text-deep-brown font-playfair">Create New Package</h3>
                                 <button id="close-package-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>
+                        </div>
 
+                        <!-- Scrollable Content -->
+                        <div class="flex-1 overflow-y-auto p-6">
                             <form id="package-form" class="space-y-6">
                                 <!-- Package Name -->
                                 <div>
@@ -692,6 +696,18 @@
                                     </button>
                                 </div>
                             </form>
+                        </div>
+
+                        <!-- Sticky Footer -->
+                        <div class="p-6 border-t border-warm-cream/30 sticky bottom-0 bg-white/95 backdrop-blur-md rounded-b-xl">
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-package" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                                    Cancel
+                                </button>
+                                <button type="submit" form="package-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                                    Create Package
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
