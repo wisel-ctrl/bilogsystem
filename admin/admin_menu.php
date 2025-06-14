@@ -1300,7 +1300,7 @@
         $(document).ready(function() {
             var table = $('#menu-table').DataTable({
                 responsive: true,
-                dom: '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
@@ -1349,16 +1349,13 @@
                     { responsivePriority: 3, targets: 4 },
                     { responsivePriority: 4, targets: -1 }
                 ],
-                dom: '<"top"l>rt<"bottom"ip>', // Removed 'f' to completely remove the search box
                 language: {
-                    search: "",
-                    searchPlaceholder: "Search dishes...",
-                    info: "Showing _START_ to _END_ of _TOTAL_ dishes",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
                     infoEmpty: "No dishes available",
                     infoFiltered: "(filtered from _MAX_ total dishes)",
                     paginate: {
-                        previous: '<i class="fas fa-arrow-left"></i>',
-                        next: '<i class="fas fa-arrow-right"></i>'
+                        previous: '<i class="fas fa-chevron-left"></i>',
+                        next: '<i class="fas fa-chevron-right"></i>'
                     }
                 }
             });
@@ -1816,7 +1813,7 @@
         $(document).ready(function() {
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
-                dom: '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
@@ -1869,16 +1866,13 @@
                     { responsivePriority: 3, targets: 2 },
                     { responsivePriority: 4, targets: -1 }
                 ],
-                dom: '<"top"l>rt<"bottom"ip>', // Removed 'f' to completely remove the search box
                 language: {
-                    search: "",
-                    searchPlaceholder: "Search packages...",
-                    info: "Showing _START_ to _END_ of _TOTAL_ packages",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
                     infoEmpty: "No packages available",
                     infoFiltered: "(filtered from _MAX_ total packages)",
                     paginate: {
-                        previous: '<i class="fas fa-arrow-left"></i>',
-                        next: '<i class="fas fa-arrow-right"></i>'
+                        previous: '<i class="fas fa-chevron-left"></i>',
+                        next: '<i class="fas fa-chevron-right"></i>'
                     }
                 }
             });
