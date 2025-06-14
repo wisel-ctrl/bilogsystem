@@ -1349,7 +1349,7 @@
                     { responsivePriority: 3, targets: 4 },
                     { responsivePriority: 4, targets: -1 }
                 ],
-                dom: '<"top"lf>rt<"bottom"ip>', // Customize table layout - removes default search box
+                dom: '<"top"l>rt<"bottom"ip>', // Removed 'f' to completely remove the search box
                 language: {
                     search: "",
                     searchPlaceholder: "Search dishes...",
@@ -1869,7 +1869,7 @@
                     { responsivePriority: 3, targets: 2 },
                     { responsivePriority: 4, targets: -1 }
                 ],
-                dom: '<"top"lf>rt<"bottom"ip>', // Customize table layout - removes default search box
+                dom: '<"top"l>rt<"bottom"ip>', // Removed 'f' to completely remove the search box
                 language: {
                     search: "",
                     searchPlaceholder: "Search packages...",
