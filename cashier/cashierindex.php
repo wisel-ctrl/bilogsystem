@@ -942,8 +942,34 @@ require_once 'cashier_auth.php';
 
             // Search functionality
             const searchInput = document.getElementById('menu-search');
+            
+            // Add input validation function
+            function validateSearchInput(input) {
+                // Remove leading/trailing spaces
+                let value = input.value.trim();
+                
+                // Replace multiple consecutive spaces with a single space
+                value = value.replace(/\s+/g, ' ');
+                
+                // Only allow space if there are at least 2 characters before it
+                const parts = value.split(' ');
+                value = parts.map((part, index) => {
+                    if (index === 0) return part; // First part doesn't need validation
+                    return part.length >= 2 ? ' ' + part : '';
+                }).join('');
+                
+                // Update input value if it changed
+                if (value !== input.value) {
+                    input.value = value;
+                }
+                
+                return value;
+            }
+
             searchInput.addEventListener('input', (e) => {
-                renderMenuItems(currentCategory, e.target.value);
+                const validatedValue = validateSearchInput(e.target);
+                clearSearchBtn.classList.toggle('hidden', !validatedValue);
+                renderMenuItems(currentCategory, validatedValue);
             });
             
             const clearSearchBtn = document.getElementById('clear-search');
@@ -951,11 +977,6 @@ require_once 'cashier_auth.php';
                 searchInput.value = '';
                 clearSearchBtn.classList.add('hidden');
                 renderMenuItems(currentCategory, '');
-            });
-
-            searchInput.addEventListener('input', (e) => {
-                clearSearchBtn.classList.toggle('hidden', !e.target.value);
-                renderMenuItems(currentCategory, e.target.value);
             });
 
             // Single event listener for both card and button clicks
