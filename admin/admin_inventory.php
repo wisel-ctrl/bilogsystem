@@ -256,6 +256,121 @@
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
         }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background-color: #f9fafb;
+        }
+
+        thead th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        tbody td {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* Status badge styles */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Action button styles */
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .action-btn i {
+            font-size: 1rem;
+        }
+
+        /* DataTables custom styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Compact pagination styling */
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.5rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.125rem;
+            border-radius: 0.25rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151 !important;
+            font-size: 0.875rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #8B4513 !important;
+            color: white !important;
+            border-color: #8B4513;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f3f4f6 !important;
+            border-color: #e5e7eb;
+            color: #374151 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0.5rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -617,11 +732,13 @@
                             });
                         }
                     },
-                    {   "data": "category" },
-                    { "data": "quantity", 
+                    { "data": "category" },
+                    { 
+                        "data": "quantity", 
                         "render": function(data, type, row) {
-                    return parseFloat(data).toFixed(2) + ' kg'; // Add kg suffix
-                        } },
+                            return parseFloat(data).toFixed(2) + ' kg';
+                        }
+                    },
                     { 
                         "data": "price",
                         "render": function(data, type, row) {
@@ -638,10 +755,10 @@
                         "data": "ingredient_id",
                         "render": function(data, type, row) {
                             return `
-                                <button onclick="editIngredient(${data})" class="text-accent-brown hover:text-deep-brown mr-3">
+                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" onclick="editIngredient(${data})">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button onclick="confirmDelete(${data})" class="text-red-500 hover:text-red-700">
+                                <button class="action-btn text-red-500 hover:text-red-700 transition-colors duration-200" onclick="confirmDelete(${data})">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             `;
@@ -651,11 +768,9 @@
                 ],
                 "order": [[0, 'asc']],
                 "responsive": true,
-                "dom": 'rt<"flex justify-between items-center mt-4"ip>',
-                "columnDefs": [
-                    { "orderable": false, "targets": 5 }, // Actions column
-                    { "orderSequence": ["asc", "desc"], "targets": [0,1,2,3,4] } // All other columns
-                ],
+                "dom": '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                "lengthChange": false,
+                "pageLength": 10,
                 "language": {
                     "info": "Showing _START_ to _END_ of _TOTAL_ entries",
                     "paginate": {
