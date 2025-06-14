@@ -7,6 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Add these to your head section -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="../tailwind.js"></script>
     <style>
@@ -123,6 +128,20 @@
 
         header {
             z-index: 45;
+        }
+
+        /* Add table styles from admin_bookings.html */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
         }
 
         /* Table styles */
@@ -1235,48 +1254,79 @@
 
         // Initialize DataTable
         $(document).ready(function() {
-            // Initialize our custom pagination
-            initializePagination();
+            var table = $('#menu-table').DataTable({
+                responsive: true,
+                dom: 'rt<"flex items-center justify-between px-4 py-3"ip>',
+                lengthChange: false,
+                pageLength: 10,
+                searching: true,
+                ajax: {
+                    url: 'menu_handlers/get_dishes.php',
+                    type: 'GET',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'dish_id' },
+                    { data: 'dish_name' },
+                    { data: 'dish_category' },
+                    { 
+                        data: 'status',
+                        render: function(data, type, row) {
+                            var statusClass = data === 'active' ? 'status-active' : 'status-inactive';
+                            var statusText = data === 'active' ? 'Active' : 'Unavailable';
+                            return `<span class="status-badge ${statusClass}">${statusText}</span>`;
+                        }
+                    },
+                    { 
+                        data: 'price',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'capital',
+                        render: function(data) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        data: 'dish_id',
+                        render: function(data) {
+                            return `<button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-dish-btn" data-id="${data}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>`;
+                        },
+                        orderable: false
+                    }
+                ],
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { responsivePriority: 2, targets: 3 },
+                    { responsivePriority: 3, targets: 4 },
+                    { responsivePriority: 4, targets: -1 }
+                ],
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search dishes...",
+                    info: "Showing _START_ to _END_ of _TOTAL_ dishes",
+                    infoEmpty: "No dishes available",
+                    infoFiltered: "(filtered from _MAX_ total dishes)",
+                    paginate: {
+                        previous: '<i class="fas fa-arrow-left"></i>',
+                        next: '<i class="fas fa-arrow-right"></i>'
+                    }
+                }
+            });
 
-            // Add event listeners for search
+            // Move the search box to the custom input
             $('#menu-search').on('keyup', function() {
-                const searchTerm = this.value.toLowerCase();
-                const filteredData = paginationState.menu.data.filter(item => 
-                    item.dish_name.toLowerCase().includes(searchTerm) ||
-                    item.dish_category.toLowerCase().includes(searchTerm)
-                );
-                paginationState.menu.data = filteredData;
-                paginationState.menu.totalItems = filteredData.length;
-                paginationState.menu.currentPage = 1;
-                updateTableDisplay('menu');
+                table.search(this.value).draw();
             });
 
-            $('#packages-search').on('keyup', function() {
-                const searchTerm = this.value.toLowerCase();
-                const filteredData = paginationState.packages.data.filter(item => 
-                    item.package_name.toLowerCase().includes(searchTerm) ||
-                    item.type.toLowerCase().includes(searchTerm)
-                );
-                paginationState.packages.data = filteredData;
-                paginationState.packages.totalItems = filteredData.length;
-                paginationState.packages.currentPage = 1;
-                updateTableDisplay('packages');
-            });
-
-            // Add event listeners for edit buttons
             $('#menu-table').on('click', '.edit-dish-btn', function() {
                 var dishId = $(this).data('id');
                 openEditDishModal(dishId);
-            });
-
-            $('#packages-table').on('click', '.edit-package-btn', function() {
-                var packageId = $(this).data('id');
-                openEditPackageModal(packageId);
-            });
-
-            $('#packages-table').on('click', '.view-package-btn', function() {
-                var packageId = $(this).data('id');
-                openViewPackageModal(packageId);
+                console.log('Edit dish with ID:', dishId);
             });
         });
 
@@ -2341,73 +2391,86 @@
             
             container.innerHTML = '';
             
-            // Always show first page
-            if (state.currentPage > 2) {
-                container.appendChild(createPageButton(tableType, 1));
-                if (state.currentPage > 3) {
-                    container.appendChild(createEllipsis());
-                }
-            }
+            // Show max 5 page numbers
+            let startPage = Math.max(1, state.currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
             
-            // Show pages around current page
-            for (let i = Math.max(1, state.currentPage - 1); i <= Math.min(totalPages, state.currentPage + 1); i++) {
-                container.appendChild(createPageButton(tableType, i));
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
             }
-            
-            // Always show last page
-            if (state.currentPage < totalPages - 1) {
-                if (state.currentPage < totalPages - 2) {
-                    container.appendChild(createEllipsis());
-                }
-                container.appendChild(createPageButton(tableType, totalPages));
+
+            for (let i = startPage; i <= endPage; i++) {
+                const button = document.createElement('button');
+                button.className = `px-3 py-1 rounded border text-sm ${
+                    i === state.currentPage
+                        ? 'bg-accent-brown text-white border-accent-brown'
+                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`;
+                button.textContent = i;
+                button.onclick = () => changePage(tableType, i);
+                container.appendChild(button);
             }
-        }
-
-        // Function to create page button
-        function createPageButton(tableType, pageNum) {
-            const button = document.createElement('button');
-            button.textContent = pageNum;
-            button.className = `px-3 py-1 rounded border ${paginationState[tableType].currentPage === pageNum ? 'bg-deep-brown text-white border-deep-brown' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`;
-            button.onclick = () => changePage(tableType, pageNum);
-            return button;
-        }
-
-        // Function to create ellipsis
-        function createEllipsis() {
-            const span = document.createElement('span');
-            span.textContent = '...';
-            span.className = 'px-2 text-gray-500';
-            return span;
         }
 
         // Function to change page
         function changePage(tableType, action) {
             const state = paginationState[tableType];
             const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
-            
+
             switch(action) {
                 case 'first':
                     state.currentPage = 1;
                     break;
                 case 'prev':
-                    state.currentPage = Math.max(1, state.currentPage - 1);
+                    if (state.currentPage > 1) {
+                        state.currentPage--;
+                    }
                     break;
                 case 'next':
-                    state.currentPage = Math.min(totalPages, state.currentPage + 1);
+                    if (state.currentPage < totalPages) {
+                        state.currentPage++;
+                    }
                     break;
                 case 'last':
                     state.currentPage = totalPages;
                     break;
                 default:
-                    state.currentPage = action;
+                    if (typeof action === 'number') {
+                        state.currentPage = action;
+                    }
             }
-            
+
             updateTableDisplay(tableType);
         }
 
         // Initialize pagination when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             initializePagination();
+        });
+
+        // Update search functionality
+        document.getElementById('menu-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredData = paginationState.menu.data.filter(item => 
+                item.dish_name.toLowerCase().includes(searchTerm) ||
+                item.dish_category.toLowerCase().includes(searchTerm)
+            );
+            paginationState.menu.data = filteredData;
+            paginationState.menu.currentPage = 1;
+            paginationState.menu.totalItems = filteredData.length;
+            updateTableDisplay('menu');
+        });
+
+        document.getElementById('packages-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredData = paginationState.packages.data.filter(item => 
+                item.package_name.toLowerCase().includes(searchTerm) ||
+                item.type.toLowerCase().includes(searchTerm)
+            );
+            paginationState.packages.data = filteredData;
+            paginationState.packages.currentPage = 1;
+            paginationState.packages.totalItems = filteredData.length;
+            updateTableDisplay('packages');
         });
 
     </script>
