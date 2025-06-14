@@ -293,7 +293,7 @@ header {
             <nav class="px-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-24">
                             <i class="fas fa-chart-pie w-5"></i>
                             <span class="sidebar-text font-baskerville">Dashboard</span>
                             <span class="tooltip">Dashboard</span>
