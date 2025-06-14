@@ -181,20 +181,56 @@ require_once 'cashier_auth.php';
                 width: 100%;
             }
         }
+
+        /* Sidebar styles */
+        #sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #sidebar .sidebar-header {
+            flex-shrink: 0;
+        }
+
+        #sidebar nav {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px; /* Add some padding for the scrollbar */
+        }
+
+        #sidebar nav::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-track {
+            background: rgba(232, 224, 213, 0.1);
+            border-radius: 3px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-thumb {
+            background: rgba(232, 224, 213, 0.3);
+            border-radius: 3px;
+        }
+        
+        #sidebar nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(232, 224, 213, 0.5);
+        }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville min-h-screen">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-warm-cream/20">
+            <div class="sidebar-header p-6 border-b border-warm-cream/20">
                 <div>
                     <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
                     <p class="nav-subtitle text-xs text-warm-cream tracking-widest">POS SYSTEM</p>
                 </div>
             </div>
             
-            <nav class="mt-8 px-4">
+            <nav class="px-4">
                 <h2 class="text-xl font-bold text-warm-cream mb-4 font-playfair">Categories</h2>
                 <ul class="space-y-2">
                     <li>
