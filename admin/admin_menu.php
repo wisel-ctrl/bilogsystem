@@ -226,13 +226,19 @@
             max-width: 300px;
         }
 
+        /* Compact pagination styling */
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.5rem;
+        }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.5rem 1rem;
-            margin: 0 0.25rem;
-            border-radius: 0.375rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.125rem;
+            border-radius: 0.25rem;
             border: 1px solid #e5e7eb;
             background: white;
             color: #374151 !important;
+            font-size: 0.875rem;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -248,7 +254,7 @@
         }
 
         .dataTables_wrapper .dataTables_info {
-            padding: 1rem 0;
+            padding: 0.5rem 0;
             color: #6b7280;
             font-size: 0.875rem;
         }
@@ -1212,7 +1218,7 @@
         $(document).ready(function() {
             var table = $('#menu-table').DataTable({
                 responsive: true,
-                dom: 'rt<"flex items-center justify-between px-4 py-3"ip>',
+                dom: '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
@@ -1727,7 +1733,7 @@
         $(document).ready(function() {
             var packagesTable = $('#packages-table').DataTable({
                 responsive: true,
-                dom: 'rt<"flex items-center justify-between px-4 py-3"ip>',
+                dom: '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 lengthChange: false,
                 pageLength: 10,
                 searching: true,
