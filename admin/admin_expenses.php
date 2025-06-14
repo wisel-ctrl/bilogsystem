@@ -284,6 +284,84 @@
         .action-btn i {
             font-size: 1rem;
         }
+
+        /* Add this to your existing style section */
+        #expense-modal, #edit-expense-modal, #delete-confirm-modal {
+            z-index: 1000 !important; /* Higher than anything else */
+        }
+
+        /* Ensure the main content doesn't create stacking context */
+        .flex-1 {
+            position: static;
+        }
+
+        /* Sidebar should have lower z-index than modals */
+        #sidebar {
+            z-index: 40;
+        }
+
+        /* Header should have lower z-index than modals */
+        header {
+            z-index: 50;
+        }
+
+        /* Add blur effect class */
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* Add this to your existing styles */
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        /* Improved scrollbar for modal body */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Table styles */
     </style>
     <script>
         tailwind.config = {
@@ -306,57 +384,53 @@
 </head>
 <body class="bg-warm-cream font-baskerville">
     <!-- Modal for adding expenses -->
-    <div id="expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            
-            <!-- Modal content -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
-                                Add New Expense
-                            </h3>
-                            <div class="mt-4">
-                                <form id="expense-form">
-                                    <div class="mb-4">
-                                        <label for="expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
-                                        <input type="text" id="expense-name" name="expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
-                                        <select id="expense-category" name="expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                            <option value="utilities">Utilities</option>
-                                            <option value="rent">Rent</option>
-                                            <option value="salaries">Salaries</option>
-                                            <option value="equipment">Equipment</option>
-                                            <option value="ingredients">Ingredients</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
-                                        <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
-                                        <textarea id="expense-notes" name="expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="save-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Save Expense
+    <div id="expense-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Expense</h3>
+                    <button id="close-expense-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
-                    <button type="button" id="cancel-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
+                </div>
+            </div>
+
+            <form id="expense-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
+                <div>
+                    <label for="expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
+                    <input type="text" id="expense-name" name="expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+
+                <div>
+                    <label for="expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                    <select id="expense-category" name="expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <option value="utilities">Utilities</option>
+                        <option value="rent">Rent</option>
+                        <option value="salaries">Salaries</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="ingredients">Ingredients</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
+                    <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+
+                <div>
+                    <label for="expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
+                    <textarea id="expense-notes" name="expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
+                </div>
+            </form>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                         Cancel
+                    </button>
+                    <button type="submit" form="expense-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Add Expense
                     </button>
                 </div>
             </div>
@@ -364,61 +438,87 @@
     </div>
 
     <!-- Modal for editing expenses -->
-    <div id="edit-expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            
-            <!-- Modal content -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
-                                Edit Expense
-                            </h3>
-                            <div class="mt-4">
-                                <form id="edit-expense-form">
-                                    <input type="hidden" id="edit-expense-id">
-                                    <div class="mb-4">
-                                        <label for="edit-expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
-                                        <input type="text" id="edit-expense-name" name="edit-expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
-                                        <select id="edit-expense-category" name="edit-expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                            <option value="utilities">Utilities</option>
-                                            <option value="rent">Rent</option>
-                                            <option value="salaries">Salaries</option>
-                                            <option value="equipment">Equipment</option>
-                                            <option value="ingredients">Ingredients</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
-                                        <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
-                                        <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="update-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Update Expense
+    <div id="edit-expense-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Expense</h3>
+                    <button id="close-edit-expense-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
-                    <button type="button" id="cancel-edit-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
+                </div>
+            </div>
+
+            <form id="edit-expense-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
+                <input type="hidden" id="edit-expense-id">
+                <div>
+                    <label for="edit-expense-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Expense Name</label>
+                    <input type="text" id="edit-expense-name" name="edit-expense-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+
+                <div>
+                    <label for="edit-expense-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                    <select id="edit-expense-category" name="edit-expense-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <option value="utilities">Utilities</option>
+                        <option value="rent">Rent</option>
+                        <option value="salaries">Salaries</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="ingredients">Ingredients</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="edit-expense-amount" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Amount</label>
+                    <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+
+                <div>
+                    <label for="edit-expense-notes" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Notes</label>
+                    <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
+                </div>
+            </form>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-edit-expense" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
                         Cancel
                     </button>
+                    <button type="submit" form="edit-expense-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Save Changes
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
+                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body flex-1 overflow-y-auto p-6">
+                <p class="text-gray-700 font-baskerville">Are you sure you want to delete this expense? This action cannot be undone.</p>
+            </div>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <input type="hidden" id="expense-to-delete">
         </div>
     </div>
 
@@ -592,34 +692,331 @@
             observer.observe(element);
         });
 
-        // Expense Modal functionality
-        const expenseModal = document.getElementById('expense-modal');
+        // Modal handling
         const addExpenseBtn = document.getElementById('add-expense-btn');
-        const cancelExpenseBtn = document.getElementById('cancel-expense');
-        const saveExpenseBtn = document.getElementById('save-expense');
+        const expenseModal = document.getElementById('expense-modal');
+        const expenseForm = document.getElementById('expense-form');
+        const closeExpenseModal = document.getElementById('close-expense-modal');
+        
+        const editExpenseModal = document.getElementById('edit-expense-modal');
+        const closeEditExpenseModal = document.getElementById('close-edit-expense-modal');
+        const cancelEditExpense = document.getElementById('cancel-edit-expense');
+        
+        const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+        const closeDeleteModal = document.getElementById('close-delete-modal');
+        const cancelDelete = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
 
-        // Open modal
+        // Show add expense modal
         addExpenseBtn.addEventListener('click', () => {
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
+            // Show modal
             expenseModal.classList.remove('hidden');
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('expense-date').value = today;
         });
 
-        // Close modal
-        function closeModal() {
+        // Close add expense modal
+        function closeAddExpenseModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
             expenseModal.classList.add('hidden');
+            
             // Reset form
-            document.getElementById('expense-form').reset();
+            expenseForm.reset();
         }
 
-        // Close modal when clicking cancel
-        cancelExpenseBtn.addEventListener('click', closeModal);
+        closeExpenseModal.addEventListener('click', closeAddExpenseModal);
+        cancelExpense.addEventListener('click', closeAddExpenseModal);
 
-        // Close modal when clicking outside the modal content
-        expenseModal.addEventListener('click', (e) => {
-            if (e.target === expenseModal) {
-                closeModal();
+        // Close edit expense modal
+        function closeEditExpenseModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
+            editExpenseModal.classList.add('hidden');
+            
+            // Reset form
+            document.getElementById('edit-expense-form').reset();
+        }
+
+        closeEditExpenseModal.addEventListener('click', closeEditExpenseModal);
+        cancelEditExpense.addEventListener('click', closeEditExpenseModal);
+
+        // Close delete confirmation modal
+        function closeDeleteConfirmModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
+            deleteConfirmModal.classList.add('hidden');
+            
+            // Clear the expense ID
+            document.getElementById('expense-to-delete').value = '';
+        }
+
+        closeDeleteModal.addEventListener('click', closeDeleteConfirmModal);
+        cancelDelete.addEventListener('click', closeDeleteConfirmModal);
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === expenseModal) {
+                closeAddExpenseModal();
+            }
+            if (event.target === editExpenseModal) {
+                closeEditExpenseModal();
+            }
+            if (event.target === deleteConfirmModal) {
+                closeDeleteConfirmModal();
+            }
+        });
+
+        // Close modals when pressing Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (!expenseModal.classList.contains('hidden')) {
+                    closeAddExpenseModal();
+                }
+                if (!editExpenseModal.classList.contains('hidden')) {
+                    closeEditExpenseModal();
+                }
+                if (!deleteConfirmModal.classList.contains('hidden')) {
+                    closeDeleteConfirmModal();
+                }
+            }
+        });
+
+        // Form submissions
+        document.getElementById('expense-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('expense-name').value.trim();
+            const category = document.getElementById('expense-category').value;
+            const amountInput = document.getElementById('expense-amount').value;
+            const notes = document.getElementById('expense-notes').value.trim();
+            
+            // Validate amount
+            if (!/^\d*\.?\d+$/.test(amountInput)) {
+                alert('Amount must be a positive number (letters and symbols not allowed)');
+                return;
+            }
+            
+            const amount = parseFloat(amountInput);
+            if (amount <= 0) {
+                alert('Amount must be greater than zero');
+                return;
+            }
+            
+            // Basic validation for other fields
+            if (!name || !category) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            try {
+                // Send data to server
+                const response = await fetch('expense_handlers/add_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        expense_name: name,
+                        expense_category: category,
+                        amount: amount,
+                        notes: notes
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to add expense');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and reset form
+                    closeAddExpenseModal();
+                    expenseForm.reset();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Expense added successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to add expense');
+                }
+                
+            } catch (error) {
+                console.error('Error adding expense:', error);
+                alert('Error adding expense: ' + error.message);
+            }
+        });
+
+        // Function to open the edit modal with expense data
+        window.editExpense = async function(expenseId) {
+            try {
+                // Validate expenseId
+                if (!expenseId) {
+                    throw new Error('Expense ID is required');
+                }
+
+                // Fetch expense data
+                const response = await fetch(`expense_handlers/get_expense.php?id=${expenseId}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const expense = await response.json();
+                
+                // Debug: log the received data
+                console.log('Received expense data:', expense);
+                
+                // Populate the form
+                if (expense) {
+                    document.getElementById('edit-expense-id').value = expense.expense_id || '';
+                    document.getElementById('edit-expense-name').value = expense.expense_name || '';
+                    document.getElementById('edit-expense-category').value = expense.expense_category || '';
+                    document.getElementById('edit-expense-amount').value = expense.amount || '';
+                    document.getElementById('edit-expense-notes').value = expense.notes || '';
+                    
+                    // Add blur to main content
+                    document.querySelector('.flex-1').classList.add('blur-effect');
+                    document.querySelector('#sidebar').classList.add('blur-effect');
+                    
+                    // Show modal
+                    editExpenseModal.classList.remove('hidden');
+                } else {
+                    throw new Error('Expense data is empty');
+                }
+                
+            } catch (error) {
+                console.error('Error fetching expense:', error);
+                alert('Error fetching expense data: ' + error.message);
+            }
+        };
+
+        // Form submission handler for edit
+        document.getElementById('edit-expense-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                expense_id: document.getElementById('edit-expense-id').value,
+                expense_name: document.getElementById('edit-expense-name').value.trim(),
+                expense_category: document.getElementById('edit-expense-category').value,
+                amount: document.getElementById('edit-expense-amount').value,
+                notes: document.getElementById('edit-expense-notes').value.trim()
+            };
+            
+            // Validate amount
+            if (!/^\d*\.?\d+$/.test(formData.amount)) {
+                alert('Amount must be a positive number (letters and symbols not allowed)');
+                return;
+            }
+            
+            const amount = parseFloat(formData.amount);
+            if (amount <= 0) {
+                alert('Amount must be greater than zero');
+                return;
+            }
+            
+            // Basic validation for other fields
+            if (!formData.expense_name || !formData.expense_category) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            try {
+                // Send data to server
+                const response = await fetch('expense_handlers/update_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to update expense');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the expenses list
+                    closeEditExpenseModal();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Expense updated successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to update expense');
+                }
+                
+            } catch (error) {
+                console.error('Error updating expense:', error);
+                alert('Error updating expense: ' + error.message);
+            }
+        });
+
+        // Delete confirmation
+        window.deleteExpense = function(expenseId) {
+            document.getElementById('expense-to-delete').value = expenseId;
+            
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
+            // Show modal
+            deleteConfirmModal.classList.remove('hidden');
+        };
+
+        // Delete handler
+        confirmDeleteBtn.addEventListener('click', async function() {
+            const expenseId = document.getElementById('expense-to-delete').value;
+            
+            try {
+                const response = await fetch('expense_handlers/delete_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ expense_id: expenseId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete expense');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the expenses list
+                    closeDeleteConfirmModal();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Expense deleted successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to delete expense');
+                }
+                
+            } catch (error) {
+                console.error('Error deleting expense:', error);
+                alert('Error deleting expense: ' + error.message);
             }
         });
 
@@ -688,180 +1085,6 @@
             setInterval(function() {
                 table.ajax.reload(null, false);
             }, 30000);
-        });
-
-        // Add expense
-        document.getElementById('save-expense').addEventListener('click', function() {
-            const name = document.getElementById('expense-name').value.trim();
-            const category = document.getElementById('expense-category').value;
-            const amount = parseFloat(document.getElementById('expense-amount').value);
-            
-            // Validation
-            if (!name) {
-                alert('Expense name is required');
-                return;
-            }
-            
-            if (!category) {
-                alert('Category is required');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Amount must be a valid number');
-                return;
-            }
-            
-            if (amount <= 0) {
-                alert('Amount must be greater than 0');
-                return;
-            }
-
-            const formData = {
-                expense_name: name,
-                expense_category: category,
-                amount: amount,
-                notes: document.getElementById('expense-notes').value.trim()
-            };
-
-            fetch('expense_handlers/add_expense.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    $('#expenses-table').DataTable().ajax.reload();
-                    closeModal();
-                    alert('Expense added successfully!');
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while saving the expense.');
-            });
-        });
-
-        // Edit expense
-        function editExpense(expenseId) {
-            fetch('expense_handlers/get_expense.php?id=' + expenseId)
-            .then(response => response.json())
-            .then(data => {
-                if(data) {
-                    document.getElementById('edit-expense-id').value = data.expense_id;
-                    document.getElementById('edit-expense-name').value = data.expense_name;
-                    document.getElementById('edit-expense-category').value = data.expense_category;
-                    document.getElementById('edit-expense-amount').value = data.amount;
-                    document.getElementById('edit-expense-notes').value = data.notes;
-                    
-                    document.getElementById('edit-expense-modal').classList.remove('hidden');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while fetching expense data.');
-            });
-        }
-
-        // Update expense
-        document.getElementById('update-expense').addEventListener('click', function() {
-            const name = document.getElementById('edit-expense-name').value.trim();
-            const category = document.getElementById('edit-expense-category').value;
-            const amount = parseFloat(document.getElementById('edit-expense-amount').value);
-            
-            // Validation
-            if (!name) {
-                alert('Expense name is required');
-                return;
-            }
-            
-            if (!category) {
-                alert('Category is required');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Amount must be a valid number');
-                return;
-            }
-            
-            if (amount <= 0) {
-                alert('Amount must be greater than 0');
-                return;
-            }
-
-            const formData = {
-                expense_id: document.getElementById('edit-expense-id').value,
-                expense_name: name,
-                expense_category: category,
-                amount: amount,
-                notes: document.getElementById('edit-expense-notes').value.trim()
-            };
-
-            fetch('expense_handlers/update_expense.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    $('#expenses-table').DataTable().ajax.reload();
-                    document.getElementById('edit-expense-modal').classList.add('hidden');
-                    alert('Expense updated successfully!');
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while updating the expense.');
-            });
-        });
-
-        // Delete expense (actually just hide it)
-        function deleteExpense(expenseId) {
-            if(confirm('Are you sure you want to delete this expense?')) {
-                fetch('expense_handlers/delete_expense.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ expense_id: expenseId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        $('#expenses-table').DataTable().ajax.reload();
-                        alert('Expense deleted successfully!');
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting the expense.');
-                });
-            }
-        }
-
-        // Close edit modal
-        document.getElementById('cancel-edit-expense').addEventListener('click', function() {
-            document.getElementById('edit-expense-modal').classList.add('hidden');
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !expenseModal.classList.contains('hidden')) {
-                closeModal();
-            }
         });
 
         // Add profile dropdown functionality
