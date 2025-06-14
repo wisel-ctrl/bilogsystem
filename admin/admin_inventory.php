@@ -520,16 +520,18 @@
     </div>
 
     <!-- Add Ingredient Modal -->
-    <div id="add-ingredient-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-        <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-            <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Ingredient</h3>
-                <button id="close-add-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Ingredient</h3>
+                    <button id="close-add-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
             </div>
 
-            <form id="add-ingredient-form" class="modal-body px-6 py-4 space-y-6">
+            <form id="add-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
                 <div>
                     <label for="ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
                     <input type="text" id="ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter ingredient name" required>
@@ -573,28 +575,32 @@
                 </div>
             </form>
 
-            <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-                <button type="button" id="cancel-add-ingredient" class="flex-1 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville px-6 py-2">
-                    Cancel
-                </button>
-                <button type="submit" form="add-ingredient-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville px-6 py-2">
-                    Add Ingredient
-                </button>
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-add-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="submit" form="add-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Add Ingredient
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Edit Ingredient Modal -->
-    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-        <div class="dashboard-card rounded-lg max-w-2xl w-full modal-container">
-            <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Ingredient</h3>
-                <button id="close-edit-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Ingredient</h3>
+                    <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
             </div>
 
-            <form id="edit-ingredient-form" class="modal-body px-6 py-4 space-y-6">
+            <form id="edit-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
                 <input type="hidden" id="edit-ingredient-id">
 
                 <div>
@@ -623,7 +629,12 @@
 
                 <div>
                     <label for="edit-ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity</label>
-                    <input type="text" id="edit-ingredient-quantity" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                    <div class="relative rounded-md shadow-sm">
+                        <input type="number" id="edit-ingredient-quantity" step="0.01" min="0" class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
+                            kg
+                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -632,38 +643,44 @@
                 </div>
             </form>
 
-            <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-                <button type="button" id="cancel-edit-ingredient" class="flex-1 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville px-6 py-2">
-                    Cancel
-                </button>
-                <button type="submit" form="edit-ingredient-form" class="flex-1 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville px-6 py-2">
-                    Save Changes
-                </button>
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-edit-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="submit" form="edit-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Save Changes
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-4">
-        <div class="dashboard-card rounded-lg max-w-md w-full modal-container">
-            <div class="modal-header px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
-                <button id="close-delete-modal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
+                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="modal-body px-6 py-4">
+            <div class="modal-body flex-1 overflow-y-auto p-6">
                 <p class="text-gray-700 font-baskerville">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
             </div>
 
-            <div class="modal-footer px-6 py-4 border-t border-gray-200 flex space-x-3">
-                <button type="button" id="cancel-delete" class="flex-1 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville px-6 py-2">
-                    Cancel
-                </button>
-                <button type="button" id="confirm-delete" class="flex-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville px-6 py-2">
-                    Delete
-                </button>
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville">
+                        Delete
+                    </button>
+                </div>
             </div>
             <input type="hidden" id="ingredient-to-delete">
         </div>
