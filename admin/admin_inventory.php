@@ -768,7 +768,7 @@
                 ],
                 "order": [[0, 'asc']],
                 "responsive": true,
-                "dom": '<"flex flex-col sm:flex-row justify-between items-center mb-4"<"mb-2 sm:mb-0"f>><"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                "dom": '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 "lengthChange": false,
                 "pageLength": 10,
                 "language": {
