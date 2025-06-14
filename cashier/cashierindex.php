@@ -945,15 +945,14 @@ require_once 'cashier_auth.php';
             
             // Add input validation function
             function validateSearchInput(input) {
-                // Remove leading/trailing spaces
-                let value = input.value.trim();
+                let value = input.value;
                 
-                // Replace multiple consecutive spaces with a single space
-                value = value.replace(/\s+/g, ' ');
-                
-                // Only allow space if there are at least 2 characters in the input
-                if (value.length < 2 && value.includes(' ')) {
+                // If input is less than 2 characters, don't allow spaces
+                if (value.length < 2) {
                     value = value.replace(/\s/g, '');
+                } else {
+                    // For inputs with 2 or more characters, just clean up multiple spaces
+                    value = value.replace(/\s+/g, ' ').trim();
                 }
                 
                 // Update input value if it changed
