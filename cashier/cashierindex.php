@@ -182,40 +182,107 @@ require_once 'cashier_auth.php';
             }
         }
 
-        /* Sidebar styles */
+        /* Improved Sidebar styles */
         #sidebar {
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            transition: width 0.3s ease-in-out;
+            position: relative;
+            z-index: 40;
+        }
+
+        #sidebar.collapsed {
+            width: 4rem !important;
         }
 
         #sidebar .sidebar-header {
             flex-shrink: 0;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+        }
+
+        #sidebar.collapsed .sidebar-header {
+            padding: 1.5rem 0.75rem;
         }
 
         #sidebar nav {
             flex: 1;
             overflow-y: auto;
-            padding-right: 4px; /* Add some padding for the scrollbar */
+            padding-right: 4px;
         }
 
-        #sidebar nav::-webkit-scrollbar {
-            width: 6px;
+        .category-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
-        
-        #sidebar nav::-webkit-scrollbar-track {
-            background: rgba(232, 224, 213, 0.1);
-            border-radius: 3px;
+
+        #sidebar.collapsed .category-btn {
+            padding: 0.75rem !important;
+            justify-content: center;
         }
-        
-        #sidebar nav::-webkit-scrollbar-thumb {
-            background: rgba(232, 224, 213, 0.3);
-            border-radius: 3px;
+
+        #sidebar.collapsed .category-btn i {
+            margin: 0 !important;
         }
-        
-        #sidebar nav::-webkit-scrollbar-thumb:hover {
-            background: rgba(232, 224, 213, 0.5);
+
+        #sidebar.collapsed .sidebar-text,
+        #sidebar.collapsed .nav-title,
+        #sidebar.collapsed .nav-subtitle,
+        #sidebar.collapsed h2 {
+            display: none;
+        }
+
+        .category-btn .tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #5D2F0F;
+            color: #E8E0D5;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .category-btn .tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #5D2F0F;
+        }
+
+        #sidebar.collapsed .category-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            left: calc(100% + 0.5rem);
+        }
+
+        /* Active state for category buttons */
+        .category-btn.active {
+            background: rgba(232, 224, 213, 0.2) !important;
+            color: #E8E0D5 !important;
+        }
+
+        /* Improved hover effects */
+        .category-btn:hover {
+            background: rgba(232, 224, 213, 0.15) !important;
+        }
+
+        #sidebar.collapsed .category-btn:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -959,30 +1026,36 @@ require_once 'cashier_auth.php';
             minute: '2-digit'
         });
 
-        // Add sidebar toggle functionality
+        // Update sidebar toggle functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.querySelector('.nav-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.opacity = '0';
-                sidebarTexts.forEach(text => text.style.opacity = '0');
-                setTimeout(() => {
-                    cafeTitle.style.display = 'none';
-                    sidebarTexts.forEach(text => text.style.display = 'none');
-                }, 300);
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-                setTimeout(() => {
-                    cafeTitle.style.opacity = '1';
-                    sidebarTexts.forEach(text => text.style.opacity = '1');
-                }, 50);
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Update event listeners
+        sidebarToggle.addEventListener('click', toggleSidebar);
+
+        // Update category button click handler
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const category = btn.dataset.category;
+                renderMenuItems(category, '');
+            });
+        });
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active category
+            const allItemsBtn = document.querySelector('[data-category="all"]');
+            if (allItemsBtn) {
+                allItemsBtn.classList.add('active');
             }
         });
 
