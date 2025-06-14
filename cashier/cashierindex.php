@@ -95,6 +95,32 @@ require_once 'cashier_auth.php';
             background: rgba(232, 224, 213, 0.2);
         }
 
+        /* Order Summary Scrollable Area */
+        .order-summary-scroll {
+            max-height: calc(100vh - 450px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #8B4513 #E8E0D5;
+        }
+
+        .order-summary-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .order-summary-scroll::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 3px;
+        }
+
+        .order-summary-scroll::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .order-summary-scroll::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -325,7 +351,7 @@ require_once 'cashier_auth.php';
                         <div class="pos-card rounded-xl p-6 sticky top-6">
                             <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair">Order Summary</h3>
                             <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
-                                <div id="cart-items" class="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
+                                <div id="cart-items" class="order-summary-scroll space-y-4">
                                     <!-- Cart items will be dynamically inserted here -->
                                     <p class="text-center text-rich-brown/60 py-4">Your cart is empty</p>
                                 </div>
