@@ -497,14 +497,20 @@
                                 Showing <span id="restaurant-bookings-start">1</span> to <span id="restaurant-bookings-end">5</span> of <span id="restaurant-bookings-total">0</span> entries
                             </div>
                             <div class="flex space-x-2">
+                                <button onclick="changePage('restaurant', 'first')" id="restaurant-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    &lt;&lt;
+                                </button>
                                 <button onclick="changePage('restaurant', 'prev')" id="restaurant-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Previous
+                                    &lt;
                                 </button>
                                 <div id="restaurant-pagination-numbers" class="flex space-x-1">
                                     <!-- Pagination numbers will be inserted here -->
                                 </div>
                                 <button onclick="changePage('restaurant', 'next')" id="restaurant-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Next
+                                    &gt;
+                                </button>
+                                <button onclick="changePage('restaurant', 'last')" id="restaurant-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    &gt;&gt;
                                 </button>
                             </div>
                         </div>
@@ -573,14 +579,20 @@
                                 Showing <span id="accepted-bookings-start">1</span> to <span id="accepted-bookings-end">5</span> of <span id="accepted-bookings-total">0</span> entries
                             </div>
                             <div class="flex space-x-2">
+                                <button onclick="changePage('accepted', 'first')" id="accepted-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    &lt;&lt;
+                                </button>
                                 <button onclick="changePage('accepted', 'prev')" id="accepted-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Previous
+                                    &lt;
                                 </button>
                                 <div id="accepted-pagination-numbers" class="flex space-x-1">
                                     <!-- Pagination numbers will be inserted here -->
                                 </div>
                                 <button onclick="changePage('accepted', 'next')" id="accepted-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Next
+                                    &gt;
+                                </button>
+                                <button onclick="changePage('accepted', 'last')" id="accepted-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    &gt;&gt;
                                 </button>
                             </div>
                         </div>
@@ -988,11 +1000,19 @@
         // Function to update pagination buttons
         function updatePaginationButtons(tableType) {
             const state = paginationState[tableType];
+            const firstBtn = document.getElementById(`${tableType}-first-btn`);
             const prevBtn = document.getElementById(`${tableType}-prev-btn`);
             const nextBtn = document.getElementById(`${tableType}-next-btn`);
+            const lastBtn = document.getElementById(`${tableType}-last-btn`);
+            const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
 
+            // Disable first and prev buttons on first page
+            firstBtn.disabled = state.currentPage === 1;
             prevBtn.disabled = state.currentPage === 1;
-            nextBtn.disabled = state.currentPage >= Math.ceil(state.totalItems / state.itemsPerPage);
+
+            // Disable next and last buttons on last page
+            nextBtn.disabled = state.currentPage >= totalPages;
+            lastBtn.disabled = state.currentPage >= totalPages;
         }
 
         // Function to update pagination numbers
@@ -1029,12 +1049,27 @@
             const state = paginationState[tableType];
             const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
 
-            if (action === 'prev' && state.currentPage > 1) {
-                state.currentPage--;
-            } else if (action === 'next' && state.currentPage < totalPages) {
-                state.currentPage++;
-            } else if (typeof action === 'number') {
-                state.currentPage = action;
+            switch(action) {
+                case 'first':
+                    state.currentPage = 1;
+                    break;
+                case 'prev':
+                    if (state.currentPage > 1) {
+                        state.currentPage--;
+                    }
+                    break;
+                case 'next':
+                    if (state.currentPage < totalPages) {
+                        state.currentPage++;
+                    }
+                    break;
+                case 'last':
+                    state.currentPage = totalPages;
+                    break;
+                default:
+                    if (typeof action === 'number') {
+                        state.currentPage = action;
+                    }
             }
 
             updateTableDisplay(tableType);
