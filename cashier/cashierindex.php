@@ -182,40 +182,166 @@ require_once 'cashier_auth.php';
             }
         }
 
-        /* Sidebar styles */
+        /* Improved Sidebar styles */
         #sidebar {
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            z-index: 40;
+        }
+
+        #sidebar.collapsed {
+            width: 4rem !important;
         }
 
         #sidebar .sidebar-header {
             flex-shrink: 0;
+            transition: all 0.3s ease-in-out;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        #sidebar.collapsed .sidebar-header {
+            padding: 1.5rem 0.5rem;
         }
 
         #sidebar nav {
             flex: 1;
             overflow-y: auto;
-            padding-right: 4px; /* Add some padding for the scrollbar */
+            padding-right: 0.5rem;
+            transition: all 0.3s ease-in-out;
         }
 
+        #sidebar.collapsed nav {
+            padding-right: 0;
+        }
+
+        .category-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #sidebar.collapsed .category-btn {
+            padding: 0.75rem !important;
+            justify-content: center;
+        }
+
+        #sidebar.collapsed .category-btn i {
+            margin: 0 !important;
+        }
+
+        .category-btn .tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #5D2F0F;
+            color: #E8E0D5;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .category-btn .tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #5D2F0F;
+        }
+
+        #sidebar.collapsed .category-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            left: calc(100% + 0.5rem);
+        }
+
+        /* Mobile overlay */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 30;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                transform: translateX(-100%);
+            }
+
+            #sidebar.active {
+                transform: translateX(0);
+            }
+
+            #sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* Improved scrollbar for sidebar */
         #sidebar nav::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         
         #sidebar nav::-webkit-scrollbar-track {
             background: rgba(232, 224, 213, 0.1);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         
         #sidebar nav::-webkit-scrollbar-thumb {
             background: rgba(232, 224, 213, 0.3);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         
         #sidebar nav::-webkit-scrollbar-thumb:hover {
             background: rgba(232, 224, 213, 0.5);
+        }
+
+        /* Active state for category buttons */
+        .category-btn.active {
+            background: rgba(232, 224, 213, 0.2) !important;
+            color: #E8E0D5 !important;
+        }
+
+        /* Improved hover effects */
+        .category-btn:hover {
+            background: rgba(232, 224, 213, 0.15) !important;
+            transform: translateX(4px);
+        }
+
+        #sidebar.collapsed .category-btn:hover {
+            transform: translateX(0);
         }
     </style>
 </head>
@@ -223,86 +349,103 @@ require_once 'cashier_auth.php';
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="sidebar-header p-6 border-b border-warm-cream/20">
-                <div>
-                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">POS SYSTEM</p>
+            <div class="sidebar-header">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3 transition-all duration-300">
+                        <i class="fas fa-coffee text-2xl text-warm-cream"></i>
+                        <div class="transition-all duration-300 overflow-hidden">
+                            <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream whitespace-nowrap">Caffè Lilio</h1>
+                            <p class="nav-subtitle text-xs text-warm-cream tracking-widest whitespace-nowrap">POS SYSTEM</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <nav class="px-4">
-                <h2 class="text-xl font-bold text-warm-cream mb-4 font-playfair">Categories</h2>
+                <h2 class="text-xl font-bold text-warm-cream mb-4 font-playfair transition-all duration-300 whitespace-nowrap">Categories</h2>
                 <ul class="space-y-2">
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 bg-warm-cream/10 text-warm-cream rounded-lg hover:bg-warm-cream/20 transition-all duration-200 flex items-center space-x-3" data-category="all">
                             <i class="fas fa-th-large w-5"></i>
                             <span class="sidebar-text font-baskerville">All Items</span>
+                            <span class="tooltip">All Items</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="italian-dish">
                             <i class="fas fa-pizza-slice w-5"></i>
                             <span class="sidebar-text font-baskerville">Italian Dishes</span>
+                            <span class="tooltip">Italian Dishes</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="spanish-dish">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Spanish Dishes</span>
+                            <span class="tooltip">Spanish Dishes</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="house-salad">
                             <i class="fas fa-leaf w-5"></i>
                             <span class="sidebar-text font-baskerville">House Salads</span>
+                            <span class="tooltip">House Salads</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pizza">
                             <i class="fas fa-circle-notch w-5"></i>
                             <span class="sidebar-text font-baskerville">Pizza</span>
+                            <span class="tooltip">Pizza</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="burgers">
                             <i class="fas fa-hamburger w-5"></i>
                             <span class="sidebar-text font-baskerville">Burgers</span>
+                            <span class="tooltip">Burgers</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Pasta</span>
+                            <span class="tooltip">Pasta</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta_caza">
                             <i class="fas fa-utensils w-5"></i>
                             <span class="sidebar-text font-baskerville">Pasta e Caza</span>
+                            <span class="tooltip">Pasta e Caza</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="desserts">
                             <i class="fas fa-ice-cream w-5"></i>
                             <span class="sidebar-text font-baskerville">Desserts</span>
+                            <span class="tooltip">Desserts</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main">
                             <i class="fas fa-drumstick-bite w-5"></i>
                             <span class="sidebar-text font-baskerville">Main Courses</span>
+                            <span class="tooltip">Main Courses</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="drinks">
                             <i class="fas fa-glass-martini-alt w-5"></i>
                             <span class="sidebar-text font-baskerville">Drinks</span>
+                            <span class="tooltip">Drinks</span>
                         </button>
                     </li>
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="coffee">
                             <i class="fas fa-coffee w-5"></i>
                             <span class="sidebar-text font-baskerville">Coffee</span>
+                            <span class="tooltip">Coffee</span>
                         </button>
                     </li>
                 </ul>
@@ -487,6 +630,9 @@ require_once 'cashier_auth.php';
             </div>
         </div>
     </div>
+
+    <!-- Add overlay div after sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <script>
         // Sample menu data
@@ -959,30 +1105,76 @@ require_once 'cashier_auth.php';
             minute: '2-digit'
         });
 
-        // Add sidebar toggle functionality
+        // Update sidebar toggle functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.querySelector('.nav-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const mainContent = document.querySelector('.main-content');
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
             
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.opacity = '0';
-                sidebarTexts.forEach(text => text.style.opacity = '0');
-                setTimeout(() => {
-                    cafeTitle.style.display = 'none';
-                    sidebarTexts.forEach(text => text.style.display = 'none');
-                }, 300);
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-                setTimeout(() => {
-                    cafeTitle.style.opacity = '1';
-                    sidebarTexts.forEach(text => text.style.opacity = '1');
-                }, 50);
+            // Handle mobile overlay
+            if (window.innerWidth <= 768) {
+                if (!sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.add('active');
+                    sidebarOverlay.classList.add('active');
+                } else {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            }
+        }
+
+        // Update event listeners
+        sidebarToggle.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking overlay on mobile
+        sidebarOverlay.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+
+        // Update category button click handler
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const category = btn.dataset.category;
+                renderMenuItems(category, '');
+                
+                // On mobile, close sidebar after selection
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active category
+            const allItemsBtn = document.querySelector('[data-category="all"]');
+            if (allItemsBtn) {
+                allItemsBtn.classList.add('active');
+            }
+            
+            // Handle initial mobile state
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
             }
         });
 
