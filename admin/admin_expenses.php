@@ -611,6 +611,7 @@
         // Initialize DataTable
         $(document).ready(function() {
             var table = $('#expenses-table').DataTable({
+                dom: 'rtip', // Only show table (r), processing (t), info (i), and pagination (p)
                 ajax: {
                     url: 'expense_handlers/get_expenses.php',
                     dataSrc: ''
