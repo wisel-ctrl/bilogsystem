@@ -519,12 +519,13 @@ require_once 'cashier_auth.php';
             
             filteredItems.forEach(item => {
                 const itemElement = document.createElement('div');
-                itemElement.className = 'menu-item-card fade-in';
+                itemElement.className = 'menu-item-card fade-in cursor-pointer';
                 itemElement.innerHTML = `
-                    <div class="relative overflow-hidden">
-                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover">
+                    <div class="relative overflow-hidden group" onclick="addToCart(${item.id})">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
                         <div class="absolute top-3 right-3">
-                            <button class="add-to-cart bg-deep-brown text-warm-cream px-4 py-2 rounded-lg hover:bg-rich-brown transition-colors duration-300 font-baskerville flex items-center space-x-2" data-id="${item.id}">
+                            <button class="add-to-cart bg-deep-brown text-warm-cream px-6 py-3 rounded-lg hover:bg-rich-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl" data-id="${item.id}">
                                 <i class="fas fa-plus"></i>
                                 <span>Add</span>
                             </button>
@@ -599,11 +600,21 @@ require_once 'cashier_auth.php';
             totalElement.textContent = `₱${total.toFixed(2)}`;
         }
 
-        // Add item to cart
+        // Update the addToCart function to include visual feedback
         function addToCart(itemId) {
             const menuItem = menuItems.find(item => item.id === itemId);
             
             if (!menuItem) return;
+            
+            // Find the button that was clicked
+            const addButton = document.querySelector(`.add-to-cart[data-id="${itemId}"]`);
+            if (addButton) {
+                // Add visual feedback
+                addButton.classList.add('bg-green-600');
+                setTimeout(() => {
+                    addButton.classList.remove('bg-green-600');
+                }, 200);
+            }
             
             const existingItem = cart.find(item => item.id === itemId);
             
@@ -853,13 +864,38 @@ require_once 'cashier_auth.php';
                 renderMenuItems(currentCategory, e.target.value);
             });
 
-            // Add to cart buttons (delegated)
-            menuItemsContainer.addEventListener('click', (e) => {
+            // Remove the old add to cart click handler since we're using onclick now
+            menuItemsContainer.removeEventListener('click', (e) => {
                 if (e.target.classList.contains('add-to-cart')) {
                     const itemId = parseInt(e.target.dataset.id);
                     addToCart(itemId);
                 }
             });
+
+            // Add new event listener for the add button with better touch support
+            menuItemsContainer.addEventListener('click', (e) => {
+                const addButton = e.target.closest('.add-to-cart');
+                if (addButton) {
+                    e.stopPropagation(); // Prevent double triggering
+                    const itemId = parseInt(addButton.dataset.id);
+                    addToCart(itemId);
+                }
+            });
+
+            // Add touch event support for mobile devices
+            menuItemsContainer.addEventListener('touchstart', (e) => {
+                const addButton = e.target.closest('.add-to-cart');
+                if (addButton) {
+                    addButton.classList.add('active:scale-95');
+                }
+            }, { passive: true });
+
+            menuItemsContainer.addEventListener('touchend', (e) => {
+                const addButton = e.target.closest('.add-to-cart');
+                if (addButton) {
+                    addButton.classList.remove('active:scale-95');
+                }
+            }, { passive: true });
             
             // Cart quantity buttons (delegated)
             cartItemsContainer.addEventListener('click', (e) => {
