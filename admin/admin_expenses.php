@@ -611,7 +611,7 @@
         // Initialize DataTable
         $(document).ready(function() {
             var table = $('#expenses-table').DataTable({
-                dom: 'rtip', // Only show table (r), processing (t), info (i), and pagination (p)
+                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 ajax: {
                     url: 'expense_handlers/get_expenses.php',
                     dataSrc: ''
@@ -647,7 +647,16 @@
                         }
                     }
                 ],
-                order: [[0, 'desc']] // Sort by date descending by default
+                order: [[0, 'desc']], // Sort by date descending by default
+                "lengthChange": false,
+                "pageLength": 10,
+                "language": {
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
             });
 
             // Add search functionality
