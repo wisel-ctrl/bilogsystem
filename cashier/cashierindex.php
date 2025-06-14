@@ -293,7 +293,7 @@ require_once 'cashier_auth.php';
             <div class="sidebar-header p-6 border-b border-warm-cream/20">
                 <div>
                     <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">POS SYSTEM</p>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">Ristorante</p>
                 </div>
             </div>
             
