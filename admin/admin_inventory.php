@@ -271,11 +271,11 @@
         thead th {
             padding: 0.75rem 1rem;
             text-align: left;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #6b7280;
+            color: #5D2F0F;
             border-bottom: 2px solid #e5e7eb;
         }
 
@@ -339,7 +339,13 @@
             max-width: 300px;
         }
 
-        /* Compact pagination styling */
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
         .dataTables_wrapper .dataTables_paginate {
             padding-top: 0.5rem;
         }
@@ -500,7 +506,7 @@
                     <div class="overflow-x-auto">
                         <table id="ingredients-table" class="w-full table-auto display nowrap" style="width:100%">
                             <thead>
-                                <tr class="border-b-2 border-accent-brown/30">
+                                <tr>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Name</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
                                     <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Quantity</th>
