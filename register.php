@@ -1,11 +1,78 @@
 <?php
+session_start();
 require_once 'db_connect.php';
 
 $registration_success = false;
 $errors = [];
 
+// Initialize variables to preserve form inputs
+$firstName = '';
+$middleName = '';
+$lastName = '';
+$suffix = '';
+$username = '';
+$contactNumber = '';
+
+function sendSemaphoreOTP($contactNumber, $otpCode) {
+    $apiKey = '487b60aae3df89ca35dc3b4dd69e2518';
+    $senderName = 'CaffeLilio';
+    
+    $url = 'https://api.semaphore.co/api/v4/messages';
+    
+    $data = [
+        'apikey' => $apiKey,
+        'number' => $contactNumber,
+        'message' => "Your Caffè Lilio verification code is: $otpCode. This code expires in 5 minutes.",
+        'sendername' => $senderName
+    ];
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    return $httpCode === 200;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get form data
+    if (isset($_POST['action']) && $_POST['action'] === 'send_otp') {
+        $contactNumber = str_replace('-', '', trim($_POST['contactNumber'] ?? ''));
+        
+        // Validate contact number
+        if (!preg_match('/^[0-9]{11}$/', $contactNumber) || !preg_match('/^09\d{9}$/', $contactNumber)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Invalid contact number']);
+            exit;
+        }
+        
+        // Generate 6-digit OTP
+        $otpCode = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        $expiresAt = time() + 300; // 5 minutes from now
+        
+        // Store OTP in session
+        $_SESSION['otp'] = [
+            'contact_number' => $contactNumber,
+            'code' => $otpCode,
+            'expires_at' => $expiresAt
+        ];
+        
+        // Send OTP via Semaphore
+        if (sendSemaphoreOTP($contactNumber, $otpCode)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'OTP sent successfully']);
+        } else {
+            unset($_SESSION['otp']);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Failed to send OTP']);
+        }
+        exit;
+    }
+    
+    // Registration processing
     $firstName = trim($_POST['firstName'] ?? '');
     $middleName = trim($_POST['middleName'] ?? '');
     $lastName = trim($_POST['lastName'] ?? '');
@@ -13,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $contactNumber = str_replace('-', '', trim($_POST['contactNumber'] ?? ''));
     $password = $_POST['password'] ?? '';
+    $otpCode = $_POST['otpCode'] ?? '';
     
     // Basic validation
     if (empty($firstName)) $errors['firstName'] = 'First name is required';
@@ -28,7 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 8) {
         $errors['password'] = 'Password must be at least 8 characters';
     }
-
+    if (empty($otpCode)) {
+        $errors['otpCode'] = 'OTP code is required';
+    }
+    
     // Check if username already exists
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT id FROM users_tb WHERE username = ?");
@@ -37,7 +108,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['username'] = 'Username already taken';
         }
     }
-
+    
+    // Verify OTP
+    if (empty($errors)) {
+        if (!isset($_SESSION['otp']) || 
+            $_SESSION['otp']['contact_number'] !== $contactNumber || 
+            $_SESSION['otp']['code'] !== $otpCode || 
+            $_SESSION['otp']['expires_at'] < time()) {
+            $errors['otpCode'] = 'Invalid or expired OTP';
+        } else {
+            // Clear OTP from session after successful verification
+            unset($_SESSION['otp']);
+        }
+    }
+    
     // If no errors, register user
     if (empty($errors)) {
         try {
@@ -234,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Background image with blur -->
         <div class="fixed inset-0" style="z-index: -1;">
             <div class="absolute inset-0 bg-[url('images/bg4.jpg')] bg-cover bg-center bg-no-repeat blur-sm"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         </div>
 
         <div class="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -279,6 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     type="text" 
                                     id="firstName" 
                                     name="firstName"
+                                    value="<?php echo htmlspecialchars($firstName); ?>"
                                     class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                     placeholder="First Name *"
                                     required
@@ -292,6 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     type="text" 
                                     id="middleName" 
                                     name="middleName"
+                                    value="<?php echo htmlspecialchars($middleName); ?>"
                                     class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                     placeholder="Middle Name"
                                 >
@@ -306,6 +392,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     type="text" 
                                     id="lastName" 
                                     name="lastName"
+                                    value="<?php echo htmlspecialchars($lastName); ?>"
                                     class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                     placeholder="Last Name *"
                                     required
@@ -320,13 +407,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     name="suffix"
                                     class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown appearance-none cursor-pointer"
                                 >
-                                    <option value="" disabled selected>Suffix</option>
-                                    <option value="">None</option>
-                                    <option value="Jr.">Jr.</option>
-                                    <option value="Sr.">Sr.</option>
-                                    <option value="II">II</option>
-                                    <option value="III">III</option>
-                                    <option value="IV">IV</option>
+                                    <option value="" <?php echo $suffix === '' ? 'selected' : ''; ?>>Suffix</option>
+                                    <option value="" <?php echo $suffix === '' ? 'selected' : ''; ?>>None</option>
+                                    <option value="Jr." <?php echo $suffix === 'Jr.' ? 'selected' : ''; ?>>Jr.</option>
+                                    <option value="Sr." <?php echo $suffix === 'Sr.' ? 'selected' : ''; ?>>Sr.</option>
+                                    <option value="II" <?php echo $suffix === 'II' ? 'selected' : ''; ?>>II</option>
+                                    <option value="III" <?php echo $suffix === 'III' ? 'selected' : ''; ?>>III</option>
+                                    <option value="IV" <?php echo $suffix === 'IV' ? 'selected' : ''; ?>>IV</option>
                                 </select>
                                 <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                                     <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,6 +430,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="text" 
                             id="username" 
                             name="username"
+                            value="<?php echo htmlspecialchars($username); ?>"
                             class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                             placeholder="Username *"
                             required
@@ -358,6 +446,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     type="tel" 
                                     id="contactNumber" 
                                     name="contactNumber"
+                                    value="<?php echo htmlspecialchars($contactNumber); ?>"
                                     class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
                                     placeholder="Contact Number *"
                                     required
@@ -374,6 +463,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                         <div id="otpCountdown" class="mt-2 text-sm font-baskerville text-rich-brown hidden"></div>
+                    </div>
+                    
+                    <!-- OTP Code -->
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="otpCode" 
+                            name="otpCode"
+                            class="w-full px-4 py-3 bg-white border-2 border-stone-200 rounded-xl font-baskerville text-deep-brown input-focus focus:outline-none focus:border-rich-brown"
+                            placeholder="Enter OTP Code *"
+                            required
+                        >
+                        <div class="field-feedback mt-1 text-sm font-baskerville hidden"></div>
                     </div>
                     
                     <!-- Password -->
@@ -460,7 +562,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const passwordInput = document.getElementById('password');
         const eyeOpen = document.getElementById('eyeOpen');
         const eyeClosed = document.getElementById('eyeClosed');
-
+        const sendOtpBtn = document.getElementById('sendOtpBtn');
+        const contactNumberInput = document.getElementById('contactNumber');
+        const otpCodeInput = document.getElementById('otpCode');
+        const otpCountdown = document.getElementById('otpCountdown');
+        let countdownInterval;
 
         // Initialize floating labels
         function initFloatingLabels() {
@@ -528,18 +634,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'contactNumber':
-                const cleanNumber = field.value.replace(/\D/g, '');
-                if (!cleanNumber) {
-                    isValid = false;
-                    message = 'Contact number is required';
-                } else if (cleanNumber.length !== 11) {
-                    isValid = false;
-                    message = 'Contact number must be 11 digits';
-                } else if (!/^09\d{9}$/.test(cleanNumber)) {
-                    isValid = false;
-                    message = 'Please enter a valid Philippine mobile number (09XXXXXXXXX)';
-                }
-                break;
+                    const cleanNumber = field.value.replace(/\D/g, '');
+                    if (!cleanNumber) {
+                        isValid = false;
+                        message = 'Contact number is required';
+                    } else if (cleanNumber.length !== 11) {
+                        isValid = false;
+                        message = 'Contact number must be 11 digits';
+                    } else if (!/^09\d{9}$/.test(cleanNumber)) {
+                        isValid = false;
+                        message = 'Please enter a valid Philippine mobile number (09XXXXXXXXX)';
+                    }
+                    break;
+
+                case 'otpCode':
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        message = 'OTP code is required';
+                    } else if (!/^\d{6}$/.test(field.value.trim())) {
+                        isValid = false;
+                        message = 'OTP must be a 6-digit number';
+                    }
+                    break;
 
                 case 'password':
                     const strength = checkPasswordStrength(field.value);
@@ -627,15 +743,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const lastName = document.getElementById('lastName');
             const username = document.getElementById('username');
             const contactNumber = document.getElementById('contactNumber');
+            const otpCode = document.getElementById('otpCode');
             const password = document.getElementById('password');
             const termsAccepted = document.getElementById('termsAccepted');
 
             if (!validateField(firstName) || !validateField(lastName) || 
                 !validateField(username) || !validateField(contactNumber) || 
-                !validateField(password)) {
+                !validateField(otpCode) || !validateField(password)) {
                 isValid = false;
             }
-
 
             // Check terms acceptance
             if (!termsAccepted.checked) {
@@ -661,18 +777,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Form submission
         function handleFormSubmit(e) {
-            // Let the form submit normally since we have PHP handling it
-            // The validation will still run to provide immediate feedback
             checkFormValidity();
             
-        
             if (!document.getElementById('termsAccepted').checked) {
                 e.preventDefault();
                 alert('Please accept the terms and conditions.');
                 return;
             }
         
-            // Check if there are any validation errors
             const errorFields = document.querySelectorAll('.field-error');
             if (errorFields.length > 0) {
                 e.preventDefault();
@@ -680,6 +792,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return;
             }
         }
+
+        // Enable/disable OTP button based on contact number validation
+        contactNumberInput.addEventListener('input', function() {
+            const cleanNumber = this.value.replace(/\D/g, '');
+            sendOtpBtn.disabled = !(cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber));
+            validateField(this);
+            checkFormValidity();
+        });
+
+        // OTP input validation
+        otpCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 6) {
+                value = value.substring(0, 6);
+            }
+            e.target.value = value;
+            validateField(e.target);
+            checkFormValidity();
+        });
+
+        // Handle OTP button click
+        sendOtpBtn.addEventListener('click', async function() {
+            const contactNumber = contactNumberInput.value.replace(/\D/g, '');
+            if (contactNumber.length === 11 && /^09\d{9}$/.test(contactNumber)) {
+                try {
+                    sendOtpBtn.disabled = true;
+                    let timeLeft = 60;
+                    
+                    otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
+                    otpCountdown.classList.remove('hidden');
+                    
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
+                        
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                            sendOtpBtn.disabled = false;
+                            otpCountdown.classList.add('hidden');
+                        }
+                    }, 1000);
+                    
+                    // Send OTP request to server
+                    const response = await fetch('', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            'action': 'send_otp',
+                            'contactNumber': contactNumber
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showNotification('OTP sent successfully!', 'success');
+                        otpCodeInput.focus();
+                    } else {
+                        showNotification(result.message, 'error');
+                        clearInterval(countdownInterval);
+                        sendOtpBtn.disabled = false;
+                        otpCountdown.classList.add('hidden');
+                    }
+                } catch (error) {
+                    showNotification('Failed to send OTP. Please try again.', 'error');
+                    clearInterval(countdownInterval);
+                    sendOtpBtn.disabled = false;
+                    otpCountdown.classList.add('hidden');
+                }
+            }
+        });
+
+        // Clear countdown when leaving the page
+        window.addEventListener('beforeunload', () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+        });
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
@@ -695,69 +887,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             form.addEventListener('submit', handleFormSubmit);
             
             document.getElementById('contactNumber').addEventListener('input', function(e) {
-                // Only allow digits and limit to 11 characters
                 let value = e.target.value.replace(/\D/g, '');
                 if (value.length > 11) {
                     value = value.substring(0, 11);
                 }
                 e.target.value = value;
-                
-                // Update validation
                 validateField(e.target);
                 checkFormValidity();
             });
                         
-            // Name inputs - only allow letters and spaces with specific rules
             ['firstName', 'lastName', 'middleName'].forEach(fieldName => {
                 const field = document.getElementById(fieldName);
                 if (field) {
                     field.addEventListener('input', function(e) {
                         let value = e.target.value;
-                        
-                        // Auto capitalize first letter
                         if (value.length > 0) {
                             value = value.charAt(0).toUpperCase() + value.slice(1);
                         }
-                        
-                        // Remove consecutive spaces
                         value = value.replace(/\s+/g, ' ');
-                        
-                        // Only allow letters
                         value = value.replace(/[^A-Za-z\s]/g, '');
-                        
-                        // Remove space if it's the first character
                         if (value.startsWith(' ')) {
                             value = value.trimStart();
                         }
-                        
-                        // Only allow space after 2 characters
                         if (value.length < 2 && value.includes(' ')) {
                             value = value.replace(/\s/g, '');
                         }
-                        
-                        // Update the input value
                         e.target.value = value;
                         validateField(e.target);
                         checkFormValidity();
                     });
 
-                    // Handle pasting
                     field.addEventListener('paste', function(e) {
                         e.preventDefault();
                         let pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                        
-                        // Clean the pasted text
                         pastedText = pastedText.replace(/[^A-Za-z\s]/g, '');
                         pastedText = pastedText.replace(/\s+/g, ' ').trim();
-                        
                         if (pastedText.length > 0) {
                             pastedText = pastedText.charAt(0).toUpperCase() + pastedText.slice(1);
                         }
-                        
                         if (this.value.length < 2) {
                             pastedText = pastedText.replace(/\s/g, '');
                         }
-                        
                         this.value = pastedText;
                         validateField(this);
                         checkFormValidity();
@@ -765,10 +935,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             });
             
-            // Username input - only allow alphanumeric and symbols, no spaces
             document.getElementById('username').addEventListener('input', function(e) {
                 let value = e.target.value;
-                // Remove spaces and only allow alphanumeric and symbols
                 value = value.replace(/\s/g, '');
                 value = value.replace(/[^A-Za-z0-9!@#$%^&*()_+=\-[\]{}|\\:;"'<>,.?/]/g, '');
                 e.target.value = value;
@@ -776,10 +944,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 checkFormValidity();
             });
 
-            // Password input - prevent spaces
             document.getElementById('password').addEventListener('input', function(e) {
                 let value = e.target.value;
-                // Remove any spaces
                 value = value.replace(/\s/g, '');
                 e.target.value = value;
                 validateField(e.target);
@@ -789,7 +955,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             document.getElementById('password').addEventListener('paste', function(e) {
                 e.preventDefault();
                 let pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                // Remove any spaces from pasted text
                 pastedText = pastedText.replace(/\s/g, '');
                 this.value = pastedText;
                 validateField(this);
@@ -799,7 +964,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Additional helper functions
         function showNotification(message, type = 'info') {
-            // Create notification element
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 font-baskerville ${
                 type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
@@ -810,14 +974,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             document.body.appendChild(notification);
             
-            // Animate in
             notification.style.transform = 'translateX(100%)';
             setTimeout(() => {
                 notification.style.transition = 'transform 0.3s ease-out';
                 notification.style.transform = 'translateX(0)';
             }, 10);
             
-            // Remove after 5 seconds
             setTimeout(() => {
                 notification.style.transform = 'translateX(100%)';
                 setTimeout(() => {
@@ -837,53 +999,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             return data;
         }
-
-        // OTP functionality
-        const sendOtpBtn = document.getElementById('sendOtpBtn');
-        const contactNumberInput = document.getElementById('contactNumber');
-        const otpCountdown = document.getElementById('otpCountdown');
-        let countdownInterval;
-
-        // Enable/disable OTP button based on contact number validation
-        contactNumberInput.addEventListener('input', function() {
-            const cleanNumber = this.value.replace(/\D/g, '');
-            sendOtpBtn.disabled = !(cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber));
-        });
-
-        // Handle OTP button click
-        sendOtpBtn.addEventListener('click', function() {
-            const contactNumber = contactNumberInput.value.replace(/\D/g, '');
-            if (contactNumber.length === 11 && /^09\d{9}$/.test(contactNumber)) {
-                // Disable the button and start countdown
-                sendOtpBtn.disabled = true;
-                let timeLeft = 60; // 60 seconds countdown
-                
-                // Show and update countdown
-                otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
-                otpCountdown.classList.remove('hidden');
-                
-                countdownInterval = setInterval(() => {
-                    timeLeft--;
-                    otpCountdown.textContent = `Resend OTP in ${timeLeft}s`;
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
-                        sendOtpBtn.disabled = false;
-                        otpCountdown.classList.add('hidden');
-                    }
-                }, 1000);
-
-                // TODO: Implement actual OTP sending functionality
-                showNotification('OTP sent successfully!', 'success');
-            }
-        });
-
-        // Clear countdown when leaving the page
-        window.addEventListener('beforeunload', () => {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-        });
     </script>
 </body>
 </html>
