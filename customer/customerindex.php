@@ -247,7 +247,7 @@ require_once 'customer_auth.php'; ?>
 
                         <!-- User Profile -->
                         <div class="relative group">
-                            <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+                            <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
                                 <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
@@ -255,9 +255,9 @@ require_once 'customer_auth.php'; ?>
                                      class="w-8 h-8 rounded-full border border-deep-brown/30">
                                 <span class="font-baskerville">John Doe</span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
-                            </button>
+                            </a>
                             <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
-                                <a href="#profile" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                                <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
                                     <i class="fas fa-user-circle w-5"></i>
                                     <span>Profile Settings</span>
                                 </a>
