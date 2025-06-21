@@ -1,43 +1,7 @@
 <?php
 require_once 'customer_auth.php'; 
 
-// Faking user data for demonstration. In a real application, you would fetch this from the database.
-$user = [
-    'firstname' => 'John',
-    'lastname' => 'Doe',
-    'email' => 'john.doe@example.com',
-    'phone' => '+1234567890',
-];
 
-$fullName = $user['firstname'] . ' ' . $user['lastname'];
-
-// Faking bookings data
-$bookings = [
-    [
-        'date' => '2024-03-15 19:00:00',
-        'type' => 'Dinner Reservation',
-        'guests' => 4,
-        'status' => 'Confirmed'
-    ],
-    [
-        'date' => '2024-03-20 18:30:00',
-        'type' => 'Birthday Celebration',
-        'guests' => 12,
-        'status' => 'Pending'
-    ],
-    [
-        'date' => '2024-02-10 20:00:00',
-        'type' => 'Anniversary Dinner',
-        'guests' => 2,
-        'status' => 'Completed'
-    ],
-    [
-        'date' => '2024-01-05 12:00:00',
-        'type' => 'Business Lunch',
-        'guests' => 6,
-        'status' => 'Cancelled'
-    ]
-];
 ?>
 <!DOCTYPE html>
 <html lang="en">
