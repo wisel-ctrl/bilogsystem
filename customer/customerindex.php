@@ -180,38 +180,43 @@ require_once 'customer_auth.php'; ?>
             border-color: #8B4513;
             box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
         }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(232, 224, 213, 0.9);
+        }
     </style>
 </head>
 <body class="bg-warm-cream text-deep-brown min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-warm-cream shadow-lg" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex-1 flex items-center justify-start">
                     <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
                         <div>
-                            <h1 class="font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
-                            <p class="text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
+                            <h1 class="nav-title font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
+                            <p class="nav-subtitle text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
                         </div>
                     </a>
                 </div>
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="#dashboard" class="nav-link font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Home
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="#reservations" class="nav-link font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         My Reservations
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#menu" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="#menu" class="nav-link font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Menu
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="#contact" class="nav-link font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Contact
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </div>
                 <div class="flex-1 flex items-center justify-end">
@@ -320,7 +325,7 @@ require_once 'customer_auth.php'; ?>
     <div id="toast-container"></div>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28">
         <!-- Welcome Section -->
         <section class="mb-12 animate-fade-in">
             <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome back, <span class="text-gradient">John</span>!</h2>
@@ -869,6 +874,18 @@ require_once 'customer_auth.php'; ?>
 
             // Initialize dynamic content loading
             loadNotifications();
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 0) {
+                navbar.classList.add('glass-effect');
+                navbar.classList.remove('bg-warm-cream');
+            } else {
+                navbar.classList.remove('glass-effect');
+                navbar.classList.add('bg-warm-cream');
+            }
         });
     </script>
 </body>
