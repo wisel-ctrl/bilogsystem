@@ -182,41 +182,41 @@ require_once 'customer_auth.php'; ?>
         }
     </style>
 </head>
-<body class="bg-warm-gradient text-deep-brown min-h-screen">
+<body class="bg-warm-cream text-deep-brown min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-nav text-warm-cream shadow-lg sticky top-0 z-50">
+    <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex-1 flex items-center justify-start">
                     <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
                         <div>
-                            <h1 class="font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                            <p class="text-xs tracking-widest text-warm-cream/90">RISTORANTE</p>
+                            <h1 class="font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
+                            <p class="text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
                         </div>
                     </a>
                 </div>
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="#dashboard" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                    <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Home
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#reservations" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                    <a href="#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         My Reservations
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#menu" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                    <a href="#menu" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Menu
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#contact" class="font-baskerville hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                    <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Contact
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-warm-cream transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                 </div>
                 <div class="flex-1 flex items-center justify-end">
                     <!-- Mobile Menu Button -->
-                    <button class="md:hidden text-warm-cream hover:text-warm-cream/80 transition-colors duration-300" 
+                    <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
                             aria-label="Toggle menu"
                             id="mobile-menu-button">
                         <i class="fas fa-bars text-2xl"></i>
@@ -225,10 +225,10 @@ require_once 'customer_auth.php'; ?>
                     <div class="hidden md:flex items-center space-x-0">
                         <!-- Notifications -->
                         <div class="relative group">
-                            <button class="p-2 hover:bg-warm-cream/10 rounded-full transition-colors duration-300" 
+                            <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
                                     aria-label="Notifications"
                                     id="notifications-button">
-                                <i class="fas fa-bell text-warm-cream"></i>
+                                <i class="fas fa-bell text-deep-brown"></i>
                                 <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                             </button>
                             <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
@@ -247,12 +247,12 @@ require_once 'customer_auth.php'; ?>
 
                         <!-- User Profile -->
                         <div class="relative group">
-                            <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-warm-cream hover:text-warm-cream/80"
+                            <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
                                 <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
                                      alt="Profile" 
-                                     class="w-8 h-8 rounded-full border border-warm-cream/30">
+                                     class="w-8 h-8 rounded-full border border-deep-brown/30">
                                 <span class="font-baskerville">John Doe</span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
                             </button>
@@ -278,11 +278,11 @@ require_once 'customer_auth.php'; ?>
         </div>
 
         <!-- Mobile Menu -->
-        <div class="md:hidden mobile-menu fixed inset-0 bg-deep-brown/95 z-40" id="mobile-menu">
+        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
             <div class="flex flex-col h-full">
-                <div class="flex justify-between items-center p-4 border-b border-warm-cream/10">
-                    <h2 class="font-playfair text-xl text-warm-cream">Menu</h2>
-                    <button class="text-warm-cream hover:text-warm-cream/80 transition-colors duration-300" 
+                <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
+                    <h2 class="font-playfair text-xl text-deep-brown">Menu</h2>
+                    <button class="text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
                             aria-label="Close menu"
                             id="close-mobile-menu">
                         <i class="fas fa-times text-2xl"></i>
@@ -290,16 +290,16 @@ require_once 'customer_auth.php'; ?>
                 </div>
                 <nav class="flex-1 overflow-y-auto p-4">
                     <div class="space-y-4">
-                        <a href="#dashboard" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                        <a href="#dashboard" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-home w-8"></i> Home
                         </a>
-                        <a href="#reservations" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                        <a href="#reservations" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-calendar-alt w-8"></i> My Reservations
                         </a>
-                        <a href="#menu" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                        <a href="#menu" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
-                        <a href="#contact" class="block font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 py-2">
+                        <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-envelope w-8"></i> Contact
                         </a>
                     </div>
@@ -335,7 +335,7 @@ require_once 'customer_auth.php'; ?>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Book a table or plan your next event with us.</p>
-                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Make Reservation</span>
                     <i class="fas fa-arrow-right transition-transform transform group-hover:translate-x-1"></i>
                 </button>
@@ -347,7 +347,7 @@ require_once 'customer_auth.php'; ?>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Explore our latest dishes and seasonal specials.</p>
-                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Browse Menu</span>
                     <i class="fas fa-utensils ml-2"></i>
                 </button>
@@ -359,7 +359,7 @@ require_once 'customer_auth.php'; ?>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Need help? Our team is here to assist you.</p>
-                <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Get Help</span>
                     <i class="fas fa-headset ml-2"></i>
                 </button>
@@ -480,7 +480,7 @@ require_once 'customer_auth.php'; ?>
                                     <span class="text-sm text-deep-brown/60 ml-1">(4.8)</span>
                                 </div>
                             </div>
-                            <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 flex items-center space-x-2 group">
+                            <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                             </button>
@@ -510,7 +510,7 @@ require_once 'customer_auth.php'; ?>
                                     <span class="text-sm text-deep-brown/60 ml-1">(5.0)</span>
                                 </div>
                             </div>
-                            <button class="btn-primary bg-deep-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 flex items-center space-x-2 group">
+                            <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
                                 <span>Reserve Now</span>
                                 <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                             </button>
