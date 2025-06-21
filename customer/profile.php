@@ -144,43 +144,135 @@ $bookings = [
 </head>
 <body class="bg-warm-cream text-deep-brown min-h-screen font-baskerville">
     <!-- Navigation -->
-    <nav class="bg-warm-cream/80 text-deep-brown shadow-lg sticky top-0 z-50 backdrop-blur-sm">
+    <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-3">
-                <div class="flex-shrink-0">
-                    <a href="customerindex.php" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex-1 flex items-center justify-start">
+                    <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
                         <div>
                             <h1 class="font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
                             <p class="text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
                         </div>
                     </a>
                 </div>
-                <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
-                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group py-2">
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex flex-1 justify-center space-x-8">
+                    <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
+                    <a href="#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                        My Reservations
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
+                    <a href="#menu" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                        Menu
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
+                    <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                        Contact
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
                 </div>
-                <div class="flex-shrink-0 flex items-center justify-end">
-                    <div class="relative">
-                        <button id="user-menu-button" class="flex items-center space-x-2 rounded-full p-1 transition-all duration-300 hover:bg-deep-brown/10" aria-label="User menu" aria-haspopup="true" aria-expanded="false">
-                             <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($fullName); ?>&background=E8E0D5&color=5D2F0F&bold=true" 
-                                 alt="Profile" 
-                                 class="w-9 h-9 rounded-full border-2 border-deep-brown/30">
-                            <span class="hidden lg:inline font-baskerville text-sm font-medium"><?php echo htmlspecialchars($fullName); ?></span>
-                            <i id="menu-chevron" class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-                        </button>
-                        
-                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-right transition-all duration-300 transform opacity-0 scale-95 hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                            <a href="profile.php" class="block px-4 py-2 text-sm font-baskerville text-deep-brown bg-deep-brown/10" role="menuitem">My Profile</a>
-                            <a href="../logout.php" class="block px-4 py-2 text-sm font-baskerville text-deep-brown hover:bg-deep-brown/10" role="menuitem">Sign out</a>
+                <div class="flex-1 flex items-center justify-end">
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
+                            aria-label="Toggle menu"
+                            id="mobile-menu-button">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                    <div class="hidden md:flex items-center space-x-0">
+                        <!-- Notifications -->
+                        <div class="relative group">
+                            <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
+                                    aria-label="Notifications"
+                                    id="notifications-button">
+                                <i class="fas fa-bell text-deep-brown"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
+                                <div class="px-4 py-2 border-b border-deep-brown/10">
+                                    <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    <!-- Notification items will be dynamically loaded -->
+                                    <div class="animate-pulse p-4">
+                                        <div class="skeleton-text w-3/4"></div>
+                                        <div class="skeleton-text w-1/2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User Profile -->
+                        <div class="relative group">
+                            <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+                                    aria-label="User menu"
+                                    id="user-menu-button">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
+                                     alt="Profile" 
+                                     class="w-8 h-8 rounded-full border border-deep-brown/30">
+                                <span class="font-baskerville">John Doe</span>
+                                <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
+                            </a>
+                            <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
+                                <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                                    <i class="fas fa-user-circle w-5"></i>
+                                    <span>Profile Settings</span>
+                                </a>
+                                <a href="#notifications" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                                    <i class="fas fa-bell w-5"></i>
+                                    <span>Notifications</span>
+                                </a>
+                                <hr class="my-2 border-deep-brown/20">
+                                <a href="../logout.php" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
+            <div class="flex flex-col h-full">
+                <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
+                    <h2 class="font-playfair text-xl text-deep-brown">Menu</h2>
+                    <button class="text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
+                            aria-label="Close menu"
+                            id="close-mobile-menu">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <nav class="flex-1 overflow-y-auto p-4">
+                    <div class="space-y-4">
+                        <a href="#dashboard" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-home w-8"></i> Home
+                        </a>
+                        <a href="#reservations" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
+                        </a>
+                        <a href="#menu" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-utensils w-8"></i> Menu
+                        </a>
+                        <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                            <i class="fas fa-envelope w-8"></i> Contact
+                        </a>
+                    </div>
+                </nav>
+                <div class="p-4 border-t border-warm-cream/10">
+                    <a href="../logout.php" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
+                        <i class="fas fa-sign-out-alt w-8"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
     </nav>
-
+    <!-- Loading Progress Bar -->
+    <div id="nprogress-container"></div>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header class="mb-10">
@@ -350,118 +442,260 @@ $bookings = [
             </div>
         </div>
     </main>
-    <footer class="bg-deep-brown text-warm-cream mt-16">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
-                <p class="font-inter text-warm-cream/70 text-xs">
-                    © 2024 Caffè Lilio Ristorante. All rights reserved.
-                </p>
-                <div class="flex space-x-4 text-xs font-inter">
-                    <a href="#privacy" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Privacy</a>
-                    <a href="#terms" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Terms</a>
+    <!-- Modern Footer -->
+    <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
+            <div class="absolute bottom-12 right-12 w-24 h-24 border border-warm-cream rounded-full"></div>
+            <div class="absolute top-1/2 left-1/4 w-2 h-2 bg-warm-cream rounded-full"></div>
+            <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-warm-cream rounded-full"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Main Footer Content -->
+            <div class="py-2">
+                <!-- Brand Section -->
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center space-x-3 mt-4 mb-4">
+                        <div>
+                            <h2 class="font-playfair font-bold text-2xl tracking-tight">Caffè Lilio</h2>
+                            <p class="text-xs tracking-[0.2em] text-warm-cream/80 uppercase font-inter font-light">Ristorante</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Info Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                    <!-- Contact Info -->
+                    <div class="lg:col-span-1">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
+                            Contact
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
+                        </h3>
+                        <div class="space-y-3 font-inter text-sm">
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-map-marker-alt text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">123 Restaurant St., Food District</p>
+                            </div>
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-phone text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">+63 912 345 6789</p>
+                            </div>
+                            <div class="flex items-center space-x-2 group">
+                                <i class="fas fa-envelope text-warm-cream/70 w-4"></i>
+                                <p class="text-warm-cream/90">info@caffelilio.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Links -->
+                    <div class="lg:col-span-1">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
+                            Navigate
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
+                        </h3>
+                        <nav class="space-y-2 font-inter text-sm">
+                            <a href="#about" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">About Us</a>
+                            <a href="#menu" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Our Menu</a>
+                            <a href="#reservations" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Reservations</a>
+                            <a href="#contact" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Visit Us</a>
+                        </nav>
+                    </div>
+                    <!-- Hours -->
+                    <div class="lg:col-span-1">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
+                            Hours
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
+                        </h3>
+                        <div class="space-y-2 font-inter text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-warm-cream/90">Mon - Fri</span>
+                                <span class="text-warm-cream">11AM - 10PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-warm-cream/90">Sat - Sun</span>
+                                <span class="text-warm-cream">10AM - 11PM</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Social & Connect -->
+                    <div class="lg:col-span-1">
+                        <h3 class="font-playfair font-semibold text-lg mb-4 relative">
+                            Connect
+                            <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
+                        </h3>
+                        <!-- Social Links -->
+                        <div class="flex space-x-3 mb-4">
+                            <a href="https://web.facebook.com/caffelilio.ph" target="_blank" 
+                               class="w-10 h-10 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 transition-colors">
+                                <i class="fab fa-facebook-f text-warm-cream text-sm"></i>
+                            </a>
+                            <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" 
+                               class="w-10 h-10 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 transition-colors">
+                                <i class="fab fa-instagram text-warm-cream text-sm"></i>
+                            </a>
+                        </div>
+                        <!-- Simple Newsletter -->
+                        <div class="space-y-2">
+                            <p class="text-warm-cream/80 text-xs font-inter">Stay updated</p>
+                            <div class="flex">
+                                <input type="email" placeholder="Email" 
+                                       class="flex-1 px-3 py-2 bg-warm-cream/10 border border-warm-cream/20 rounded-l text-sm text-warm-cream placeholder-warm-cream/50 focus:outline-none focus:border-warm-cream/40 backdrop-blur-sm">
+                                <button class="px-3 py-2 bg-warm-cream/20 border border-warm-cream/20 border-l-0 rounded-r hover:bg-warm-cream/30 transition-colors backdrop-blur-sm">
+                                    <i class="fas fa-arrow-right text-warm-cream text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div class="border-t border-warm-cream/10 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+                    <p class="font-inter text-warm-cream/70 text-xs">
+                        © 2024 Caffè Lilio Ristorante. All rights reserved.
+                    </p>
+                    <div class="flex space-x-4 text-xs font-inter">
+                        <a href="#privacy" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Privacy</a>
+                        <a href="#terms" class="text-warm-cream/70 hover:text-warm-cream transition-colors">Terms</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            NProgress.start();
-
-            // Tab functionality
-            const tabs = document.querySelectorAll('.tab-button');
-            const contents = {
-                profile: document.getElementById('profile-content'),
-                bookings: document.getElementById('bookings-content'),
-            };
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.dataset.tab;
-
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    for (const content in contents) {
-                        contents[content].classList.toggle('hidden', content !== target);
+            // Initialize tooltips
+            tippy('[data-tippy-content]', {
+                theme: 'custom',
+                animation: 'scale',
+                duration: [200, 150],
+                placement: 'bottom'
+            });
+            // Initialize loading bar
+            NProgress.configure({ 
+                showSpinner: false,
+                minimum: 0.3,
+                easing: 'ease',
+                speed: 500
+            });
+            // Mobile menu functionality
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('overflow-hidden');
+            }
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            closeMobileMenu.addEventListener('click', toggleMobileMenu);
+            // Show loading bar on navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    NProgress.start();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    // Simulate loading time
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 500);
+                });
+            });
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-${type === 'success' ? 'check-circle text-green-500' : 'exclamation-circle text-red-500'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                document.getElementById('toast-container').appendChild(toast);
+                // Show toast
+                setTimeout(() => toast.classList.add('show'), 100);
+                // Remove toast
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            // Handle reservation cancellation with improved UX
+            document.querySelectorAll('.fa-trash').forEach(button => {
+                button.addEventListener('click', function() {
+                    const confirmDialog = document.createElement('div');
+                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    confirmDialog.innerHTML = `
+                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
+                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+                            <div class="flex justify-end space-x-4">
+                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
+                                    Keep Reservation
+                                </button>
+                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
+                                    Yes, Cancel
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(confirmDialog);
+                    document.body.classList.add('overflow-hidden');
+                    document.getElementById('cancel-dialog').addEventListener('click', () => {
+                        confirmDialog.remove();
+                        document.body.classList.remove('overflow-hidden');
+                    });
+                    document.getElementById('confirm-cancel').addEventListener('click', () => {
+                        NProgress.start();
+                        setTimeout(() => {
+                            confirmDialog.remove();
+                            document.body.classList.remove('overflow-hidden');
+                            showToast('Reservation cancelled successfully');
+                            NProgress.done();
+                        }, 1000);
+                    });
+                });
+            });
+            // Handle reservation editing
+            document.querySelectorAll('.fa-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    showToast('Opening reservation editor...', 'success');
+                    NProgress.start();
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 1000);
+                });
+            });
+            // Add smooth scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
                     }
                 });
             });
-
-            // User menu dropdown
-            const userMenuButton = document.getElementById('user-menu-button');
-            const userMenu = document.getElementById('user-menu');
-            const menuChevron = document.getElementById('menu-chevron');
-
-            userMenuButton.addEventListener('click', () => {
-                const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                userMenuButton.setAttribute('aria-expanded', !isExpanded);
-                userMenu.classList.toggle('hidden');
-                userMenu.classList.toggle('opacity-0');
-                userMenu.classList.toggle('scale-95');
-                menuChevron.classList.toggle('rotate-180');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (event) => {
-                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-                    userMenuButton.setAttribute('aria-expanded', 'false');
-                    userMenu.classList.add('hidden', 'opacity-0', 'scale-95');
-                    menuChevron.classList.remove('rotate-180');
-                }
-            });
-
-            // Tooltips
-            tippy('[data-tippy-content]', {
-                animation: 'scale-subtle',
-                theme: 'light-border',
-            });
-
-            // Fake form submission feedback
-            const showNotification = (message, type = 'success') => {
-                const bgColor = type === 'success' ? 'bg-green-100 border-green-200' : 'bg-red-100 border-red-200';
-                const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
-                
-                const notification = `
-                    <div class="mb-8 p-4 rounded-lg ${bgColor} ${textColor} border flex justify-between items-center animate-fade-in-down">
-                        <p>${message}</p>
-                        <button onclick="this.parentElement.remove()" class="text-xl">&times;</button>
-                    </div>
-                `;
-                document.getElementById('notification-area').innerHTML = notification;
-            };
-
-            document.getElementById('profile-update-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                NProgress.start();
+            // Simulate loading states for dynamic content
+            function loadNotifications() {
+                const notificationsContainer = document.querySelector('#notifications-button + div .animate-pulse');
                 setTimeout(() => {
-                    showNotification('Profile information updated successfully!');
-                    NProgress.done();
+                    notificationsContainer.innerHTML = `
+                        <div class="p-4 border-b border-deep-brown/10">
+                            <p class="font-baskerville text-deep-brown">New special offer available!</p>
+                            <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
+                        </div>
+                    `;
                 }, 1000);
-            });
-            
-            document.getElementById('password-update-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const newPassword = document.getElementById('new-password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-
-                if (newPassword !== confirmPassword) {
-                    showNotification('New passwords do not match.', 'error');
-                    return;
-                }
-                
-                NProgress.start();
-                setTimeout(() => {
-                    showNotification('Password updated successfully!');
-                    document.getElementById('password-update-form').reset();
-                    NProgress.done();
-                }, 1000);
-            });
-
-
-            window.onload = function() {
-                NProgress.done();
-            };
+            }
+            // Initialize dynamic content loading
+            loadNotifications();
         });
     </script>
 </body>
