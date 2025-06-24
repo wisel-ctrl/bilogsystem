@@ -343,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         'accent-brown': '#A0522D'
                     },
                     fontFamily: {
-                        'serif': ['Georgia', 'serif'],
+                        'serif': ['Libre Baskerville', 'serif'],
                         'script': ['Brush Script MT', 'cursive']
                     }
                 }
