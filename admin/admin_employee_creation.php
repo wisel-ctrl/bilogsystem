@@ -507,83 +507,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 
             
 
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
-                <div class="bg-white rounded-lg shadow-md p-6 animate-on-scroll">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-deep-brown">Cashier Management</h3>
-                        <div class="flex space-x-2">
-                            <button id="view-archived-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
-                                <i class="fas fa-archive mr-2"></i> View Archived
-                            </button>
-                            <button id="create-cashier-btn" class="bg-accent-brown hover:bg-deep-brown text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
-                                <i class="fas fa-user-plus mr-2"></i> Create Cashier
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
-                            <thead class="bg-rich-brown text-warm-cream">
-                                <tr>
-                                    <th class="py-3 px-4 text-left">Name</th>
-                                    <th class="py-3 px-4 text-left">Date Created</th>
-                                    <th class="py-3 px-4 text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <?php
-                            try {
-                                $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
-                                $stmt->execute();
-                                $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            } catch(PDOException $e) {
-                                $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
-                            }
-                            ?>
-                            
-                            <tbody class="divide-y divide-gray-200" id="cashier-table-body">
-                                <?php if (empty($cashiers)): ?>
-                                    <tr>
-                                        <td colspan="3" class="py-3 px-4 text-center text-gray-500">No cashier accounts found.</td>
-                                    </tr>
-                                <?php else: ?>
-                                    <?php foreach ($cashiers as $cashier): ?>
-                                        <tr>
-                                            <td class="py-3 px-4">
-                                                <?php
-                                                $fullName = htmlspecialchars($cashier['first_name']);
-                                                if (!empty($cashier['middle_name'])) {
-                                                    $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
-                                                }
-                                                $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
-                                                if (!empty($cashier['suffix'])) {
-                                                    $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
-                                                }
-                                                echo $fullName;
-                                                ?>
-                                            </td>
-                                            <td class="py-3 px-4">
-                                                <?php
-                                                $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
-                                                echo $date->format('F d, Y');
-                                                ?>
-                                            </td>
-                                            <td class="py-3 px-4 flex justify-center space-x-2">
-                                                <button class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors duration-200" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                                <button class="archive-btn bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded transition-colors duration-200" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                                    <i class="fas fa-archive"></i> Archive
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 bg-gray-50">
+    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 animate-on-scroll max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <h3 class="text-2xl md:text-3xl font-semibold text-gray-800">Cashier Management</h3>
+            <div class="flex space-x-3">
+                <button id="view-archived-btn" class="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 flex items-center text-sm font-medium shadow-sm">
+                    <i class="fas fa-archive mr-2 text-base"></i> View Archived
+                </button>
+                <button id="create-cashier-btn" class="bg-amber-600 hover:bg-amber-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 flex items-center text-sm font-medium shadow-sm">
+                    <i class="fas fa-user-plus mr-2 text-base"></i> Create Cashier
+                </button>
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+            <table class="min-w-full bg-white">
+                <thead class="bg-amber-800 text-white">
+                    <tr>
+                        <th class="py-4 px-6 text-left text-sm font-semibold">No.</th>
+                        <th class="py-4 px-6 text-left text-sm font-semibold">Name</th>
+                        <th class="py-4 px-6 text-left text-sm font-semibold">Date Created</th>
+                        <th class="py-4 px-6 text-center text-sm font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <?php
+                try {
+                    $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
+                    $stmt->execute();
+                    $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } catch(PDOException $e) {
+                    $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
+                }
+                ?>
+                
+                <tbody class="divide-y divide-gray-100" id="cashier-table-body">
+                    <?php if (empty($cashiers)): ?>
+                        <tr>
+                            <td colspan="4" class="py-6 px-6 text-center text-gray-500 text-base">No cashier accounts found.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php $counter = 1; ?>
+                        <?php foreach ($cashiers as $cashier): ?>
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="py-4 px-6 text-gray-700 text-sm"><?php echo $counter; ?></td>
+                                <td class="py-4 px-6 text-gray-700 text-sm">
+                                    <?php
+                                    $fullName = htmlspecialchars($cashier['first_name']);
+                                    if (!empty($cashier['middle_name'])) {
+                                        $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                                    }
+                                    $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                                    if (!empty($cashier['suffix'])) {
+                                        $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                                    }
+                                    echo $fullName;
+                                    ?>
+                                </td>
+                                <td class="py-4 px-6 text-gray-700 text-sm">
+                                    <?php
+                                    $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                                    echo $date->format('F d, Y');
+                                    ?>
+                                </td>
+                                <td class="py-4 px-6 flex justify-center space-x-3">
+                                    <button class="edit-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center text-sm font-medium shadow-sm" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                        <i class="fas fa-edit mr-2 text-base"></i> Edit
+                                    </button>
+                                    <button class="archive-btn bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center text-sm font-medium shadow-sm" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                        <i class="fas fa-archive mr-2 text-base"></i> Archive
+                                    </button>
+                                </td>
+                            </tr>
+                            <?php $counter++; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
         </div>
     </div>
 
