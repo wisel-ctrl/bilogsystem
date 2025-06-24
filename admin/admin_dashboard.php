@@ -42,241 +42,241 @@ require_once 'admin_auth.php';
             width: 100%;
         }
         /* Add this to your existing style section */
-#profileMenu {
-    z-index: 9999 !important;
-    transform: translateY(0) !important;
-}
-
-header {
-            z-index: 50;
-        }
-        
-        /* Smooth transitions */
-        .transition-all {
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 300ms;
-        }
-        
-        /* Improved hover effects */
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
-        }
-        
-        /* Card styles */
-        .dashboard-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 224, 213, 0.5);
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-card:hover {
-            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        /* Sidebar improvements */
-        .sidebar-link {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .sidebar-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #E8E0D5;
-            transition: width 0.3s ease;
-        }
-        
-        .sidebar-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Animation classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Improved scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #E8E0D5;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
+        #profileMenu {
+            z-index: 9999 !important;
+            transform: translateY(0) !important;
         }
 
-        /* Print-specific styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printSection, #printSection * {
-                visibility: visible;
-            }
-            #printSection {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .print-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-            .print-table th,
-            .print-table td {
-                border: 1px solid #000;
-                padding: 8px;
-                text-align: left;
-            }
-            .print-table th {
-                background-color: #f0f0f0;
-            }
-            .print-header {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .print-date {
-                text-align: right;
-                margin-bottom: 20px;
-                font-size: 12px;
-            }
-        }
+        header {
+                    z-index: 50;
+                }
+                
+                /* Smooth transitions */
+                .transition-all {
+                    transition-property: all;
+                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                    transition-duration: 300ms;
+                }
+                
+                /* Improved hover effects */
+                .hover-lift {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                .hover-lift:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+                }
+                
+                /* Card styles */
+                .dashboard-card {
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(232, 224, 213, 0.5);
+                    box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+                    transition: all 0.3s ease;
+                }
+                
+                .dashboard-card:hover {
+                    box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+                    transform: translateY(-2px);
+                }
+                
+                /* Sidebar improvements */
+                .sidebar-link {
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .sidebar-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #E8E0D5;
+                    transition: width 0.3s ease;
+                }
+                
+                .sidebar-link:hover::after {
+                    width: 100%;
+                }
+                
+                /* Animation classes */
+                .fade-in {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    animation: fadeIn 0.6s ease-out forwards;
+                }
+                
+                @keyframes fadeIn {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                /* Improved scrollbar */
+                ::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                ::-webkit-scrollbar-track {
+                    background: #E8E0D5;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb {
+                    background: #8B4513;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #5D2F0F;
+                }
 
-        /* Add these styles to the existing style section */
-        #sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: width 0.3s ease-in-out;
-            position: relative;
-            z-index: 40;
-        }
+                /* Print-specific styles */
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    #printSection, #printSection * {
+                        visibility: visible;
+                    }
+                    #printSection {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                    }
+                    .print-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                    }
+                    .print-table th,
+                    .print-table td {
+                        border: 1px solid #000;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    .print-table th {
+                        background-color: #f0f0f0;
+                    }
+                    .print-header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .print-date {
+                        text-align: right;
+                        margin-bottom: 20px;
+                        font-size: 12px;
+                    }
+                }
 
-        #sidebar.collapsed {
-            width: 4rem !important;
-        }
+                /* Add these styles to the existing style section */
+                #sidebar {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                    overflow: hidden;
+                    transition: width 0.3s ease-in-out;
+                    position: relative;
+                    z-index: 40;
+                }
 
-        #sidebar .sidebar-header {
-            flex-shrink: 0;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(232, 224, 213, 0.2);
-        }
+                #sidebar.collapsed {
+                    width: 4rem !important;
+                }
 
-        #sidebar.collapsed .sidebar-header {
-            padding: 1.5rem 0.75rem;
-        }
+                #sidebar .sidebar-header {
+                    flex-shrink: 0;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+                }
 
-        #sidebar nav {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
+                #sidebar.collapsed .sidebar-header {
+                    padding: 1.5rem 0.75rem;
+                }
 
-        .sidebar-link {
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+                #sidebar nav {
+                    flex: 1;
+                    overflow-y: auto;
+                    padding-right: 4px;
+                }
 
-        #sidebar.collapsed .sidebar-link {
-            padding: 0.75rem !important;
-            justify-content: center;
-        }
+                .sidebar-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                }
 
-        #sidebar.collapsed .sidebar-link i {
-            margin: 0 !important;
-        }
+                #sidebar.collapsed .sidebar-link {
+                    padding: 0.75rem !important;
+                    justify-content: center;
+                }
 
-        #sidebar.collapsed .sidebar-text,
-        #sidebar.collapsed .nav-title,
-        #sidebar.collapsed .nav-subtitle {
-            display: none;
-        }
+                #sidebar.collapsed .sidebar-link i {
+                    margin: 0 !important;
+                }
 
-        .sidebar-link .tooltip {
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #5D2F0F;
-            color: #E8E0D5;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
-            z-index: 50;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-        }
+                #sidebar.collapsed .sidebar-text,
+                #sidebar.collapsed .nav-title,
+                #sidebar.collapsed .nav-subtitle {
+                    display: none;
+                }
 
-        .sidebar-link .tooltip::before {
-            content: '';
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 6px solid transparent;
-            border-right-color: #5D2F0F;
-        }
+                .sidebar-link .tooltip {
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: #5D2F0F;
+                    color: #E8E0D5;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.2s ease;
+                    z-index: 50;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    pointer-events: none;
+                }
 
-        #sidebar.collapsed .sidebar-link:hover .tooltip {
-            opacity: 1;
-            visibility: visible;
-            left: calc(100% + 0.5rem);
-        }
+                .sidebar-link .tooltip::before {
+                    content: '';
+                    position: absolute;
+                    right: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: 6px solid transparent;
+                    border-right-color: #5D2F0F;
+                }
 
-        /* Active state for sidebar links */
-        .sidebar-link.active {
-            background: rgba(232, 224, 213, 0.2) !important;
-            color: #E8E0D5 !important;
-        }
+                #sidebar.collapsed .sidebar-link:hover .tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    left: calc(100% + 0.5rem);
+                }
 
-        /* Improved hover effects */
-        .sidebar-link:hover {
-            background: rgba(232, 224, 213, 0.15) !important;
-        }
+                /* Active state for sidebar links */
+                .sidebar-link.active {
+                    background: rgba(232, 224, 213, 0.2) !important;
+                    color: #E8E0D5 !important;
+                }
 
-        #sidebar.collapsed .sidebar-link:hover {
-            transform: scale(1.1);
-        }
+                /* Improved hover effects */
+                .sidebar-link:hover {
+                    background: rgba(232, 224, 213, 0.15) !important;
+                }
+
+                #sidebar.collapsed .sidebar-link:hover {
+                    transform: scale(1.1);
+                }
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville">

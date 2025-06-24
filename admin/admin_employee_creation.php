@@ -343,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         'accent-brown': '#A0522D'
                     },
                     fontFamily: {
-                        'serif': ['Libre Baskerville', 'serif'],
+                        'serif': ['Georgia', 'serif'],
                         'script': ['Brush Script MT', 'cursive']
                     }
                 }
@@ -351,6 +351,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         }
     </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+                
+        .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
 
         .chart-container {
@@ -441,7 +444,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         }
     </style>
 </head>
-<body class="bg-warm-cream font-baskerville">
+<body class="bg-warm-cream/50 font-baskerville">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
