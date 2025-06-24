@@ -525,68 +525,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     </div>
                     
                     <div class="overflow-x-auto">
-                    <table class="w-full table-auto display nowrap bg-white" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Name</th>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
-                                <th class="p-4 text-center font-semibold text-deep-brown font-playfair">Actions</th>
-                            </tr>
-                        </thead>
-                        <?php
-                        try {
-                            $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
-                            $stmt->execute();
-                            $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        } catch(PDOException $e) {
-                            $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
-                        }
-                        ?>
-                        
-                        <tbody class="divide-y divide-warm-cream" id="cashier-table-body">
-                            <?php if (empty($cashiers)): ?>
+                        <table class="min-w-full bg-white table-auto">
+                            <thead>
                                 <tr>
-                                    <td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td>
+                                    <th class="py-4 px-6 text-left font-semibold text-deep-brown font-playfair">No.</th>
+                                    <th class="py-4 px-6 text-left font-semibold text-deep-brown font-playfair">Name</th>
+                                    <th class="py-4 px-6 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
+                                    <th class="py-4 px-6 text-center font-semibold text-deep-brown font-playfair">Actions</th>
                                 </tr>
-                            <?php else: ?>
-                                <?php $counter = 1; ?>
-                                <?php foreach ($cashiers as $cashier): ?>
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td class="p-4 text-gray-700 text-sm font-baskerville"><?php echo $counter; ?></td>
-                                        <td class="p-4 text-gray-700 text-sm font-baskerville">
-                                            <?php
-                                            $fullName = htmlspecialchars($cashier['first_name']);
-                                            if (!empty($cashier['middle_name'])) {
-                                                $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
-                                            }
-                                            $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
-                                            if (!empty($cashier['suffix'])) {
-                                                $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
-                                            }
-                                            echo $fullName;
-                                            ?>
-                                        </td>
-                                        <td class="p-4 text-gray-700 text-sm font-baskerville">
-                                            <?php
-                                            $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
-                                            echo $date->format('F d, Y');
-                                            ?>
-                                        </td>
-                                        <td class="p-4 flex justify-center space-x-3">
-                                            <button class="edit-btn bg-blue-600 hover:bg-blue-700 text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center text-sm font-baskerville shadow-md hover:shadow-lg" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                                <i class="fas fa-edit mr-2 text-base"></i> Edit
-                                            </button>
-                                            <button class="archive-btn bg-gray-600 hover:bg-gray-700 text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center text-sm font-baskerville shadow-md hover:shadow-lg" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                                <i class="fas fa-archive mr-2 text-base"></i> Archive
-                                            </button>
-                                        </td>
+                            </thead>
+                            <?php
+                            try {
+                                $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
+                                $stmt->execute();
+                                $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch(PDOException $e) {
+                                $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
+                            }
+                            ?>
+                            
+                            <tbody class="divide-y divide-warm-cream" id="cashier-table-body">
+                                <?php if (empty($cashiers)): ?>
+                                    <tr>
+                                        <td colspan="4" class="py-6 px-6 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td>
                                     </tr>
-                                    <?php $counter++; ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                <?php else: ?>
+                                    <?php $counter = 1; ?>
+                                    <?php foreach ($cashiers as $cashier): ?>
+                                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                            <td class="py-4 px-6 text-gray-700 text-sm font-baskerville"><?php echo $counter; ?></td>
+                                            <td class="py-4 px-6 text-gray-700 text-sm font-baskerville">
+                                                <?php
+                                                $fullName = htmlspecialchars($cashier['first_name']);
+                                                if (!empty($cashier['middle_name'])) {
+                                                    $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                                                }
+                                                $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                                                if (!empty($cashier['suffix'])) {
+                                                    $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                                                }
+                                                echo $fullName;
+                                                ?>
+                                            </td>
+                                            <td class="py-4 px-6 text-gray-700 text-sm font-baskerville">
+                                                <?php
+                                                $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                                                echo $date->format('F d, Y');
+                                                ?>
+                                            </td>
+                                            <td class="py-4 px-6 flex justify-center space-x-3">
+                                                <button class="edit-btn bg-blue-600 hover:bg-blue-700 text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center text-sm font-baskerville shadow-md hover:shadow-lg" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                                    <i class="fas fa-edit mr-2 text-base"></i> Edit
+                                                </button>
+                                                <button class="archive-btn bg-gray-600 hover:bg-gray-700 text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center text-sm font-baskerville shadow-md hover:shadow-lg" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                                    <i class="fas fa-archive mr-2 text-base"></i> Archive
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php $counter++; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </main>
