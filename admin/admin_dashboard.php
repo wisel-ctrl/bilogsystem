@@ -347,7 +347,7 @@ header {
                         <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboardssss</h2>
                     </div>
                     <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
                         <i class="fas fa-calendar-alt mr-2"></i>
