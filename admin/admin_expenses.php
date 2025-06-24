@@ -425,10 +425,10 @@
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="p-6 border-b border-accent-brown">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-coffee text-2xl text-warm-cream"></i>
-                    <h1 id="cafe-title" class="text-xl font-bold text-warm-cream font-playfair">Cafe Lilio</h1>
+        <div class="sidebar-header p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
                 </div>
             </div>
             
