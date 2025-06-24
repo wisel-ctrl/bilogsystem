@@ -853,7 +853,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
             <div class="overflow-x-auto border border-gray-200 rounded-lg">
                 <table class="min-w-full bg-white">
-                    <thead class="bg-amber-400 text-white">
+                    <thead class="bg-amber-700 text-white">
                         <tr>
                             <th class="py-4 px-6 text-left text-sm font-semibold">Name</th>
                             <th class="py-4 px-6 text-left text-sm font-semibold">Username</th>
