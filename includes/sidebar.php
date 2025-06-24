@@ -148,7 +148,7 @@ require_once dirname(__DIR__) . '/admin_auth.php';
                 </a>
             </li>
             <li>
-                <a href="admin_bookings.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) === 'admin_bookings.php' ? 'active' : ''; ?> flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                <a href="admin_bookings.html" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) === 'admin_bookings.html' ? 'active' : ''; ?> flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                     <i class="fas fa-calendar-check w-5"></i>
                     <span class="sidebar-text font-baskerville">Booking Requests</span>
                     <span class="tooltip">Booking Requests</span>
