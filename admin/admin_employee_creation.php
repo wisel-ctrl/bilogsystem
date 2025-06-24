@@ -505,104 +505,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+            
 
             <!-- Main Content Area -->
-  <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-        <!-- Header Section with enhanced styling -->
-        <div class="mb-8">
-            <div class="flex items-center space-x-3 mb-2">
-                <div class="w-10 h-10 bg-gradient-to-br from-accent-brown to-deep-brown rounded-lg flex items-center justify-center shadow-lg">
-                    <i class="fas fa-users text-white text-lg"></i>
-                </div>
-                <h1 class="text-3xl font-bold bg-gradient-to-r from-deep-brown to-accent-brown bg-clip-text text-transparent">
-                    Cashier Management
-                </h1>
-            </div>
-            <p class="text-gray-600 text-sm">Manage your cashier accounts and permissions</p>
-        </div>
-
-        <!-- Main Card with enhanced design -->
-        <div class="glass-effect rounded-2xl shadow-2xl p-6 md:p-8 animate-on-scroll card-hover">
-            <!-- Action Buttons Section -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-table text-blue-600 text-sm"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800">Active Cashiers</h3>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        <?php echo count($cashiers ?? []); ?> Total
-                    </span>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
-                    <button id="view-archived-btn" class="group bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-archive mr-2 group-hover:animate-bounce-gentle"></i> 
-                        <span class="font-medium">View Archived</span>
-                    </button>
-                    <button id="create-cashier-btn" class="group bg-gradient-to-r from-accent-brown to-deep-brown hover:from-deep-brown hover:to-coffee text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-user-plus mr-2 group-hover:animate-bounce-gentle"></i> 
-                        <span class="font-medium">Add New Cashier</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Enhanced Table Container -->
-            <div class="bg-white rounded-xl shadow-inner border border-gray-100 overflow-hidden">
-                <!-- Table Header with gradient -->
-                <div class="bg-gradient-to-r from-rich-brown to-deep-brown px-6 py-4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-warm-cream font-semibold">
-                        <div class="flex items-center space-x-2">
-                            <i class="fas fa-user text-sm"></i>
-                            <span>Cashier Name</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <i class="fas fa-calendar-alt text-sm"></i>
-                            <span>Date Created</span>
-                        </div>
-                        <div class="flex items-center justify-center space-x-2">
-                            <i class="fas fa-cogs text-sm"></i>
-                            <span>Actions</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Table Body -->
-                <div class="divide-y divide-gray-100" id="cashier-table-body">
-                    <?php if (empty($cashiers)): ?>
-                        <!-- Enhanced Empty State -->
-                        <div class="p-12 text-center">
-                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-users text-gray-400 text-2xl"></i>
-                            </div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">No Cashiers Found</h3>
-                            <p class="text-gray-500 mb-6">Get started by creating your first cashier account.</p>
-                            <button class="bg-gradient-to-r from-accent-brown to-deep-brown text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300">
-                                <i class="fas fa-plus mr-2"></i>Create First Cashier
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
+                <div class="bg-white rounded-lg shadow-md p-6 animate-on-scroll">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-deep-brown">Cashier Management</h3>
+                        <div class="flex space-x-2">
+                            <button id="view-archived-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                                <i class="fas fa-archive mr-2"></i> View Archived
+                            </button>
+                            <button id="create-cashier-btn" class="bg-accent-brown hover:bg-deep-brown text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                                <i class="fas fa-user-plus mr-2"></i> Create Cashier
                             </button>
                         </div>
-                    <?php else: ?>
-                        <?php foreach ($cashiers as $index => $cashier): ?>
-                            <div class="p-6 hover:bg-gray-50 transition-colors duration-200 animate-slide-in" style="animation-delay: <?php echo $index * 0.1; ?>s">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                                    <!-- Cashier Name with Avatar -->
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 bg-gradient-to-br from-accent-brown to-deep-brown rounded-full flex items-center justify-center shadow-md">
-                                            <i class="fas fa-user text-white text-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-semibold text-gray-900 text-lg">
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                            <thead class="bg-rich-brown text-warm-cream">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">Name</th>
+                                    <th class="py-3 px-4 text-left">Date Created</th>
+                                    <th class="py-3 px-4 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <?php
+                            try {
+                                $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
+                                $stmt->execute();
+                                $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch(PDOException $e) {
+                                $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
+                            }
+                            ?>
+                            
+                            <tbody class="divide-y divide-gray-200" id="cashier-table-body">
+                                <?php if (empty($cashiers)): ?>
+                                    <tr>
+                                        <td colspan="3" class="py-3 px-4 text-center text-gray-500">No cashier accounts found.</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($cashiers as $cashier): ?>
+                                        <tr>
+                                            <td class="py-3 px-4">
                                                 <?php
                                                 $fullName = htmlspecialchars($cashier['first_name']);
                                                 if (!empty($cashier['middle_name'])) {
@@ -614,62 +561,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                                 }
                                                 echo $fullName;
                                                 ?>
-                                            </h4>
-                                            <p class="text-sm text-gray-500">Cashier ID: #<?php echo htmlspecialchars($cashier['id']); ?></p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Date Created with enhanced styling -->
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-calendar text-blue-600 text-sm"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-900">
+                                            </td>
+                                            <td class="py-3 px-4">
                                                 <?php
                                                 $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
-                                                echo $date->format('M d, Y');
+                                                echo $date->format('F d, Y');
                                                 ?>
-                                            </p>
-                                            <p class="text-xs text-gray-500">
-                                                <?php echo $date->format('g:i A'); ?>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Enhanced Action Buttons -->
-                                    <div class="flex justify-center md:justify-end space-x-3">
-                                        <button class="edit-btn group bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center shadow-md hover:shadow-lg transform hover:-translate-y-1" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-edit mr-2 group-hover:animate-pulse"></i>
-                                            <span class="font-medium">Edit</span>
-                                        </button>
-                                        <button class="archive-btn group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center shadow-md hover:shadow-lg transform hover:-translate-y-1" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-archive mr-2 group-hover:animate-pulse"></i>
-                                            <span class="font-medium">Archive</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Footer with additional info -->
-            <div class="mt-6 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 space-y-2 sm:space-y-0">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Last updated: <?php echo date('M d, Y g:i A'); ?></span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-1">
-                        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                        <span>Active System</span>
+                                            </td>
+                                            <td class="py-3 px-4 flex justify-center space-x-2">
+                                                <button class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors duration-200" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="archive-btn bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded transition-colors duration-200" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                                    <i class="fas fa-archive"></i> Archive
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </main>
+            </main>
         </div>
     </div>
 
