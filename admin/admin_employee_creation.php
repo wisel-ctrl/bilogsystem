@@ -503,7 +503,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 
 
             <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 bg-gray-50 relative z-0">
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 max-w-7xl mx-auto">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                         <h3 class="text-2xl md:text-3xl font-bold text-deep-brown font-playfair">Cashier Management</h3>
