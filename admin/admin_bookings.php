@@ -1,3 +1,6 @@
+<?php
+$page_title = 'Bookings';
+?>
 <script>
     tailwind.config = {
         theme: {

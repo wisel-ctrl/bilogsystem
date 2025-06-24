@@ -1,8 +1,11 @@
 <?php
 require_once 'admin_auth.php'; 
+$page_title = 'Dashboard';
 
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
