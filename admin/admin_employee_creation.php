@@ -844,7 +844,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 <!-- Archived Accounts Modal -->
 <div id="archived-accounts-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 transform transition-all duration-300">
-        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+        <div class="flex justify-between items-center bg-amber-900 text-white p-5 rounded-t-xl">
             <h3 class="text-xl md:text-2xl font-semibold">Archived Accounts</h3>
             <button id="close-archived-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
                 <i class="fas fa-times text-lg"></i>
