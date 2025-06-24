@@ -566,14 +566,16 @@
             }
         });
 
-        // Set current date
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-
+        // Set current date with improved formatting
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
         // Scroll animation observer
         const animateElements = document.querySelectorAll('.animate-on-scroll');
         
