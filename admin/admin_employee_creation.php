@@ -524,7 +524,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         </div>
                     </div>
                     
-                    <div class="overflow-x-auto border border-warm-cream rounded-lg">
+                    <div class="overflow-x-auto">
                         <table class="min-w-full bg-white table-auto">
                             <thead>
                                 <tr>
