@@ -526,7 +526,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     
                     <div class="overflow-x-auto border border-warm-cream rounded-lg">
                         <table class="min-w-full bg-white table-auto">
-                            <thead class="bg-rich-brown text-warm-cream">
+                            <thead>
                                 <tr>
                                     <th class="py-4 px-6 text-left font-semibold text-deep-brown font-playfair">No.</th>
                                     <th class="py-4 px-6 text-left font-semibold text-deep-brown font-playfair">Name</th>
