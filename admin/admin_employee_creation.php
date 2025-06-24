@@ -591,318 +591,332 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         </div>
     </div>
 
-    <!-- Create Cashier Modal -->
-    <div id="create-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal modal-hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div class="flex justify-between items-center border-b p-4 bg-rich-brown text-warm-cream rounded-t-lg">
-                <h3 class="text-lg font-bold">Create New Cashier</h3>
-                <button id="close-modal" class="text-warm-cream hover:text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <form id="cashier-form" class="p-6" method="POST" action="">
-                <input type="hidden" name="form_type" value="cashier">
-                <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'cashier'): ?>
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <span class="block sm:inline">Please fix the following issues:</span>
-                        <ul class="mt-2 list-disc list-inside">
-                            <?php foreach ($errors as $error): ?>
-                                <li><?php echo htmlspecialchars($error); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($registration_success): ?>
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Success!</strong>
-                        <span class="block sm:inline">Cashier registration successful!</span>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="input-group col-span-1">
-                        <label for="fname" class="floating-label">First Name *</label>
-                        <input type="text" id="fname" name="fname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="mname" class="floating-label">Middle Name</label>
-                        <input type="text" id="mname" name="mname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="lname" class="floating-label">Last Name *</label>
-                        <input type="text" id="lname" name="lname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="suffix" class="floating-label">Suffix</label>
-                        <select id="suffix" name="suffix" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <option value="">None</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                        </select>
-                    </div>
-                    <div class="input-group col-span-2">
-                        <label for="username" class="floating-label">Username *</label>
-                        <input type="text" id="username" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <p class="username-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-2">
-                        <label for="phone" class="floating-label">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <p class="phone-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="password" class="floating-label">Password *</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                            <button type="button" class="absolute right-3 top-2 text-gray-500 hover:text-deep-brown toggle-password" data-target="password">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <p class="password-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="password-strength mt-2 flex space-x-1">
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                        </div>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="confirm-password" class="floating-label">Confirm Password *</label>
-                        <div class="relative">
-                            <input type="password" id="confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                            <button type="button" class="absolute right-3 top-2 text-gray-500 hover:text-deep-brown toggle-password" data-target="confirm-password">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <p class="confirm-password-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                </div>
-                
-                <div class="mt-6 flex justify-end space-x-3">
-                    <button type="button" id="cancel-btn" class="px-4 py-2 border border-gray-300 rounded-md text-deep-brown hover:bg-gray-100 transition-colors duration-200">
-                        Cancel
-                    </button>
-                    <button type="submit" id="submit-btn" class="px-4 py-2 bg-accent-brown text-white rounded-md hover:bg-deep-brown transition-colors duration-200" disabled>
-                        Create Cashier
-                    </button>
-                </div>
-            </form>
+<!-- Create Cashier Modal -->
+<div id="create-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300">
+        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Create New Cashier</h3>
+            <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
         </div>
-    </div>
-
-    <!-- Edit Cashier Modal -->
-    <div id="edit-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal modal-hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div class="flex justify-between items-center border-b p-4 bg-rich-brown text-warm-cream rounded-t-lg">
-                <h3 class="text-lg font-bold">Edit Cashier</h3>
-                <button id="close-edit-modal" class="text-warm-cream hover:text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+        
+        <form id="cashier-form" class="p-6 md:p-8" method="POST" action="">
+            <input type="hidden" name="form_type" value="cashier">
+            <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'cashier'): ?>
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <strong class="font-semibold">Error!</strong>
+                    </div>
+                    <span class="block mt-1">Please fix the following issues:</span>
+                    <ul class="mt-2 list-disc list-inside text-sm">
+                        <?php foreach ($errors as $error): ?>
+                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             
-            <form id="edit-cashier-form" class="p-6" method="POST" action="">
-                
-                <?php if (!empty($errors) && isset($errors['no_changes'])): ?>
-                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Notice!</strong>
-                        <span class="block sm:inline"><?php echo htmlspecialchars($errors['no_changes']); ?></span>
+            <?php if ($registration_success): ?>
+                <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <strong class="font-semibold">Success!</strong>
                     </div>
-                <?php endif; ?>
-                
-                <input type="hidden" name="form_type" value="edit_cashier">
-                <input type="hidden" name="cashier_id" id="edit-cashier-id">
-                <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_cashier'): ?>
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <span class="block sm:inline">Please fix the following issues:</span>
-                        <ul class="mt-2 list-disc list-inside">
-                            <?php foreach ($errors as $error): ?>
-                                <li><?php echo htmlspecialchars($error); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($update_success): ?>
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Success!</strong>
-                        <span class="block sm:inline">Cashier updated successfully!</span>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="input-group col-span-1">
-                        <label for="edit-fname" class="floating-label">First Name *</label>
-                        <input type="text" id="edit-fname" name="fname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="edit-mname" class="floating-label">Middle Name</label>
-                        <input type="text" id="edit-mname" name="mname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="edit-lname" class="floating-label">Last Name *</label>
-                        <input type="text" id="edit-lname" name="lname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-1">
-                        <label for="edit-suffix" class="floating-label">Suffix</label>
-                        <select id="edit-suffix" name="suffix" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <option value="">None</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                        </select>
-                    </div>
-                    <div class="input-group col-span-2">
-                        <label for="edit-username" class="floating-label">Username *</label>
-                        <input type="text" id="edit-username" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <p class="username-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-2">
-                        <label for="edit-phone" class="floating-label">Phone Number *</label>
-                        <input type="tel" id="edit-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown" required>
-                        <p class="phone-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
-                    </div>
-                    <div class="input-group col-span-2">
-                        <button type="button" id="toggle-password-btn" class="mb-4 px-4 py-2 bg-accent-brown text-white rounded-md hover:bg-deep-brown transition-colors duration-200">
-                            Change Password?
+                    <span class="block mt-1">Cashier registration successful!</span>
+                </div>
+            <?php endif; ?>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="input-group">
+                    <label for="fname" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                    <input type="text" id="fname" name="fname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="mname" class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                    <input type="text" id="mname" name="mname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                </div>
+                <div class="input-group">
+                    <label for="lname" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                    <input type="text" id="lname" name="lname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="suffix" class="block text-sm font-medium text-gray-700 mb-1">Suffix</label>
+                    <select id="suffix" name="suffix" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <option value="">None</option>
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                    </select>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                    <input type="text" id="username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <p class="username-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <p class="phone-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-1">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="password">
+                            <i class="fas fa-eye"></i>
                         </button>
                     </div>
-                    <div class="input-group col-span-1 hidden" id="edit-password-group">
-                        <label for="edit-password" class="floating-label">New Password</label>
-                        <div class="relative">
-                            <input type="password" id="edit-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <button type="button" class="absolute right-3 top-2 text-gray-500 hover:text-deep-brown toggle-password" data-target="edit-password">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <p class="password-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="password-strength mt-2 flex space-x-1">
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
-                        </div>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
+                    <p class="password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="password-strength mt-2 flex space-x-1">
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
                     </div>
-                    <div class="input-group col-span-1 hidden" id="edit-confirm-password-group">
-                        <label for="edit-confirm-password" class="floating-label">Confirm New Password</label>
-                        <div class="relative">
-                            <input type="password" id="edit-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown">
-                            <button type="button" class="absolute right-3 top-2 text-gray-500 hover:text-deep-brown toggle-password" data-target="edit-confirm-password">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <p class="confirm-password-feedback mt-2 text-sm text-red-600 hidden"></p>
-                        <div class="field-feedback mt-2 text-sm text-red-600 hidden"></div>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-1">
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
+                    <div class="relative">
+                        <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="confirm-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
+                    <p class="confirm-password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
                 </div>
-                
-                <div class="mt-6 flex justify-end space-x-3">
-                    <button type="button" id="cancel-edit-btn" class="px-4 py-2 border border-gray-300 rounded-md text-deep-brown hover:bg-gray-100 transition-colors duration-200">
-                        Cancel
-                    </button>
-                    <button type="submit" id="submit-edit-btn" class="px-4 py-2 bg-accent-brown text-white rounded-md hover:bg-deep-brown transition-colors duration-200">
-                        Update Cashier
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            
+            <div class="mt-8 flex justify-end space-x-4">
+                <button type="button" id="cancel-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                    Cancel
+                </button>
+                <button type="submit" id="submit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium" disabled>
+                    Create Cashier
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <!-- Archived Accounts Modal -->
-    <div id="archived-accounts-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal modal-hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-4">
-            <div class="flex justify-between items-center border-b p-4 bg-rich-brown text-warm-cream rounded-t-lg">
-                <h3 class="text-lg font-bold">Archived Accounts</h3>
-                <button id="close-archived-modal" class="text-warm-cream hover:text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 max-h-[70vh] overflow-y-auto">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
-                        <thead class="bg-rich-brown text-warm-cream">
-                            <tr>
-                                <th class="py-3 px-4 text-left">Name</th>
-                                <th class="py-3 px-4 text-left">Username</th>
-                                <th class="py-3 px-4 text-left">Date Created</th>
-                                <th class="py-3 px-4 text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200" id="archived-table-body">
-                            <?php
-                            try {
-                                $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, username, created_at FROM users_tb WHERE usertype = 2 AND status = 0 ORDER BY created_at DESC");
-                                $stmt->execute();
-                                $archived_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            } catch(PDOException $e) {
-                                $errors['database'] = 'Failed to fetch archived users: ' . $e->getMessage();
-                            }
-                            ?>
-                            <?php if (empty($archived_users)): ?>
-                                <tr>
-                                    <td colspan="4" class="py-3 px-4 text-center text-gray-500">No archived accounts found.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($archived_users as $user): ?>
-                                    <tr>
-                                        <td class="py-3 px-4">
-                                            <?php
-                                            $fullName = htmlspecialchars($user['first_name']);
-                                            if (!empty($user['middle_name'])) {
-                                                $fullName .= ' ' . htmlspecialchars($user['middle_name']);
-                                            }
-                                            $fullName .= ' ' . htmlspecialchars($user['last_name']);
-                                            if (!empty($user['suffix'])) {
-                                                $fullName .= ' ' . htmlspecialchars($user['suffix']);
-                                            }
-                                            echo $fullName;
-                                            ?>
-                                        </td>
-                                        <td class="py-3 px-4"><?php echo htmlspecialchars($user['username']); ?></td>
-                                        <td class="py-3 px-4">
-                                            <?php
-                                            $date = new DateTime($user['created_at'], new DateTimeZone('Asia/Manila'));
-                                            echo $date->format('F d, Y');
-                                            ?>
-                                        </td>
-                                        <td class="py-3 px-4 flex justify-center">
-                                            <button class="unarchive-btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition-colors duration-200" data-id="<?php echo htmlspecialchars($user['id']); ?>">
-                                                <i class="fas fa-undo"></i> Unarchive
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+<!-- Edit Cashier Modal -->
+<div id="edit-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300">
+        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Edit Cashier</h3>
+            <button id="close-edit-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        
+        <form id="edit-cashier-form" class="p-6 md:p-8" method="POST" action="">
+            <?php if (!empty($errors) && isset($errors['no_changes'])): ?>
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong class="font-semibold">Notice!</strong>
+                    </div>
+                    <span class="block mt-1"><?php echo htmlspecialchars($errors['no_changes']); ?></span>
+                </div>
+            <?php endif; ?>
+            
+            <input type="hidden" name="form_type" value="edit_cashier">
+            <input type="hidden" name="cashier_id" id="edit-cashier-id">
+            <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_cashier'): ?>
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <strong class="font-semibold">Error!</strong>
+                    </div>
+                    <span class="block mt-1">Please fix the following issues:</span>
+                    <ul class="mt-2 list-disc list-inside text-sm">
+                        <?php foreach ($errors as $error): ?>
+                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($update_success): ?>
+                <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <strong class="font-semibold">Success!</strong>
+                    </div>
+                    <span class="block mt-1">Cashier updated successfully!</span>
+                </div>
+            <?php endif; ?>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="input-group">
+                    <label for="edit-fname" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                    <input type="text" id="edit-fname" name="fname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="edit-mname" class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                    <input type="text" id="edit-mname" name="mname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                </div>
+                <div class="input-group">
+                    <label for="edit-lname" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                    <input type="text" id="edit-lname" name="lname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="edit-suffix" class="block text-sm font-medium text-gray-700 mb-1">Suffix</label>
+                    <select id="edit-suffix" name="suffix" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <option value="">None</option>
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                    </select>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="edit-username" class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                    <input type="text" id="edit-username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <p class="username-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="edit-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" id="edit-phone" name="phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <p class="phone-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-2">
+                    <button type="button" id="toggle-password-btn" class="mb-4 px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium">
+                        Change Password?
+                    </button>
+                </div>
+                <div class="input-group col-span-1 hidden" id="edit-password-group">
+                    <label for="edit-password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                    <div class="relative">
+                        <input type="password" id="edit-password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="edit-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="password-strength mt-2 flex space-x-1">
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-1 hidden" id="edit-confirm-password-group">
+                    <label for="edit-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                    <div class="relative">
+                        <input type="password" id="edit-confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="edit-confirm-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="confirm-password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
                 </div>
             </div>
-            <div class="flex justify-end p-4 border-t border-gray-200">
-                <button id="cancel-archived-btn" class="px-4 py-2 border border-gray-300 rounded-md text-deep-brown hover:bg-gray-100 transition-colors duration-200">
-                    Close
+            
+            <div class="mt-8 flex justify-end space-x-4">
+                <button type="button" id="cancel-edit-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                    Cancel
+                </button>
+                <button type="submit" id="submit-edit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium">
+                    Update Cashier
                 </button>
             </div>
+        </form>
+    </div>
+</div>
+
+<!-- Archived Accounts Modal -->
+<div id="archived-accounts-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 transform transition-all duration-300">
+        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Archived Accounts</h3>
+            <button id="close-archived-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-amber-800 text-white">
+                        <tr>
+                            <th class="py-4 px-6 text-left text-sm font-semibold">Name</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold">Username</th>
+                            <th class="py-4 px-6 text-left text-sm font-semibold">Date Created</th>
+                            <th class="py-4 px-6 text-center text-sm font-semibold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="archived-table-body">
+                        <?php
+                        try {
+                            $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, username, created_at FROM users_tb WHERE usertype = 2 AND status = 0 ORDER BY created_at DESC");
+                            $stmt->execute();
+                            $archived_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } catch(PDOException $e) {
+                            $errors['database'] = 'Failed to fetch archived users: ' . $e->getMessage();
+                        }
+                        ?>
+                        <?php if (empty($archived_users)): ?>
+                            <tr>
+                                <td colspan="4" class="py-6 px-6 text-center text-gray-500 text-base">No archived accounts found.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($archived_users as $user): ?>
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="py-4 px-6 text-gray-700 text-sm">
+                                        <?php
+                                        $fullName = htmlspecialchars($user['first_name']);
+                                        if (!empty($user['middle_name'])) {
+                                            $fullName .= ' ' . htmlspecialchars($user['middle_name']);
+                                        }
+                                        $fullName .= ' ' . htmlspecialchars($user['last_name']);
+                                        if (!empty($user['suffix'])) {
+                                            $fullName .= ' ' . htmlspecialchars($user['suffix']);
+                                        }
+                                        echo $fullName;
+                                        ?>
+                                    </td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm"><?php echo htmlspecialchars($user['username']); ?></td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm">
+                                        <?php
+                                        $date = new DateTime($user['created_at'], new DateTimeZone('Asia/Manila'));
+                                        echo $date->format('F d, Y');
+                                        ?>
+                                    </td>
+                                    <td class="py-4 px-6 flex justify-center">
+                                        <button class="unarchive-btn bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-300 flex items-center text-sm font-medium" data-id="<?php echo htmlspecialchars($user['id']); ?>">
+                                            <i class="fas fa-undo mr-2"></i> Unarchive
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex justify-end p-5 border-t border-gray-200">
+            <button id="cancel-archived-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                Close
+            </button>
         </div>
     </div>
+</div>
 
     <script>
     // Sidebar Toggle
