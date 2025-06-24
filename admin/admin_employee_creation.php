@@ -351,6 +351,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         }
     </script>
     <style>
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
         .chart-container {
             position: relative;
             height: 300px;
@@ -439,7 +441,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         }
     </style>
 </head>
-<body class="bg-warm-cream font-serif">
+<body class="bg-warm-cream font-baskerville">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
