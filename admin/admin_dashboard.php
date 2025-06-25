@@ -281,7 +281,9 @@ require_once 'admin_auth.php';
 </head>
 <body class="bg-warm-cream font-baskerville">
     <div class="flex h-screen overflow-hidden">
-       
+        <!-- Include Sidebar -->
+        <?php include 'sidebar.php'; ?>
+
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
             <!-- Include Header -->
