@@ -615,7 +615,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-2 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-8">
+                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 bg-warm-cream/10 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
                             <span class="sidebar-text font-baskerville">Employee Creation</span>
                             <span class="tooltip">Employee Creation</span>
