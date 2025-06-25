@@ -791,9 +791,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     </div>
 
     <!-- Create Cashier Modal -->
-<!-- Create Cashier Modal -->
-<div id="create-cashier-modal" class="fixed inset-0 z-[100] flex items-start justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden pt-16">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300 my-4 overflow-y-auto max-h-[85vh]">
+    <div id="create-cashier-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300">
             <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
                 <h3 class="text-xl md:text-2xl font-semibold">Create New Cashier</h3>
                 <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
