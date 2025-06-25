@@ -771,7 +771,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                         ?>
                                     </td>
                                     <td class="p-4 flex justify-center space-x-3">
-                                        <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                        <button class="edit-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                            <i class="fas fa-edit"></i>
                                         </button>
                                         <button class="archive-btn bg-gray-600 hover:bg-gray-700 text-warm-cream px-4 py-2 rounded-lg transition-all duration-200 flex items-center text-sm font-baskerville shadow-md hover:shadow-lg" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                                             <i class="fas fa-archive mr-2 text-base"></i> Archive
