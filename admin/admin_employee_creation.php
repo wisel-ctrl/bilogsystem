@@ -447,21 +447,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 <body class="bg-warm-cream font-baskerville">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
             <div class="sidebar-header p-6 border-b border-warm-cream/20">
-                    <div>
-                        <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                        <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                    </div>
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                </div>
             </div>
-            <nav class="mt-8 px-4">
+            
+            <nav class="px-4">
                 <ul class="space-y-2">
-                    <li><a href="admin_dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream transition-colors duration-200"><i class="fas fa-chart-pie w-5"></i><span class="sidebar-text">Dashboard</span></a></li>
-                    <li><a href="admin_bookings.html" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200"><i class="fas fa-calendar-check w-5"></i><span class="sidebar-text">Booking Requests</span></a></li>
-                    <li><a href="admin_menu.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200"><i class="fas fa-utensils w-5"></i><span class="sidebar-text">Menu Management</span></a></li>
-                    <li><a href="admin_inventory.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200"><i class="fas fa-boxes w-5"></i><span class="sidebar-text">Inventory</span></a></li>
-                    <li><a href="admin_expenses.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200"><i class="fas fa-receipt w-5"></i><span class="sidebar-text">Expenses</span></a></li>
-                    <li><a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-accent-brown text-warm-cream/80 hover:text-warm-cream transition-colors duration-200"><i class="fas fa-user-plus w-5"></i><span class="sidebar-text">Employee Creation</span></a></li>
+                    <li>
+                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-8">
+                            <i class="fas fa-chart-pie w-5"></i>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
+                            <span class="tooltip">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-calendar-check w-5"></i>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
+                            <span class="tooltip">Booking Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
+                            <span class="tooltip">Menu Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-boxes w-5"></i>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
+                            <span class="tooltip">Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-receipt w-5"></i>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
+                            <span class="tooltip">Expenses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
+                            <span class="tooltip">Employee Creation</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
