@@ -415,7 +415,7 @@
                     <li>
                         <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
                             <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text font-baskerville">My Employee</span>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
                         </a>
                     </li>
                 </ul>
