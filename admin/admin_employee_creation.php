@@ -715,7 +715,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 </button>
                                 <button id="create-cashier-btn" class="w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg font-baskerville">
                                     <i class="fas fa-user-plus text-base"></i>
-                                    <span>Create Cashier</span>
+                                    <span>Add Cashier</span>
                                 </button>
                             </div>
                         </div>
@@ -794,7 +794,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     <div id="create-cashier-modal" class="fixed inset-0 z-[100] flex items-start justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden pt-16">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300 overflow-y-auto max-h-[85vh]">
             <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
-                <h3 class="text-xl md:text-2xl font-semibold">Create New Cashier</h3>
+                <h3 class="text-xl md:text-2xl font-semibold">Add New Cashier</h3>
                 <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
                     <i class="fas fa-times text-lg"></i>
                 </button>
@@ -900,7 +900,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                         Cancel
                     </button>
                     <button type="submit" id="submit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium" disabled>
-                        Create Cashier
+                        Add Cashier
                     </button>
                 </div>
             </form>
