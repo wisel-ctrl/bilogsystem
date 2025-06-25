@@ -58,3 +58,145 @@ require_once 'admin_auth.php';
         </ul>
     </nav>
 </div>
+
+<style>
+    /* Sidebar-specific styles */
+    #sidebar {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+        transition: width 0.3s ease-in-out;
+        position: relative;
+        z-index: 40;
+    }
+
+    #sidebar.collapsed {
+        width: 4rem !important;
+    }
+
+    #sidebar .sidebar-header {
+        flex-shrink: 0;
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+    }
+
+    #sidebar.collapsed .sidebar-header {
+        padding: 1.5rem 0.75rem;
+    }
+
+    #sidebar nav {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
+    .sidebar-link {
+        position: relative;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .sidebar-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #E8E0D5;
+        transition: width 0.3s ease;
+    }
+
+    .sidebar-link:hover::after {
+        width: 100%;
+    }
+
+    #sidebar.collapsed .sidebar-link {
+        padding: 0.75rem !important;
+        justify-content: center;
+    }
+
+    #sidebar.collapsed .sidebar-link i {
+        margin: 0 !important;
+    }
+
+    #sidebar.collapsed .sidebar-text,
+    #sidebar.collapsed .nav-title,
+    #sidebar.collapsed .nav-subtitle {
+        display: none;
+    }
+
+    .sidebar-link .tooltip {
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #5D2F0F;
+        color: #E8E0D5;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        z-index: 50;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+    }
+
+    .sidebar-link .tooltip::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+        border-right-color: #5D2F0F;
+    }
+
+    #sidebar.collapsed .sidebar-link:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+        left: calc(100% + 0.5rem);
+    }
+
+    /* Active state for sidebar links */
+    .sidebar-link.active {
+        background: rgba(232, 224, 213, 0.2) !important;
+        color: #E8E0D5 !important;
+    }
+
+    /* Improved hover effects */
+    .sidebar-link:hover {
+        background: rgba(232, 224, 213, 0.15) !important;
+    }
+
+    #sidebar.collapsed .sidebar-link:hover {
+        transform: scale(1.1);
+    }
+
+    /* Smooth transitions */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+</style>
+
+<script>
+    // Sidebar toggle functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+    }
+
+    // Event listener for sidebar toggle
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', toggleSidebar);
+    }
+</script>
