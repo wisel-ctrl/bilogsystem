@@ -790,31 +790,122 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         </div>
     </div>
 
-<!-- Create Cashier Modal -->
-<div id="create-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 my-8 overflow-y-auto max-h-[85vh]">
-        <div class="flex justify-between items-center bg-amber-800 text-white p-4 rounded-t-xl sticky top-0">
-            <h3 class="text-lg md:text-xl font-semibold">Create New Cashier</h3>
-            <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <form id="cashier-form" class="p-4 md:p-6" method="POST" action="">
-            <!-- [Rest of your form content remains exactly the same] -->
-            
-            <!-- Adjust the buttons section to have smaller padding -->
-            <div class="mt-6 flex justify-end space-x-3">
-                <button type="button" id="cancel-btn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
-                    Cancel
-                </button>
-                <button type="submit" id="submit-btn" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium" disabled>
-                    Create Cashier
+    <!-- Create Cashier Modal -->
+    <div id="create-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300">
+            <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+                <h3 class="text-xl md:text-2xl font-semibold">Create New Cashier</h3>
+                <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
-        </form>
+            
+            <form id="cashier-form" class="p-6 md:p-8" method="POST" action="">
+                <input type="hidden" name="form_type" value="cashier">
+                <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'cashier'): ?>
+                    <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            <strong class="font-semibold">Error!</strong>
+                        </div>
+                        <span class="block mt-1">Please fix the following issues:</span>
+                        <ul class="mt-2 list-disc list-inside text-sm">
+                            <?php foreach ($errors as $error): ?>
+                                <li><?php echo htmlspecialchars($error); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($registration_success): ?>
+                    <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6" role="alert">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <strong class="font-semibold">Success!</strong>
+                        </div>
+                        <span class="block mt-1">Cashier registration successful!</span>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="input-group">
+                        <label for="fname" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input type="text" id="fname" name="fname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="mname" class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                        <input type="text" id="mname" name="mname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                    </div>
+                    <div class="input-group">
+                        <label for="lname" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input type="text" id="lname" name="lname" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="suffix" class="block text-sm font-medium text-gray-700 mb-1">Suffix</label>
+                        <select id="suffix" name="suffix" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                            <option value="">None</option>
+                            <option value="Jr.">Jr.</option>
+                            <option value="Sr.">Sr.</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                        </select>
+                    </div>
+                    <div class="input-group col-span-2">
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                        <input type="text" id="username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <p class="username-feedback mt-1 text-sm text-red-600 hidden"></p>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                    <div class="input-group col-span-2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <p class="phone-feedback mt-1 text-sm text-red-600 hidden"></p>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                    <div class="input-group col-span-1">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                            <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <p class="password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                        <div class="password-strength mt-2 flex space-x-1">
+                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                        </div>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                    <div class="input-group col-span-1">
+                        <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
+                        <div class="relative">
+                            <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                            <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="confirm-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <p class="confirm-password-feedback mt-1 text-sm text-red-600 hidden"></p>
+                        <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-end space-x-4">
+                    <button type="button" id="cancel-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                        Cancel
+                    </button>
+                    <button type="submit" id="submit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium" disabled>
+                        Create Cashier
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Edit Cashier Modal -->
     <div id="edit-cashier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
