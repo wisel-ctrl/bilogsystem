@@ -771,12 +771,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                         ?>
                                     </td>
                                     <td class="p-4 flex justify-center space-x-3">
-                                        <button class="edit-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                     <!-- Edit Button -->
+                                        <button class="edit-btn text-rich-brown hover:text-deep-brown transition-transform duration-200 mr-2 transform hover:scale-110" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                                             <i class="fas fa-edit text-xl"></i>
                                         </button>
-                                        <button class="archive-btn text-blue-800 hover:text-blue-500 transition-colors duration-200" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+
+                                        <!-- Archive Button -->
+                                        <button class="archive-btn text-blue-800 hover:text-blue-500 transition-transform duration-200 transform hover:scale-110" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                                             <i class="fas fa-archive mr-2 text-xl"></i>
                                         </button>
+
                                     </td>
                                 </tr>
                                 <?php $counter++; ?>
