@@ -707,14 +707,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     
                     <div class="overflow-x-auto">
                     <table class="w-full table-auto display nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
-                            <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Name</th>
-                            <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
-                            <th class="p-4 text-center font-semibold text-deep-brown font-playfair">Actions</th>
-                        </tr>
-                    </thead>
+                        <thead>
+                            <tr>
+                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
+                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Name</th>
+                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
+                                <th class="p-4 text-center font-semibold text-deep-brown font-playfair">Actions</th>
+                            </tr>
+                        </thead>
                     <?php
                     try {
                         $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
@@ -725,7 +725,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     }
                     ?>
                     
-                    <tbody class="divide-y divide-warm-cream" id="cashier-table-body">
+                    <tbody id="cashier-table-body">
                         <?php if (empty($cashiers)): ?>
                             <tr>
                                 <td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td>
