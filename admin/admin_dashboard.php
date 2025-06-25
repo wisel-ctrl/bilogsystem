@@ -1,7 +1,8 @@
 <?php
-require_once 'admin_auth.php';
-?>
+require_once 'admin_auth.php'; 
 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@ require_once 'admin_auth.php';
             }
         }
     }
-    </script>
+</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -40,253 +41,336 @@ require_once 'admin_auth.php';
             height: 300px;
             width: 100%;
         }
-
+        /* Add this to your existing style section */
         #profileMenu {
             z-index: 9999 !important;
             transform: translateY(0) !important;
         }
 
         header {
-            z-index: 50;
-        }
+                    z-index: 50;
+                }
                 
-        /* Smooth transitions */
-        .transition-all {
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 300ms;
-        }
+                /* Smooth transitions */
+                .transition-all {
+                    transition-property: all;
+                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                    transition-duration: 300ms;
+                }
                 
-        /* Improved hover effects */
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+                /* Improved hover effects */
+                .hover-lift {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
                 
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
-        }
+                .hover-lift:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+                }
                 
-        /* Card styles */
-        .dashboard-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 224, 213, 0.5);
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-            transition: all 0.3s ease;
-        }
+                /* Card styles */
+                .dashboard-card {
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(232, 224, 213, 0.5);
+                    box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+                    transition: all 0.3s ease;
+                }
                 
-        .dashboard-card:hover {
-            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
-            transform: translateY(-2px);
-        }
+                .dashboard-card:hover {
+                    box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+                    transform: translateY(-2px);
+                }
                 
-        /* Sidebar improvements */
-        .sidebar-link {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+                /* Sidebar improvements */
+                .sidebar-link {
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
                 
-        .sidebar-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #E8E0D5;
-            transition: width 0.3s ease;
-        }
+                .sidebar-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #E8E0D5;
+                    transition: width 0.3s ease;
+                }
                 
-        .sidebar-link:hover::after {
-            width: 100%;
-        }
+                .sidebar-link:hover::after {
+                    width: 100%;
+                }
                 
-        /* Animation classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+                /* Animation classes */
+                .fade-in {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    animation: fadeIn 0.6s ease-out forwards;
+                }
                 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+                @keyframes fadeIn {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
                 
-        /* Improved scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+                /* Improved scrollbar */
+                ::-webkit-scrollbar {
+                    width: 8px;
+                }
                 
-        ::-webkit-scrollbar-track {
-            background: #E8E0D5;
-            border-radius: 4px;
-        }
+                ::-webkit-scrollbar-track {
+                    background: #E8E0D5;
+                    border-radius: 4px;
+                }
                 
-        ::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 4px;
-        }
+                ::-webkit-scrollbar-thumb {
+                    background: #8B4513;
+                    border-radius: 4px;
+                }
                 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
-        }
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #5D2F0F;
+                }
 
-        /* Print-specific styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printSection, #printSection * {
-                visibility: visible;
-            }
-            #printSection {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .print-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-            .print-table th,
-            .print-table td {
-                border: 1px solid #000;
-                padding: 8px;
-                text-align: left;
-            }
-            .print-table th {
-                background-color: #f0f0f0;
-            }
-            .print-header {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .print-date {
-                text-align: right;
-                margin-bottom: 20px;
-                font-size: 12px;
-            }
-        }
+                /* Print-specific styles */
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    #printSection, #printSection * {
+                        visibility: visible;
+                    }
+                    #printSection {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                    }
+                    .print-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                    }
+                    .print-table th,
+                    .print-table td {
+                        border: 1px solid #000;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    .print-table th {
+                        background-color: #f0f0f0;
+                    }
+                    .print-header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .print-date {
+                        text-align: right;
+                        margin-bottom: 20px;
+                        font-size: 12px;
+                    }
+                }
 
-        /* Sidebar-specific styles */
-        #sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: width 0.3s ease-in-out;
-            position: relative;
-            z-index: 40;
-        }
+                /* Add these styles to the existing style section */
+                #sidebar {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                    overflow: hidden;
+                    transition: width 0.3s ease-in-out;
+                    position: relative;
+                    z-index: 40;
+                }
 
-        #sidebar.collapsed {
-            width: 4rem !important;
-        }
+                #sidebar.collapsed {
+                    width: 4rem !important;
+                }
 
-        #sidebar .sidebar-header {
-            flex-shrink: 0;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(232, 224, 213, 0.2);
-        }
+                #sidebar .sidebar-header {
+                    flex-shrink: 0;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+                }
 
-        #sidebar.collapsed .sidebar-header {
-            padding: 1.5rem 0.75rem;
-        }
+                #sidebar.collapsed .sidebar-header {
+                    padding: 1.5rem 0.75rem;
+                }
 
-        #sidebar nav {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
+                #sidebar nav {
+                    flex: 1;
+                    overflow-y: auto;
+                    padding-right: 4px;
+                }
 
-        .sidebar-link {
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+                .sidebar-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                }
 
-        #sidebar.collapsed .sidebar-link {
-            padding: 0.75rem !important;
-            justify-content: center;
-        }
+                #sidebar.collapsed .sidebar-link {
+                    padding: 0.75rem !important;
+                    justify-content: center;
+                }
 
-        #sidebar.collapsed .sidebar-link i {
-            margin: 0 !important;
-        }
+                #sidebar.collapsed .sidebar-link i {
+                    margin: 0 !important;
+                }
 
-        #sidebar.collapsed .sidebar-text,
-        #sidebar.collapsed .nav-title,
-        #sidebar.collapsed .nav-subtitle {
-            display: none;
-        }
+                #sidebar.collapsed .sidebar-text,
+                #sidebar.collapsed .nav-title,
+                #sidebar.collapsed .nav-subtitle {
+                    display: none;
+                }
 
-        .sidebar-link .tooltip {
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #5D2F0F;
-            color: #E8E0D5;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
-            z-index: 50;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-        }
+                .sidebar-link .tooltip {
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: #5D2F0F;
+                    color: #E8E0D5;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.2s ease;
+                    z-index: 50;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    pointer-events: none;
+                }
 
-        .sidebar-link .tooltip::before {
-            content: '';
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 6px solid transparent;
-            border-right-color: #5D2F0F;
-        }
+                .sidebar-link .tooltip::before {
+                    content: '';
+                    position: absolute;
+                    right: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: 6px solid transparent;
+                    border-right-color: #5D2F0F;
+                }
 
-        #sidebar.collapsed .sidebar-link:hover .tooltip {
-            opacity: 1;
-            visibility: visible;
-            left: calc(100% + 0.5rem);
-        }
+                #sidebar.collapsed .sidebar-link:hover .tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    left: calc(100% + 0.5rem);
+                }
 
-        /* Active state for sidebar links */
-        .sidebar-link.active {
-            background: rgba(232, 224, 213, 0.2) !important;
-            color: #E8E0D5 !important;
-        }
+                /* Active state for sidebar links */
+                .sidebar-link.active {
+                    background: rgba(232, 224, 213, 0.2) !important;
+                    color: #E8E0D5 !important;
+                }
 
-        /* Improved hover effects */
-        .sidebar-link:hover {
-            background: rgba(232, 224, 213, 0.15) !important;
-        }
+                /* Improved hover effects */
+                .sidebar-link:hover {
+                    background: rgba(232, 224, 213, 0.15) !important;
+                }
 
-        #sidebar.collapsed .sidebar-link:hover {
-            transform: scale(1.1);
-        }
+                #sidebar.collapsed .sidebar-link:hover {
+                    transform: scale(1.1);
+                }
     </style>
 </head>
 <body class="bg-warm-cream font-baskerville">
     <div class="flex h-screen overflow-hidden">
-        <!-- Include Sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <!-- Sidebar -->
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="sidebar-header p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                </div>
+            </div>
+            
+            <nav class="px-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-8">
+                            <i class="fas fa-chart-pie w-5"></i>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
+                            <span class="tooltip">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-calendar-check w-5"></i>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
+                            <span class="tooltip">Booking Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
+                            <span class="tooltip">Menu Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-boxes w-5"></i>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
+                            <span class="tooltip">Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-receipt w-5"></i>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
+                            <span class="tooltip">Expenses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span class="sidebar-text font-baskerville">Employee Creation</span>
+                            <span class="tooltip">Employee Creation</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
-            <!-- Include Header -->
-            <?php include 'header.php'; ?>
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
+                    </div>
+                </div>
+            </header>
 
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
@@ -391,7 +475,7 @@ require_once 'admin_auth.php';
                                 <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">892</p>
                                 <div class="flex items-center mt-2">
                                     <div class="w-full bg-warm-cream/50 h-2 rounded-full">
-                                        <div class="bg-deep-brown h-2 rounded-full style="width: 85%"></div>
+                                        <div class="bg-deep-brown h-2 rounded-full" style="width: 85%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -443,7 +527,6 @@ require_once 'admin_auth.php';
                         <div class="text-center">
                             <div class="bg-green-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 hover-lift">
                                 <i class="fas fa-arrow-up text-2xl text-green-600"></i>
-                                </div>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Revenue</h4>
                             <p class="text-xl font-bold text-green-600 font-baskerville mt-2">₱84,320</p>
@@ -534,8 +617,7 @@ require_once 'admin_auth.php';
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-sm font-medium text-rich-brown font-baskerville">Excellent</span>
                                     <span class="text-sm font-bold text-deep-brown font-baskerville">65%</span>
-                                        </div>
-                                    </div>
+                                </div>
                                 <div class="w-full bg-warm-cream/30 rounded-full h-3">
                                     <div class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: 65%"></div>
                                 </div>
@@ -612,7 +694,6 @@ require_once 'admin_auth.php';
                                 <p class="text-xs text-rich-brown font-baskerville mt-1">Coffee beans running low (5 kg remaining)</p>
                             </div>
                             <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">3 hours ago</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -631,6 +712,25 @@ require_once 'admin_auth.php';
 
         // Update event listeners
         sidebarToggle.addEventListener('click', toggleSidebar);
+
+        // Update sidebar link click handler
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', () => {
+                // Remove active class from all links
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                link.classList.add('active');
+            });
+        });
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active link
+            const dashboardLink = document.querySelector('.sidebar-link[href="#"]');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+            }
+        });
 
         // Set current date with improved formatting
         const options = { 
@@ -787,14 +887,14 @@ require_once 'admin_auth.php';
         const seasonChart = new Chart(seasonCtx, {
             type: 'bar',
             data: {
- puzzle labels: ['Spring', 'Summer', 'Fall', 'Winter'],
+                labels: ['Spring', 'Summer', 'Fall', 'Winter'],
                 datasets: [{
                     label: 'Revenue',
                     data: [180000, 250000, 220000, 200000],
                     backgroundColor: [
                         '#8B4513',
                         '#A0522D',
-                        '#5D2F0F0',
+                        '#5D2F0F',
                         '#E8E0D5'
                     ],
                     borderRadius: 8,
@@ -893,11 +993,12 @@ require_once 'admin_auth.php';
                     <thead>
                         <tr>
                             <th style="background-color: #8B4513; color: white;">Category</th>
-                            <th style="background-color: #333; color: white;">Value</th>
+                            <th style="background-color: #8B4513; color: white;">Value</th>
                         </tr>
                     </thead>
                     <tbody>
-                        `;
+            `;
+            
             // Add data rows
             data.labels.forEach((label, index) => {
                 const value = data.datasets[0].data[index];
