@@ -544,6 +544,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 #sidebar.collapsed .sidebar-link:hover {
                     transform: scale(1.1);
                 }
+
+
+                  /* Improved scrollbar */
+                  ::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                ::-webkit-scrollbar-track {
+                    background: #E8E0D5;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb {
+                    background: #8B4513;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #5D2F0F;
+                }
     </style>
 </head>
 <body class="bg-warm-cream font-baskerville">

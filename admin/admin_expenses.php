@@ -284,6 +284,26 @@
         .action-btn i {
             font-size: 1rem;
         }
+
+
+          /* Improved scrollbar */
+          ::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                ::-webkit-scrollbar-track {
+                    background: #E8E0D5;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb {
+                    background: #8B4513;
+                    border-radius: 4px;
+                }
+                
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #5D2F0F;
+                }
     </style>
     <script>
         tailwind.config = {
