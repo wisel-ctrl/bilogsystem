@@ -34,3 +34,56 @@ require_once 'admin_auth.php';
         </div>
     </div>
 </header>
+
+<style>
+    /* Header-specific styles */
+    header {
+        z-index: 50;
+    }
+
+    #profileMenu {
+        z-index: 9999 !important;
+        transform: translateY(0) !important;
+    }
+
+    /* Smooth transitions */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+</style>
+
+<script>
+    // Set current date with improved formatting
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+
+    // Profile Dropdown functionality
+    const profileDropdown = document.getElementById('profileDropdown');
+    const profileMenu = document.getElementById('profileMenu');
+    const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
+
+    profileDropdown.addEventListener('click', () => {
+        profileMenu.classList.toggle('hidden');
+        setTimeout(() => {
+            profileMenu.classList.toggle('opacity-0');
+            dropdownIcon.classList.toggle('rotate-180');
+        }, 50);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('mousedown', (e) => {
+        if (!profileDropdown.contains(e.target)) {
+            profileMenu.classList.add('hidden', 'opacity-70');
+            dropdownIcon.classList.remove('rotate-180');
+        }
+    });
+</script>
