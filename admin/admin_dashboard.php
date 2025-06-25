@@ -176,18 +176,147 @@ require_once 'admin_auth.php';
                     }
                 }
 
+                /* Add these styles to the existing style section */
+                #sidebar {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                    overflow: hidden;
+                    transition: width 0.3s ease-in-out;
+                    position: relative;
+                    z-index: 40;
+                }
 
+                #sidebar.collapsed {
+                    width: 4rem !important;
+                }
+
+                #sidebar .sidebar-header {
+                    flex-shrink: 0;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+                }
+
+                #sidebar.collapsed .sidebar-header {
+                    padding: 1.5rem 0.75rem;
+                }
+
+                #sidebar nav {
+                    flex: 1;
+                    overflow-y: auto;
+                    padding-right: 4px;
+                }
+
+                .sidebar-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                }
+
+                #sidebar.collapsed .sidebar-link {
+                    padding: 0.75rem !important;
+                    justify-content: center;
+                }
+
+                #sidebar.collapsed .sidebar-link i {
+                    margin: 0 !important;
+                }
+
+                #sidebar.collapsed .sidebar-text,
+                #sidebar.collapsed .nav-title,
+                #sidebar.collapsed .nav-subtitle {
+                    display: none;
+                }
+
+                .sidebar-link .tooltip {
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: #5D2F0F;
+                    color: #E8E0D5;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.2s ease;
+                    z-index: 50;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    pointer-events: none;
+                }
+
+                .sidebar-link .tooltip::before {
+                    content: '';
+                    position: absolute;
+                    right: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: 6px solid transparent;
+                    border-right-color: #5D2F0F;
+                }
+
+                #sidebar.collapsed .sidebar-link:hover .tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    left: calc(100% + 0.5rem);
+                }
+
+                /* Active state for sidebar links */
+                .sidebar-link.active {
+                    background: rgba(232, 224, 213, 0.2) !important;
+                    color: #E8E0D5 !important;
+                }
+
+                /* Improved hover effects */
+                .sidebar-link:hover {
+                    background: rgba(232, 224, 213, 0.15) !important;
+                }
+
+                #sidebar.collapsed .sidebar-link:hover {
+                    transform: scale(1.1);
+                }
     </style>
 </head>
 <body class="bg-warm-cream font-baskerville">
     <div class="flex h-screen overflow-hidden">
-        <!-- Include Sidebar -->
-        <?php include 'sidebar.php'; ?>
+            <!-- Include Sidebar -->
+            <?php include 'sidebar.php'; ?>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
-            <!-- Include Header -->
-            <?php include 'header.php'; ?>
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Dashboard</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
+                    </div>
+                </div>
+            </header>
 
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
