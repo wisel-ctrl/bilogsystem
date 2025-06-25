@@ -1058,10 +1058,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     <table class="min-w-full bg-white">
                         <thead class="text-amber-800">
                             <tr>
-                                <th class="py-4 px-6 text-left text-sm font-bold">Name</th>
-                                <th class="py-4 px-6 text-left text-sm font-bold">Username</th>
-                                <th class="py-4 px-6 text-left text-sm font-bold">Date Created</th>
-                                <th class="py-4 px-6 text-center text-sm font-bold">Action</th>
+                                <th class="py-4 px-6 text-left text-md font-bold">Name</th>
+                                <th class="py-4 px-6 text-left text-md font-bold">Username</th>
+                                <th class="py-4 px-6 text-left text-md font-bold">Date Created</th>
+                                <th class="py-4 px-6 text-center text-md font-bold">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100" id="archived-table-body">
