@@ -443,6 +443,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             border-radius: 0.125rem;
         }
 
+                        /* Sidebar improvements */
+                        .sidebar-link {
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .sidebar-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #E8E0D5;
+                    transition: width 0.3s ease;
+                }
+                
+                .sidebar-link:hover::after {
+                    width: 100%;
+                }
+
                         /* Add these styles to the existing style section */
                         #sidebar {
                     display: flex;
@@ -579,7 +601,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             
             <nav class="px-4">
                 <ul class="space-y-2">
-                <li>
+                    <li>
                         <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-8">
                             <i class="fas fa-chart-pie w-5"></i>
                             <span class="sidebar-text font-baskerville">Dashboard</span>
