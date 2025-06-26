@@ -545,21 +545,21 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Date</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Amount</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Notes</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Data will be loaded via AJAX -->
-                            </tbody>
-                        </table>
+                    <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Date</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Amount</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Notes</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair w-32">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+</table>
                     </div>
                 </div>
             </main>
