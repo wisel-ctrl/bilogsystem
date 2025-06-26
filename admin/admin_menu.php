@@ -502,9 +502,9 @@
                             <div class="w-64">
                                 <input type="text" id="packages-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search packages...">
                             </div>
-                            <button id="add-package-btn" class="w-52 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
-                                <i class="fas fa-plus"></i>
-                                <span class="font-baskerville">Create New Package</span>
+                            <button id="add-package-btn" class="group w-10 hover:w-52 h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
+                                <i class="fas fa-plus text-lg flex-shrink-0"></i>
+                                <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-[10.5rem] ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Create New Package</span>
                             </button>
                         </div>
                     </div>
@@ -1872,12 +1872,19 @@
                         data: 'package_id',
                         render: function(data) {
                             return `
-                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 view-package-btn mr-2" data-id="${data}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 edit-package-btn" data-id="${data}">
-                                    <i class="fas fa-edit"></i>
-                                </button>
+                                <div class="flex space-x-2">
+                                    <!-- View Button -->
+                                    <button class="group view-package-btn w-8 hover:w-28 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-800 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden" data-id="${data}">
+                                        <i class="fas fa-eye text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[4.5rem] ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">View</span>
+                                    </button>
+
+                                    <!-- Edit Button -->
+                                    <button class="group edit-package-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden" data-id="${data}">
+                                        <i class="fas fa-edit text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[3.5rem] ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                    </button>
+                                </div>
                             `;
                         },
                         orderable: false
