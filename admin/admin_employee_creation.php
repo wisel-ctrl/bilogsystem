@@ -748,7 +748,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     </div>
                     
                     <div class="overflow-x-auto">
-                    <table class="w-full table-auto display wrap" style="width:100%">
+                    <table class="w-full table-auto display nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
@@ -800,13 +800,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                         <!-- Edit Button -->
                                         <button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform " data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                                             <i class="fas fa-edit text-lg flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>
                                         </button>
 
                                         <!-- Archive Button -->
                                         <button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                                             <i class="fas fa-archive text-lg flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Archive</span>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>
                                         </button>
                                     </td>
                                 </tr>
