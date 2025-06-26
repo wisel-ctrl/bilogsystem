@@ -748,73 +748,110 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     </div>
                     
                     <div class="overflow-x-auto">
-                    <table class="w-full table-auto display nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Name</th>
-                                <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
-                                <th class="p-4 text-center font-semibold text-deep-brown font-playfair w-32">Actions</th>
-                            </tr>
-                        </thead>
-                    <?php
-                    try {
-                        $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
-                        $stmt->execute();
-                        $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    } catch(PDOException $e) {
-                        $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
-                    }
-                    ?>
-                    
-                    <tbody id="cashier-table-body">
-                        <?php if (empty($cashiers)): ?>
-                            <tr>
-                                <td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td>
-                            </tr>
-                        <?php else: ?>
-                            <?php $counter = 1; ?>
-                            <?php foreach ($cashiers as $cashier): ?>
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="p-4 text-gray-700 text-sm font-baskerville"><?php echo $counter; ?></td>
-                                    <td class="p-4 text-gray-700 text-sm font-baskerville">
-                                        <?php
-                                        $fullName = htmlspecialchars($cashier['first_name']);
-                                        if (!empty($cashier['middle_name'])) {
-                                            $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
-                                        }
-                                        $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
-                                        if (!empty($cashier['suffix'])) {
-                                            $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
-                                        }
-                                        echo $fullName;
-                                        ?>
-                                    </td>
-                                    <td class="p-4 text-gray-700 text-sm font-baskerville">
-                                        <?php
-                                        $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
-                                        echo $date->format('F d, Y');
-                                        ?>
-                                    </td>
-                                    <td class="p-4 flex justify-center space-x-3">
-                                        <!-- Edit Button -->
-                                        <button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform " data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-edit text-lg flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>
-                                        </button>
+                    <table class="w-full table-auto border-collapse bg-white shadow-lg rounded-xl overflow-hidden">
+    <thead class="bg-gradient-to-r from-amber-50 to-amber-100">
+        <tr>
+            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">No.</th>
+            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Name</th>
+            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Date Created</th>
+            <th class="p-4 text-center text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair w-40">Actions</th>
+        </tr>
+    </thead>
+    <?php
+        try {
+            $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
+            $stmt->execute();
+            $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
+        }
+    ?>
+    <tbody id="cashier-table-body" class="divide-y divide-gray-100">
+        <?php if (empty($cashiers)): ?>
+            <tr>
+                <td colspan="4" class="p-6 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td>
+            </tr>
+        <?php else: ?>
+            <?php $counter = 1; ?>
+            <?php foreach ($cashiers as $cashier): ?>
+                <tr class="hover:bg-amber-50 transition-colors duration-200">
+                    <td class="p-4 text-sm font-medium text-gray-700 font-baskerville"><?php echo $counter; ?></td>
+                    <td class="p-4 text-sm font-medium text-gray-700 font-baskerville">
+                        <?php
+                        $fullName = htmlspecialchars($cashier['first_name']);
+                        if (!empty($cashier['middle_name'])) {
+                            $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                        }
+                        $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                        if (!empty($cashier['suffix'])) {
+                            $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                        }
+                        echo $fullName;
+                        ?>
+                    </td>
+                    <td class="p-4 text-sm text-gray-600 font-baskerville">
+                        <?php
+                        $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                        echo $date->format('F d, Y');
+                        ?>
+                    </td>
+                    <td class="p-4 flex justify-center space-x-4">
+                        <!-- Edit Button -->
+                        <button class="group edit-btn px-3 py-2 bg-amber-100 text-amber-800 hover:bg-amber-200 hover:text-amber-900 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                            <i class="fas fa-edit mr-2"></i>
+                            <span class="text-sm font-medium">Edit</span>
+                        </button>
+                        <!-- Archive Button -->
+                        <button class="group archive-btn px-3 py-2 bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-900 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                            <i class="fas fa-archive mr-2"></i>
+                            <span class="text-sm font-medium">Archive</span>
+                        </button>
+                    </td>
+                </tr>
+                <?php $counter++; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
 
-                                        <!-- Archive Button -->
-                                        <button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-archive text-lg flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php $counter++; ?>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+<style>
+@media (max-width: 640px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    thead {
+        display: none;
+    }
+    tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+    tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #1f2937;
+        width: 40%;
+        min-width: 100px;
+    }
+    tbody td[data-label="Actions"] {
+        justify-content: center;
+    }
+    tbody td[data-label="Actions"] .flex {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+}
+</style>
                     </div>
                 </div>
             </main>
