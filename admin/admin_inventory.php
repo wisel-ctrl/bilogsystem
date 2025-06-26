@@ -800,12 +800,23 @@
                         "data": "ingredient_id",
                         "render": function(data, type, row) {
                             return `
-                                <button class="action-btn text-rich-brown hover:text-deep-brown transition-colors duration-200 mr-2" onclick="editIngredient(${data})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn text-red-500 hover:text-red-700 transition-colors duration-200" onclick="confirmDelete(${data})">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                <div class="flex space-x-2">
+                                    <!-- Edit Button -->
+                                    <button 
+                                        class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/10 hover:bg-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
+                                        onclick="editIngredient(${data})">
+                                        <i class="fas fa-edit text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                    </button>
+
+                                    <!-- Delete Button -->
+                                    <button 
+                                        class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
+                                        onclick="confirmDelete(${data})">
+                                        <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
+                                    </button>
+                                </div>
                             `;
                         },
                         "orderable": false
