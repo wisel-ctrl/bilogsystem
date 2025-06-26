@@ -589,7 +589,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     background: #5D2F0F;
                 }
 
-
+                table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    thead {
+        display: none;
+    }
+    tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+    tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #1f2937;
+        width: 40%;
+        min-width: 100px;
+    }
+    tbody td[data-label="Actions"] {
+        justify-content: center;
+    }
+    tbody td[data-label="Actions"] .flex {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+}
 
     </style>
 </head>
@@ -777,44 +811,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     </tbody>
 </table>
 
-<style>
-@media (max-width: 640px) {
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    thead {
-        display: none;
-    }
-    tbody tr {
-        display: block;
-        margin-bottom: 1rem;
-        border-bottom: 2px solid #f3f4f6;
-    }
-    tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        text-align: left;
-    }
-    tbody td:before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #1f2937;
-        width: 40%;
-        min-width: 100px;
-    }
-    tbody td[data-label="Actions"] {
-        justify-content: center;
-    }
-    tbody td[data-label="Actions"] .flex {
-        flex-direction: row;
-        gap: 0.5rem;
-    }
-}
-</style>
+
                     </div>
                 </div>
             </main>

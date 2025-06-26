@@ -507,95 +507,21 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                    <table id="expenses-table" class="w-full table-auto border-collapse bg-white shadow-lg rounded-xl overflow-hidden">
-    <thead class="bg-gradient-to-r from-amber-50 to-amber-100">
+                    <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
+    <thead>
         <tr>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Date</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Expense Name</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Category</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Amount</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Notes</th>
-            <th class="p-4 text-center text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair w-40">Actions</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Date</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Amount</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Notes</th>
+            <th class="text-left p-4 font-semibold text-deep-brown font-playfair w-32">Actions</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100">
-        <!-- Sample data for demonstration -->
-        <tr class="hover:bg-amber-50 transition-colors duration-200">
-            <td class="p-4 text-sm font-medium text-gray-700 font-baskerville" data-label="Date">Dec 10, 2024</td>
-            <td class="p-4 text-sm font-medium text-gray-700 font-baskerville" data-label="Expense Name">Office Supplies</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Category">Stationery</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Amount">$150.00</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Notes">Paper and pens for team</td>
-            <td class="p-4 flex justify-center space-x-4" data-label="Actions">
-                <button class="px-3 py-2 bg-amber-100 text-amber-800 hover:bg-amber-200 hover:text-amber-900 rounded-lg transition-all duration-300 flex items-center justify-center transform hover:scale-105">
-                    <i class="fas fa-edit mr-2"></i>
-                    <span class="text-sm font-medium">Edit</span>
-                </button>
-                <button class="px-3 py-2 bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-900 rounded-lg transition-all duration-300 flex items-center justify-center transform hover:scale-105">
-                    <i class="fas fa-archive mr-2"></i>
-                    <span class="text-sm font-medium">Archive</span>
-                </button>
-            </td>
-        </tr>
-        <tr class="hover:bg-amber-50 transition-colors duration-200">
-            <td class="p-4 text-sm font-medium text-gray-700 font-baskerville" data-label="Date">Dec 12, 2024</td>
-            <td class="p-4 text-sm font-medium text-gray-700 font-baskerville" data-label="Expense Name">Utility Bill</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Category">Utilities</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Amount">$300.00</td>
-            <td class="p-4 text-sm text-gray-600 font-baskerville" data-label="Notes">Electricity for office</td>
-            <td class="p-4 flex justify-center space-x-4" data-label="Actions">
-                <button class="px-3 py-2 bg-amber-100 text-amber-800 hover:bg-amber-200 hover:text-amber-900 rounded-lg transition-all duration-300 flex items-center justify-center transform hover:scale-105">
-                    <i class="fas fa-edit mr-2"></i>
-                    <span class="text-sm font-medium">Edit</span>
-                </button>
-                <button class="px-3 py-2 bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-900 rounded-lg transition-all duration-300 flex items-center justify-center transform hover:scale-105">
-                    <i class="fas fa-archive mr-2"></i>
-                    <span class="text-sm font-medium">Archive</span>
-                </button>
-            </td>
-        </tr>
+    <tbody>
+      
     </tbody>
 </table>
-
-<!-- Tailwind-specific responsive styles -->
-<div class="sm:hidden">
-    <style>
-        #expenses-table {
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-        #expenses-table thead {
-            display: none;
-        }
-        #expenses-table tbody tr {
-            display: block;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #f3f4f6;
-        }
-        #expenses-table tbody td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            text-align: left;
-        }
-        #expenses-table tbody td:before {
-            content: attr(data-label);
-            font-weight: 600;
-            color: #1f2937;
-            width: 40%;
-            min-width: 100px;
-        }
-        #expenses-table tbody td[data-label="Actions"] {
-            justify-content: center;
-        }
-        #expenses-table tbody td[data-label="Actions"] .flex {
-            flex-direction: row;
-            gap: 0.5rem;
-        }
-    </style>
-</div>
                     </div>
                 </div>
             </main>
