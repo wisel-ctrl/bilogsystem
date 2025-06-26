@@ -483,7 +483,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
 
 
                         /* Sidebar improvements */
-                        .sidebar-link {
+                .sidebar-link {
                     transition: all 0.3s ease;
                     position: relative;
                     overflow: hidden;
@@ -505,7 +505,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 }
 
                         /* Add these styles to the existing style section */
-                        #sidebar {
+                #sidebar {
                     display: flex;
                     flex-direction: column;
                     height: 100vh;
