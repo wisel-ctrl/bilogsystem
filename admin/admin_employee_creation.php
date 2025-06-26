@@ -627,20 +627,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                 }
 
 
-        tbody tr {
-            transition: background-color 0.2s ease;
-        }
 
-        tbody tr:hover {
-            background-color: #f3f4f6;
-        }
-
-        tbody td {
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            color: #374151;
-            border-bottom: 1px solid #e5e7eb;
-        }
     </style>
 </head>
 <body class="bg-warm-cream font-baskerville">
