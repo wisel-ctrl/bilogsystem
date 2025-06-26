@@ -669,7 +669,7 @@
                     { 
                         data: 'amount',
                         render: function(data, type, row) {
-                            return '$' + parseFloat(data).toFixed(2);
+                            return '₱' + parseFloat(data).toFixed(2);
                         }
                     },
                     { data: 'notes' },
