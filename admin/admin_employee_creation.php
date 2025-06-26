@@ -735,11 +735,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <input type="text" id="cashier-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville text-gray-700 placeholder-gray-400 text-sm" placeholder="Search cashiers...">
                             </div>
                             <div class="flex space-x-3">
-                                <button id="view-archived-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
+                                <button id="view-archived-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-500 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
                                     <i class="fas fa-archive text-base"></i>
                                     <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-500">View Archived</span>
                                 </button>
-                                <button id="create-cashier-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
+                                <button id="create-cashier-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-500 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
                                     <i class="fas fa-user-plus text-base"></i>
                                     <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-500">Add Cashier</span>
                                 </button>
@@ -797,18 +797,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                         ?>
                                     </td>
                                     <td class="p-4 flex justify-center space-x-3">
-    <!-- Edit Button -->
-    <button class="group edit-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-warm-cream/10 to-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-        <i class="fas fa-edit text-lg flex-shrink-0"></i>
-        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
-    </button>
+                                        <!-- Edit Button -->
+                                        <button class="group edit-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-warm-cream/10 to-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                            <i class="fas fa-edit text-lg flex-shrink-0"></i>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                        </button>
 
-    <!-- Archive Button -->
-    <button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-        <i class="fas fa-archive text-lg flex-shrink-0"></i>
-        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Archive</span>
-    </button>
-</td>
+                                        <!-- Archive Button -->
+                                        <button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                                            <i class="fas fa-archive text-lg flex-shrink-0"></i>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Archive</span>
+                                        </button>
+                                    </td>
                                 </tr>
                                 <?php $counter++; ?>
                             <?php endforeach; ?>
