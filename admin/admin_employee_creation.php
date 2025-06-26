@@ -748,7 +748,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     </div>
                     
                     <div class="overflow-x-auto">
-                    <table class="w-full table-auto display nowrap" style="width:100%">
+                    <table class="w-full table-auto display wrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
