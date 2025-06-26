@@ -754,7 +754,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                 <th class="p-4 text-left font-semibold text-deep-brown font-playfair">No.</th>
                                 <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Name</th>
                                 <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date Created</th>
-                                <th class="p-4 text-center font-semibold text-deep-brown font-playfair">Actions</th>
+                                <th class="p-4 text-center font-semibold text-deep-brown font-playfair w-32">Actions</th>
                             </tr>
                         </thead>
                     <?php
