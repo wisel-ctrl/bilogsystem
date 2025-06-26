@@ -465,42 +465,24 @@
                         </h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full rounded-xl overflow-hidden shadow-sm">
-                            <thead class="bg-gradient-to-r from-deep-brown to-rich-brown">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-sm font-playfair font-semibold text-warm-cream uppercase tracking-wider">Client Name</th>
-                                    <th class="px-6 py-4 text-left text-sm font-playfair font-semibold text-warm-cream uppercase tracking-wider">Phone Number</th>
-                                    <th class="px-6 py-4 text-left text-sm font-playfair font-semibold text-warm-cream uppercase tracking-wider">Package</th>
-                                    <th class="px-6 py-4 text-left text-sm font-playfair font-semibold text-warm-cream uppercase tracking-wider">Event Date</th>
-                                    <th class="px-6 py-4 text-left text-sm font-playfair font-semibold text-warm-cream uppercase tracking-wider">Actions</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Menu Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested DateTime</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-warm-cream/20" id="bookings-table">
+                            <tbody class="bg-white divide-y divide-gray-200" id="bookings-table">
                                 <!-- Sample booking data -->
-                                <tr class="hover:bg-warm-cream/5 transition-colors duration-150">
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 bg-warm-cream/10 rounded-full flex items-center justify-center text-rich-brown font-medium">
-                                                MS
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">Maria Santos</div>
-                                                <div class="text-xs text-gray-500">BOOK001</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-700 hover:text-deep-brown transition-colors">
-                                        <a href="tel:+639151234567">+63 915 123 4567</a>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-warm-cream/10 text-rich-brown">Wedding Package</span>
-                                        <div class="text-sm text-gray-500 mt-1">₱25,000</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Dec 15, 2024</div>
-                                        <div class="text-xs text-gray-500">6:00 PM (50 guests)</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Maria Santos</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 915 123 4567</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Wedding Package</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 15, 2024 - 6:00 PM</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button onclick="openBookingDetails('BOOK001', 'Maria Santos', '+63 915 123 4567', 'Wedding Package', '₱25,000', 'Dec 15, 2024 - 6:00 PM', '50', 'Please prepare vegetarian options for 5 guests.')" 
                                             class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
                                             <i class="fas fa-eye text-sm flex-shrink-0"></i>
@@ -508,30 +490,12 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr class="hover:bg-warm-cream/5 transition-colors duration-150">
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 bg-warm-cream/10 rounded-full flex items-center justify-center text-rich-brown font-medium">
-                                                JC
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">Juan Dela Cruz</div>
-                                                <div class="text-xs text-gray-500">BOOK002</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-700 hover:text-deep-brown transition-colors">
-                                        <a href="tel:+639179876543">+63 917 987 6543</a>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-warm-cream/10 text-rich-brown">Birthday Party</span>
-                                        <div class="text-sm text-gray-500 mt-1">₱15,000</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Dec 20, 2024</div>
-                                        <div class="text-xs text-gray-500">2:00 PM (30 guests)</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Juan Dela Cruz</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 917 987 6543</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Birthday Party Package</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 20, 2024 - 2:00 PM</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button onclick="openBookingDetails('BOOK002', 'Juan Dela Cruz', '+63 917 987 6543', 'Birthday Party Package', '₱15,000', 'Dec 20, 2024 - 2:00 PM', '30', 'Need sound system for karaoke. Birthday celebrant is turning 50.')" 
                                             class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
                                             <i class="fas fa-eye text-sm flex-shrink-0"></i>
@@ -539,31 +503,14 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr class="hover:bg-warm-cream/5 transition-colors duration-150">
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 bg-warm-cream/10 rounded-full flex items-center justify-center text-rich-brown font-medium">
-                                                AR
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">Ana Rodriguez</div>
-                                                <div class="text-xs text-gray-500">BOOK003</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-700 hover:text-deep-brown transition-colors">
-                                        <a href="tel:+639224567890">+63 922 456 7890</a>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-warm-cream/10 text-rich-brown">Corporate Event</span>
-                                        <div class="text-sm text-gray-500 mt-1">₱18,500</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Dec 18, 2024</div>
-                                        <div class="text-xs text-gray-500">12:00 PM (40 guests)</div>
-                                    </td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                        <button onclick="openBookingDetails('BOOK003', 'Ana Rodriguez', '+63 922 456 7890', 'Corporate Event Package', '₱18,500', 'Dec 18, 2024 - 12:00 PM', '40', 'Company year-end party. Please prepare presentation setup and microphone.')"
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ana Rodriguez</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 922 456 7890</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Corporate Event Package</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 18, 2024 - 12:00 PM</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button 
+                                            onclick="openBookingDetails('BOOK003', 'Ana Rodriguez', '+63 922 456 7890', 'Corporate Event Package', '₱18,500', 'Dec 18, 2024 - 12:00 PM', '40', 'Company year-end party. Please prepare presentation setup and microphone.')"
                                             class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
                                             <i class="fas fa-eye text-sm flex-shrink-0"></i>
                                             <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[4.5rem] ml-0 group-hover:ml-1.5 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Details</span>
