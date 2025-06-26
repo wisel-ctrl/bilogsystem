@@ -121,42 +121,7 @@
             z-index: 45;
         }
 
-        /* Table styles */
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
 
-        thead {
-            background-color: #f9fafb;
-        }
-
-        thead th {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #6b7280;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        tbody tr {
-            transition: background-color 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background-color: #f3f4f6;
-        }
-
-        tbody td {
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            color: #374151;
-            border-bottom: 1px solid #e5e7eb;
-        }
 
         /* DataTables custom styling */
         .dataTables_wrapper .dataTables_filter input {
