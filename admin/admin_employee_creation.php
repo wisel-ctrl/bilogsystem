@@ -797,7 +797,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     </td>
                     <td class="p-4 flex justify-center space-x-4">
                         <!-- Edit Button -->
-                        <button class="group edit-btn px-3 py-2 bg-amber-100 text-amber-800 hover:bg-amber-200 hover:text-amber-900 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+                        <button class="group edit-btn px-3 py-2 bg-warm-cream/80 text-rich-brown hover:bg-warm-cream/50 hover:text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
                             <i class="fas fa-edit mr-2"></i>
                             <span class="text-sm font-medium">Edit</span>
                         </button>
