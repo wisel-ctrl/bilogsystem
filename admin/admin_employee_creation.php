@@ -749,12 +749,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     
                     <div class="overflow-x-auto">
                     <table class="w-full table-auto border-collapse bg-white shadow-lg rounded-xl overflow-hidden">
-    <thead class="bg-gradient-to-r from-amber-50 to-amber-100">
+    <thead>
         <tr>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">No.</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Name</th>
-            <th class="p-4 text-left text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair">Date Created</th>
-            <th class="p-4 text-center text-sm font-semibold text-gray-800 uppercase tracking-wide font-playfair w-40">Actions</th>
+            <th class="p-4 text-left text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair">No.</th>
+            <th class="p-4 text-left text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair">Name</th>
+            <th class="p-4 text-left text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair">Date Created</th>
+            <th class="p-4 text-center text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair w-40">Actions</th>
         </tr>
     </thead>
     <?php
