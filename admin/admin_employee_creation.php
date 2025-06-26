@@ -729,19 +729,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 max-w-7xl mx-auto">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                        <h3 class="text-xl md:text-2xl font-bold text-deep-brown font-playfair">Cashier Management</h3>
+                        <h3 class="text-3xl md:text-2xl font-bold text-deep-brown font-playfair">Cashier Management</h3>
                         <div class="flex items-center space-x-4">
                             <div class="w-64">
                                 <input type="text" id="cashier-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville text-gray-700 placeholder-gray-400 text-sm" placeholder="Search cashiers...">
                             </div>
                             <div class="flex space-x-3">
-                                <button id="view-archived-btn" class="w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg font-baskerville">
+                                <button id="view-archived-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
                                     <i class="fas fa-archive text-base"></i>
-                                    <span>View Archived</span>
+                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-200">View Archived</span>
                                 </button>
-                                <button id="create-cashier-btn" class="w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg font-baskerville">
+                                <button id="create-cashier-btn" class="group w-10 hover:w-40 h-10 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
                                     <i class="fas fa-user-plus text-base"></i>
-                                    <span>Add Cashier</span>
+                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-200">Add Cashier</span>
                                 </button>
                             </div>
                         </div>
