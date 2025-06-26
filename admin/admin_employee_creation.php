@@ -797,17 +797,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                                         ?>
                                     </td>
                                     <td class="p-4 flex justify-center space-x-3">
-                                     <!-- Edit Button -->
-                                        <button class="edit-btn text-rich-brown hover:text-deep-brown transition-transform duration-200 mr-2 transform hover:scale-110" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-edit text-xl"></i>
-                                        </button>
+    <!-- Edit Button -->
+    <button class="group edit-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-warm-cream/10 to-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+        <i class="fas fa-edit text-lg flex-shrink-0"></i>
+        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+    </button>
 
-                                        <!-- Archive Button -->
-                                        <button class="archive-btn text-blue-800 hover:text-blue-500 transition-transform duration-200 transform hover:scale-110" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
-                                            <i class="fas fa-archive mr-2 text-xl"></i>
-                                        </button>
-
-                                    </td>
+    <!-- Archive Button -->
+    <button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" data-id="<?php echo htmlspecialchars($cashier['id']); ?>">
+        <i class="fas fa-archive text-lg flex-shrink-0"></i>
+        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Archive</span>
+    </button>
+</td>
                                 </tr>
                                 <?php $counter++; ?>
                             <?php endforeach; ?>
