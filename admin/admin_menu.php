@@ -1356,10 +1356,12 @@
                     {
                         data: 'dish_id',
                         render: function(data) {
-                            return `<button class="group edit-dish-btn w-8 hover:w-24 h-8 bg-warm-cream/10 hover:bg-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03] relative" data-id="${data}">
-                                        <i class="fas fa-edit text-base flex-shrink-0"></i>
-                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75 absolute left-8">Edit</span>
-                                    </button>`;
+                            return `<button class="group edit-dish-btn w-8 hover:w-24 h-8 bg-warm-cream/10 hover:bg-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden relative" data-id="${data}">
+    <div class="flex items-center">
+        <i class="fas fa-edit text-base flex-shrink-0"></i>
+        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[3.5rem] ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+    </div>
+</button>`;
                         },
                         orderable: false
                     }
