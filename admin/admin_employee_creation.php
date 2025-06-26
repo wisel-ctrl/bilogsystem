@@ -1538,3 +1538,7 @@ ob_start();
         addButtonListeners();
     });
     </script>
+<?php
+ob_end();
+
+?>
