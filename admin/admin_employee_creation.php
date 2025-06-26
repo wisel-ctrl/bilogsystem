@@ -749,7 +749,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
                     
                     <div class="overflow-x-auto">
                     <table class="w-full table-auto border-collapse bg-white shadow-lg rounded-xl overflow-hidden">
-    <thead>
+    <thead class="bg-rich-brown/10">
         <tr>
             <th class="p-4 text-left text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair">No.</th>
             <th class="p-4 text-left text-sm font-bold text-rich-brown uppercase tracking-wide font-playfair">Name</th>
@@ -774,7 +774,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         <?php else: ?>
             <?php $counter = 1; ?>
             <?php foreach ($cashiers as $cashier): ?>
-                <tr class="hover:bg-amber-50 transition-colors duration-200">
+                <tr>
                     <td class="p-4 text-sm font-medium text-gray-700 font-baskerville"><?php echo $counter; ?></td>
                     <td class="p-4 text-sm font-medium text-gray-700 font-baskerville">
                         <?php
