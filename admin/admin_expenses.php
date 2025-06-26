@@ -228,7 +228,7 @@
         }
 
         /* Modal styles */
-        .modal-header {
+    .modal-header {
             position: sticky;
             top: 0;
             background: white;
@@ -268,7 +268,7 @@
 
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
-        }
+    }
 
         /* Action button styles */
         .action-btn {
@@ -286,24 +286,24 @@
         }
 
 
-          /* Improved scrollbar */
-          ::-webkit-scrollbar {
+            /* Improved scrollbar */
+        ::-webkit-scrollbar {
                     width: 8px;
-                }
-                
-                ::-webkit-scrollbar-track {
-                    background: #E8E0D5;
-                    border-radius: 4px;
-                }
-                
-                ::-webkit-scrollbar-thumb {
-                    background: #8B4513;
-                    border-radius: 4px;
-                }
-                
-                ::-webkit-scrollbar-thumb:hover {
-                    background: #5D2F0F;
-                }
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #E8E0D5;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #8B4513;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #5D2F0F;
+        }
     </style>
     <script>
         tailwind.config = {
