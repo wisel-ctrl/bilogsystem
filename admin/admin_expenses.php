@@ -680,7 +680,7 @@
                                 <div class="flex space-x-2">
                                         <!-- Edit Button -->
                                         <button 
-                                            class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 hover:bg-warm-cream/20 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
+                                            class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
                                             onclick="editExpense(${data})">
                                             <i class="fas fa-edit text-base flex-shrink-0"></i>
                                             <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
