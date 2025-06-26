@@ -1356,12 +1356,11 @@
                     {
                         data: 'dish_id',
                         render: function(data) {
-                            return `<button class="group edit-dish-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full  relative" data-id="${data}">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-edit text-base flex-shrink-0"></i>
-                                            <span>Edit</span>
-                                        </div>
-                                    </button>`;
+                            return `<button class="edit-dish-btn flex items-center gap-2 px-3 py-1 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full text-sm transition-colors duration-200" data-id="${data}">
+    <i class="fas fa-edit text-base"></i>
+    <span>Edit</span>
+</button>
+`;
                         },
                         orderable: false
                     }
