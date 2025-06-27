@@ -1,29 +1,48 @@
 <?php
+require_once '../../db_connect.php';
+
 header('Content-Type: application/json');
-require_once "../../db_connect.php";
 
-if(!isset($_GET['id'])) {
-    echo json_encode(['error' => 'No expense ID provided']);
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $expenseId = $input['id'] ?? '';
 
-try {
-    
-    
-    // Get single expense
-    $stmt = $conn->prepare("SELECT * FROM expense_tb WHERE expense_id = :id");
-    $stmt->bindParam(':id', $_GET['id']);
-    $stmt->execute();
-    
-    $expense = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if($expense) {
-        echo json_encode($expense);
-    } else {
-        echo json_encode(['error' => 'Expense not found']);
+    if (empty($expenseId)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Expense ID is required'
+        ]);
+        exit;
     }
-} catch(PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+
+    try {
+        $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes 
+                               FROM expenses_tb 
+                               WHERE id = ? AND status = 1");
+        $stmt->execute([$expenseId]);
+        $expense = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($expense) {
+            echo json_encode([
+                'success' => true,
+                'expense' => $expense
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Expense not found'
+            ]);
+        }
+    } catch(PDOException $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database error: ' . $e->getMessage()
+        ]);
+    }
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
 }
-$conn = null;
 ?>
