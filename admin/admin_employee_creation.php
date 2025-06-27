@@ -1539,6 +1539,6 @@ ob_start();
     });
     </script>
 <?php
-ob_end();
+ob_end_flush();
 
 ?>
