@@ -123,9 +123,6 @@
             transform: translateY(0) !important;
         }
 
-        header {
-            z-index: 45;
-        }
 
         /* Add table styles from admin_bookings.html */
         .dashboard-card {
@@ -288,7 +285,6 @@
             position: sticky;
             top: 0;
             background: white;
-            z-index: 10;
             border-top-left-radius: 0.75rem;
             border-top-right-radius: 0.75rem;
         }
@@ -297,7 +293,6 @@
             position: sticky;
             bottom: 0;
             background: white;
-            z-index: 10;
             border-bottom-left-radius: 0.75rem;
             border-bottom-right-radius: 0.75rem;
         }
@@ -445,7 +440,7 @@
 
 
                 <!-- Dish Creation Modal -->
-                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+                <div id="dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
                         <div class="modal-header p-6 border-b border-warm-cream/20">
                             <div class="flex items-center justify-between">
@@ -554,7 +549,7 @@
                     </div>
                 </div>
     
-                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+                <div id="package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
                         <!-- Sticky Header -->
                         <div class="p-6 border-b border-warm-cream/30 sticky top-0 bg-white/95 backdrop-blur-md rounded-t-xl z-10">
@@ -652,7 +647,7 @@
                 </div>
 
                 <!-- Edit Dish Modal -->
-                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+                <div id="edit-dish-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-xl w-full max-h-[90vh] flex flex-col">
                         <div class="modal-header p-6 border-b border-warm-cream/20">
                             <div class="flex items-center justify-between">
@@ -765,7 +760,7 @@
                 </div>
 
                 <!-- View Package Modal -->
-                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+                <div id="view-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
                         <div class="modal-header p-6 border-b border-warm-cream/20">
                             <div class="flex items-center justify-between">
@@ -828,7 +823,7 @@
                 </div>
 
                 <!-- Edit Package Modal -->
-                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-8">
+                <div id="edit-package-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
                         <div class="modal-header p-6 border-b border-warm-cream/20">
                             <div class="flex items-center justify-between">
