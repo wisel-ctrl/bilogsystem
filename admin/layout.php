@@ -324,7 +324,7 @@ ob_start();
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden ">
             <!-- Header -->
-            <div class="z-50">
+            <div class="z-[50]">
                 <?php include 'header.php'; ?>
             </div>
             <!-- Main Content Area -->
