@@ -10,12 +10,7 @@
     // Capture page content
     ob_start();
 ?>
-<?php
-    $page_content = ob_get_clean();
 
-    // Capture page-specific styles
-    ob_start();
-?>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
