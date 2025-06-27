@@ -128,12 +128,9 @@ ob_start();
 </div>
 
 <div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
 
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Header -->
+
 
 
         <!-- Main Content Area -->
@@ -177,24 +174,6 @@ $page_content = ob_get_clean();
 ob_start();
 ?>
     <script>
-        // Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.getElementById('cafe-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.display = 'none';
-                sidebarTexts.forEach(text => text.style.display = 'none');
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-            }
-        });
 
         // Set current date with improved formatting
         const options = { 
