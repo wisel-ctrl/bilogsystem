@@ -280,27 +280,7 @@
         transform: translateY(-2px);
     }
     
-    /* Sidebar improvements */
-    .sidebar-link {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
     
-    .sidebar-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: #E8E0D5;
-        transition: width 0.3s ease;
-    }
-    
-    .sidebar-link:hover::after {
-        width: 100%;
-    }
     
     /* Animation classes */
     .fade-in {
@@ -410,14 +390,7 @@
         position: static;
     }
 
-    /* Sidebar and header z-index */
-    #sidebar {
-        z-index: 40;
-    }
-
-    /* header {
-        z-index: 50;
-    } */
+   
 
     /* Blur effect */
     .blur-effect {
@@ -575,24 +548,12 @@
 ?>
     <script>
         // Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.getElementById('cafe-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        // const sidebar = document.getElementById('sidebar');
+        // const sidebarToggle = document.getElementById('sidebar-toggle');
+        // const cafeTitle = document.getElementById('cafe-title');
+        // const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.display = 'none';
-                sidebarTexts.forEach(text => text.style.display = 'none');
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-            }
-        });
-
+ 
           // Set current date with improved formatting
           const options = { 
             weekday: 'long', 
@@ -729,7 +690,6 @@
         addIngredientBtn.addEventListener('click', () => {
             // Add blur to main content
             document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
             
             // Show modal
             addIngredientModal.classList.remove('hidden');
@@ -739,7 +699,6 @@
         function closeAddIngredientModal() {
             // Remove blur from main content
             document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
             
             // Hide modal
             addIngredientModal.classList.add('hidden');
@@ -755,7 +714,6 @@
         function closeEditIngredientModal() {
             // Remove blur from main content
             document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
             
             // Hide modal
             editIngredientModal.classList.add('hidden');
@@ -771,7 +729,6 @@
         function closeDeleteConfirmModal() {
             // Remove blur from main content
             document.querySelector('.flex-1').classList.remove('blur-effect');
-            document.querySelector('#sidebar').classList.remove('blur-effect');
             
             // Hide modal
             deleteConfirmModal.classList.add('hidden');
@@ -922,7 +879,6 @@
                     
                     // Add blur to main content
                     document.querySelector('.flex-1').classList.add('blur-effect');
-                    document.querySelector('#sidebar').classList.add('blur-effect');
                     
                     // Show modal with fade effect
                     editIngredientModal.classList.remove('hidden');
@@ -993,7 +949,6 @@
             
             // Add blur to main content
             document.querySelector('.flex-1').classList.add('blur-effect');
-            document.querySelector('#sidebar').classList.add('blur-effect');
             
             // Show modal with fade effect
             deleteConfirmModal.classList.remove('hidden');
