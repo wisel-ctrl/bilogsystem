@@ -25,6 +25,11 @@ ob_start();
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
 
 
+    <!-- Add these to your head section -->
+    
+   
+    <script src="../tailwind.js"></script>
+
 
     <script>
         tailwind.config = {
