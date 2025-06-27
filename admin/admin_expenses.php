@@ -1,884 +1,928 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafe Lilio - Expense Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
-    <script src="../tailwind.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-        
-        .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+<?php
+require_once '../db_connect.php';
 
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-        
-        /* Animation classes */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .animate-on-scroll.animated {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Delay classes for staggered animations */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
 
-        /* Smooth transitions */
-        .transition-all {
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 300ms;
-        }
-        
-        /* Improved hover effects */
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
-        }
-        
-        /* Card styles */
-        .dashboard-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 224, 213, 0.5);
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-card:hover {
-            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        /* Sidebar improvements */
-        .sidebar-link {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .sidebar-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #E8E0D5;
-            transition: width 0.3s ease;
-        }
-        
-        .sidebar-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Animation classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+$creation_success = false;
+$update_success = false;
+$errors = [];
 
-        /* Profile menu and header z-index */
-        #profileMenu {
-            z-index: 49 !important;
-            transform: translateY(0) !important;
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'expense') {
+    $description = trim($_POST['description'] ?? '');
+    $category = trim($_POST['category'] ?? '');
+    $amount = trim($_POST['amount'] ?? '');
+    $expense_date = trim($_POST['expense_date'] ?? '');
+    $notes = trim($_POST['notes'] ?? '');
 
-
-
-
-        /* DataTables custom styling */
-        .dataTables_wrapper .dataTables_filter input {
-            border: 1px solid #e5e7eb;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .dataTables_wrapper .dataTables_paginate {
-            padding-top: 0.5rem;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.25rem 0.5rem;
-            margin: 0 0.125rem;
-            border-radius: 0.25rem;
-            border: 1px solid #e5e7eb;
-            background: white;
-            color: #374151 !important;
-            font-size: 0.875rem;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: #8B4513 !important;
-            color: white !important;
-            border-color: #8B4513;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: #f3f4f6 !important;
-            border-color: #e5e7eb;
-            color: #374151 !important;
-        }
-
-        .dataTables_wrapper .dataTables_info {
-            padding: 0.5rem 0;
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-
-        /* Fix sorting icons */
-        table.dataTable thead th {
-            position: relative;
-            background-image: none !important;
-        }
-
-        table.dataTable thead th.sorting:after,
-        table.dataTable thead th.sorting_asc:after,
-        table.dataTable thead th.sorting_desc:after {
-            position: absolute;
-            right: 8px;
-            color: #8B4513;
-        }
-
-        table.dataTable thead th.sorting:after {
-            content: "↕";
-            opacity: 0.4;
-        }
-
-        table.dataTable thead th.sorting_asc:after {
-            content: "↑";
-        }
-
-        table.dataTable thead th.sorting_desc:after {
-            content: "↓";
-        }
-
-        /* Modal styles */
-    .modal-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-            border-top-left-radius: 0.75rem;
-            border-top-right-radius: 0.75rem;
-        }
-
-        .modal-footer {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            z-index: 10;
-            border-bottom-left-radius: 0.75rem;
-            border-bottom-right-radius: 0.75rem;
-        }
-
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        /* Improved scrollbar for modal body */
-        .modal-body::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
+    if (empty($description)) $errors['description'] = 'Description is required';
+    if (empty($category)) $errors['category'] = 'Category is required';
+    if (empty($amount)) {
+        $errors['amount'] = 'Amount is required';
+    } elseif (!is_numeric($amount) || $amount <= 0) {
+        $errors['amount'] = 'Amount must be a positive number';
+    }
+    if (empty($expense_date)) {
+        $errors['expense_date'] = 'Date is required';
+    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
+        $errors['expense_date'] = 'Invalid date format';
     }
 
-        /* Action button styles */
-        .action-btn {
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.2s ease;
+    if (empty($errors)) {
+        try {
+            $createdAt = (new DateTime())->format('Y-m-d H:i:s');
+            $stmt = $conn->prepare("INSERT INTO expenses_tb (description, category, amount, expense_date, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$description, $category, $amount, $expense_date, $notes, $createdAt]);
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Expense created successfully'
+            ]);
+            exit;
+        } catch(PDOException $e) {
+            $errors['database'] = 'Creation failed: ' . $e->getMessage();
         }
+    }
 
-        .action-btn:hover {
-            background-color: #f3f4f6;
-        }
+    if (!empty($errors)) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ]);
+        exit;
+    }
+}
 
-        .action-btn i {
-            font-size: 1rem;
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_expense') {
+    $expenseId = trim($_POST['expense_id'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $category = trim($_POST['category'] ?? '');
+    $amount = trim($_POST['amount'] ?? '');
+    $expense_date = trim($_POST['expense_date'] ?? '');
+    $notes = trim($_POST['notes'] ?? '');
 
+    if (empty($description)) $errors['description'] = 'Description is required';
+    if (empty($category)) $errors['category'] = 'Category is required';
+    if (empty($amount)) {
+        $errors['amount'] = 'Amount is required';
+    } elseif (!is_numeric($amount) || $amount <= 0) {
+        $errors['amount'] = 'Amount must be a positive number';
+    }
+    if (empty($expense_date)) {
+        $errors['expense_date'] = 'Date is required';
+    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
+        $errors['expense_date'] = 'Invalid date format';
+    }
 
-            /* Improved scrollbar */
-        ::-webkit-scrollbar {
-                    width: 8px;
-            }
+    if (empty($errors)) {
+        try {
+            $stmt = $conn->prepare("SELECT description, category, amount, expense_date, notes FROM expenses_tb WHERE id = ? AND status = 1");
+            $stmt->execute([$expenseId]);
+            $existingExpense = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            ::-webkit-scrollbar-track {
-                background: #E8E0D5;
-                border-radius: 4px;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: #8B4513;
-                border-radius: 4px;
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-                background: #5D2F0F;
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', 'serif'],
-                        'baskerville': ['Libre Baskerville', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-warm-cream font-baskerville">
-    <!-- Modal for adding expenses -->
-    <div id="expense-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            
-            <!-- Modal content -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full ">
-                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
-                                Add New Expense
-                            </h3>
-                            <div class="mt-4">
-                                <form id="expense-form">
-                                    <div class="mb-4">
-                                        <label for="expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
-                                        <input type="text" id="expense-name" name="expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
-                                        <select id="expense-category" name="expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                            <option value="utilities">Utilities</option>
-                                            <option value="rent">Rent</option>
-                                            <option value="salaries">Salaries</option>
-                                            <option value="equipment">Equipment</option>
-                                            <option value="ingredients">Ingredients</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
-                                        <input type="number" id="expense-amount" name="expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
-                                        <textarea id="expense-notes" name="expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="save-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Save Expense
-                    </button>
-                    <button type="button" id="cancel-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for editing expenses -->
-    <div id="edit-expense-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            
-            <!-- Modal content -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="modal-header bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-deep-brown font-playfair">
-                                Edit Expense
-                            </h3>
-                            <div class="mt-4">
-                                <form id="edit-expense-form">
-                                    <input type="hidden" id="edit-expense-id">
-                                    <div class="mb-4">
-                                        <label for="edit-expense-name" class="block text-sm font-medium text-rich-brown font-baskerville">Expense Name</label>
-                                        <input type="text" id="edit-expense-name" name="edit-expense-name" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-category" class="block text-sm font-medium text-rich-brown font-baskerville">Category</label>
-                                        <select id="edit-expense-category" name="edit-expense-category" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                            <option value="utilities">Utilities</option>
-                                            <option value="rent">Rent</option>
-                                            <option value="salaries">Salaries</option>
-                                            <option value="equipment">Equipment</option>
-                                            <option value="ingredients">Ingredients</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-amount" class="block text-sm font-medium text-rich-brown font-baskerville">Amount</label>
-                                        <input type="number" id="edit-expense-amount" name="edit-expense-amount" step="0.01" min="0" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="edit-expense-notes" class="block text-sm font-medium text-rich-brown font-baskerville">Notes</label>
-                                        <textarea id="edit-expense-notes" name="edit-expense-notes" rows="3" class="mt-1 p-2 w-full border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="update-expense" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream text-base font-medium transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Update Expense
-                    </button>
-                    <button type="button" id="cancel-edit-expense" class="mt-3 w-full inline-flex justify-center rounded-lg border border-warm-cream shadow-sm px-4 py-2 bg-white text-base font-medium text-deep-brown hover:bg-warm-cream/10 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm font-baskerville">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown to-rich-brown text-white transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-        <div class="sidebar-header p-6 border-b border-warm-cream/20">
-                <div>
-                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                </div>
-            </div>
-            
-            <nav class="mt-8 px-4">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-chart-pie w-5"></i>
-                            <span class="sidebar-text font-baskerville">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_bookings.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-calendar-check w-5"></i>
-                            <span class="sidebar-text font-baskerville">Booking Requests</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-utensils w-5"></i>
-                            <span class="sidebar-text font-baskerville">Menu Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-boxes w-5"></i>
-                            <span class="sidebar-text font-baskerville">Inventory</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                            <i class="fas fa-receipt w-5"></i>
-                            <span class="sidebar-text font-baskerville">Expenses</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text font-baskerville">Our Employee</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[50]">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
-                            <i class="fas fa-bars text-xl"></i>
-                        </button>
-                        <!-- <h2 class="text-2xl font-bold text-deep-brown font-playfair">Expense Management</h2> -->
-                    </div>
-                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        <span id="current-date"></span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
-                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                                </div>
-                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
-                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
-                            </button>
-                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
-                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Sign Out</span>
-                                </a>
-                            </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
-                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-64">
-                                <input type="text" id="expense-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search expenses...">
-                            </div>
-                            <button id="add-expense-btn" class="group w-10 hover:w-52 h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
-                                <i class="fas fa-plus text-lg flex-shrink-0"></i>
-                                <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Add New Expense</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                    <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
-    <thead>
-        <tr>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Date</th>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Amount</th>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Notes</th>
-            <th class="text-left p-4 font-semibold text-deep-brown font-playfair w-32">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-    </tbody>
-</table>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <script>
-        // Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.getElementById('cafe-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.display = 'none';
-                sidebarTexts.forEach(text => text.style.display = 'none');
+            if (!$existingExpense) {
+                $errors['database'] = 'Expense not found';
             } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-            }
-        });
+                $noChanges = (
+                    $description === $existingExpense['description'] &&
+                    $category === $existingExpense['category'] &&
+                    $amount == $existingExpense['amount'] &&
+                    $expense_date === $existingExpense['expense_date'] &&
+                    $notes === $existingExpense['notes']
+                );
 
-        // Set current date with improved formatting
-        const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
-        // Scroll animation observer
-        const animateElements = document.querySelectorAll('.animate-on-scroll');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
+                if ($noChanges) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'No changes were made to the expense information'
+                    ]);
+                    exit;
+                } else {
+                    try {
+                        $updatedAt = (new DateTime())->format('Y-m-d H:i:s');
+                        $stmt = $conn->prepare("UPDATE expenses_tb SET description = ?, category = ?, amount = ?, expense_date = ?, notes = ?, updated_at = ? WHERE id = ?");
+                        $stmt->execute([$description, $category, $amount, $expense_date, $notes, $updatedAt, $expenseId]);
 
-        animateElements.forEach(element => {
-            observer.observe(element);
-        });
-
-        // Expense Modal functionality
-        const expenseModal = document.getElementById('expense-modal');
-        const addExpenseBtn = document.getElementById('add-expense-btn');
-        const cancelExpenseBtn = document.getElementById('cancel-expense');
-        const saveExpenseBtn = document.getElementById('save-expense');
-
-        // Open modal
-        addExpenseBtn.addEventListener('click', () => {
-            expenseModal.classList.remove('hidden');
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('expense-date').value = today;
-        });
-
-        // Close modal
-        function closeModal() {
-            expenseModal.classList.add('hidden');
-            // Reset form
-            document.getElementById('expense-form').reset();
-        }
-
-        // Close modal when clicking cancel
-        cancelExpenseBtn.addEventListener('click', closeModal);
-
-        // Close modal when clicking outside the modal content
-        expenseModal.addEventListener('click', (e) => {
-            if (e.target === expenseModal) {
-                closeModal();
-            }
-        });
-
-        // Initialize DataTable
-        $(document).ready(function() {
-            var table = $('#expenses-table').DataTable({
-                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
-                ajax: {
-                    url: 'expense_handlers/get_expenses.php',
-                    dataSrc: ''
-                },
-                columns: [
-                    { data: 'created_at' },
-                    { 
-                        data: 'expense_name',
-                        render: function(data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1);
-                        }
-                    },
-                    { 
-                        data: 'expense_category',
-                        render: function(data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1);
-                        }
-                    },
-                    { 
-                        data: 'amount',
-                        render: function(data, type, row) {
-                            return '₱' + parseFloat(data).toFixed(2);
-                        }
-                    },
-                    { data: 'notes' },
-                    {
-                        data: 'expense_id',
-                        render: function(data, type, row) {
-                            return `
-                                <div class="flex space-x-2">
-                                        <!-- Edit Button -->
-                                        <button 
-                                            class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
-                                            onclick="editExpense(${data})">
-                                            <i class="fas fa-edit text-base flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
-                                        </button>
-
-                                        <!-- Delete Button -->
-                                        <button 
-                                            class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
-                                            onclick="deleteExpense(${data})">
-                                            <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
-                                        </button>
-                                    </div>
-                            `;
-                        },
-                        "orderable": false
-                    }
-                ],
-                order: [[0, 'desc']], // Sort by date descending by default
-                "lengthChange": false,
-                "pageLength": 10,
-                "language": {
-                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                    "paginate": {
-                        "previous": "<i class='fas fa-chevron-left'></i>",
-                        "next": "<i class='fas fa-chevron-right'></i>"
+                        header('Content-Type: application/json');
+                        echo json_encode([
+                            'success' => true,
+                            'message' => 'Expense updated successfully'
+                        ]);
+                        exit;
+                    } catch(PDOException $e) {
+                        $errors['database'] = 'Update failed: ' . $e->getMessage();
                     }
                 }
-            });
-
-            // Add search functionality
-            $('#expense-search').on('keyup', function() {
-                table.search(this.value).draw();
-            });
-
-            // Refresh table every 30 seconds
-            setInterval(function() {
-                table.ajax.reload(null, false);
-            }, 30000);
-        });
-
-        // Add expense
-        document.getElementById('save-expense').addEventListener('click', function() {
-            const name = document.getElementById('expense-name').value.trim();
-            const category = document.getElementById('expense-category').value;
-            const amount = parseFloat(document.getElementById('expense-amount').value);
-            
-            // Validation
-            if (!name) {
-                alert('Expense name is required');
-                return;
             }
-            
-            if (!category) {
-                alert('Category is required');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Amount must be a valid number');
-                return;
-            }
-            
-            if (amount <= 0) {
-                alert('Amount must be greater than 0');
-                return;
-            }
-
-            const formData = {
-                expense_name: name,
-                expense_category: category,
-                amount: amount,
-                notes: document.getElementById('expense-notes').value.trim()
-            };
-
-            fetch('expense_handlers/add_expense.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    $('#expenses-table').DataTable().ajax.reload();
-                    closeModal();
-                    alert('Expense added successfully!');
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while saving the expense.');
-            });
-        });
-
-        // Edit expense
-        function editExpense(expenseId) {
-            fetch('expense_handlers/get_expense.php?id=' + expenseId)
-            .then(response => response.json())
-            .then(data => {
-                if(data) {
-                    document.getElementById('edit-expense-id').value = data.expense_id;
-                    document.getElementById('edit-expense-name').value = data.expense_name;
-                    document.getElementById('edit-expense-category').value = data.expense_category;
-                    document.getElementById('edit-expense-amount').value = data.amount;
-                    document.getElementById('edit-expense-notes').value = data.notes;
-                    
-                    document.getElementById('edit-expense-modal').classList.remove('hidden');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while fetching expense data.');
-            });
+        } catch(PDOException $e) {
+            $errors['database'] = 'Failed to fetch expense data: ' . $e->getMessage();
         }
+    }
 
-        // Update expense
-        document.getElementById('update-expense').addEventListener('click', function() {
-            const name = document.getElementById('edit-expense-name').value.trim();
-            const category = document.getElementById('edit-expense-category').value;
-            const amount = parseFloat(document.getElementById('edit-expense-amount').value);
-            
-            // Validation
-            if (!name) {
-                alert('Expense name is required');
-                return;
-            }
-            
-            if (!category) {
-                alert('Category is required');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Amount must be a valid number');
-                return;
-            }
-            
-            if (amount <= 0) {
-                alert('Amount must be greater than 0');
-                return;
-            }
+    if (!empty($errors)) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ]);
+        exit;
+    }
+}
 
-            const formData = {
-                expense_id: document.getElementById('edit-expense-id').value,
-                expense_name: name,
-                expense_category: category,
-                amount: amount,
-                notes: document.getElementById('edit-expense-notes').value.trim()
-            };
+// Fetch expenses for display
+try {
+    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 1 ORDER BY expense_date DESC");
+    $stmt->execute();
+    $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $errors['database'] = 'Failed to fetch expenses: ' . $e->getMessage();
+}
 
-            fetch('expense_handlers/update_expense.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    $('#expenses-table').DataTable().ajax.reload();
-                    document.getElementById('edit-expense-modal').classList.add('hidden');
-                    alert('Expense updated successfully!');
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while updating the expense.');
-            });
+// Fetch archived expenses
+try {
+    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 0 ORDER BY expense_date DESC");
+    $stmt->execute();
+    $archived_expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $errors['database'] = 'Failed to fetch archived expenses: ' . $e->getMessage();
+}
+
+// Define page title and content
+$page_title = "Expense Management";
+
+ob_start();
+?>
+<div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 max-w-7xl mx-auto">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <h3 class="text-3xl md:text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
+        <div class="flex items-center space-x-4">
+            <div class="w-64">
+                <input type="text" id="expense-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville text-gray-700 placeholder-gray-400 text-sm" placeholder="Search expenses...">
+            </div>
+            <div class="flex space-x-3">
+                <button id="view-archived-btn" class="group w-10 hover:w-40 h-10 bg-warm-cream/100 hover:from-rich-brown hover:to-deep-brown text-rich-brown rounded-lg transition-all duration-400 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
+                    <i class="fas fa-archive text-base"></i>
+                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-100">View Archived</span>
+                </button>
+                <button id="add-expense-btn" class="group w-10 hover:w-40 h-10 bg-warm-cream/100 hover:from-rich-brown hover:to-deep-brown text-rich-brown rounded-lg transition-all duration-400 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg font-baskerville">
+                    <i class="fas fa-plus text-base"></i>
+                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 transition-all duration-100">Add Expense</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full table-auto display nowrap">
+            <thead>
+                <tr>
+                    <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Date</th>
+                    <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Description</th>
+                    <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Category</th>
+                    <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Amount</th>
+                    <th class="p-4 text-left font-semibold text-deep-brown font-playfair">Notes</th>
+                    <th class="p-4 text-center font-semibold text-deep-brown font-playfair w-32">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="expense-table-body">
+                <?php if (empty($expenses)): ?>
+                    <tr>
+                        <td colspan="6" class="p-4 text-center text-gray-500 text-base font-baskerville">No expenses found.</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($expenses as $expense): ?>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="p-4 text-gray-700 text-sm font-baskerville">
+                                <?php
+                                $date = new DateTime($expense['expense_date'], new DateTimeZone('Asia/Manila'));
+                                echo $date->format('F d, Y');
+                                ?>
+                            </td>
+                            <td class="p-4 text-gray-700 text-sm font-baskerville"><?php echo htmlspecialchars($expense['description']); ?></td>
+                            <td class="p-4 text-gray-700 text-sm font-baskerville"><?php echo htmlspecialchars(ucfirst($expense['category'])); ?></td>
+                            <td class="p-4 text-gray-700 text-sm font-baskerville">₱<?php echo number_format($expense['amount'], 2); ?></td>
+                            <td class="p-4 text-gray-700 text-sm font-baskerville"><?php echo htmlspecialchars($expense['notes'] ?: '-'); ?></td>
+                            <td class="p-4 flex justify-center space-x-3">
+                                <button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="<?php echo htmlspecialchars($expense['id']); ?>">
+                                    <i class="fas fa-edit text-lg flex-shrink-0"></i>
+                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>
+                                </button>
+                                <button class="group archive-btn w-8 hover:w-32 h-8 bg-blue-100 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="<?php echo htmlspecialchars($expense['id']); ?>">
+                                    <i class="fas fa-archive text-lg flex-shrink-0"></i>
+                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Create Expense Modal -->
+<div id="create-expense-modal" class="fixed inset-0 z-[100] flex items-start justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden pt-16">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300 overflow-y-auto max-h-[85vh]">
+        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Add New Expense</h3>
+            <button id="close-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <form id="expense-form" class="p-6 md:p-8" method="POST" action="">
+            <input type="hidden" name="form_type" value="expense">
+            <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'expense'): ?>
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <strong class="font-semibold">Error!</strong>
+                    </div>
+                    <span class="block mt-1">Please fix the following issues:</span>
+                    <ul class="mt-2 list-disc list-inside text-sm">
+                        <?php foreach ($errors as $error): ?>
+                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($creation_success): ?>
+                <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <strong class="font-semibold">Success!</strong>
+                    </div>
+                    <span class="block mt-1">Expense created successfully!</span>
+                </div>
+            <?php endif; ?>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="input-group col-span-2">
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                    <input type="text" id="description" name="description" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                    <select id="category" name="category" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <option value="">Select Category</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="rent">Rent</option>
+                        <option value="salaries">Salaries</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="ingredients">Ingredients</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="expense_date" class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                    <input type="date" id="expense_date" name="expense_date" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                    <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-4">
+                <button type="button" id="cancel-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                    Cancel
+                </button>
+                <button type="submit" id="submit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium" disabled>
+                    Add Expense
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Expense Modal -->
+<div id="edit-expense-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all duration-300 overflow-y-auto max-h-[85vh]">
+        <div class="flex justify-between items-center bg-amber-800 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Edit Expense</h3>
+            <button id="close-edit-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <form id="edit-expense-form" class="p-6 md:p-8" method="POST" action="">
+            <input type="hidden" name="form_type" value="edit_expense">
+            <input type="hidden" name="expense_id" id="edit-expense-id">
+            <?php if (!empty($errors) && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_expense'): ?>
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <strong class="font-semibold">Error!</strong>
+                    </div>
+                    <span class="block mt-1">Please fix the following issues:</span>
+                    <ul class="mt-2 list-disc list-inside text-sm">
+                        <?php foreach ($errors as $error): ?>
+                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($update_success): ?>
+                <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <strong class="font-semibold">Success!</strong>
+                    </div>
+                    <span class="block mt-1">Expense updated successfully!</span>
+                </div>
+            <?php endif; ?>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="input-group col-span-2">
+                    <label for="edit-description" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                    <input type="text" id="edit-description" name="description" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="edit-category" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                    <select id="edit-category" name="category" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <option value="">Select Category</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="rent">Rent</option>
+                        <option value="salaries">Salaries</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="ingredients">Ingredients</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="edit-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
+                    <input type="number" id="edit-amount" name="amount" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group">
+                    <label for="edit-expense_date" class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                    <input type="date" id="edit-expense_date" name="expense_date" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
+                </div>
+                <div class="input-group col-span-2">
+                    <label for="edit-notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                    <textarea id="edit-notes" name="notes" rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-4">
+                <button type="button" id="cancel-edit-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                    Cancel
+                </button>
+                <button type="submit" id="submit-edit-btn" class="px-5 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 font-medium">
+                    Update Expense
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Archived Expenses Modal -->
+<div id="archived-expenses-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 modal modal-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 transform transition-all duration-300">
+        <div class="flex justify-between items-center bg-amber-900 text-white p-5 rounded-t-xl">
+            <h3 class="text-xl md:text-2xl font-semibold">Archived Expenses</h3>
+            <button id="close-archived-modal" class="text-white hover:text-gray-200 transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="min-w-full bg-white">
+                    <thead class="text-amber-800">
+                        <tr>
+                            <th class="py-4 px-6 text-left text-md font-bold">Date</th>
+                            <th class="py-4 px-6 text-left text-md font-bold">Description</th>
+                            <th class="py-4 px-6 text-left text-md font-bold">Category</th>
+                            <th class="py-4 px-6 text-left text-md font-bold">Amount</th>
+                            <th class="py-4 px-6 text-left text-md font-bold">Notes</th>
+                            <th class="py-4 px-6 text-center text-md font-bold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="archived-table-body">
+                        <?php if (empty($archived_expenses)): ?>
+                            <tr>
+                                <td colspan="6" class="py-6 px-6 text-center text-gray-500 text-base">No archived expenses found.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($archived_expenses as $expense): ?>
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="py-4 px-6 text-gray-700 text-sm">
+                                        <?php
+                                        $date = new DateTime($expense['expense_date'], new DateTimeZone('Asia/Manila'));
+                                        echo $date->format('F d, Y');
+                                        ?>
+                                    </td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm"><?php echo htmlspecialchars($expense['description']); ?></td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm"><?php echo htmlspecialchars(ucfirst($expense['category'])); ?></td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm">₱<?php echo number_format($expense['amount'], 2); ?></td>
+                                    <td class="py-4 px-6 text-gray-700 text-sm"><?php echo htmlspecialchars($expense['notes'] ?: '-'); ?></td>
+                                    <td class="py-4 px-6 flex justify-center">
+                                        <button class="unarchive-btn bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-300 flex items-center text-sm font-medium" data-id="<?php echo htmlspecialchars($expense['id']); ?>">
+                                            <i class="fas fa-undo mr-2"></i> Unarchive
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex justify-end p-5 border-t border-gray-200">
+            <button id="cancel-archived-btn" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-300 font-medium">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+<?php
+$page_content = ob_get_clean();
+
+// Page-specific scripts
+ob_start();
+?>
+<script>
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('w-64');
+        sidebar.classList.toggle('collapsed');
+    });
+
+    // Set current date
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+
+    // Scroll animation observer
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
         });
+    }, { threshold: 0.1 });
+    animateElements.forEach(element => observer.observe(element));
 
-        // Delete expense (actually just hide it)
-        function deleteExpense(expenseId) {
-            if(confirm('Are you sure you want to delete this expense?')) {
-                fetch('expense_handlers/delete_expense.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ expense_id: expenseId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        $('#expenses-table').DataTable().ajax.reload();
-                        alert('Expense deleted successfully!');
+    // Expense Management Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const createModal = document.getElementById('create-expense-modal');
+        const editModal = document.getElementById('edit-expense-modal');
+        const archivedModal = document.getElementById('archived-expenses-modal');
+        const addBtn = document.getElementById('add-expense-btn');
+        const viewArchivedBtn = document.getElementById('view-archived-btn');
+        const closeCreateModalBtn = document.getElementById('close-modal');
+        const cancelCreateBtn = document.getElementById('cancel-btn');
+        const closeEditModalBtn = document.getElementById('close-edit-modal');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const closeArchivedModalBtn = document.getElementById('close-archived-modal');
+        const cancelArchivedBtn = document.getElementById('cancel-archived-btn');
+        const createForm = document.getElementById('expense-form');
+        const editForm = document.getElementById('edit-expense-form');
+        const createInputs = createForm.querySelectorAll('input[required], select[required]');
+        const editInputs = editForm.querySelectorAll('input[required], select[required]');
+
+        function initFloatingLabels(form, inputs) {
+            inputs.forEach(input => {
+                const inputGroup = input.closest('.input-group');
+                if (input.value.trim() !== '') {
+                    inputGroup?.classList.add('has-content');
+                }
+                input.addEventListener('input', () => {
+                    if (input.value.trim() !== '') {
+                        inputGroup?.classList.add('has-content');
                     } else {
-                        alert('Error: ' + data.message);
+                        inputGroup?.classList.remove('has-content');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting the expense.');
+                    validateField(input, form);
+                    checkFormValidity(form);
+                });
+                input.addEventListener('blur', () => {
+                    validateField(input, form);
+                });
+            });
+        }
+
+        function toggleModal(modal) {
+            modal.classList.toggle('modal-hidden');
+            if (!modal.classList.contains('modal-hidden') && modal === createModal) {
+                createForm.reset();
+                const today = new Date().toISOString().split('T')[0];
+                createForm.querySelector('#expense_date').value = today;
+                createInputs.forEach(input => validateField(input, createForm));
+                checkFormValidity(createForm);
+                createForm.querySelectorAll('.field-feedback').forEach(fb => {
+                    fb.classList.add('hidden');
+                    fb.textContent = '';
+                });
+            }
+            if (!modal.classList.contains('modal-hidden') && modal === editModal) {
+                editInputs.forEach(input => validateField(input, editForm));
+                checkFormValidity(editForm);
+                editForm.querySelectorAll('.field-feedback').forEach(fb => {
+                    fb.classList.add('hidden');
+                    fb.textContent = '';
                 });
             }
         }
 
-        // Close edit modal
-        document.getElementById('cancel-edit-expense').addEventListener('click', function() {
-            document.getElementById('edit-expense-modal').classList.add('hidden');
-        });
+        addBtn.addEventListener('click', () => toggleModal(createModal));
+        closeCreateModalBtn.addEventListener('click', () => toggleModal(createModal));
+        cancelCreateBtn.addEventListener('click', () => toggleModal(createModal));
+        closeEditModalBtn.addEventListener('click', () => toggleModal(editModal));
+        cancelEditBtn.addEventListener('click', () => toggleModal(editModal));
+        viewArchivedBtn.addEventListener('click', () => toggleModal(archivedModal));
+        closeArchivedModalBtn.addEventListener('click', () => toggleModal(archivedModal));
+        cancelArchivedBtn.addEventListener('click', () => toggleModal(archivedModal));
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !expenseModal.classList.contains('hidden')) {
-                closeModal();
+        createModal.addEventListener('click', function(e) {
+            if (e.target === createModal) {
+                toggleModal(createModal);
             }
         });
 
-        // Add profile dropdown functionality
-        document.getElementById('profileDropdown').addEventListener('click', function() {
-            const menu = document.getElementById('profileMenu');
-            const icon = this.querySelector('.fa-chevron-down');
-            
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('opacity-0');
-            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        editModal.addEventListener('click', function(e) {
+            if (e.target === editModal) {
+                toggleModal(editModal);
+            }
+        });
+
+        archivedModal.addEventListener('click', function(e) {
+            if (e.target === archivedModal) {
+                toggleModal(archivedModal);
+            }
+        });
+
+        function validateField(field, form) {
+            const inputGroup = field.closest('.input-group');
+            const feedback = inputGroup?.querySelector('.field-feedback');
+            let isValid = true;
+            let message = '';
+
+            field.classList.remove('field-error', 'field-success');
+            feedback?.classList.add('hidden');
+
+            switch (field.name) {
+                case 'description':
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        message = 'Description is required';
+                    } else if (field.value.trim().length < 3) {
+                        isValid = false;
+                        message = 'Description must be at least 3 characters';
+                    }
+                    break;
+
+                case 'category':
+                    if (!field.value) {
+                        isValid = false;
+                        message = 'Category is required';
+                    }
+                    break;
+
+                case 'amount':
+                    const amount = parseFloat(field.value);
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        message = 'Amount is required';
+                    } else if (isNaN(amount) || amount <= 0) {
+                        isValid = false;
+                        message = 'Amount must be a positive number';
+                    }
+                    break;
+
+                case 'expense_date':
+                    if (!field.value) {
+                        isValid = false;
+                        message = 'Date is required';
+                    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(field.value)) {
+                        isValid = false;
+                        message = 'Invalid date format';
+                    }
+                    break;
+            }
+
+            if (field.value.trim() !== '' || field.hasAttribute('required')) {
+                if (isValid) {
+                    field.classList.add('field-success');
+                    if (message) {
+                        feedback.textContent = message;
+                        feedback.className = 'field-feedback mt-2 text-sm text-green-600';
+                        feedback.classList.remove('hidden');
+                    }
+                } else {
+                    field.classList.add('field-error');
+                    feedback.textContent = message;
+                    feedback.className = 'field-feedback mt-2 text-sm text-red-600';
+                    feedback.classList.remove('hidden');
+                }
+            }
+
+            return isValid;
+        }
+
+        function checkFormValidity(form) {
+            const inputs = form.querySelectorAll('input, select');
+            const submitBtn = form.querySelector('[type="submit"]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') || input.value.trim()) {
+                    if (!validateField(input, form)) {
+                        isValid = false;
+                    }
+                    if (input.hasAttribute('required') && !input.value.trim()) {
+                        isValid = false;
+                    }
+                }
+            });
+
+            submitBtn.disabled = !isValid;
+        }
+
+        // Initialize forms
+        initFloatingLabels(createForm, createInputs);
+        initFloatingLabels(editForm, editInputs);
+
+        // Form submission handling
+        createForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(createForm);
+            fetch('', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message,
+                        confirmButtonColor: '#8B4513'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: data.errors ? Object.values(data.errors).join('<br>') : data.message,
+                        confirmButtonColor: '#8B4513'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while processing your request.',
+                    confirmButtonColor: '#8B4513'
+                });
+            });
+        });
+
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(editForm);
+            fetch('', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message,
+                        confirmButtonColor: '#8B4513'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: data.message === 'No changes were made to the expense information' ? 'warning' : 'error',
+                        title: data.message === 'No changes were made to the expense information' ? 'No Changes' : 'Error',
+                        html: data.errors ? Object.values(data.errors).join('<br>') : data.message,
+                        confirmButtonColor: '#8B4513'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while processing your request.',
+                    confirmButtonColor: '#8B4513'
+                });
+            });
+        });
+
+        // Edit button handling
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const expenseId = button.dataset.id;
+                fetch('expense_handlers/get_expense.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: expenseId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const expense = data.expense;
+                        editForm.querySelector('#edit-expense-id').value = expense.id;
+                        editForm.querySelector('#edit-description').value = expense.description;
+                        editForm.querySelector('#edit-category').value = expense.category;
+                        editForm.querySelector('#edit-amount').value = expense.amount;
+                        editForm.querySelector('#edit-expense_date').value = expense.expense_date;
+                        editForm.querySelector('#edit-notes').value = expense.notes || '';
+                        toggleModal(editModal);
+                        editInputs.forEach(input => validateField(input, editForm));
+                        checkFormValidity(editForm);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            confirmButtonColor: '#8B4513'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to fetch expense data.',
+                        confirmButtonColor: '#8B4513'
+                    });
+                });
+            });
+        });
+
+        // Archive button handling
+        document.querySelectorAll('.archive-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const expenseId = button.dataset.id;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will archive the expense.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8B4513',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, archive it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('expense_handlers/archive_expense.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: expenseId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Archived',
+                                    text: data.message,
+                                    confirmButtonColor: '#8B4513'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message,
+                                    confirmButtonColor: '#8B4513'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while archiving the expense.',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        });
+                    }
+                });
+            });
+        });
+
+        // Unarchive button handling
+        document.querySelectorAll('.unarchive-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const expenseId = button.dataset.id;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will restore the expense.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8B4513',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, restore it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('expense_handlers/unarchive_expense.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: expenseId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Restored',
+                                    text: data.message,
+                                    confirmButtonColor: '#8B4513'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message,
+                                    confirmButtonColor: '#8B4513'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while restoring the expense.',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        });
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        document.getElementById('expense-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#expense-table-body tr');
+            rows.forEach(row => {
+                const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const category = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                row.style.display = description.includes(searchTerm) || category.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Profile dropdown
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            profileMenu.classList.toggle('opacity-0');
         });
 
         // Close profile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('profileDropdown');
-            const menu = document.getElementById('profileMenu');
-            
-            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
-                menu.classList.add('opacity-0');
-                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+                profileMenu.classList.add('opacity-0');
             }
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+<?php
+$page_scripts = ob_get_clean();
+
+// Include the layout
+include 'layout.php';
+?>
