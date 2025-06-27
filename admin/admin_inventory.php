@@ -11,7 +11,42 @@ $page_title = "Inventory Management";
 // Capture page content
 ob_start();
 ?>
-       <?php
+       <!-- Inventory Management Section -->
+                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-64">
+                                <input type="text" id="inventory-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search ingredients...">
+                            </div>
+                            <button id="add-ingredient-btn" class="group w-10 hover:w-52 h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
+                                <i class="fas fa-plus text-lg flex-shrink-0"></i>
+                                <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Add Ingredient</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Table -->
+                    <div class="overflow-x-auto">
+                        <table id="ingredients-table" class="w-full table-auto display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Name</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Quantity</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Total Price</th>
+                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be loaded via DataTables -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+        <?php
 $page_content = ob_get_clean();
 
 // Capture page-specific styles
@@ -364,42 +399,6 @@ ob_start();
         background: #5D2F0F;
     }
 </style>
-       <!-- Inventory Management Section -->
-                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-64">
-                                <input type="text" id="inventory-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search ingredients...">
-                            </div>
-                            <button id="add-ingredient-btn" class="group w-10 hover:w-52 h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
-                                <i class="fas fa-plus text-lg flex-shrink-0"></i>
-                                <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Add Ingredient</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Inventory Table -->
-                    <div class="overflow-x-auto">
-                        <table id="ingredients-table" class="w-full table-auto display nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Name</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Quantity</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Total Price</th>
-                                    <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Data will be loaded via DataTables -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-        </div>
- 
     <!-- Add Ingredient Modal -->
     <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
         <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
