@@ -604,8 +604,10 @@
         // Update sidebar toggle functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
-
-        function toggleSidebar() {
+        const titleFull = document.querySelector('.nav-title-full');
+        const titleShort = document.querySelector('.nav-title-short');
+        
+         function toggleSidebar() {
         sidebar.classList.toggle('collapsed');
 
         if (sidebar.classList.contains('collapsed')) {
