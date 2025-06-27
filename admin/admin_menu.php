@@ -916,7 +916,7 @@
 ?>
 
 
-    <script>
+<script>
         // Sidebar Toggle with smooth animation
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -1271,8 +1271,8 @@
                             return `<button class="edit-dish-btn flex items-center gap-2 px-3 py-1 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full text-sm transition-colors duration-200" data-id="${data}">
     <i class="fas fa-edit text-base"></i>
     <span>Edit</span>
-</button>
-`;
+        </button>
+        `;
                         },
                         orderable: false
                     }
@@ -2234,7 +2234,7 @@
         });
 
 
-    </script>
+</script>
 <?php
 $page_scripts = ob_get_clean();
 

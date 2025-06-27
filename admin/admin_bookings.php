@@ -1,461 +1,21 @@
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    'warm-cream': '#E8E0D5',
-                    'rich-brown': '#8B4513',
-                    'deep-brown': '#5D2F0F',
-                    'accent-brown': '#A0522D'
-                },
-                fontFamily: {
-                    'playfair': ['Playfair Display', 'serif'],
-                    'baskerville': ['Libre Baskerville', 'serif']
-                }
-            }
-        }
-    }
-</script>
+<?php
+    require_once '../db_connect.php';
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafe Lilio - Admin Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-        
-        .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-baskerville { font-family: 'Libre Baskerville', serif; }
-        
-        /* Add blur effect class */
-        .blur-effect {
-            filter: blur(5px);
-            transition: filter 0.3s ease;
-            pointer-events: none;
-        }
+    // Set the timezone to Philippine Time
+    date_default_timezone_set('Asia/Manila');
 
-        /* Add this to your existing styles */
-        #booking-modal, #decline-modal, #success-modal {
-            z-index: 1000 !important; /* Higher than anything else */
-        }
-        
-        /* Ensure the main content doesn't create stacking context */
-        .flex-1 {
-            position: static;
-        }
-        
-        /* Sidebar should have lower z-index than modals */
-        #sidebar {
-            z-index: 40;
-        }
-        
-        /* Header should have lower z-index than modals */
-        header {
-            z-index: 50;
-        }
+    // Define page title
+    $page_title = "Menu Management";
 
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-        
-        /* Animation classes */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .animate-on-scroll.animated {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Delay classes for staggered animations */
-        .delay-100 {
-            transition-delay: 100ms;
-        }
-        .delay-200 {
-            transition-delay: 200ms;
-        }
-        .delay-300 {
-            transition-delay: 300ms;
-        }
-        .delay-400 {
-            transition-delay: 400ms;
-        }
+    // Capture page content
+    ob_start();
+?>
 
-        /* Improved scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #E8E0D5;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
-        }
 
-        /* Dashboard card styles */
-        .dashboard-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 224, 213, 0.5);
-            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-card:hover {
-            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
-            transform: translateY(-2px);
-        }
 
-        /* Sidebar improvements */
-        .sidebar-link {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .sidebar-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #E8E0D5;
-            transition: width 0.3s ease;
-        }
-        
-        .sidebar-link:hover::after {
-            width: 100%;
-        }
 
-        /* Add this to your existing styles */
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-        }
 
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-            border-top-left-radius: 0.75rem;
-            border-top-right-radius: 0.75rem;
-        }
 
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            z-index: 10;
-            border-bottom-left-radius: 0.75rem;
-            border-bottom-right-radius: 0.75rem;
-        }
-
-        /* Improved scrollbar for modal body */
-        .modal-body::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 3px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: #5D2F0F;
-        }
-
-        /* Improved Sidebar styles */
-        #sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: width 0.3s ease-in-out;
-            position: relative;
-            z-index: 40;
-        }
-
-        #sidebar.collapsed {
-            width: 4rem !important;
-        }
-
-        #sidebar .sidebar-header {
-            flex-shrink: 0;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(232, 224, 213, 0.2);
-        }
-
-        #sidebar.collapsed .sidebar-header {
-            padding: 1.5rem 0.75rem;
-        }
-
-        #sidebar nav {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .sidebar-link {
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        #sidebar.collapsed .sidebar-link {
-            padding: 0.75rem !important;
-            justify-content: center;
-        }
-
-        #sidebar.collapsed .sidebar-link i {
-            margin: 0 !important;
-        }
-
-        #sidebar.collapsed .sidebar-text,
-        #sidebar.collapsed .nav-title,
-        #sidebar.collapsed .nav-subtitle,
-        #sidebar.collapsed h2 {
-            display: none;
-        }
-
-        .sidebar-link .tooltip {
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #5D2F0F;
-            color: #E8E0D5;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
-            z-index: 50;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-        }
-
-        .sidebar-link .tooltip::before {
-            content: '';
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 6px solid transparent;
-            border-right-color: #5D2F0F;
-        }
-
-        #sidebar.collapsed .sidebar-link:hover .tooltip {
-            opacity: 1;
-            visibility: visible;
-            left: calc(100% + 0.5rem);
-        }
-
-        /* Active state for sidebar links */
-        .sidebar-link.active {
-            background: rgba(232, 224, 213, 0.2) !important;
-            color: #E8E0D5 !important;
-        }
-
-        /* Improved hover effects */
-        .sidebar-link:hover {
-            background: rgba(232, 224, 213, 0.15) !important;
-        }
-
-        #sidebar.collapsed .sidebar-link:hover {
-            transform: scale(1.1);
-        }
-
-        /* Custom scrollbar for sidebar */
-        #sidebar nav::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #sidebar nav::-webkit-scrollbar-track {
-            background: rgba(232, 224, 213, 0.1);
-            border-radius: 3px;
-        }
-        
-        #sidebar nav::-webkit-scrollbar-thumb {
-            background: rgba(232, 224, 213, 0.3);
-            border-radius: 3px;
-        }
-        
-        #sidebar nav::-webkit-scrollbar-thumb:hover {
-            background: rgba(232, 224, 213, 0.4);
-        }
-
-        /* Add fade-in animation for modals */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-content {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-
-        /* Add transition for modal backdrop */
-        .modal-backdrop {
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-backdrop.hidden {
-            opacity: 0;
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'script': ['Brush Script MT', 'cursive']
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-warm-cream font-baskerville">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
-            <div class="sidebar-header p-6 border-b border-warm-cream/20">
-                <div>
-                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                </div>
-            </div>
-            
-            <nav class="px-4">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="admin_dashboard.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200 mt-8">
-                            <i class="fas fa-chart-pie w-5"></i>
-                            <span class="sidebar-text font-baskerville">Dashboard</span>
-                            <div class="tooltip">Dashboard</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                            <i class="fas fa-calendar-check w-5"></i>
-                            <span class="sidebar-text font-baskerville">Booking Requests</span>
-                            <div class="tooltip">Booking Requests</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-utensils w-5"></i>
-                            <span class="sidebar-text font-baskerville">Menu Management</span>
-                            <div class="tooltip">Menu Management</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-boxes w-5"></i>
-                            <span class="sidebar-text font-baskerville">Inventory</span>
-                            <div class="tooltip">Inventory</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-receipt w-5"></i>
-                            <span class="sidebar-text font-baskerville">Expenses</span>
-                            <div class="tooltip">Expenses</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
-                            <i class="fas fa-user-plus w-5"></i>
-                            <span class="sidebar-text font-baskerville">Our Employee</span>
-                            <div class="tooltip">Our Employee</div>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
-                            <i class="fas fa-bars text-xl"></i>
-                        </button>
-                    </div>
-                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        <span id="current-date"></span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
-                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                                </div>
-                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
-                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
-                            </button>
-                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
-                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Sign Out</span>
-                                </a>
-                            </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
                 <!-- Restaurant Bookings Section -->
                 <div class="dashboard-card animate-on-scroll rounded-lg shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-200">
@@ -657,8 +217,6 @@
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
 
         <!-- MODAL SECTION -->
          <!-- Booking Details Modal -->
@@ -775,7 +333,15 @@
                 </div>
 
 
-    </div>
+
+<?php
+    $page_content = ob_get_clean();
+
+    // Capture page-specific scripts
+    ob_start();
+?>
+
+
 
     <script>
         // Sidebar Toggle with smooth animation
@@ -1140,5 +706,9 @@
         });
 
     </script>
-</body>
-</html>
+<?php
+$page_scripts = ob_get_clean();
+
+// Include the layout
+include 'layout.php';
+?>
