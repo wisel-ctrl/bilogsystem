@@ -606,8 +606,18 @@
         const sidebarToggle = document.getElementById('sidebar-toggle');
 
         function toggleSidebar() {
-            sidebar.classList.toggle('collapsed');
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+            // Show initials, hide full name
+            titleFull.classList.add('hidden');
+            titleShort.classList.remove('hidden');
+        } else {
+            // Show full name, hide initials
+            titleFull.classList.remove('hidden');
+            titleShort.classList.add('hidden');
         }
+    }
 
         // Update event listeners
         sidebarToggle.addEventListener('click', toggleSidebar);
