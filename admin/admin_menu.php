@@ -80,27 +80,7 @@
             transform: translateY(-2px);
         }
         
-        /* Sidebar improvements */
-        .sidebar-link {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .sidebar-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #E8E0D5;
-            transition: width 0.3s ease;
-        }
-        
-        .sidebar-link:hover::after {
-            width: 100%;
-        }
+
         
         /* Animation classes */
         .fade-in {
