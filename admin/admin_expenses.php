@@ -1,8 +1,163 @@
 <?php
-$page_title = "Employee Management";
+require_once '../db_connect.php';
+
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
+
+$creation_success = false;
+$update_success = false;
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'expense') {
+    $description = trim($_POST['description'] ?? '');
+    $category = trim($_POST['category'] ?? '');
+    $amount = trim($_POST['amount'] ?? '');
+    $expense_date = trim($_POST['expense_date'] ?? '');
+    $notes = trim($_POST['notes'] ?? '');
+
+    if (empty($description)) $errors['description'] = 'Description is required';
+    if (empty($category)) $errors['category'] = 'Category is required';
+    if (empty($amount)) {
+        $errors['amount'] = 'Amount is required';
+    } elseif (!is_numeric($amount) || $amount <= 0) {
+        $errors['amount'] = 'Amount must be a positive number';
+    }
+    if (empty($expense_date)) {
+        $errors['expense_date'] = 'Date is required';
+    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
+        $errors['expense_date'] = 'Invalid date format';
+    }
+
+    if (empty($errors)) {
+        try {
+            $createdAt = (new DateTime())->format('Y-m-d H:i:s');
+            $stmt = $conn->prepare("INSERT INTO expenses_tb (description, category, amount, expense_date, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$description, $category, $amount, $expense_date, $notes, $createdAt]);
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Expense created successfully'
+            ]);
+            exit;
+        } catch(PDOException $e) {
+            $errors['database'] = 'Creation failed: ' . $e->getMessage();
+        }
+    }
+
+    if (!empty($errors)) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ]);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_expense') {
+    $expenseId = trim($_POST['expense_id'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $category = trim($_POST['category'] ?? '');
+    $amount = trim($_POST['amount'] ?? '');
+    $expense_date = trim($_POST['expense_date'] ?? '');
+    $notes = trim($_POST['notes'] ?? '');
+
+    if (empty($description)) $errors['description'] = 'Description is required';
+    if (empty($category)) $errors['category'] = 'Category is required';
+    if (empty($amount)) {
+        $errors['amount'] = 'Amount is required';
+    } elseif (!is_numeric($amount) || $amount <= 0) {
+        $errors['amount'] = 'Amount must be a positive number';
+    }
+    if (empty($expense_date)) {
+        $errors['expense_date'] = 'Date is required';
+    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
+        $errors['expense_date'] = 'Invalid date format';
+    }
+
+    if (empty($errors)) {
+        try {
+            $stmt = $conn->prepare("SELECT description, category, amount, expense_date, notes FROM expenses_tb WHERE id = ? AND status = 1");
+            $stmt->execute([$expenseId]);
+            $existingExpense = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$existingExpense) {
+                $errors['database'] = 'Expense not found';
+            } else {
+                $noChanges = (
+                    $description === $existingExpense['description'] &&
+                    $category === $existingExpense['category'] &&
+                    $amount == $existingExpense['amount'] &&
+                    $expense_date === $existingExpense['expense_date'] &&
+                    $notes === $existingExpense['notes']
+                );
+
+                if ($noChanges) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'No changes were made to the expense information'
+                    ]);
+                    exit;
+                } else {
+                    try {
+                        $updatedAt = (new DateTime())->format('Y-m-d H:i:s');
+                        $stmt = $conn->prepare("UPDATE expenses_tb SET description = ?, category = ?, amount = ?, expense_date = ?, notes = ?, updated_at = ? WHERE id = ?");
+                        $stmt->execute([$description, $category, $amount, $expense_date, $notes, $updatedAt, $expenseId]);
+
+                        header('Content-Type: application/json');
+                        echo json_encode([
+                            'success' => true,
+                            'message' => 'Expense updated successfully'
+                        ]);
+                        exit;
+                    } catch(PDOException $e) {
+                        $errors['database'] = 'Update failed: ' . $e->getMessage();
+                    }
+                }
+            }
+        } catch(PDOException $e) {
+            $errors['database'] = 'Failed to fetch expense data: ' . $e->getMessage();
+        }
+    }
+
+    if (!empty($errors)) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ]);
+        exit;
+    }
+}
+
+// Fetch expenses for display
+try {
+    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 1 ORDER BY expense_date DESC");
+    $stmt->execute();
+    $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $errors['database'] = 'Failed to fetch expenses: ' . $e->getMessage();
+}
+
+// Fetch archived expenses
+try {
+    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 0 ORDER BY expense_date DESC");
+    $stmt->execute();
+    $archived_expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $errors['database'] = 'Failed to fetch archived expenses: ' . $e->getMessage();
+}
+
+// Define page title and content
+$page_title = "Expense Management";
 
 ob_start();
 ?>
+    
     <!-- Modal for adding expenses -->
     <div id="expense-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
