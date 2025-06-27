@@ -52,11 +52,172 @@ ob_start();
             }
         }
     </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+        #sidebar {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+        transition: width 0.3s ease-in-out;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 16rem;
+        background: #5D2F0F;
+        color: #E8E0D5;
+        z-index: 40;
+    }
+
+    #sidebar.collapsed {
+        width: 4rem !important;
+    }
+
+    #sidebar .sidebar-header {
+        flex-shrink: 0;
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(232, 224, 213, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #sidebar.collapsed .sidebar-header {
+        padding: 1.5rem 0.75rem;
+        justify-content: center;
+    }
+
+    #sidebar nav {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 4px;
+        padding-bottom: 1rem;
+    }
+
+    .sidebar-link {
+        position: relative;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        color: #E8E0D5;
+        font-family: 'Libre Baskerville', serif;
+        font-size: 0.9rem;
+    }
+
+    #sidebar.collapsed .sidebar-link {
+        padding: 0.75rem !important;
+        justify-content: center;
+    }
+
+    #sidebar.collapsed .sidebar-link i {
+        margin: 0 !important;
+    }
+
+    #sidebar.collapsed .sidebar-text,
+    #sidebar.collapsed .nav-title,
+    #sidebar.collapsed .nav-title-short,
+    #sidebar.collapsed .nav-subtitle {
+        display: none;
+    }
+
+    #sidebar:not(.collapsed) .nav-title-short {
+        display: none;
+    }
+
+    #sidebar.collapsed .nav-title-short {
+        display: block;
+    }
+
+    .sidebar-link .tooltip {
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #5D2F0F;
+        color: #E8E0D5;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        z-index: 50;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+    }
+
+    .sidebar-link .tooltip::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+        border-right-color: #5D2F0F;
+    }
+
+    #sidebar.collapsed .sidebar-link:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+        left: calc(100% + 0.5rem);
+    }
+
+    .sidebar-link.active {
+        background: rgba(232, 224, 213, 0.2) !important;
+        color: #E8E0D5 !important;
+    }
+
+    .sidebar-link:hover {
+        background: rgba(232, 224, 213, 0.15) !important;
+        transform: translateX(5px);
+    }
+
+    #sidebar.collapsed .sidebar-link:hover {
+        transform: scale(1.1);
+    }
+
+    .sidebar-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #E8E0D5;
+        transition: width 0.3s ease;
+    }
+
+    .sidebar-link:hover::after {
+        width: 100%;
+    }
+
+    /* Improved scrollbar */
+    #sidebar nav::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #sidebar nav::-webkit-scrollbar-track {
+        background: #E8E0D5;
+        border-radius: 4px;
+    }
+
+    #sidebar nav::-webkit-scrollbar-thumb {
+        background: #8B4513;
+        border-radius: 4px;
+    }
+
+    #sidebar nav::-webkit-scrollbar-thumb:hover {
+        background: #5D2F0F;
+    }
+
 
         /* ... (Include all styles from the original admin_employee_creation.php) ... */
         .chart-container {
@@ -349,7 +510,54 @@ ob_start();
     ?>
 </body>
 </html>
+<script>
+    // Sidebar toggle functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const titleFull = document.querySelector('.nav-title');
+    const titleShort = document.querySelector('.nav-title-short');
 
+    // Load sidebar state from localStorage
+    if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+        titleFull.classList.add('hidden');
+        titleShort.classList.remove('hidden');
+    }
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            titleFull.classList.add('hidden');
+            titleShort.classList.remove('hidden');
+            localStorage.setItem('sidebarCollapsed', 'true');
+        } else {
+            titleFull.classList.remove('hidden');
+            titleShort.classList.add('hidden');
+            localStorage.setItem('sidebarCollapsed', 'false');
+        }
+    }
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+
+    // Sidebar link click handler
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // Initialize sidebar state
+    document.addEventListener('DOMContentLoaded', () => {
+        // PHP sets the initial active state, so we only need to ensure JavaScript doesn't override it unnecessarily
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
 <?php
 // End output buffering and flush
 ob_end_flush();
