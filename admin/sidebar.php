@@ -2,7 +2,7 @@
     <div class="sidebar-header p-6 border-b border-warm-cream/20">
         <div>
             <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-            <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream sidebar-title-initial hidden">CL</h1>
+            <h1 class="nav-title-short font-playfair font-bold text-xl text-warm-cream hidden">CL</h1>
 
             <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
         </div>
@@ -56,25 +56,3 @@
     </nav>
 </div>
 
-<script>
-    // Example toggle: add/remove collapsed class to #sidebar
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const fullTitle = sidebar.querySelector('.sidebar-title-full');
-        const shortTitle = sidebar.querySelector('.sidebar-title-initial');
-
-        sidebar.classList.toggle('collapsed');
-
-        if (sidebar.classList.contains('collapsed')) {
-            sidebar.classList.remove('w-64');
-            sidebar.classList.add('w-16');
-            fullTitle.classList.add('hidden');
-            shortTitle.classList.remove('hidden');
-        } else {
-            sidebar.classList.remove('w-16');
-            sidebar.classList.add('w-64');
-            fullTitle.classList.remove('hidden');
-            shortTitle.classList.add('hidden');
-        }
-    }
-</script>
