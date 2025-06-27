@@ -12,21 +12,6 @@ ob_start();
 ?>
 
 
-<style>
-                    .dashboard-card {
-                    background: rgba(255, 255, 255, 0.9);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(232, 224, 213, 0.5);
-                    box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
-                    transition: all 0.3s ease;
-                }
-                
-                .dashboard-card:hover {
-                    box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
-                    transform: translateY(-2px);
-                }
-                
-</style>
 <!-- Modal for adding expenses -->
 <div id="expense-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -144,7 +129,6 @@ ob_start();
     </div>
 </div>
 
-<div class="flex h-screen overflow-hidden">
 
 
 
@@ -182,8 +166,6 @@ ob_start();
                     </table>
                 </div>
             </div>
-    </div>
-</div>
 <?php
 $page_content = ob_get_clean();
 
