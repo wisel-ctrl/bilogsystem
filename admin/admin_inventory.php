@@ -225,47 +225,28 @@ $page_styles = ob_get_clean();
 // Capture page-specific scripts
 ob_start();
 ?>
-<script>
-    // Tailwind config (assuming included in layout.php, retained here for reference)
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    'warm-cream': '#E8E0D5',
-                    'rich-brown': '#8B4513',
-                    'deep-brown': '#5D2F0F',
-                    'accent-brown': '#A0522D'
-                },
-                fontFamily: {
-                    'serif': ['Georgia', 'serif'],
-                    'script': ['Brush Script MT', 'cursive']
-                }
-            }
-        }
-    };
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const cafeTitle = document.getElementById('cafe-title');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-    // Sidebar Toggle (handled in layout.php or sidebar.php, included here for reference)
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebarTexts = document.querySelectorAll('.sidebar-text');
-
-    if (sidebar && sidebarToggle) {
         sidebarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('w-64');
             sidebar.classList.toggle('w-16');
             
             if (sidebar.classList.contains('w-16')) {
+                cafeTitle.style.display = 'none';
                 sidebarTexts.forEach(text => text.style.display = 'none');
             } else {
+                cafeTitle.style.display = 'block';
                 sidebarTexts.forEach(text => text.style.display = 'block');
             }
         });
-    }
 
-    // Set current date with improved formatting
-    const currentDateElement = document.getElementById('current-date');
-    if (currentDateElement) {
-        const options = { 
+          // Set current date with improved formatting
+          const options = { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
@@ -273,466 +254,444 @@ ob_start();
             hour: '2-digit',
             minute: '2-digit'
         };
-        currentDateElement.textContent = new Date().toLocaleDateString('en-US', options);
-    }
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
 
-    // Scroll animation observer
-    const animateElements = document.querySelectorAll('.animate-on-scroll');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-            }
+        // Scroll animation observer
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, {
+            threshold: 0.1
         });
-    }, {
-        threshold: 0.1
-    });
 
-    animateElements.forEach(element => {
-        observer.observe(element);
-    });
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
 
-    // Initialize DataTable
-    $(document).ready(function() {
-        var table = $('#ingredients-table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url": "inventory_handlers/fetch_ingredient.php",
-                "type": "POST"
-            },
-            "columns": [
-                {
-                    "data": "ingredient_name",
-                    "render": function(data, type, row) {
-                        return data.replace(/\w\S*/g, function(txt) {
-                            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                        });
-                    }
+        // Initialize DataTable
+        $(document).ready(function() {
+            var table = $('#ingredients-table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "inventory_handlers/fetch_ingredient.php",
+                    "type": "POST"
                 },
-                { "data": "category" },
-                { 
-                    "data": "quantity", 
-                    "render": function(data, type, row) {
-                        return parseFloat(data).toFixed(2) + ' kg';
-                    }
-                },
-                { 
-                    "data": "price",
-                    "render": function(data, type, row) {
-                        return '₱' + parseFloat(data).toFixed(2);
-                    }
-                },
-                { 
-                    "data": "total_price",
-                    "render": function(data, type, row) {
-                        return '₱' + parseFloat(data).toFixed(2);
-                    }
-                },
-                {
-                    "data": "ingredient_id",
-                    "render": function(data, type, row) {
-                        return `
-                            <div class="flex space-x-2">
-                                <!-- Edit Button -->
-                                <button 
-                                    class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
-                                    onclick="editIngredient(${data})">
-                                    <i class="fas fa-edit text-base flex-shrink-0"></i>
-                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
-                                </button>
-
-                                <!-- Delete Button -->
-                                <button 
-                                    class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
-                                    onclick="confirmDelete(${data})">
-                                    <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
-                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
-                                </button>
-                            </div>
-                        `;
+                "columns": [
+                    {
+                        "data": "ingredient_name",
+                        "render": function(data, type, row) {
+                            return data.replace(/\w\S*/g, function(txt) {
+                                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                            });
+                        }
                     },
-                    "orderable": false
+                    { "data": "category" },
+                    { 
+                        "data": "quantity", 
+                        "render": function(data, type, row) {
+                            return parseFloat(data).toFixed(2) + ' kg';
+                        }
+                    },
+                    { 
+                        "data": "price",
+                        "render": function(data, type, row) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        "data": "total_price",
+                        "render": function(data, type, row) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        "data": "ingredient_id",
+                        "render": function(data, type, row) {
+                            return `
+                                <div class="flex space-x-2">
+                                    <!-- Edit Button -->
+                                    <button 
+                                        class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
+                                        onclick="editIngredient(${data})">
+                                        <i class="fas fa-edit text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                    </button>
+
+                                    <!-- Delete Button -->
+                                    <button 
+                                        class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-[1.03]"
+                                        onclick="confirmDelete(${data})">
+                                        <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
+                                        <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
+                                    </button>
+                                </div>
+                            `;
+                        },
+                        "orderable": false
+                    }
+                ],
+                "order": [[0, 'asc']],
+                "responsive": true,
+                "dom": '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                "lengthChange": false,
+                "pageLength": 10,
+                "language": {
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
                 }
-            ],
-            "order": [[0, 'asc']],
-            "responsive": true,
-            "dom": '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
-            "lengthChange": false,
-            "pageLength": 10,
-            "language": {
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "paginate": {
-                    "previous": "<i class='fas fa-chevron-left'></i>",
-                    "next": "<i class='fas fa-chevron-right'></i>"
-                }
-            }
+            });
+
+            // Connect custom search input to DataTable
+            $('#inventory-search').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            // Refresh table after adding/editing
+            window.refreshTable = function() {
+                table.ajax.reload(null, false);
+            };
         });
 
-        // Connect custom search input to DataTable
-        $('#inventory-search').on('keyup', function() {
-            table.search(this.value).draw();
+        // Modal handling
+        const addIngredientBtn = document.getElementById('add-ingredient-btn');
+        const addIngredientModal = document.getElementById('add-ingredient-modal');
+        const addIngredientForm = document.getElementById('add-ingredient-form');
+        const closeAddModal = document.getElementById('close-add-modal');
+        const cancelAddIngredient = document.getElementById('cancel-add-ingredient');
+        
+        const editIngredientModal = document.getElementById('edit-ingredient-modal');
+        const closeEditModal = document.getElementById('close-edit-modal');
+        const cancelEditIngredient = document.getElementById('cancel-edit-ingredient');
+        
+        const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+        const closeDeleteModal = document.getElementById('close-delete-modal');
+        const cancelDelete = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+
+        // Show add ingredient modal
+        addIngredientBtn.addEventListener('click', () => {
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
+            // Show modal
+            addIngredientModal.classList.remove('hidden');
         });
 
-        // Refresh table after adding/editing
-        window.refreshTable = function() {
-            table.ajax.reload(null, false);
-        };
-    });
-
-    // Modal handling
-    const addIngredientBtn = document.getElementById('add-ingredient-btn');
-    const addIngredientModal = document.getElementById('add-ingredient-modal');
-    const addIngredientForm = document.getElementById('add-ingredient-form');
-    const closeAddModal = document.getElementById('close-add-modal');
-    const cancelAddIngredient = document.getElementById('cancel-add-ingredient');
-    
-    const editIngredientModal = document.getElementById('edit-ingredient-modal');
-    const closeEditModal = document.getElementById('close-edit-modal');
-    const cancelEditIngredient = document.getElementById('cancel-edit-ingredient');
-    
-    const deleteConfirmModal = document.getElementById('delete-confirm-modal');
-    const closeDeleteModal = document.getElementById('close-delete-modal');
-    const cancelDelete = document.getElementById('cancel-delete');
-    const confirmDeleteBtn = document.getElementById('confirm-delete');
-
-    // Show add ingredient modal
-    addIngredientBtn.addEventListener('click', () => {
-        // Add blur to main content
-        document.querySelector('.flex-1').classList.add('blur-effect');
-        document.querySelector('#sidebar').classList.add('blur-effect');
-        
-        // Show modal
-        addIngredientModal.classList.remove('hidden');
-    });
-
-    // Close add ingredient modal
-    function closeAddIngredientModal() {
-        // Remove blur from main content
-        document.querySelector('.flex-1').classList.remove('blur-effect');
-        document.querySelector('#sidebar').classList.remove('blur-effect');
-        
-        // Hide modal
-        addIngredientModal.classList.add('hidden');
-        
-        // Reset form
-        addIngredientForm.reset();
-    }
-
-    closeAddModal.addEventListener('click', closeAddIngredientModal);
-    cancelAddIngredient.addEventListener('click', closeAddIngredientModal);
-
-    // Close edit ingredient modal
-    function closeEditIngredientModal() {
-        // Remove blur from main content
-        document.querySelector('.flex-1').classList.remove('blur-effect');
-        document.querySelector('#sidebar').classList.remove('blur-effect');
-        
-        // Hide modal
-        editIngredientModal.classList.add('hidden');
-        
-        // Reset form
-        document.getElementById('edit-ingredient-form').reset();
-    }
-
-    closeEditModal.addEventListener('click', closeEditIngredientModal);
-    cancelEditIngredient.addEventListener('click', closeEditIngredientModal);
-
-    // Close delete confirmation modal
-    function closeDeleteConfirmModal() {
-        // Remove blur from main content
-        document.querySelector('.flex-1').classList.remove('blur-effect');
-        document.querySelector('#sidebar').classList.remove('blur-effect');
-        
-        // Hide modal
-        deleteConfirmModal.classList.add('hidden');
-        
-        // Clear the ingredient ID
-        document.getElementById('ingredient-to-delete').value = '';
-    }
-
-    closeDeleteModal.addEventListener('click', closeDeleteConfirmModal);
-    cancelDelete.addEventListener('click', closeDeleteConfirmModal);
-
-    // Close modals when clicking outside
-    window.addEventListener('click', (event) => {
-        if (event.target === addIngredientModal) {
-            closeAddIngredientModal();
+        // Close add ingredient modal
+        function closeAddIngredientModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
+            addIngredientModal.classList.add('hidden');
+            
+            // Reset form
+            addIngredientForm.reset();
         }
-        if (event.target === editIngredientModal) {
-            closeEditIngredientModal();
-        }
-        if (event.target === deleteConfirmModal) {
-            closeDeleteConfirmModal();
-        }
-    });
 
-    // Close modals when pressing Escape key
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            if (!addIngredientModal.classList.contains('hidden')) {
+        closeAddModal.addEventListener('click', closeAddIngredientModal);
+        cancelAddIngredient.addEventListener('click', closeAddIngredientModal);
+
+        // Close edit ingredient modal
+        function closeEditIngredientModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
+            editIngredientModal.classList.add('hidden');
+            
+            // Reset form
+            document.getElementById('edit-ingredient-form').reset();
+        }
+
+        closeEditModal.addEventListener('click', closeEditIngredientModal);
+        cancelEditIngredient.addEventListener('click', closeEditIngredientModal);
+
+        // Close delete confirmation modal
+        function closeDeleteConfirmModal() {
+            // Remove blur from main content
+            document.querySelector('.flex-1').classList.remove('blur-effect');
+            document.querySelector('#sidebar').classList.remove('blur-effect');
+            
+            // Hide modal
+            deleteConfirmModal.classList.add('hidden');
+            
+            // Clear the ingredient ID
+            document.getElementById('ingredient-to-delete').value = '';
+        }
+
+        closeDeleteModal.addEventListener('click', closeDeleteConfirmModal);
+        cancelDelete.addEventListener('click', closeDeleteConfirmModal);
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === addIngredientModal) {
                 closeAddIngredientModal();
             }
-            if (!editIngredientModal.classList.contains('hidden')) {
+            if (event.target === editIngredientModal) {
                 closeEditIngredientModal();
             }
-            if (!deleteConfirmModal.classList.contains('hidden')) {
+            if (event.target === deleteConfirmModal) {
                 closeDeleteConfirmModal();
             }
-        }
-    });
+        });
 
-    // Form submissions
-    document.getElementById('add-ingredient-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('ingredient-name').value.trim();
-        const category = document.getElementById('ingredient-category').value;
-        const quantityInput = document.getElementById('ingredient-quantity').value;
-        const priceInput = document.getElementById('ingredient-price').value;
-        
-        // Validate quantity
-        if (!/^\d*\.?\d+$/.test(quantityInput)) {
-            alert('Quantity must be a positive number (letters and symbols not allowed)');
-            return;
-        }
-        
-        const quantity = parseFloat(quantityInput);
-        if (quantity <= 0) {
-            alert('Quantity must be greater than zero');
-            return;
-        }
-        
-        // Validate price
-        if (!/^\d*\.?\d+$/.test(priceInput)) {
-            alert('Price must be a positive number (letters and symbols not allowed)');
-            return;
-        }
-        
-        const price = parseFloat(priceInput);
-        if (price < 0) {
-            alert('Price cannot be negative');
-            return;
-        }
-        
-        // Basic validation for other fields
-        if (!name || !category) {
-            alert('Please fill all fields');
-            return;
-        }
-        
-        try {
-            // Send data to server
-            const response = await fetch('inventory_handlers/add_ingredient.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ingredient_name: name,
-                    category: category,
-                    quantity: quantity,
-                    price: price
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to add ingredient');
+        // Close modals when pressing Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (!addIngredientModal.classList.contains('hidden')) {
+                    closeAddIngredientModal();
+                }
+                if (!editIngredientModal.classList.contains('hidden')) {
+                    closeEditIngredientModal();
+                }
+                if (!deleteConfirmModal.classList.contains('hidden')) {
+                    closeDeleteConfirmModal();
+                }
             }
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                // Close modal and reset form
-                closeAddIngredientModal();
-                addIngredientForm.reset();
-                
-                // Refresh the DataTable
-                refreshTable();
-                
-                alert('Ingredient added successfully!');
-            } else {
-                throw new Error(result.message || 'Failed to add ingredient');
-            }
-            
-        } catch (error) {
-            console.error('Error adding ingredient:', error);
-            alert('Error adding ingredient: ' + error.message);
-        }
-    });
+        });
 
-    // Function to open the edit modal with ingredient data
-    window.editIngredient = async function(ingredientId) {
-        try {
-            // Validate ingredientId
-            if (!ingredientId) {
-                throw new Error('Ingredient ID is required');
+        // Form submissions
+        document.getElementById('add-ingredient-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('ingredient-name').value.trim();
+            const category = document.getElementById('ingredient-category').value;
+            const quantityInput = document.getElementById('ingredient-quantity').value;
+            const priceInput = document.getElementById('ingredient-price').value;
+            
+            // Validate quantity
+            if (!/^\d*\.?\d+$/.test(quantityInput)) {
+                alert('Quantity must be a positive number (letters and symbols not allowed)');
+                return;
             }
-
-            // Fetch ingredient data
-            const response = await fetch(`inventory_handlers/get_ingredient.php?id=${ingredientId}`);
             
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => null);
-                throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
+            const quantity = parseFloat(quantityInput);
+            if (quantity <= 0) {
+                alert('Quantity must be greater than zero');
+                return;
             }
             
-            const ingredient = await response.json();
+            // Validate price
+            if (!/^\d*\.?\d+$/.test(priceInput)) {
+                alert('Price must be a positive number (letters and symbols not allowed)');
+                return;
+            }
             
-            // Debug: log the received data
-            console.log('Received ingredient data:', ingredient);
+            const price = parseFloat(priceInput);
+            if (price < 0) {
+                alert('Price cannot be negative');
+                return;
+            }
             
-            // Populate the form - add null checks
-            if (ingredient) {
-                document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id || '';
-                document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name || '';
-                document.getElementById('edit-ingredient-category').value = ingredient.category || '';
-                document.getElementById('edit-ingredient-quantity').value = ingredient.quantity || '';
-                document.getElementById('edit-ingredient-price').value = ingredient.price || '';
+            // Basic validation for other fields
+            if (!name || !category) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            try {
+                // Send data to server
+                const response = await fetch('inventory_handlers/add_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ingredient_name: name,
+                        category: category,
+                        quantity: quantity,
+                        price: price
+                    })
+                });
                 
-                // Add blur to main content
-                document.querySelector('.flex-1').classList.add('blur-effect');
-                document.querySelector('#sidebar').classList.add('blur-effect');
+                if (!response.ok) {
+                    throw new Error('Failed to add ingredient');
+                }
                 
-                // Show modal with fade effect
-                editIngredientModal.classList.remove('hidden');
-                setTimeout(() => {
-                    editIngredientModal.querySelector('.dashboard-card')?.style.opacity = '1';
-                    editIngredientModal.querySelector('.dashboard-card')?.style.transform = 'translateY(0)';
-                }, 50);
-            } else {
-                throw new Error('Ingredient data is empty');
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and reset form
+                    closeAddIngredientModal();
+                    addIngredientForm.reset();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient added successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to add ingredient');
+                }
+                
+            } catch (error) {
+                console.error('Error adding ingredient:', error);
+                alert('Error adding ingredient: ' + error.message);
             }
-            
-        } catch (error) {
-            console.error('Error fetching ingredient:', error);
-            alert('Error fetching ingredient data: ' + error.message);
-        }
-    };
+        });
 
-    // Form submission handler for edit
-    document.getElementById('edit-ingredient-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = {
-            ingredient_id: document.getElementById('edit-ingredient-id').value,
-            ingredient_name: document.getElementById('edit-ingredient-name').value,
-            category: document.getElementById('edit-ingredient-category').value,
-            quantity: document.getElementById('edit-ingredient-quantity').value,
-            price: document.getElementById('edit-ingredient-price').value
+        // Function to open the edit modal with ingredient data
+        window.editIngredient = async function(ingredientId) {
+            try {
+                // Validate ingredientId
+                if (!ingredientId) {
+                    throw new Error('Ingredient ID is required');
+                }
+
+                // Fetch ingredient data
+                const response = await fetch(`inventory_handlers/get_ingredient.php?id=${ingredientId}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const ingredient = await response.json();
+                
+                // Debug: log the received data
+                console.log('Received ingredient data:', ingredient);
+                
+                // Populate the form - add null checks
+                if (ingredient) {
+                    document.getElementById('edit-ingredient-id').value = ingredient.ingredient_id || '';
+                    document.getElementById('edit-ingredient-name').value = ingredient.ingredient_name || '';
+                    document.getElementById('edit-ingredient-category').value = ingredient.category || '';
+                    document.getElementById('edit-ingredient-quantity').value = ingredient.quantity || '';
+                    document.getElementById('edit-ingredient-price').value = ingredient.price || '';
+                    
+                    // Add blur to main content
+                    document.querySelector('.flex-1').classList.add('blur-effect');
+                    document.querySelector('#sidebar').classList.add('blur-effect');
+                    
+                    // Show modal with fade effect
+                    editIngredientModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        editIngredientModal.querySelector('.dashboard-card').style.opacity = '1';
+                        editIngredientModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    throw new Error('Ingredient data is empty');
+                }
+                
+            } catch (error) {
+                console.error('Error fetching ingredient:', error);
+                alert('Error fetching ingredient data: ' + error.message);
+            }
         };
-        
-        try {
-            // Send data to server
-            const response = await fetch('inventory_handlers/update_ingredient.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to update ingredient');
-            }
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                // Close modal and refresh the ingredients list
-                closeEditIngredientModal();
-                
-                // Refresh the DataTable
-                refreshTable();
-                
-                alert('Ingredient updated successfully!');
-            } else {
-                throw new Error(result.message || 'Failed to update ingredient');
-            }
-            
-        } catch (error) {
-            console.error('Error updating ingredient:', error);
-            alert('Error updating ingredient: ' + error.message);
-        }
-    });
 
-    // Delete confirmation
-    window.confirmDelete = function(ingredientId) {
-        document.getElementById('ingredient-to-delete').value = ingredientId;
-        
-        // Add blur to main content
-        document.querySelector('.flex-1').classList.add('blur-effect');
-        document.querySelector('#sidebar').classList.add('blur-effect');
-        
-        // Show modal with fade effect
-        deleteConfirmModal.classList.remove('hidden');
-        setTimeout(() => {
-            deleteConfirmModal.querySelector('.dashboard-card')?.style.opacity = '1';
-            deleteConfirmModal.querySelector('.dashboard-card')?.style.transform = 'translateY(0)';
-        }, 50);
-    };
-
-    // Delete handler
-    confirmDeleteBtn.addEventListener('click', async function() {
-        const ingredientId = document.getElementById('ingredient-to-delete').value;
-        
-        try {
-            const response = await fetch('inventory_handlers/delete_ingredient.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ingredient_id: ingredientId })
-            });
+        // Form submission handler for edit
+        document.getElementById('edit-ingredient-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            if (!response.ok) {
-                throw new Error('Failed to delete ingredient');
-            }
+            // Get form data
+            const formData = {
+                ingredient_id: document.getElementById('edit-ingredient-id').value,
+                ingredient_name: document.getElementById('edit-ingredient-name').value,
+                category: document.getElementById('edit-ingredient-category').value,
+                quantity: document.getElementById('edit-ingredient-quantity').value,
+                price: document.getElementById('edit-ingredient-price').value
+            };
             
-            const result = await response.json();
-            
-            if (result.success) {
-                // Close modal and refresh the ingredients list
-                closeDeleteConfirmModal();
+            try {
+                // Send data to server
+                const response = await fetch('inventory_handlers/update_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
                 
-                // Refresh the DataTable
-                refreshTable();
+                if (!response.ok) {
+                    throw new Error('Failed to update ingredient');
+                }
                 
-                alert('Ingredient deleted successfully!');
-            } else {
-                throw new Error(result.message || 'Failed to delete ingredient');
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the ingredients list
+                    closeEditIngredientModal();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient updated successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to update ingredient');
+                }
+                
+            } catch (error) {
+                console.error('Error updating ingredient:', error);
+                alert('Error updating ingredient: ' + error.message);
             }
-            
-        } catch (error) {
-            console.error('Error deleting ingredient:', error);
-            alert('Error deleting ingredient: ' + error.message);
-        }
-    });
-
-    // Add profile dropdown functionality (handled in layout.php or header.php, included here for reference)
-    const profileDropdown = document.getElementById('profileDropdown');
-    const profileMenu = document.getElementById('profileMenu');
-    if (profileDropdown && profileMenu) {
-        profileDropdown.addEventListener('click', function() {
-            const icon = this.querySelector('.fa-chevron-down');
-            profileMenu.classList.toggle('hidden');
-            profileMenu.classList.toggle('opacity-0');
-            icon.style.transform = profileMenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
-        // Close profile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!profileDropdown.contains(e.target) && !profileMenu.contains(e.target)) {
-                profileMenu.classList.add('hidden');
-                profileMenu.classList.add('opacity-0');
-                profileDropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+        // Delete confirmation
+        window.confirmDelete = function(ingredientId) {
+            document.getElementById('ingredient-to-delete').value = ingredientId;
+            
+            // Add blur to main content
+            document.querySelector('.flex-1').classList.add('blur-effect');
+            document.querySelector('#sidebar').classList.add('blur-effect');
+            
+            // Show modal with fade effect
+            deleteConfirmModal.classList.remove('hidden');
+            setTimeout(() => {
+                deleteConfirmModal.querySelector('.dashboard-card').style.opacity = '1';
+                deleteConfirmModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+            }, 50);
+        };
+
+        // Delete handler
+        confirmDeleteBtn.addEventListener('click', async function() {
+            const ingredientId = document.getElementById('ingredient-to-delete').value;
+            
+            try {
+                const response = await fetch('inventory_handlers/delete_ingredient.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ingredient_id: ingredientId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete ingredient');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Close modal and refresh the ingredients list
+                    closeDeleteConfirmModal();
+                    
+                    // Refresh the DataTable
+                    refreshTable();
+                    
+                    alert('Ingredient deleted successfully!');
+                } else {
+                    throw new Error(result.message || 'Failed to delete ingredient');
+                }
+                
+            } catch (error) {
+                console.error('Error deleting ingredient:', error);
+                alert('Error deleting ingredient: ' + error.message);
             }
         });
-    }
-</script>
+    </script>
 <?php
 $page_scripts = ob_get_clean();
 
