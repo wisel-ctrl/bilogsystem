@@ -11,6 +11,359 @@ $page_title = "Inventory Management";
 // Capture page content
 ob_start();
 ?>
+       <?php
+$page_content = ob_get_clean();
+
+// Capture page-specific styles
+ob_start();
+?>
+<style>
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    
+    /* Animation classes */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .animate-on-scroll.animated {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Delay classes for staggered animations */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+
+    /* Smooth transitions */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+    
+    /* Improved hover effects */
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+    }
+    
+    /* Card styles */
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(232, 224, 213, 0.5);
+        box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-card:hover {
+        box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    /* Sidebar improvements */
+    .sidebar-link {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sidebar-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #E8E0D5;
+        transition: width 0.3s ease;
+    }
+    
+    .sidebar-link:hover::after {
+        width: 100%;
+    }
+    
+    /* Animation classes */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Profile menu */
+    #profileMenu {
+        z-index: 9999 !important;
+        transform: translateY(0) !important;
+    }
+
+    header {
+        z-index: 50;
+    }
+
+    /* DataTables custom styling */
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #e5e7eb;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .dataTables_wrapper .dataTables_length select {
+        border: 1px solid #e5e7eb;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate {
+        padding-top: 0.5rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.25rem 0.5rem;
+        margin: 0 0.125rem;
+        border-radius: 0.25rem;
+        border: 1px solid #e5e7eb;
+        background: white;
+        color: #374151 !important;
+        font-size: 0.875rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #8B4513 !important;
+        color: white !important;
+        border-color: #8B4513;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #f3f4f6 !important;
+        border-color: #e5e7eb;
+        color: #374151 !important;
+    }
+    
+    .dataTables_wrapper .dataTables_info {
+        padding: 0.5rem 0;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* Fix sorting icons */
+    table.dataTable thead th {
+        position: relative;
+        background-image: none !important;
+    }
+   
+    table.dataTable thead th.sorting:after,
+    table.dataTable thead th.sorting_asc:after,
+    table.dataTable thead th.sorting_desc:after {
+        position: absolute;
+        right: 8px;
+        color: #A0522D;
+    }
+
+    table.dataTable thead th.sorting:after {
+        content: "↕";
+        opacity: 0.4;
+    }
+    
+    table.dataTable thead th.sorting_asc:after {
+        content: "↑";
+    }
+    
+    table.dataTable thead th.sorting_desc:after {
+        content: "↓";
+    }
+
+    /* Modal z-index */
+    #add-ingredient-modal, #edit-ingredient-modal, #delete-confirm-modal {
+        z-index: 1000 !important;
+    }
+
+    /* Ensure main content doesn't create stacking context */
+    .flex-1 {
+        position: static;
+    }
+
+    /* Sidebar and header z-index */
+    #sidebar {
+        z-index: 40;
+    }
+
+    header {
+        z-index: 50;
+    }
+
+    /* Blur effect */
+    .blur-effect {
+        filter: blur(5px);
+        transition: filter 0.3s ease;
+        pointer-events: none;
+    }
+
+    /* Modal container */
+    .modal-container {
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 11;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        z-index: 10;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+    }
+
+    /* Improved scrollbar for modal body */
+    .modal-body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+        background: #8B4513;
+        border-radius: 3px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+        background: #5D2F0F;
+    }
+
+    /* Table styles */
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    thead {
+        background-color: #f9fafb;
+    }
+
+    thead th {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #5D2F0F;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background-color: #f3f4f6;
+    }
+
+    tbody td {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        color: #374151;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Status badge styles */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .status-active {
+        background-color: #dcfce7;
+        color: #166534;
+    }
+
+    .status-inactive {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    /* Action button styles */
+    .action-btn {
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+        background-color: #f3f4f6;
+    }
+
+    .action-btn i {
+        font-size: 1rem;
+    }
+
+    /* Improved scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #E8E0D5;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #8B4513;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #5D2F0F;
+    }
+</style>
        <!-- Inventory Management Section -->
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
@@ -46,13 +399,7 @@ ob_start();
                     </div>
                 </div>
         </div>
-        <?php
-$page_content = ob_get_clean();
-
-// Capture page-specific styles
-ob_start();
-?>
-
+ 
     <!-- Add Ingredient Modal -->
     <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
         <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
