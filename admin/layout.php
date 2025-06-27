@@ -322,10 +322,11 @@ ob_start();
         <?php include 'sidebar.php'; ?>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex-1 flex flex-col overflow-hidden ">
             <!-- Header -->
-            <?php include 'header.php'; ?>
-
+            <div class="z-50">
+                <?php include 'header.php'; ?>
+            </div>
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
                 <?php echo $page_content; ?>
