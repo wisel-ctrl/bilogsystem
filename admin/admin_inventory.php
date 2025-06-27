@@ -180,7 +180,8 @@
             <input type="hidden" id="ingredient-to-delete">
         </div>
     </div>
-                <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
+    
+    <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
                         <div class="flex items-center space-x-4">
@@ -212,7 +213,8 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+    
+    </div>
 <?php
     $page_content = ob_get_clean();
 
