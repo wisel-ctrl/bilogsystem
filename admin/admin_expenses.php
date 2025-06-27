@@ -176,359 +176,358 @@ $page_content = ob_get_clean();
 // Capture page-specific scripts
 ob_start();
 ?>
-<script>
-    // Sidebar Toggle
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const cafeTitle = document.getElementById('cafe-title');
-    const sidebarTexts = document.querySelectorAll('.sidebar-text');
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const cafeTitle = document.getElementById('cafe-title');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('w-64');
-        sidebar.classList.toggle('w-16');
-        
-        if (sidebar.classList.contains('w-16')) {
-            cafeTitle.style.display = 'none';
-            sidebarTexts.forEach(text => text.style.display = 'none');
-        } else {
-            cafeTitle.style.display = 'block';
-            sidebarTexts.forEach(text => text.style.display = 'block');
-        }
-    });
-
-    // Set current date with improved formatting
-    const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
-    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
-    
-    // Scroll animation observer
-    const animateElements = document.querySelectorAll('.animate-on-scroll');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    animateElements.forEach(element => {
-        observer.observe(element);
-    });
-
-    // Expense Modal functionality
-    const expenseModal = document.getElementById('expense-modal');
-    const addExpenseBtn = document.getElementById('add-expense-btn');
-    const cancelExpenseBtn = document.getElementById('cancel-expense');
-    const saveExpenseBtn = document.getElementById('save-expense');
-
-    // Open modal
-    addExpenseBtn.addEventListener('click', () => {
-        expenseModal.classList.remove('hidden');
-        // Set today's date as default
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('expense-date').value = today;
-    });
-
-    // Close modal
-    function closeModal() {
-        expenseModal.classList.add('hidden');
-        // Reset form
-        document.getElementById('expense-form').reset();
-    }
-
-    // Close modal when clicking cancel
-    cancelExpenseBtn.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside the modal content
-    expenseModal.addEventListener('click', (e) => {
-        if (e.target === expenseModal) {
-            closeModal();
-        }
-    });
-
-    // Initialize DataTable
-    $(document).ready(function() {
-        var table = $('#expenses-table').DataTable({
-            dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
-            ajax: {
-                url: 'expense_handlers/get_expenses.php',
-                dataSrc: ''
-            },
-            columns: [
-                { data: 'created_at' },
-                { 
-                    data: 'expense_name',
-                    render: function(data, type, row) {
-                        return data.charAt(0).toUpperCase() + data.slice(1);
-                    }
-                },
-                { 
-                    data: 'expense_category',
-                    render: function(data, type, row) {
-                        return data.charAt(0).toUpperCase() + data.slice(1);
-                    }
-                },
-                { 
-                    data: 'amount',
-                    render: function(data, type, row) {
-                        return '₱' + parseFloat(data).toFixed(2);
-                    }
-                },
-                { data: 'notes' },
-                {
-                    data: 'expense_id',
-                    render: function(data, type, row) {
-                        return `
-                            <div class="flex space-x-2">
-                                <!-- Edit Button -->
-                                <button 
-                                    class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
-                                    onclick="editExpense(${data})">
-                                    <i class="fas fa-edit text-base flex-shrink-0"></i>
-                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
-                                </button>
-
-                                <!-- Delete Button -->
-                                <button 
-                                    class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
-                                    onclick="deleteExpense(${data})">
-                                    <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
-                                    <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
-                                </button>
-                            </div>
-                        `;
-                    },
-                    "orderable": false
-                }
-            ],
-            order: [[0, 'desc']],
-            "lengthChange": false,
-            "pageLength": 10,
-            "language": {
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "paginate": {
-                    "previous": "<i class='fas fa-chevron-left'></i>",
-                    "next": "<i class='fas fa-chevron-right'></i>"
-                }
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-16');
+            
+            if (sidebar.classList.contains('w-16')) {
+                cafeTitle.style.display = 'none';
+                sidebarTexts.forEach(text => text.style.display = 'none');
+            } else {
+                cafeTitle.style.display = 'block';
+                sidebarTexts.forEach(text => text.style.display = 'block');
             }
         });
 
-        // Add search functionality
-        $('#expense-search').on('keyup', function() {
-            table.search(this.value).draw();
-        });
-
-        // Refresh table every 30 seconds
-        setInterval(function() {
-            table.ajax.reload(null, false);
-        }, 30000);
-    });
-
-    // Add expense
-    document.getElementById('save-expense').addEventListener('click', function() {
-        const name = document.getElementById('expense-name').value.trim();
-        const category = document.getElementById('expense-category').value;
-        const amount = parseFloat(document.getElementById('expense-amount').value);
-        
-        // Validation
-        if (!name) {
-            alert('Expense name is required');
-            return;
-        }
-        
-        if (!category) {
-            alert('Category is required');
-            return;
-        }
-        
-        if (isNaN(amount)) {
-            alert('Amount must be a valid number');
-            return;
-        }
-        
-        if (amount <= 0) {
-            alert('Amount must be greater than 0');
-            return;
-        }
-
-        const formData = {
-            expense_name: name,
-            expense_category: category,
-            amount: amount,
-            notes: document.getElementById('expense-notes').value.trim()
+        // Set current date with improved formatting
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+        // Scroll animation observer
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
 
-        fetch('expense_handlers/add_expense.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                $('#expenses-table').DataTable().ajax.reload();
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Expense Modal functionality
+        const expenseModal = document.getElementById('expense-modal');
+        const addExpenseBtn = document.getElementById('add-expense-btn');
+        const cancelExpenseBtn = document.getElementById('cancel-expense');
+        const saveExpenseBtn = document.getElementById('save-expense');
+
+        // Open modal
+        addExpenseBtn.addEventListener('click', () => {
+            expenseModal.classList.remove('hidden');
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expense-date').value = today;
+        });
+
+        // Close modal
+        function closeModal() {
+            expenseModal.classList.add('hidden');
+            // Reset form
+            document.getElementById('expense-form').reset();
+        }
+
+        // Close modal when clicking cancel
+        cancelExpenseBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside the modal content
+        expenseModal.addEventListener('click', (e) => {
+            if (e.target === expenseModal) {
                 closeModal();
-                alert('Expense added successfully!');
-            } else {
-                alert('Error: ' + data.message);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while saving the expense.');
         });
-    });
 
-    // Edit expense
-    function editExpense(expenseId) {
-        fetch('expense_handlers/get_expense.php?id=' + expenseId)
-        .then(response => response.json())
-        .then(data => {
-            if(data) {
-                document.getElementById('edit-expense-id').value = data.expense_id;
-                document.getElementById('edit-expense-name').value = data.expense_name;
-                document.getElementById('edit-expense-category').value = data.expense_category;
-                document.getElementById('edit-expense-amount').value = data.amount;
-                document.getElementById('edit-expense-notes').value = data.notes;
-                
-                document.getElementById('edit-expense-modal').classList.remove('hidden');
+        // Initialize DataTable
+        $(document).ready(function() {
+            var table = $('#expenses-table').DataTable({
+                dom: '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
+                ajax: {
+                    url: 'expense_handlers/get_expenses.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'created_at' },
+                    { 
+                        data: 'expense_name',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
+                    { 
+                        data: 'expense_category',
+                        render: function(data, type, row) {
+                            return data.charAt(0).toUpperCase() + data.slice(1);
+                        }
+                    },
+                    { 
+                        data: 'amount',
+                        render: function(data, type, row) {
+                            return '₱' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { data: 'notes' },
+                    {
+                        data: 'expense_id',
+                        render: function(data, type, row) {
+                            return `
+                                <div class="flex space-x-2">
+                                        <!-- Edit Button -->
+                                        <button 
+                                            class="group edit-btn w-8 hover:w-24 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
+                                            onclick="editExpense(${data})">
+                                            <i class="fas fa-edit text-base flex-shrink-0"></i>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Edit</span>
+                                        </button>
+
+                                        <!-- Delete Button -->
+                                        <button 
+                                            class="group delete-btn w-8 hover:w-28 h-8 bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform hover:scale-105" 
+                                            onclick="deleteExpense(${data})">
+                                            <i class="fas fa-trash-alt text-base flex-shrink-0"></i>
+                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Delete</span>
+                                        </button>
+                                    </div>
+                            `;
+                        },
+                        "orderable": false
+                    }
+                ],
+                order: [[0, 'desc']], // Sort by date descending by default
+                "lengthChange": false,
+                "pageLength": 10,
+                "language": {
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            // Add search functionality
+            $('#expense-search').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            // Refresh table every 30 seconds
+            setInterval(function() {
+                table.ajax.reload(null, false);
+            }, 30000);
+        });
+
+        // Add expense
+        document.getElementById('save-expense').addEventListener('click', function() {
+            const name = document.getElementById('expense-name').value.trim();
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while fetching expense data.');
-        });
-    }
-
-    // Update expense
-    document.getElementById('update-expense').addEventListener('click', function() {
-        const name = document.getElementById('edit-expense-name').value.trim();
-        const category = document.getElementById('edit-expense-category').value;
-        const amount = parseFloat(document.getElementById('edit-expense-amount').value);
-        
-        // Validation
-        if (!name) {
-            alert('Expense name is required');
-            return;
-        }
-        
-        if (!category) {
-            alert('Category is required');
-            return;
-        }
-        
-        if (isNaN(amount)) {
-            alert('Amount must be a valid number');
-            return;
-        }
-        
-        if (amount <= 0) {
-            alert('Amount must be greater than 0');
-            return;
-        }
-
-        const formData = {
-            expense_id: document.getElementById('edit-expense-id').value,
-            expense_name: name,
-            expense_category: category,
-            amount: amount,
-            notes: document.getElementById('edit-expense-notes').value.trim()
-        };
-
-        fetch('expense_handlers/update_expense.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                $('#expenses-table').DataTable().ajax.reload();
-                document.getElementById('edit-expense-modal').classList.add('hidden');
-                alert('Expense updated successfully!');
-            } else {
-                alert('Error: ' + data.message);
+            
+            if (!category) {
+                alert('Category is required');
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while updating the expense.');
-        });
-    });
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
 
-    // Delete expense (actually just hide it)
-    function deleteExpense(expenseId) {
-        if(confirm('Are you sure you want to delete this expense?')) {
-            fetch('expense_handlers/delete_expense.php', {
+            const formData = {
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('expense-notes').value.trim()
+            };
+
+            fetch('expense_handlers/add_expense.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ expense_id: expenseId })
+                body: JSON.stringify(formData)
             })
             .then(response => response.json())
             .then(data => {
                 if(data.success) {
                     $('#expenses-table').DataTable().ajax.reload();
-                    alert('Expense deleted successfully!');
+                    closeModal();
+                    alert('Expense added successfully!');
                 } else {
                     alert('Error: ' + data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while deleting the expense.');
+                alert('An error occurred while saving the expense.');
+            });
+        });
+
+        // Edit expense
+        function editExpense(expenseId) {
+            fetch('expense_handlers/get_expense.php?id=' + expenseId)
+            .then(response => response.json())
+            .then(data => {
+                if(data) {
+                    document.getElementById('edit-expense-id').value = data.expense_id;
+                    document.getElementById('edit-expense-name').value = data.expense_name;
+                    document.getElementById('edit-expense-category').value = data.expense_category;
+                    document.getElementById('edit-expense-amount').value = data.amount;
+                    document.getElementById('edit-expense-notes').value = data.notes;
+                    
+                    document.getElementById('edit-expense-modal').classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching expense data.');
             });
         }
-    }
 
-    // Close edit modal
-    document.getElementById('cancel-edit-expense').addEventListener('click', function() {
-        document.getElementById('edit-expense-modal').classList.add('hidden');
-    });
+        // Update expense
+        document.getElementById('update-expense').addEventListener('click', function() {
+            const name = document.getElementById('edit-expense-name').value.trim();
+            const category = document.getElementById('edit-expense-category').value;
+            const amount = parseFloat(document.getElementById('edit-expense-amount').value);
+            
+            // Validation
+            if (!name) {
+                alert('Expense name is required');
+                return;
+            }
+            
+            if (!category) {
+                alert('Category is required');
+                return;
+            }
+            
+            if (isNaN(amount)) {
+                alert('Amount must be a valid number');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Amount must be greater than 0');
+                return;
+            }
 
-    // Close modal with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !expenseModal.classList.contains('hidden')) {
-            closeModal();
+            const formData = {
+                expense_id: document.getElementById('edit-expense-id').value,
+                expense_name: name,
+                expense_category: category,
+                amount: amount,
+                notes: document.getElementById('edit-expense-notes').value.trim()
+            };
+
+            fetch('expense_handlers/update_expense.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    $('#expenses-table').DataTable().ajax.reload();
+                    document.getElementById('edit-expense-modal').classList.add('hidden');
+                    alert('Expense updated successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the expense.');
+            });
+        });
+
+        // Delete expense (actually just hide it)
+        function deleteExpense(expenseId) {
+            if(confirm('Are you sure you want to delete this expense?')) {
+                fetch('expense_handlers/delete_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ expense_id: expenseId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        $('#expenses-table').DataTable().ajax.reload();
+                        alert('Expense deleted successfully!');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the expense.');
+                });
+            }
         }
-    });
 
-    // Add profile dropdown functionality
-    document.getElementById('profileDropdown').addEventListener('click', function() {
-        const menu = document.getElementById('profileMenu');
-        const icon = this.querySelector('.fa-chevron-down');
-        
-        menu.classList.toggle('hidden');
-        menu.classList.toggle('opacity-0');
-        icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-    });
+        // Close edit modal
+        document.getElementById('cancel-edit-expense').addEventListener('click', function() {
+            document.getElementById('edit-expense-modal').classList.add('hidden');
+        });
 
-    // Close profile menu when clicking outside
-    document.addEventListener('click', function(e) {
-        const dropdown = document.getElementById('profileDropdown');
-        const menu = document.getElementById('profileMenu');
-        
-        if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
-            menu.classList.add('hidden');
-            menu.classList.add('opacity-0');
-            dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-        }
-    });
-</script>
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !expenseModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Add profile dropdown functionality
+        document.getElementById('profileDropdown').addEventListener('click', function() {
+            const menu = document.getElementById('profileMenu');
+            const icon = this.querySelector('.fa-chevron-down');
+            
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('opacity-0');
+            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Close profile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profileDropdown');
+            const menu = document.getElementById('profileMenu');
+            
+            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+                menu.classList.add('opacity-0');
+                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+            }
+        });
+    </script>
 <?php
 $page_scripts = ob_get_clean();
 
