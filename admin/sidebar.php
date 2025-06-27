@@ -1,3 +1,8 @@
+<?php
+    // Sidebar content with enhanced styles and scripts
+    ob_start();
+?>
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -222,3 +227,56 @@
     </nav>
 </div>
 
+<script>
+    // Sidebar toggle functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const titleFull = document.querySelector('.nav-title');
+    const titleShort = document.querySelector('.nav-title-short');
+
+    // Load sidebar state from localStorage
+    if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+        titleFull.classList.add('hidden');
+        titleShort.classList.remove('hidden');
+    }
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            titleFull.classList.add('hidden');
+            titleShort.classList.remove('hidden');
+            localStorage.setItem('sidebarCollapsed', 'true');
+        } else {
+            titleFull.classList.remove('hidden');
+            titleShort.classList.add('hidden');
+            localStorage.setItem('sidebarCollapsed', 'false');
+        }
+    }
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+
+    // Sidebar link click handler
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // Initialize sidebar state
+    document.addEventListener('DOMContentLoaded', () => {
+        // PHP sets the initial active state, so we only need to ensure JavaScript doesn't override it unnecessarily
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+
+<?php
+    $sidebar_content = ob_get_clean();
+    echo $sidebar_content;
+?>
