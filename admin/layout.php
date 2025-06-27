@@ -327,7 +327,7 @@ ob_start();
             <?php include 'header.php'; ?>
 
             <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative">
                 <?php echo $page_content; ?>
             </main>
         </div>
