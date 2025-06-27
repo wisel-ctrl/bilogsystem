@@ -1539,6 +1539,8 @@ ob_start();
     });
     </script>
 <?php
-ob_end_flush();
+$page_scripts = ob_get_clean();
 
+// Include the layout
+include 'layout.php';
 ?>
