@@ -1,16 +1,18 @@
 
 <?php
-require_once '../db_connect.php';
+    require_once '../db_connect.php';
 
-// Set the timezone to Philippine Time
-date_default_timezone_set('Asia/Manila');
+    // Set the timezone to Philippine Time
+    date_default_timezone_set('Asia/Manila');
 
-// Define page title
-$page_title = "Inventory Management";
+    // Define page title
+    $page_title = "Inventory Management";
 
-// Capture page content
-ob_start();
+    // Capture page content
+    ob_start();
 ?>
+
+
        <!-- Inventory Management Section -->
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
@@ -45,12 +47,11 @@ ob_start();
                         </table>
                     </div>
                 </div>
-        </div>
-        <?php
-$page_content = ob_get_clean();
+<?php
+    $page_content = ob_get_clean();
 
-// Capture page-specific styles
-ob_start();
+    // Capture page-specific styles
+    ob_start();
 ?>
 <style>
     .font-playfair { font-family: 'Playfair Display', serif; }
@@ -565,11 +566,11 @@ ob_start();
             <input type="hidden" id="ingredient-to-delete">
         </div>
     </div>
-    <?php
-$page_styles = ob_get_clean();
+<?php
+    $page_styles = ob_get_clean();
 
-// Capture page-specific scripts
-ob_start();
+    // Capture page-specific scripts
+    ob_start();
 ?>
     <script>
         // Sidebar Toggle
