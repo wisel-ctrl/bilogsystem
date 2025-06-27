@@ -134,37 +134,42 @@ ob_start();
 
 
         <!-- Main Content Area -->
-            <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
-                    <div class="flex items-center space-x-4">
-                        <div class="w-64">
-                            <input type="text" id="expense-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search expenses...">
-                        </div>
-                        <button id="add-expense-btn" class="group w-10 hover:w-52 h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
-                            <i class="fas fa-plus text-lg flex-shrink-0"></i>
-                            <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Add New Expense</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="overflow-x-auto">
-                    <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Date</th>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Category</th>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Amount</th>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair">Notes</th>
-                                <th class="text-left p-4 font-semibold text-deep-brown font-playfair w-32">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-4 sm:p-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+        <h3 class="text-xl sm:text-2xl font-bold text-deep-brown font-playfair">Expense Records</h3>
+        <div class="flex flex-col xs:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+            <div class="w-full xs:w-48 sm:w-64">
+                <input type="text" id="expense-search" class="w-full h-10 px-4 border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Search expenses...">
             </div>
+            <button id="add-expense-btn" class="group w-full xs:w-auto h-10 bg-warm-cream text-rich-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg">
+                <i class="fas fa-plus text-lg flex-shrink-0 px-3 xs:px-0"></i>
+                <span class="font-baskerville opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-75 hidden xs:inline">Add New Expense</span>
+                <span class="xs:hidden font-baskerville">Add Expense</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table id="expenses-table" class="w-full table-auto display nowrap" style="width:100%">
+            <thead>
+                <tr class="hidden sm:table-row">
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair">Date</th>
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair">Expense Name</th>
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair">Category</th>
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair">Amount</th>
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair">Notes</th>
+                    <th class="text-left p-3 sm:p-4 font-semibold text-deep-brown font-playfair sm:w-32">Actions</th>
+                </tr>
+                <tr class="sm:hidden">
+                    <th colspan="6" class="text-left p-3 font-semibold text-deep-brown font-playfair">Expense List</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table body content will be responsive based on your implementation -->
+            </tbody>
+        </table>
+    </div>
+</div>
     </div>
 </div>
 <?php
