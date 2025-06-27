@@ -31,9 +31,9 @@
             transform: translateY(0) !important;
         }
 
-        header {
+        /* header {
                     z-index: 50;
-                }
+                } */
                 
                 /* Smooth transitions */
                 .transition-all {
@@ -67,7 +67,7 @@
                 }
                 
                 /* Sidebar improvements */
-                .sidebar-link {
+                /* .sidebar-link {
                     transition: all 0.3s ease;
                     position: relative;
                     overflow: hidden;
@@ -87,7 +87,7 @@
                 .sidebar-link:hover::after {
                     width: 100%;
                 }
-                
+                 */
                 /* Animation classes */
                 .fade-in {
                     opacity: 0;
@@ -161,7 +161,7 @@
                 }
 
                 /* Add these styles to the existing style section */
-                #sidebar {
+                /* #sidebar {
                     display: flex;
                     flex-direction: column;
                     height: 100vh;
@@ -245,22 +245,22 @@
                     opacity: 1;
                     visibility: visible;
                     left: calc(100% + 0.5rem);
-                }
+                } */
 
                 /* Active state for sidebar links */
-                .sidebar-link.active {
+                /* .sidebar-link.active {
                     background: rgba(232, 224, 213, 0.2) !important;
                     color: #E8E0D5 !important;
-                }
+                } */
 
                 /* Improved hover effects */
-                .sidebar-link:hover {
+                /* .sidebar-link:hover {
                     background: rgba(232, 224, 213, 0.15) !important;
                 }
 
                 #sidebar.collapsed .sidebar-link:hover {
                     transform: scale(1.1);
-                }
+                } */
     </style>
 
 
@@ -600,7 +600,7 @@
 ?>
 
 
-    <script>
+<script>
         // Update sidebar toggle functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -941,7 +941,8 @@
             printSection.innerHTML = tableHtml;
             window.print();
         }
-    </script>
+</script>
+
 <?php
 $page_scripts = ob_get_clean();
 
