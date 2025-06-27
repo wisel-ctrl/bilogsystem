@@ -1,163 +1,292 @@
-<?php
-require_once '../db_connect.php';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Lilio - Expense Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
+    <script src="../tailwind.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
 
-// Set the timezone to Philippine Time
-date_default_timezone_set('Asia/Manila');
-
-$creation_success = false;
-$update_success = false;
-$errors = [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'expense') {
-    $description = trim($_POST['description'] ?? '');
-    $category = trim($_POST['category'] ?? '');
-    $amount = trim($_POST['amount'] ?? '');
-    $expense_date = trim($_POST['expense_date'] ?? '');
-    $notes = trim($_POST['notes'] ?? '');
-
-    if (empty($description)) $errors['description'] = 'Description is required';
-    if (empty($category)) $errors['category'] = 'Category is required';
-    if (empty($amount)) {
-        $errors['amount'] = 'Amount is required';
-    } elseif (!is_numeric($amount) || $amount <= 0) {
-        $errors['amount'] = 'Amount must be a positive number';
-    }
-    if (empty($expense_date)) {
-        $errors['expense_date'] = 'Date is required';
-    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
-        $errors['expense_date'] = 'Invalid date format';
-    }
-
-    if (empty($errors)) {
-        try {
-            $createdAt = (new DateTime())->format('Y-m-d H:i:s');
-            $stmt = $conn->prepare("INSERT INTO expenses_tb (description, category, amount, expense_date, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$description, $category, $amount, $expense_date, $notes, $createdAt]);
-
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'message' => 'Expense created successfully'
-            ]);
-            exit;
-        } catch(PDOException $e) {
-            $errors['database'] = 'Creation failed: ' . $e->getMessage();
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
         }
+        
+        /* Animation classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Delay classes for staggered animations */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Improved hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(93, 47, 15, 0.15);
+        }
+        
+        /* Card styles */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 224, 213, 0.5);
+            box-shadow: 0 4px 6px rgba(93, 47, 15, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 8px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar improvements */
+        .sidebar-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #E8E0D5;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Profile menu and header z-index */
+        #profileMenu {
+            z-index: 49 !important;
+            transform: translateY(0) !important;
+        }
+
+
+
+
+        /* DataTables custom styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 0.5rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.125rem;
+            border-radius: 0.25rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151 !important;
+            font-size: 0.875rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #8B4513 !important;
+            color: white !important;
+            border-color: #8B4513;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f3f4f6 !important;
+            border-color: #e5e7eb;
+            color: #374151 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0.5rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Fix sorting icons */
+        table.dataTable thead th {
+            position: relative;
+            background-image: none !important;
+        }
+
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            position: absolute;
+            right: 8px;
+            color: #8B4513;
+        }
+
+        table.dataTable thead th.sorting:after {
+            content: "↕";
+            opacity: 0.4;
+        }
+
+        table.dataTable thead th.sorting_asc:after {
+            content: "↑";
+        }
+
+        table.dataTable thead th.sorting_desc:after {
+            content: "↓";
+        }
+
+        /* Modal styles */
+    .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            border-bottom-left-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Improved scrollbar for modal body */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 3px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
     }
 
-    if (!empty($errors)) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'Validation failed',
-            'errors' => $errors
-        ]);
-        exit;
-    }
-}
+        /* Action button styles */
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'edit_expense') {
-    $expenseId = trim($_POST['expense_id'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $category = trim($_POST['category'] ?? '');
-    $amount = trim($_POST['amount'] ?? '');
-    $expense_date = trim($_POST['expense_date'] ?? '');
-    $notes = trim($_POST['notes'] ?? '');
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
 
-    if (empty($description)) $errors['description'] = 'Description is required';
-    if (empty($category)) $errors['category'] = 'Category is required';
-    if (empty($amount)) {
-        $errors['amount'] = 'Amount is required';
-    } elseif (!is_numeric($amount) || $amount <= 0) {
-        $errors['amount'] = 'Amount must be a positive number';
-    }
-    if (empty($expense_date)) {
-        $errors['expense_date'] = 'Date is required';
-    } elseif (!DateTime::createFromFormat('Y-m-d', $expense_date)) {
-        $errors['expense_date'] = 'Invalid date format';
-    }
+        .action-btn i {
+            font-size: 1rem;
+        }
 
-    if (empty($errors)) {
-        try {
-            $stmt = $conn->prepare("SELECT description, category, amount, expense_date, notes FROM expenses_tb WHERE id = ? AND status = 1");
-            $stmt->execute([$expenseId]);
-            $existingExpense = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$existingExpense) {
-                $errors['database'] = 'Expense not found';
-            } else {
-                $noChanges = (
-                    $description === $existingExpense['description'] &&
-                    $category === $existingExpense['category'] &&
-                    $amount == $existingExpense['amount'] &&
-                    $expense_date === $existingExpense['expense_date'] &&
-                    $notes === $existingExpense['notes']
-                );
+            /* Improved scrollbar */
+        ::-webkit-scrollbar {
+                    width: 8px;
+            }
 
-                if ($noChanges) {
-                    header('Content-Type: application/json');
-                    echo json_encode([
-                        'success' => false,
-                        'message' => 'No changes were made to the expense information'
-                    ]);
-                    exit;
-                } else {
-                    try {
-                        $updatedAt = (new DateTime())->format('Y-m-d H:i:s');
-                        $stmt = $conn->prepare("UPDATE expenses_tb SET description = ?, category = ?, amount = ?, expense_date = ?, notes = ?, updated_at = ? WHERE id = ?");
-                        $stmt->execute([$description, $category, $amount, $expense_date, $notes, $updatedAt, $expenseId]);
+            ::-webkit-scrollbar-track {
+                background: #E8E0D5;
+                border-radius: 4px;
+            }
 
-                        header('Content-Type: application/json');
-                        echo json_encode([
-                            'success' => true,
-                            'message' => 'Expense updated successfully'
-                        ]);
-                        exit;
-                    } catch(PDOException $e) {
-                        $errors['database'] = 'Update failed: ' . $e->getMessage();
+            ::-webkit-scrollbar-thumb {
+                background: #8B4513;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #5D2F0F;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-cream': '#E8E0D5',
+                        'rich-brown': '#8B4513',
+                        'deep-brown': '#5D2F0F',
+                        'accent-brown': '#A0522D'
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'baskerville': ['Libre Baskerville', 'serif']
                     }
                 }
             }
-        } catch(PDOException $e) {
-            $errors['database'] = 'Failed to fetch expense data: ' . $e->getMessage();
         }
-    }
-
-    if (!empty($errors)) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'Validation failed',
-            'errors' => $errors
-        ]);
-        exit;
-    }
-}
-
-// Fetch expenses for display
-try {
-    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 1 ORDER BY expense_date DESC");
-    $stmt->execute();
-    $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $errors['database'] = 'Failed to fetch expenses: ' . $e->getMessage();
-}
-
-// Fetch archived expenses
-try {
-    $stmt = $conn->prepare("SELECT id, description, category, amount, expense_date, notes, created_at FROM expenses_tb WHERE status = 0 ORDER BY expense_date DESC");
-    $stmt->execute();
-    $archived_expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $errors['database'] = 'Failed to fetch archived expenses: ' . $e->getMessage();
-}
-
-// Define page title and content
-$page_title = "Expense Management";
-
-ob_start();
-?>
-    
+    </script>
+</head>
+<body class="bg-warm-cream font-baskerville">
     <!-- Modal for adding expenses -->
     <div id="expense-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -398,12 +527,7 @@ ob_start();
             </main>
         </div>
     </div>
-    <?php
-$page_content = ob_get_clean();
 
-// Page-specific scripts
-ob_start();
-?>
     <script>
         // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
@@ -756,9 +880,5 @@ ob_start();
             }
         });
     </script>
-<?php
-$page_scripts = ob_get_clean();
-
-// Include the layout
-include 'layout.php';
-?>
+</body>
+</html>
