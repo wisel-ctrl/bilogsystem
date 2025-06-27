@@ -1,19 +1,35 @@
-
-
 <?php
-    require_once '../db_connect.php';
-    require_once 'admin_auth.php'; 
+require_once 'admin_auth.php'; 
 
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
 
-    // Define page title
-    $page_title = "Admin Dashboards";
-
-    // Capture page content
-    ob_start();
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caffe Lillio - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'warm-cream': '#E8E0D5',
+                    'rich-brown': '#8B4513',
+                    'deep-brown': '#5D2F0F',
+                    'accent-brown': '#A0522D'
+                },
+                fontFamily: {
+                    'playfair': ['Playfair Display', 'serif'],
+                    'baskerville': ['Libre Baskerville', 'serif']
+                }
+            }
+        }
+    }
+</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -262,12 +278,101 @@
                     transform: scale(1.1);
                 }
     </style>
+</head>
+<body class="bg-warm-cream font-baskerville">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="sidebar-header p-6 border-b border-warm-cream/20">
+                <div>
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
+                </div>
+            </div>
+            
+            <nav class="px-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-lg bg-warm-cream/10 text-warm-cream hover:bg-warm-cream/20 transition-all duration-200 mt-8">
+                            <i class="fas fa-chart-pie w-5"></i>
+                            <span class="sidebar-text font-baskerville">Dashboard</span>
+                            <span class="tooltip">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_bookings.html" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-calendar-check w-5"></i>
+                            <span class="sidebar-text font-baskerville">Booking Requests</span>
+                            <span class="tooltip">Booking Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_menu.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Menu Management</span>
+                            <span class="tooltip">Menu Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_inventory.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-boxes w-5"></i>
+                            <span class="sidebar-text font-baskerville">Inventory</span>
+                            <span class="tooltip">Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_expenses.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-receipt w-5"></i>
+                            <span class="sidebar-text font-baskerville">Expenses</span>
+                            <span class="tooltip">Expenses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_employee_creation.php" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span class="sidebar-text font-baskerville">Our Employee</span>
+                            <span class="tooltip">Our Employee</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-
-
-
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4 relative z-[100]">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                                <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                                <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                                <a href="../logout.php" class="flex items-center space-x-2 px-4 py-2 text-sm text-deep-brown hover:bg-warm-cream/10 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
+                    </div>
+                </div>
+            </header>
 
             <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0">
                 <!-- Revenue Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="dashboard-card fade-in hover-lift rounded-xl overflow-hidden">
@@ -591,14 +696,9 @@
                         </div>
                     </div>
                 </div>
-
-<?php
-    $page_content = ob_get_clean();
-
-    // Capture page-specific scripts
-    ob_start();
-?>
-
+            </main>
+        </div>
+    </div>
 
     <script>
         // Update sidebar toggle functionality
@@ -930,9 +1030,5 @@
             window.print();
         }
     </script>
-<?php
-$page_scripts = ob_get_clean();
-
-// Include the layout
-include 'layout.php';
-?>
+</body>
+</html>
