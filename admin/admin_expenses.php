@@ -1,4 +1,8 @@
+<?php
+$page_title = "Employee Management";
 
+ob_start();
+?>
     <!-- Modal for adding expenses -->
     <div id="expense-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
