@@ -914,7 +914,7 @@
 
 
 <?php
-    $page_styles = ob_get_clean();
+    $page_content = ob_get_clean();
 
     // Capture page-specific scripts
     ob_start();
