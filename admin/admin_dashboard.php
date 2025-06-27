@@ -8,7 +8,7 @@
     date_default_timezone_set('Asia/Manila');
 
     // Define page title
-    $page_title = "Admin Dashboard";
+    $page_title = "Admin Dashboards";
 
     // Capture page content
     ob_start();
