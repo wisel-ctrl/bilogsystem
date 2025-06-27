@@ -124,7 +124,7 @@
         }
 
 
-        /* Add table styles from admin_bookings.html */
+        /* Add table styles from admin_bookings.php */
         .dashboard-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);

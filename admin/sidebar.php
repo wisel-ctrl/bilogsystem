@@ -18,7 +18,7 @@
                 </a>
             </li>
             <li>
-                <a href="admin_bookings.html" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200 <?php echo basename($_SERVER['PHP_SELF']) === 'admin_bookings.php' ? 'active' : ''; ?>">
+                <a href="admin_bookings.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200 <?php echo basename($_SERVER['PHP_SELF']) === 'admin_bookings.php' ? 'active' : ''; ?>">
                     <i class="fas fa-calendar-check w-5"></i>
                     <span class="sidebar-text font-baskerville">Booking Requests</span>
                     <span class="tooltip">Booking Requests</span>
