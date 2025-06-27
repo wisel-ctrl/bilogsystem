@@ -1,7 +1,9 @@
 <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
     <div class="sidebar-header p-6 border-b border-warm-cream/20">
         <div>
-            <h1 id="nav-title" class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+            <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+            <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream sidebar-title-initial hidden">CL</h1>
+
             <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
         </div>
     </div>
@@ -54,39 +56,25 @@
     </nav>
 </div>
 
-<style>
-    /* Ensure initials are centered and styled when sidebar is collapsed */
-    #sidebar.w-16 .nav-title {
-        font-size: 1.25rem; /* Slightly smaller to fit */
-        text-align: center;
-        letter-spacing: 0.05em;
-    }
-
-    /* Hide subtitle when sidebar is collapsed */
-    #sidebar.w-16 .nav-subtitle {
-        display: none;
-    }
-</style>
-
 <script>
-    // Sidebar toggle logic to update nav-title
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const navTitle = document.getElementById('nav-title');
-    const sidebarTexts = document.querySelectorAll('.sidebar-text');
+    // Example toggle: add/remove collapsed class to #sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const fullTitle = sidebar.querySelector('.sidebar-title-full');
+        const shortTitle = sidebar.querySelector('.sidebar-title-initial');
 
-    if (sidebar && sidebarToggle && navTitle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                navTitle.textContent = 'C. L.';
-                sidebarTexts.forEach(text => text.style.display = 'none');
-            } else {
-                navTitle.textContent = 'Caffè Lilio';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-            }
-        });
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.remove('w-64');
+            sidebar.classList.add('w-16');
+            fullTitle.classList.add('hidden');
+            shortTitle.classList.remove('hidden');
+        } else {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-64');
+            fullTitle.classList.remove('hidden');
+            shortTitle.classList.add('hidden');
+        }
     }
 </script>
