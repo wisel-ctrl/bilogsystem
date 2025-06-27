@@ -898,31 +898,12 @@
 
 <script>
         // Sidebar Toggle with smooth animation
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const cafeTitle = document.querySelector('.nav-title');
-        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        // const sidebar = document.getElementById('sidebar');
+        // const sidebarToggle = document.getElementById('sidebar-toggle');
+        // const cafeTitle = document.querySelector('.nav-title');
+        // const sidebarTexts = document.querySelectorAll('.sidebar-text');
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-16');
-            
-            if (sidebar.classList.contains('w-16')) {
-                cafeTitle.style.opacity = '0';
-                sidebarTexts.forEach(text => text.style.opacity = '0');
-                setTimeout(() => {
-                    cafeTitle.style.display = 'none';
-                    sidebarTexts.forEach(text => text.style.display = 'none');
-                }, 300);
-            } else {
-                cafeTitle.style.display = 'block';
-                sidebarTexts.forEach(text => text.style.display = 'block');
-                setTimeout(() => {
-                    cafeTitle.style.opacity = '1';
-                    sidebarTexts.forEach(text => text.style.opacity = '1');
-                }, 50);
-            }
-        });
+
 
         // Set current date with time
         function updateDateTime() {
