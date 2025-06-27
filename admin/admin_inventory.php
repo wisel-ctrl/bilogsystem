@@ -14,6 +14,172 @@
 
 
        <!-- Inventory Management Section -->
+            <!-- Add Ingredient Modal -->
+    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Ingredient</h3>
+                    <button id="close-add-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form id="add-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
+                <div>
+                    <label for="ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
+                    <input type="text" id="ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter ingredient name" required>
+                </div>
+
+                <div>
+                    <label for="ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                    <select id="ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <option value="">Select category</option>
+                        <option value="produce" title="Fresh fruits and vegetables">Produce</option>
+                        <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
+                        <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
+                        <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
+                        <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
+                        <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
+                        <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
+                        <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
+                        <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
+                        <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
+                        <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
+                        <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
+                        <option value="other">Other..</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity</label>
+                    <div class="relative rounded-md shadow-sm">
+                        <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" step="0.01" min="0"
+                            class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
+                            kg
+                        </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">1 kg = 1000 grams</p>
+                </div>
+
+                <div>
+                    <label for="ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
+                    <input type="text" id="ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter price" required>
+                </div>
+            </form>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-add-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="submit" form="add-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Add Ingredient
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Ingredient Modal -->
+    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Ingredient</h3>
+                    <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form id="edit-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
+                <input type="hidden" id="edit-ingredient-id">
+
+                <div>
+                    <label for="edit-ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
+                    <input type="text" id="edit-ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+
+                <div>
+                    <label for="edit-ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
+                    <select id="edit-ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                        <option value="produce" title="Fresh fruits and vegetables">Produce</option>
+                        <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
+                        <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
+                        <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
+                        <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
+                        <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
+                        <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
+                        <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
+                        <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
+                        <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
+                        <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
+                        <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
+                        <option value="other">Other..</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="edit-ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity</label>
+                    <div class="relative rounded-md shadow-sm">
+                        <input type="number" id="edit-ingredient-quantity" step="0.01" min="0" class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
+                            kg
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="edit-ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
+                    <input type="text" id="edit-ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
+                </div>
+            </form>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-edit-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="submit" form="edit-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
+            <div class="modal-header p-6 border-b border-warm-cream/20">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
+                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body flex-1 overflow-y-auto p-6">
+                <p class="text-gray-700 font-baskerville">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
+            </div>
+
+            <div class="modal-footer p-6 border-t border-warm-cream/20">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
+                        Cancel
+                    </button>
+                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <input type="hidden" id="ingredient-to-delete">
+        </div>
+    </div>
                 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold text-deep-brown font-playfair">Inventory Items</h3>
@@ -400,172 +566,7 @@
         background: #5D2F0F;
     }
 </style>
-    <!-- Add Ingredient Modal -->
-    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Add New Ingredient</h3>
-                    <button id="close-add-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
 
-            <form id="add-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
-                <div>
-                    <label for="ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
-                    <input type="text" id="ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter ingredient name" required>
-                </div>
-
-                <div>
-                    <label for="ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
-                    <select id="ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                        <option value="">Select category</option>
-                        <option value="produce" title="Fresh fruits and vegetables">Produce</option>
-                        <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
-                        <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
-                        <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
-                        <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
-                        <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
-                        <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
-                        <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
-                        <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
-                        <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
-                        <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
-                        <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
-                        <option value="other">Other..</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity</label>
-                    <div class="relative rounded-md shadow-sm">
-                        <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" step="0.01" min="0"
-                            class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
-                            kg
-                        </div>
-                    </div>
-                    <p class="mt-1 text-xs text-gray-500">1 kg = 1000 grams</p>
-                </div>
-
-                <div>
-                    <label for="ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
-                    <input type="text" id="ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter price" required>
-                </div>
-            </form>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-add-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                        Cancel
-                    </button>
-                    <button type="submit" form="add-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                        Add Ingredient
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Ingredient Modal -->
-    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Edit Ingredient</h3>
-                    <button id="close-edit-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <form id="edit-ingredient-form" class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
-                <input type="hidden" id="edit-ingredient-id">
-
-                <div>
-                    <label for="edit-ingredient-name" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Name</label>
-                    <input type="text" id="edit-ingredient-name" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                </div>
-
-                <div>
-                    <label for="edit-ingredient-category" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Category</label>
-                    <select id="edit-ingredient-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
-                        <option value="produce" title="Fresh fruits and vegetables">Produce</option>
-                        <option value="protein" title="Meat, poultry, seafood, and plant proteins">Proteins</option>
-                        <option value="dairy" title="Milk, cheese, butter, etc.">Dairy</option>
-                        <option value="grains" title="Rice, pasta, flour, bread, etc.">Grains & Starches</option>
-                        <option value="spices_herbs" title="Seasoning and herbs for flavor">Spices & Herbs</option>
-                        <option value="oils_fats" title="Cooking oils, butter, and fats">Oils & Fats</option>
-                        <option value="condiments" title="Sauces, vinegar, and condiments">Condiments & Sauces</option>
-                        <option value="baking" title="Flour, sugar, yeast, baking powder, etc.">Baking Ingredients</option>
-                        <option value="beverages" title="Juices, soft drinks, tea, coffee, etc.">Beverages</option>
-                        <option value="canned" title="Canned fruits, beans, jams, etc.">Canned & Preserved Goods</option>
-                        <option value="frozen" title="Frozen vegetables, meats, pre-cooked items">Frozen Ingredients</option>
-                        <option value="nuts_seeds" title="Nuts, seeds, legumes, beans">Nuts, Seeds & Legumes</option>
-                        <option value="other">Other..</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="edit-ingredient-quantity" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Quantity</label>
-                    <div class="relative rounded-md shadow-sm">
-                        <input type="number" id="edit-ingredient-quantity" step="0.01" min="0" class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
-                            kg
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label for="edit-ingredient-price" class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Price (per unit)</label>
-                    <input type="text" id="edit-ingredient-price" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
-                </div>
-            </form>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-edit-ingredient" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                        Cancel
-                    </button>
-                    <button type="submit" form="edit-ingredient-form" class="px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
-                        Save Changes
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
-        <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
-            <div class="modal-header p-6 border-b border-warm-cream/20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-2xl font-bold text-deep-brown font-playfair">Confirm Deletion</h3>
-                    <button id="close-delete-modal" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="modal-body flex-1 overflow-y-auto p-6">
-                <p class="text-gray-700 font-baskerville">Are you sure you want to delete this ingredient? This action cannot be undone.</p>
-            </div>
-
-            <div class="modal-footer p-6 border-t border-warm-cream/20">
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="cancel-delete" class="px-6 py-2 text-rich-brown border border-rich-brown rounded-lg hover:bg-rich-brown hover:text-warm-cream transition-colors duration-200 font-baskerville">
-                        Cancel
-                    </button>
-                    <button type="button" id="confirm-delete" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-baskerville">
-                        Delete
-                    </button>
-                </div>
-            </div>
-            <input type="hidden" id="ingredient-to-delete">
-        </div>
-    </div>
 <?php
     $page_styles = ob_get_clean();
 
