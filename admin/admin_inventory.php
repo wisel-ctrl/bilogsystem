@@ -15,7 +15,7 @@
 
        <!-- Inventory Management Section -->
             <!-- Add Ingredient Modal -->
-    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+    <div id="add-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
         <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
             <div class="modal-header p-6 border-b border-warm-cream/20">
                 <div class="flex items-center justify-between">
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Edit Ingredient Modal -->
-    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+    <div id="edit-ingredient-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
         <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
             <div class="modal-header p-6 border-b border-warm-cream/20">
                 <div class="flex items-center justify-between">
@@ -152,7 +152,7 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-8">
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-8">
         <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
             <div class="modal-header p-6 border-b border-warm-cream/20">
                 <div class="flex items-center justify-between">
@@ -320,9 +320,7 @@
         transform: translateY(0) !important;
     }
 
-    header {
-        z-index: 50;
-    }
+
 
     /* DataTables custom styling */
     .dataTables_wrapper .dataTables_filter input {
@@ -401,9 +399,9 @@
     }
 
     /* Modal z-index */
-    #add-ingredient-modal, #edit-ingredient-modal, #delete-confirm-modal {
+    /* #add-ingredient-modal, #edit-ingredient-modal, #delete-confirm-modal {
         z-index: 1000 !important;
-    }
+    } */
 
     /* Ensure main content doesn't create stacking context */
     .flex-1 {
@@ -415,9 +413,9 @@
         z-index: 40;
     }
 
-    header {
+    /* header {
         z-index: 50;
-    }
+    } */
 
     /* Blur effect */
     .blur-effect {
