@@ -61,28 +61,10 @@
                     transform: translateY(-2px);
                 }
                 
-                /* Sidebar improvements */
-                /* .sidebar-link {
-                    transition: all 0.3s ease;
-                    position: relative;
-                    overflow: hidden;
-                }
-                
-                .sidebar-link::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 0;
-                    height: 2px;
-                    background: #E8E0D5;
-                    transition: width 0.3s ease;
-                }
-                
-                .sidebar-link:hover::after {
-                    width: 100%;
-                }
-                 */
+                #profileMenu {
+            z-index: 49 !important;
+            transform: translateY(0) !important;
+        }
                 /* Animation classes */
                 .fade-in {
                     opacity: 0;
@@ -601,7 +583,26 @@
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const titleFull = document.querySelector('.nav-title');
         const titleShort = document.querySelector('.nav-title-short');
+        // Profile Dropdown functionality
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
 
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            setTimeout(() => {
+                profileMenu.classList.toggle('opacity-0');
+                dropdownIcon.classList.toggle('rotate-180');
+            }, 50);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                dropdownIcon.classList.remove('rotate-180');
+            }
+        });
          function toggleSidebar() {
         sidebar.classList.toggle('collapsed');
 
