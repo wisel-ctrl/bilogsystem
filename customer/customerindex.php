@@ -205,7 +205,7 @@ require_once 'customer_auth.php'; ?>
                         My Reservations
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#menu" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Menu
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
@@ -296,7 +296,7 @@ require_once 'customer_auth.php'; ?>
                         <a href="#reservations" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-calendar-alt w-8"></i> My Reservations
                         </a>
-                        <a href="#menu" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                        <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
                         <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
@@ -347,10 +347,10 @@ require_once 'customer_auth.php'; ?>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Explore our latest dishes and seasonal specials.</p>
-                <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                <a href="menu.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Browse Menu</span>
                     <i class="fas fa-utensils ml-2"></i>
-                </button>
+                </a>
             </div>
 
             <div class="bg-card rounded-xl p-6 shadow-md hover-lift" data-tippy-content="Get assistance from our support team">
@@ -642,7 +642,7 @@ require_once 'customer_auth.php'; ?>
                         </h3>
                         <nav class="space-y-2 font-inter text-sm">
                             <a href="#about" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">About Us</a>
-                            <a href="#menu" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Our Menu</a>
+                            <a href="menu.php" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Our Menu</a>
                             <a href="#reservations" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Reservations</a>
                             <a href="#contact" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Visit Us</a>
                         </nav>
@@ -763,6 +763,14 @@ require_once 'customer_auth.php'; ?>
                     setTimeout(() => {
                         NProgress.done();
                     }, 500);
+                });
+            });
+            
+            // Handle regular links (like menu.php)
+            document.querySelectorAll('a[href$=".php"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    NProgress.start();
+                    // Let the default link behavior happen
                 });
             });
 
