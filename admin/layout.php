@@ -560,7 +560,27 @@ ob_start();
 
 
 
-    
+            // Add profile dropdown functionality
+        document.getElementById('profileDropdown').addEventListener('click', function() {
+            const menu = document.getElementById('profileMenu');
+            const icon = this.querySelector('.fa-chevron-down');
+            
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('opacity-0');
+            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Close profile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profileDropdown');
+            const menu = document.getElementById('profileMenu');
+            
+            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+                menu.classList.add('opacity-0');
+                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+            }
+        });
 </script>
 <?php
 // End output buffering and flush
