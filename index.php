@@ -177,117 +177,117 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-amber-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <!-- Left Column - About Content -->
-        <div class="fade-in">
-            <div class="mb-12">
-                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6 leading-tight">
-                    About <span class="text-rich-brown italic">Caffè Lilio</span>
-                </h2>
-                <div class="w-24 h-1.5 bg-gradient-to-r from-rich-brown to-accent-brown mb-8 rounded-full"></div>
+    <section id="about" class="py-12 md:py-20 bg-amber-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div class="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
+            <!-- Left Column - About Content -->
+            <div class="fade-in w-full lg:w-1/2">
+                <div class="mb-8 md:mb-12">
+                    <h2 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-deep-brown mb-4 md:mb-6 leading-tight">
+                        About <span class="text-rich-brown italic">Caffè Lilio</span>
+                    </h2>
+                    <div class="w-20 md:w-24 h-1.5 bg-gradient-to-r from-rich-brown to-accent-brown mb-6 md:mb-8 rounded-full"></div>
+                    
+                    <div class="space-y-4 md:space-y-6 font-baskerville text-base md:text-lg text-deep-brown leading-relaxed">
+                        <p class="border-l-4 border-rich-brown pl-4 md:pl-6 py-1 italic">
+                            Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
+                            The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
+                        </p>
+                        
+                        <p>
+                            Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
+                            The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
+                        </p>
+                        
+                        <p class="bg-warm-cream/50 p-4 md:p-6 rounded-xl border border-warm-cream">
+                            Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
+                            and reputation as a premier dining destination in Liliw.
+                        </p>
+                    </div>
+                </div>
                 
-                <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
-                    <p class="border-l-4 border-rich-brown pl-6 py-1 italic">
-                        Established in March 2021, Caffè Lilio Ristorante holds the distinction of being the first Italian fine dining restaurant in Liliw, Laguna. 
-                        The founders aimed to highlight the rich offerings of Liliw, providing both locals and tourists with an authentic Italian dining experience in the heart of the town.
-                    </p>
-                    
-                    <p>
-                        Caffè Lilio offers a fusion of Italian and Spanish cuisines, featuring dishes like spaghetti, pizza, and steaks. 
-                        The restaurant is also known for its delightful coffee, enhancing the overall dining experience.
-                    </p>
-                    
-                    <p class="bg-warm-cream/50 p-6 rounded-xl border border-warm-cream">
-                        Patrons have praised the courteous staff and the establishment's quiet atmosphere, contributing to its high ratings 
-                        and reputation as a premier dining destination in Liliw.
-                    </p>
+                <!-- Stats Section -->
+                <div class="mt-8 md:mt-12 bg-gradient-to-br from-warm-cream/20 to-warm-cream/5 p-4 md:p-8 rounded-2xl border border-warm-cream/30">
+                    <div class="grid grid-cols-3 gap-4 md:gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl md:text-4xl font-playfair font-bold text-rich-brown mb-1 md:mb-2">3+</div>
+                            <div class="font-baskerville text-deep-brown uppercase tracking-wider text-xs md:text-sm">Years of Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl md:text-4xl font-playfair font-bold text-rich-brown mb-1 md:mb-2">5★</div>
+                            <div class="font-baskerville text-deep-brown uppercase tracking-wider text-xs md:text-sm">Customer Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl md:text-4xl font-playfair font-bold text-rich-brown mb-1 md:mb-2">30+</div>
+                            <div class="font-baskerville text-deep-brown uppercase tracking-wider text-xs md:text-sm">Signature Dishes</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- Stats Section -->
-            <div class="mt-12 bg-gradient-to-br from-warm-cream/20 to-warm-cream/5 p-8 rounded-2xl border border-warm-cream/30">
-                <div class="grid grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-4xl font-playfair font-bold text-rich-brown mb-2">3+</div>
-                        <div class="font-baskerville text-deep-brown uppercase tracking-wider text-sm">Years of Excellence</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-playfair font-bold text-rich-brown mb-2">5★</div>
-                        <div class="font-baskerville text-deep-brown uppercase tracking-wider text-sm">Customer Rating</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-playfair font-bold text-rich-brown mb-2">30+</div>
-                        <div class="font-baskerville text-deep-brown uppercase tracking-wider text-sm">Signature Dishes</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right Column - Contact Card -->
-        <div class="fade-in">
-            <div class="relative">
-                <div class="bg-gradient-to-br from-deep-brown/80 to-rich-brown/80 rounded-3xl p-8 shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
-                    <div class="bg-warm-cream rounded-2xl p-8 shadow-inner">
-                        <h6 class="font-playfair text-3xl font-bold text-deep-brown mb-6 text-center italic">
-                            We're Here for You
-                        </h6>
-                        <div class="text-center text-deep-brown/80 mb-8 font-baskerville">
-                            Online & On-site Experience
-                        </div>
-                        
-                        <div class="space-y-6 font-baskerville text-deep-brown">
-                            <div class="flex items-start space-x-4 p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
-                                <span class="text-2xl text-rich-brown mt-1">📍</span>
-                                <div>
-                                    <div class="font-bold uppercase tracking-wider text-sm mb-1">Address</div>
-                                    <div>Brgy. Rizal st. cr. 4th St., Liliw Laguna, Liliw, Philippines, 4004</div>
-                                </div>
+            <!-- Right Column - Contact Card -->
+            <div class="fade-in w-full lg:w-1/2 mt-8 md:mt-0">
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-deep-brown/80 to-rich-brown/80 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-xl md:shadow-2xl">
+                        <div class="bg-warm-cream rounded-xl md:rounded-2xl p-4 md:p-8 shadow-inner">
+                            <h6 class="font-playfair text-2xl md:text-3xl font-bold text-deep-brown mb-4 md:mb-6 text-center italic">
+                                We're Here for You
+                            </h6>
+                            <div class="text-center text-deep-brown/80 mb-6 md:mb-8 font-baskerville text-sm md:text-base">
+                                Online & On-site Experience
                             </div>
                             
-                            <div class="flex items-start space-x-4 p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
-                                <span class="text-2xl text-rich-brown mt-1">📞</span>
-                                <div>
-                                    <div class="font-bold uppercase tracking-wider text-sm mb-1">Phone</div>
-                                    <div>+49 2542 084</div>
+                            <div class="space-y-4 md:space-y-6 font-baskerville text-deep-brown text-sm md:text-base">
+                                <div class="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
+                                    <span class="text-xl md:text-2xl text-rich-brown mt-0.5 md:mt-1">📍</span>
+                                    <div>
+                                        <div class="font-bold uppercase tracking-wider text-xs md:text-sm mb-1">Address</div>
+                                        <div class="text-xs md:text-sm">Brgy. Rizal st. cr. 4th St., Liliw Laguna, Liliw, Philippines, 4004</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
+                                    <span class="text-xl md:text-2xl text-rich-brown mt-0.5 md:mt-1">📞</span>
+                                    <div>
+                                        <div class="font-bold uppercase tracking-wider text-xs md:text-sm mb-1">Phone</div>
+                                        <div class="text-xs md:text-sm">+49 2542 084</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
+                                    <span class="text-xl md:text-2xl text-rich-brown mt-0.5 md:mt-1">✉️</span>
+                                    <div>
+                                        <div class="font-bold uppercase tracking-wider text-xs md:text-sm mb-1">Email</div>
+                                        <div class="text-xs md:text-sm">caffelilio.liliw@gmail.com</div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-start space-x-4 p-4 bg-warm-cream/70 rounded-lg hover:bg-warm-cream transition-colors">
-                                <span class="text-2xl text-rich-brown mt-1">✉️</span>
-                                <div>
-                                    <div class="font-bold uppercase tracking-wider text-sm mb-1">Email</div>
-                                    <div>caffelilio.liliw@gmail.com</div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Map Section -->
-                        <div class="mt-8 rounded-xl overflow-hidden shadow-lg border-2 border-warm-cream/50">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
-                                width="100%"
-                                height="200"
-                                style="border:0;"
-                                allowfullscreen=""
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
-                        
-                        <!-- Reservation Button -->
-                        <div class="mt-8">
-                            <a href="register.php" class="block w-full bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream py-4 rounded-xl font-baskerville font-bold hover:shadow-lg transition-all duration-300 text-center hover:from-deep-brown hover:to-rich-brown transform hover:-translate-y-1">
-                                Make Reservation
-                            </a>
+                            <!-- Map Section -->
+                            <div class="mt-6 md:mt-8 rounded-lg md:rounded-xl overflow-hidden shadow-md md:shadow-lg border border-warm-cream/50">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+                                    width="100%"
+                                    height="180"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                            
+                            <!-- Reservation Button -->
+                            <div class="mt-6 md:mt-8">
+                                <a href="register.php" class="block w-full bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream py-3 md:py-4 rounded-lg md:rounded-xl font-baskerville font-bold hover:shadow-md md:hover:shadow-lg transition-all duration-300 text-center hover:from-deep-brown hover:to-rich-brown transform hover:-translate-y-0.5 md:hover:-translate-y-1 text-sm md:text-base">
+                                    Make Reservation
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-    </section>
+</section>
 
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
