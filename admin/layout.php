@@ -526,24 +526,6 @@ ob_start();
         const profileDropdown = document.getElementById('profileDropdown');
         const profileMenu = document.getElementById('profileMenu');
         const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
-
-        profileDropdown.addEventListener('click', () => {
-            profileMenu.classList.toggle('hidden');
-            setTimeout(() => {
-                profileMenu.classList.toggle('opacity-0');
-                dropdownIcon.classList.toggle('rotate-180');
-            }, 50);
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!profileDropdown.contains(e.target)) {
-                profileMenu.classList.add('hidden', 'opacity-0');
-                dropdownIcon.classList.remove('rotate-180');
-            }
-        });
-
-        
     // Load sidebar state from localStorage
     if (localStorage.getItem('sidebarCollapsed') === 'true') {
         sidebar.classList.add('collapsed');
@@ -588,6 +570,22 @@ ob_start();
 
 
 
+
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            setTimeout(() => {
+                profileMenu.classList.toggle('opacity-0');
+                dropdownIcon.classList.toggle('rotate-180');
+            }, 50);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                dropdownIcon.classList.remove('rotate-180');
+            }
+        });
 </script>
 <?php
 // End output buffering and flush
