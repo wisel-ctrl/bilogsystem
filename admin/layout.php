@@ -485,7 +485,7 @@ ob_start();
         }
                 /* Add this to your existing style section */
                 #profileMenu {
-            z-index: 49 !important;
+            z-index: 99 !important;
             transform: translateY(0) !important;
         }
     </style>
