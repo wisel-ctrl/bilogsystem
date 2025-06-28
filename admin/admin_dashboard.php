@@ -26,10 +26,10 @@
             width: 100%;
         }
         /* Add this to your existing style section */
-        /* #profileMenu {
+        #profileMenu {
             z-index: 9999 !important;
             transform: translateY(0) !important;
-        } */
+        }
 
         /* header {
                     z-index: 50;
