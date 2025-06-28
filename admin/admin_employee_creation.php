@@ -290,6 +290,12 @@ $page_title = "Employee Management";
 
 ob_start();
 ?>
+<style>
+            #profileMenu {
+            z-index: 49 !important;
+            transform: translateY(0) !important;
+        }
+</style>
 <div class="dashboard-card fade-in bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <h3 class="text-3xl md:text-2xl font-bold text-deep-brown font-playfair">Cashier Management</h3>
@@ -696,7 +702,26 @@ ob_start();
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        // Profile Dropdown functionality
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
 
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            setTimeout(() => {
+                profileMenu.classList.toggle('opacity-0');
+                dropdownIcon.classList.toggle('rotate-180');
+            }, 50);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                dropdownIcon.classList.remove('rotate-180');
+            }
+        });
     sidebarToggle.addEventListener('click', () => {
         sidebar.classList.toggle('w-64');
         sidebar.classList.toggle('collapsed');
