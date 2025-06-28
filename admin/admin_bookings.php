@@ -14,7 +14,41 @@
 
 
 
-
+<style>
+            #profileMenu {
+            z-index: 49 !important;
+            transform: translateY(0) !important;
+        }
+                        @media (max-width: 640px) {
+                            table {
+                                display: block;
+                                overflow-x: auto;
+                                white-space: nowrap;
+                            }
+                            thead {
+                                display: none;
+                            }
+                            tbody tr {
+                                display: block;
+                                margin-bottom: 1rem;
+                                border-bottom: 2px solid #e5e7eb;
+                            }
+                            tbody td {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                text-align: left;
+                            }
+                            tbody td:before {
+                                content: attr(data-label);
+                                font-weight: 600;
+                                color: #374151;
+                                width: 40%;
+                                min-width: 120px;
+                            }
+                        }
+                    </style>
 
                 <!-- Restaurant Bookings Section -->
                 <div class="dashboard-card animate-on-scroll rounded-lg shadow-sm">
@@ -161,37 +195,7 @@
                             </tbody>
                         </table>
                         
-                        <style>
-                        @media (max-width: 640px) {
-                            table {
-                                display: block;
-                                overflow-x: auto;
-                                white-space: nowrap;
-                            }
-                            thead {
-                                display: none;
-                            }
-                            tbody tr {
-                                display: block;
-                                margin-bottom: 1rem;
-                                border-bottom: 2px solid #e5e7eb;
-                            }
-                            tbody td {
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: center;
-                                padding: 0.75rem 1rem;
-                                text-align: left;
-                            }
-                            tbody td:before {
-                                content: attr(data-label);
-                                font-weight: 600;
-                                color: #374151;
-                                width: 40%;
-                                min-width: 120px;
-                            }
-                        }
-                        </style>
+
                         <!-- Add pagination controls for Accepted Bookings -->
                         <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
                             <div class="text-sm text-gray-700">
