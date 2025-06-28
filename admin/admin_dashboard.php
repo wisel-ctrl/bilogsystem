@@ -26,10 +26,10 @@
             width: 100%;
         }
         /* Add this to your existing style section */
-        #profileMenu {
+        /* #profileMenu {
             z-index: 9999 !important;
             transform: translateY(0) !important;
-        }
+        } */
 
         /* header {
                     z-index: 50;
@@ -858,26 +858,7 @@
             }
         });
 
-        // Profile Dropdown functionality
-        const profileDropdown = document.getElementById('profileDropdown');
-        const profileMenu = document.getElementById('profileMenu');
-        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
 
-        profileDropdown.addEventListener('click', () => {
-            profileMenu.classList.toggle('hidden');
-            setTimeout(() => {
-                profileMenu.classList.toggle('opacity-0');
-                dropdownIcon.classList.toggle('rotate-180');
-            }, 50);
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!profileDropdown.contains(e.target)) {
-                profileMenu.classList.add('hidden', 'opacity-0');
-                dropdownIcon.classList.remove('rotate-180');
-            }
-        });
 
         function printChartData(chartId, title) {
             const chart = Chart.getChart(chartId);

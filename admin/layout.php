@@ -560,25 +560,24 @@ ob_start();
 
 
 
-            // Add profile dropdown functionality
-        document.getElementById('profileDropdown').addEventListener('click', function() {
-            const menu = document.getElementById('profileMenu');
-            const icon = this.querySelector('.fa-chevron-down');
-            
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('opacity-0');
-            icon.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        // Profile Dropdown functionality
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileMenu = document.getElementById('profileMenu');
+        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
+
+        profileDropdown.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+            setTimeout(() => {
+                profileMenu.classList.toggle('opacity-0');
+                dropdownIcon.classList.toggle('rotate-180');
+            }, 50);
         });
 
-        // Close profile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('profileDropdown');
-            const menu = document.getElementById('profileMenu');
-            
-            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
-                menu.classList.add('opacity-0');
-                dropdown.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.add('hidden', 'opacity-0');
+                dropdownIcon.classList.remove('rotate-180');
             }
         });
 </script>

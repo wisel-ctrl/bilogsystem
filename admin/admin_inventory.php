@@ -297,11 +297,11 @@
     }
 
     /* Profile menu */
-    #profileMenu {
+    /* #profileMenu {
         z-index: 9999 !important;
         transform: translateY(0) !important;
     }
-
+ */
 
 
     /* DataTables custom styling */
