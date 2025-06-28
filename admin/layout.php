@@ -483,6 +483,12 @@ ob_start();
         ::-webkit-scrollbar-thumb:hover {
             background: #5D2F0F;
         }
+                /* Add this to your existing style section */
+                #profileMenu {
+            z-index: 9999 !important;
+            transform: translateY(0) !important;
+        }
+
     </style>
 </head>
 <body class="bg-warm-cream font-baskerville">
