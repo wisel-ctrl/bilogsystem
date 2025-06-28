@@ -1,4 +1,6 @@
 <?php
+    require_once 'admin_auth.php'; 
+
 // Start output buffering to capture content
 ob_start();
 ?>
