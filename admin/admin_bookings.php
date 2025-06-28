@@ -77,11 +77,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Wedding Package</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 15, 2024 - 6:00 PM</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="openBookingDetails('BOOK001', 'Maria Santos', '+63 915 123 4567', 'Wedding Package', '₱25,000', 'Dec 15, 2024 - 6:00 PM', '50', 'Please prepare vegetarian options for 5 guests.')" 
-                                            class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
-                                            <i class="fas fa-eye text-sm flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[4.5rem] ml-0 group-hover:ml-1.5 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Details</span>
-                                        </button>
+                                    <button onclick="openBookingDetails('BOOK001', 'Maria Santos', '+63 915 123 4567', 'Wedding Package', '₱25,000', 'Dec 15, 2024 - 6:00 PM', '50', 'Please prepare vegetarian options for 5 guests.')"
+                                        class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                                        <i class="fas fa-eye text-sm"></i>
+                                        <span>Details</span>
+                                    </button>
+
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors duration-200">
@@ -91,9 +92,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 20, 2024 - 2:00 PM</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button onclick="openBookingDetails('BOOK002', 'Juan Dela Cruz', '+63 917 987 6543', 'Birthday Party Package', '₱15,000', 'Dec 20, 2024 - 2:00 PM', '30', 'Need sound system for karaoke. Birthday celebrant is turning 50.')" 
-                                            class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
-                                            <i class="fas fa-eye text-sm flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[4.5rem] ml-0 group-hover:ml-1.5 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Details</span>
+                                            class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                                            <i class="fas fa-eye text-sm"></i>
+                                            <span>Details</span>
                                         </button>
                                     </td>
                                 </tr>
@@ -105,9 +106,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button 
                                             onclick="openBookingDetails('BOOK003', 'Ana Rodriguez', '+63 922 456 7890', 'Corporate Event Package', '₱18,500', 'Dec 18, 2024 - 12:00 PM', '40', 'Company year-end party. Please prepare presentation setup and microphone.')"
-                                            class="group details-btn w-20 hover:w-32 h-8 bg-accent-brown/10 hover:bg-accent-brown/20 text-accent-brown hover:text-deep-brown rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden">
-                                            <i class="fas fa-eye text-sm flex-shrink-0"></i>
-                                            <span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-[4.5rem] ml-0 group-hover:ml-1.5 whitespace-nowrap transition-all duration-300 ease-in-out delay-75">Details</span>
+                                            class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                                            <i class="fas fa-eye text-sm"></i>
+                                            <span>Details</span>
                                         </button>
                                     </td>
                                 </tr>
