@@ -827,16 +827,24 @@ require_once 'customer_auth.php';
                                     <i class="fas fa-receipt mr-2 text-rich-brown"></i>
                                     Downpayment Proof (50% of package price)
                                 </label>
-                                <div class="flex items-center justify-center w-full">
-                                    <label for="paymentProof" class="flex flex-col w-full h-32 border-2 border-dashed hover:border-rich-brown hover:bg-amber-50 transition cursor-pointer rounded-lg" tabindex="0">
-                                        <div class="flex flex-col items-center justify-center pt-7">
-                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
-                                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
-                                        </div>
+                                
+                                <div class="flex flex-col md:flex-row gap-4">
+                                    <!-- Normal file input -->
+                                    <div class="w-full">
                                         <input type="file" id="paymentProof" name="paymentProof" 
-                                            accept="image/*" class="hidden" required>
-                                    </label>
+                                            accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                    </div>
+                                    
+                                    <!-- Image preview container -->
+                                    <div id="imagePreviewContainer" class="w-full hidden">
+                                        <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-2 h-32">
+                                            <img id="imagePreview" class="w-full h-full object-contain" src="" alt="Payment proof preview">
+                                            <button type="button" onclick="clearImagePreview()" 
+                                                class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
+                                                <i class="fas fa-times text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -863,89 +871,35 @@ require_once 'customer_auth.php';
                     submitReservation(packageId);
                 });
                 
-                // Preview uploaded image
+                // Handle image preview when file is selected
                 document.getElementById('paymentProof')?.addEventListener('change', function(e) {
                     const file = e.target.files[0];
+                    const previewContainer = document.getElementById('imagePreviewContainer');
+                    const previewImage = document.getElementById('imagePreview');
+                    
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(event) {
-                            const uploadArea = e.target.closest('label');
-                            // Keep the original input but hide it
-                            const originalInput = uploadArea.querySelector('input[type="file"]');
-                            originalInput.style.display = 'none';
-                            
-                            uploadArea.innerHTML = `
-                                <div class="relative w-full h-full">
-                                    <img src="${event.target.result}" class="w-full h-full object-contain rounded-lg" alt="Payment proof preview">
-                                    <button type="button" onclick="event.stopPropagation(); resetUploadArea(this);" 
-                                        class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-                                </div>
-                            ` + uploadArea.innerHTML; // Keep the original input in the DOM
+                            previewImage.src = event.target.result;
+                            previewContainer.classList.remove('hidden');
                         };
                         reader.readAsDataURL(file);
+                    } else {
+                        previewContainer.classList.add('hidden');
                     }
                 });
-                
-                // Store upload template for reset
-                if (!document.getElementById('uploadTemplate')) {
-                    const template = document.createElement('div');
-                    template.id = 'uploadTemplate';
-                    template.style.display = 'none';
-                    template.innerHTML = `
-                        <div class="flex flex-col items-center justify-center pt-7">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
-                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
-                        </div>
-                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
-                    `;
-                    document.body.appendChild(template);
-                }
             }
 
-            window.showReservationForm = showReservationForm;
+            // Add clearImagePreview function to window
+            window.clearImagePreview = function() {
+                const fileInput = document.getElementById('paymentProof');
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                
+                fileInput.value = '';
+                previewContainer.classList.add('hidden');
+            };
 
-            window.resetUploadArea = function(button) {
-                    const uploadArea = button.closest('label');
-                    const originalInput = uploadArea.querySelector('input[type="file"]');
-                    originalInput.value = '';
-                    originalInput.style.display = 'none'; // Keep it hidden but present
-                    
-                    uploadArea.innerHTML = `
-                        <div class="flex flex-col items-center justify-center pt-7">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
-                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
-                        </div>
-                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
-                    `;
-                    
-                    // Reattach the event listener
-                    document.getElementById('paymentProof').addEventListener('change', function(e) {
-                        const file = e.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function(event) {
-                                const uploadArea = e.target.closest('label');
-                                const originalInput = uploadArea.querySelector('input[type="file"]');
-                                originalInput.style.display = 'none';
-                                
-                                uploadArea.innerHTML = `
-                                    <div class="relative w-full h-full">
-                                        <img src="${event.target.result}" class="w-full h-full object-contain rounded-lg" alt="Payment proof preview">
-                                        <button type="button" onclick="event.stopPropagation(); resetUploadArea(this);" 
-                                            class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
-                                            <i class="fas fa-times text-xs"></i>
-                                        </button>
-                                    </div>
-                                ` + uploadArea.innerHTML; // Keep the original input in the DOM
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    });
-                };
+            window.showReservationForm = showReservationForm;
 
             function submitReservation(packageId) {
                 const form = document.getElementById('reservationForm');
