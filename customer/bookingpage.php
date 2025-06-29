@@ -913,6 +913,10 @@ require_once 'customer_auth.php';
                 const originalBtnText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
                 submitBtn.disabled = true;
+
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
                 
                 // In a real implementation, you would send this to your server
                 fetch('bookingAPI/submit_reservation.php', {
