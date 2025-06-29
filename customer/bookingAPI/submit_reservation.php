@@ -70,10 +70,13 @@ try {
     // For now, we'll use a placeholder - replace this with actual calculation
     $totalPrice = $pax * $price; // Assuming 100 is the price per pax
 
-    // Insert into database
+    date_default_timezone_set('Asia/Manila');
+    $booking_datetime = date('Y-m-d H:i:s');
+
+    // Insert into database with booking_datetime
     $stmt = $conn->prepare("INSERT INTO booking_tb 
-        (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id) 
-        VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id)");
+    (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id, booking_datetime) 
+    VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id, :booking_datetime)");
 
     $stmt->bindParam(':package_id', $package_id);
     $stmt->bindParam(':pax', $pax);
@@ -82,6 +85,7 @@ try {
     $stmt->bindParam(':notes', $notes);
     $stmt->bindParam(':downpayment_img', $downpayment_img);
     $stmt->bindParam(':customer_id', $customer_id);
+    $stmt->bindParam(':booking_datetime', $booking_datetime);
 
     if ($stmt->execute()) {
         $response = [
