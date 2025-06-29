@@ -779,7 +779,7 @@ require_once 'customer_auth.php';
             window.getCategoryIcon = getCategoryIcon;
 
             // Global function to calculate and display total amount
-            function calculateTotal() {
+            window.calculateTotal = function() {
                 const packagePrice = parseFloat(document.querySelector('input[name="package_price"]').value);
                 const numberOfPax = parseInt(document.getElementById('numberOfPax').value) || 0;
                 const totalAmount = packagePrice * numberOfPax;
