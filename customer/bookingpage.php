@@ -784,6 +784,43 @@ require_once 'customer_auth.php';
 
             window.showReservationForm = showReservationForm;
 
+            function submitReservation(packageId) {
+                const form = document.getElementById('reservationForm');
+                const formData = new FormData(form);
+                formData.append('package_id', packageId);
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+                submitBtn.disabled = true;
+                
+                // In a real implementation, you would send this to your server
+                fetch('bookingAPI/submit_reservation.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('Reservation submitted successfully!', 'success');
+                        closeModal();
+                    } else {
+                        showToast(data.message || 'Error submitting reservation', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting reservation:', error);
+                    showToast('Error submitting reservation', 'error');
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                });
+            }
+
+            window.submitReservation = submitReservation;
+
             function showModal(title, content) {
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';

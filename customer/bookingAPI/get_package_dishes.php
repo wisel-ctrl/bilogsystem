@@ -14,6 +14,7 @@ try {
             mp.package_id,
             mp.package_name,
             mp.package_description,
+            mp.price,
             mpd.dish_id,
             mpd.quantity,
             d.dish_name,
