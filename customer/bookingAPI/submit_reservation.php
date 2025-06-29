@@ -22,6 +22,7 @@ try {
     $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
     $event = filter_input(INPUT_POST, 'eventType', FILTER_SANITIZE_STRING);
     $customer_id = $_SESSION['user_id']; // You should replace this with actual customer ID from session or auth
+    $hallVenues = $_POST['hallVenue'] ?? [];
 
     // Validate required fields
     if (!$package_id || !$pax || !$reservation_datetime) {
@@ -31,6 +32,10 @@ try {
     // Validate date format
     if (!DateTime::createFromFormat('Y-m-d\TH:i', $reservation_datetime)) {
         throw new Exception('Invalid date format');
+    }
+
+    if (empty($hallVenues)) {
+        throw new Exception('Please select at least one hall venue');
     }
 
     // Handle file upload
@@ -74,10 +79,12 @@ try {
     date_default_timezone_set('Asia/Manila');
     $booking_datetime = date('Y-m-d H:i:s');
 
+    $event_hall = json_encode($hallVenues);
+
     // Insert into database with booking_datetime
     $stmt = $conn->prepare("INSERT INTO booking_tb 
-    (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id, booking_datetime, event) 
-    VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id, :booking_datetime, :event)");
+    (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id, booking_datetime, event, event_hall) 
+    VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id, :booking_datetime, :event, :event_hall)");
 
     $stmt->bindParam(':package_id', $package_id);
     $stmt->bindParam(':pax', $pax);
@@ -88,6 +95,7 @@ try {
     $stmt->bindParam(':customer_id', $customer_id);
     $stmt->bindParam(':booking_datetime', $booking_datetime);
     $stmt->bindParam(':event', $event);
+    $stmt->bindParam(':event_hall', $event_hall);
 
     if ($stmt->execute()) {
         $booking_id = $conn->lastInsertId();
