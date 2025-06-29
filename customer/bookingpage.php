@@ -1037,6 +1037,7 @@ require_once 'customer_auth.php';
                     functionHall.checked = true;
                     privateHall.disabled = true;
                     functionHall.disabled = true;
+                    showToast('Both halls automatically selected for parties over 15 people', 'info');
                 } else {
                     privateHall.disabled = false;
                     functionHall.disabled = false;
@@ -1119,6 +1120,15 @@ require_once 'customer_auth.php';
                 const formData = new FormData(form);
                 formData.append('package_id', packageId);
                 
+                // Get the pax value
+                const paxValue = parseInt(formData.get('numberOfPax') || 0);
+                
+                // If pax > 15, force-add both hall venues to the form data
+                if (paxValue > 15) {
+                    formData.set('hallVenue[]', 'privateHall');  // Use set() to overwrite existing values
+                    formData.append('hallVenue[]', 'functionHall');
+                }
+                
                 // Show loading state
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
@@ -1130,14 +1140,16 @@ require_once 'customer_auth.php';
                     formData.append('payment_proof', fileInput.files[0]);
                 } else {
                     showToast('Please upload payment proof', 'error');
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
                     return;
                 }
 
+                // Debug: Log form data
                 for (let [key, value] of formData.entries()) {
                     console.log(key, value);
                 }
                 
-                // In a real implementation, you would send this to your server
                 fetch('bookingAPI/submit_reservation.php', {
                     method: 'POST',
                     body: formData
@@ -1146,11 +1158,7 @@ require_once 'customer_auth.php';
                 .then(data => {
                     if (data.status === 'success') {
                         showToast('Reservation submitted successfully!', 'success');
-            
-                        // Close all modals
                         closeAllModals();
-                        
-                        // Reset the form (if needed)
                         form.reset();
                         document.getElementById('imagePreviewContainer')?.classList.add('hidden');
                     } else {
