@@ -17,6 +17,7 @@ try {
     // Get and validate input data
     $package_id = filter_input(INPUT_POST, 'package_id', FILTER_VALIDATE_INT);
     $pax = filter_input(INPUT_POST, 'numberOfPax', FILTER_VALIDATE_INT);
+    $price = filter_input(INPUT_POST, 'package_price', FILTER_VALIDATE_FLOAT);
     $reservation_datetime = filter_input(INPUT_POST, 'reservationDate', FILTER_SANITIZE_STRING);
     $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
     $customer_id = $_SESSION['user_id']; // You should replace this with actual customer ID from session or auth
@@ -67,7 +68,7 @@ try {
 
     // Calculate total price (you should fetch package price from database)
     // For now, we'll use a placeholder - replace this with actual calculation
-    $totalPrice = $pax * 100; // Assuming 100 is the price per pax
+    $totalPrice = $pax * $price; // Assuming 100 is the price per pax
 
     // Insert into database
     $stmt = $conn->prepare("INSERT INTO booking_tb 
