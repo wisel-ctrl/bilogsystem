@@ -729,6 +729,8 @@ require_once 'customer_auth.php';
                     });
             }
 
+            window.showPackageDetails = showPackageDetails;
+
             function showReservationForm(packageId) {
                 const formHtml = `
                     <div class="reservation-form">
