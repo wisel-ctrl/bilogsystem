@@ -1,5 +1,24 @@
 <?php
-require_once 'customer_auth.php'; ?>
+require_once 'customer_auth.php';
+require_once '../db_connect.php'; // Use your PDO connection file
+
+// Fetch user details from database
+try {
+    $user_id = $_SESSION['user_id'];
+    $stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$user) {
+        throw new Exception("User not found");
+    }
+} catch(Exception $e) {
+    // Handle error (you might want to redirect or show an error message)
+    die("Error fetching user data: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,10 +269,10 @@ require_once 'customer_auth.php'; ?>
                             <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
+                                <img src="https://ui-avatars.com/api/?name=<?php echo substr($user['first_name'], 0, 1) . '+' . $user['last_name']; ?>&background=E8E0D5&color=5D2F0F" 
                                      alt="Profile" 
                                      class="w-8 h-8 rounded-full border border-deep-brown/30">
-                                <span class="font-baskerville">John Doe</span>
+                                <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
                             </a>
                             <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
@@ -323,7 +342,7 @@ require_once 'customer_auth.php'; ?>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Welcome Section -->
         <section class="mb-12 animate-fade-in">
-            <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome back, <span class="text-gradient">John</span>!</h2>
+            <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Welcome back, <span class="text-gradient"><?php echo htmlspecialchars(ucfirst($user['first_name'])); ?></span>!</h2>
             <p class="font-baskerville text-lg text-deep-brown/80">Here's what's happening with your reservations and upcoming events.</p>
         </section>
 
