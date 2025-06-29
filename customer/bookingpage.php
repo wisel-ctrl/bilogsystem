@@ -888,7 +888,26 @@ require_once 'customer_auth.php';
                     }
                 });
                 
-                window.resetUploadArea = function(button) {
+                // Store upload template for reset
+                if (!document.getElementById('uploadTemplate')) {
+                    const template = document.createElement('div');
+                    template.id = 'uploadTemplate';
+                    template.style.display = 'none';
+                    template.innerHTML = `
+                        <div class="flex flex-col items-center justify-center pt-7">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
+                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
+                        </div>
+                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
+                    `;
+                    document.body.appendChild(template);
+                }
+            }
+
+            window.showReservationForm = showReservationForm;
+
+            window.resetUploadArea = function(button) {
                     const uploadArea = button.closest('label');
                     const originalInput = uploadArea.querySelector('input[type="file"]');
                     originalInput.value = '';
@@ -927,25 +946,6 @@ require_once 'customer_auth.php';
                         }
                     });
                 };
-                
-                // Store upload template for reset
-                if (!document.getElementById('uploadTemplate')) {
-                    const template = document.createElement('div');
-                    template.id = 'uploadTemplate';
-                    template.style.display = 'none';
-                    template.innerHTML = `
-                        <div class="flex flex-col items-center justify-center pt-7">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
-                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
-                        </div>
-                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
-                    `;
-                    document.body.appendChild(template);
-                }
-            }
-
-            window.showReservationForm = showReservationForm;
 
             function submitReservation(packageId) {
                 const form = document.getElementById('reservationForm');
