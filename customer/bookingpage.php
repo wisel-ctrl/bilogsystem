@@ -778,6 +778,17 @@ require_once 'customer_auth.php';
 
             window.getCategoryIcon = getCategoryIcon;
 
+            // Global function to calculate and display total amount
+            function calculateTotal() {
+                const packagePrice = parseFloat(document.querySelector('input[name="package_price"]').value);
+                const numberOfPax = parseInt(document.getElementById('numberOfPax').value) || 0;
+                const totalAmount = packagePrice * numberOfPax;
+                const downpaymentAmount = totalAmount * 0.5; // 50% downpayment
+                
+                document.getElementById('totalAmountDisplay').textContent = `$${totalAmount.toFixed(2)}`;
+                document.getElementById('downpaymentAmountDisplay').textContent = `$${downpaymentAmount.toFixed(2)}`;
+            }
+
             function showReservationForm(packageId, packagePrice) {
                 const formHtml = `
                     <div class="reservation-form">
@@ -809,8 +820,52 @@ require_once 'customer_auth.php';
                                         Number of Pax
                                     </label>
                                     <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
-                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required
+                                        oninput="calculateTotal()">
                                     <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number greater than 0.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Amount and Downpayment Section -->
+                            <div class="mb-6 bg-green-50 p-4 rounded-lg border border-green-100">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="text-gray-700 mb-1">Total Amount:</div>
+                                        <div id="totalAmountDisplay" class="text-2xl font-bold text-green-700">$${packagePrice}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-700 mb-1">Downpayment Required (50%):</div>
+                                        <div id="downpaymentAmountDisplay" class="text-2xl font-bold text-green-700">$${(packagePrice * 0.5).toFixed(2)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- GCash Payment Section -->
+                            <div class="mb-6 bg-purple-50 p-4 rounded-lg border border-purple-100">
+                                <div class="flex items-center text-purple-800 mb-3">
+                                    <i class="fas fa-mobile-alt mr-2"></i>
+                                    <span class="font-medium">GCash Payment</span>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-gray-700 mb-3">Please scan the QR code to pay the downpayment amount.</p>
+                                        <div class="text-sm text-gray-600 mb-3">
+                                            <p class="font-medium">Instructions:</p>
+                                            <ol class="list-decimal list-inside space-y-1">
+                                                <li>Open GCash app</li>
+                                                <li>Tap "Scan QR"</li>
+                                                <li>Scan the code on the right</li>
+                                                <li>Enter the downpayment amount</li>
+                                                <li>Complete the payment</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-center">
+                                        <div class="border-2 border-purple-200 p-2 rounded-lg bg-white">
+                                            <img src="../images/gcashtrial.jpg" alt="GCash QR Code" class="w-48 h-48 object-contain">
+                                            <p class="text-center text-sm text-gray-600 mt-2">Scan this QR code to pay</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -922,6 +977,9 @@ require_once 'customer_auth.php';
                 const timezoneOffset = now.getTimezoneOffset() * 60000;
                 const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
                 document.getElementById('reservationDate').min = localISOTime;
+                
+                // Initialize the total amount display
+                calculateTotal();
             }
 
             // Add clearImagePreview function to window
