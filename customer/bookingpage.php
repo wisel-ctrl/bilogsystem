@@ -933,7 +933,13 @@ require_once 'customer_auth.php';
                 .then(data => {
                     if (data.status === 'success') {
                         showToast('Reservation submitted successfully!', 'success');
-                        closeModal();
+            
+                        // Close all modals
+                        closeAllModals();
+                        
+                        // Reset the form (if needed)
+                        form.reset();
+                        document.getElementById('imagePreviewContainer')?.classList.add('hidden');
                     } else {
                         showToast(data.message || 'Error submitting reservation', 'error');
                     }
@@ -991,8 +997,29 @@ require_once 'customer_auth.php';
                 }
             }
 
-
             window.closeModal = closeModal;
+
+            function closeAllModals() {
+                const modals = document.querySelectorAll('.fixed.inset-0.bg-black.bg-opacity-50');
+                modals.forEach(modal => {
+                    modal.classList.add('animate-fadeOut');
+                    const modalContent = modal.querySelector('.animate-slideUp');
+                    if (modalContent) {
+                        modalContent.classList.add('animate-slideDown');
+                    }
+                    
+                    setTimeout(() => {
+                        if (modal.parentNode) {
+                            modal.parentNode.removeChild(modal);
+                        }
+                    }, 300);
+                });
+                
+                document.body.style.overflow = '';
+            }
+
+            // Make the new function available globally
+            window.closeAllModals = closeAllModals;
 
             // Order item function
             function orderItem(itemName, price) {
