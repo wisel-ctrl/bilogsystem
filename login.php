@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['usertype'] = $user['usertype'];
+                $_SESSION['phone'] = $user['contact_number'];
                 
                 // Redirect based on usertype
                 if ($user['usertype'] == 3) {
