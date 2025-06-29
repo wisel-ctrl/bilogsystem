@@ -1,6 +1,72 @@
 <?php
-require_once 'customer_auth.php';
+// Enable error reporting for debugging (disable in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Log errors to a file
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/error.log');
+
+// Start output buffering to catch potential output issues
+ob_start();
+
+try {
+    // Include required files
+    if (!file_exists('customer_auth.php') || !file_exists('../db_connect.php')) {
+        throw new Exception('Required file(s) not found: customer_auth.php or db_connect.php');
+    }
+    require_once 'customer_auth.php';
+    require_once '../db_connect.php';
+
+    // Check if session is started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Verify user session
+    if (!isset($_SESSION['user_id'])) {
+        error_log('Session user_id not set. Redirecting to login.');
+        header('Location: login.php'); // Adjust to your login page
+        exit;
+    }
+
+    // Fetch bookings for the logged-in user using PDO
+    $user_id = $_SESSION['user_id'];
+    if (!isset($conn) || !$conn instanceof PDO) {
+        throw new Exception('Invalid PDO database connection');
+    }
+
+    $query = "SELECT booking_id, reservation_datetime, event, pax, booking_status 
+          FROM booking_tb 
+          WHERE customer_id = :user_id 
+          AND booking_status IN ('pending', 'accepted') 
+          ORDER BY reservation_datetime ASC";
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        throw new Exception('Query preparation failed: ' . implode(' | ', $conn->errorInfo()));
+    }
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    if (!$stmt->execute()) {
+        throw new Exception('Query execution failed: ' . implode(' | ', $stmt->errorInfo()));
+    }
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
+} catch (Exception $e) {
+    // Log the error
+    error_log('Error in my_reservations.php: ' . $e->getMessage());
+    
+    // Display user-friendly error
+    http_response_code(500);
+    echo '<!DOCTYPE html><html><body><h1>Error</h1><p>An error occurred: ' . htmlspecialchars($e->getMessage()) . '</p><p>Please try again later or contact support.</p></body></html>';
+    ob_end_flush();
+    exit;
+}
+
+// Flush output buffer
+ob_end_flush();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +81,7 @@ require_once 'customer_auth.php';
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -168,6 +235,21 @@ require_once 'customer_auth.php';
             border-color: #8B4513;
             box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
         }
+
+        .otp-input {
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            font-size: 1.25rem;
+            border: 1px solid #8B4513;
+            border-radius: 0.375rem;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #5D2F0F;
+            box-shadow: 0 0 0 2px rgba(93, 47, 15, 0.2);
+        }
     </style>
 </head>
 <body class="bg-warm-cream text-deep-brown min-h-screen">
@@ -185,7 +267,7 @@ require_once 'customer_auth.php';
                 </div>
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/26/11/2024, 18:26:46 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
@@ -317,14 +399,6 @@ require_once 'customer_auth.php';
                     <i class="fas fa-calendar-plus"></i>
                 </a>
             </div>
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-playfair text-2xl font-bold text-deep-brown"></h3>
-                <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
-                        data-tippy-content="Refresh reservations">
-                    <i class="fas fa-sync-alt"></i>
-                    <span class="font-baskerville text-sm">Refresh</span>
-                </button>
-            </div>
             <div class="bg-card rounded-xl p-6 shadow-md">
                 <div class="overflow-x-auto">
                     <table class="w-full" role="table">
@@ -338,58 +412,50 @@ require_once 'customer_auth.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
-                                <td class="py-4 px-4">
-                                    <div class="font-baskerville text-deep-brown">March 15, 2024</div>
-                                    <div class="text-sm text-deep-brown/60">7:00 PM</div>
-                                </td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">Dinner Reservation</td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">4</td>
-                                <td class="py-4 px-4">
-                                    <span class="bg-warm-cream/50 text-deep-brown px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                                        Confirmed
-                                    </span>
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex space-x-2">
-                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"
-                                                data-tippy-content="Edit reservation">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"
-                                                data-tippy-content="Cancel reservation">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-deep-brown/5 transition-colors duration-300">
-                                <td class="py-4 px-4">
-                                    <div class="font-baskerville text-deep-brown">March 20, 2024</div>
-                                    <div class="text-sm text-deep-brown/60">6:30 PM</div>
-                                </td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">Birthday Celebration</td>
-                                <td class="py-4 px-4 font-baskerville text-deep-brown">12</td>
-                                <td class="py-4 px-4">
-                                    <span class="bg-yellow-100/50 text-yellow-800 px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center">
-                                        <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex space-x-2">
-                                        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-deep-brown/10"
-                                                data-tippy-content="Edit reservation">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50"
-                                                data-tippy-content="Cancel reservation">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (empty($bookings)): ?>
+                                <tr>
+                                    <td colspan="5" class="py-4 px-4 text-center font-baskerville text-deep-brown">
+                                        No upcoming reservations found
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($bookings as $booking): ?>
+                                    <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
+                                        <td class="py-4 px-4">
+                                            <div class="font-baskerville text-deep-brown">
+                                                <?php echo date('F d, Y', strtotime($booking['reservation_datetime'])); ?>
+                                            </div>
+                                            <div class="text-sm text-deep-brown/60">
+                                                <?php echo date('h:i A', strtotime($booking['reservation_datetime'])); ?>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 font-baskerville text-deep-brown">
+                                            <?php echo htmlspecialchars($booking['event'] ?? 'Not Specified'); ?>
+                                        </td>
+                                        <td class="py-4 px-4 font-baskerville text-deep-brown">
+                                            <?php echo $booking['pax']; ?>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <span class="px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10
+                                                <?php echo $booking['booking_status'] === 'accepted' ? 'bg-warm-cream/50 text-deep-brown' : 'bg-yellow-100/50 text-yellow-800'; ?>">
+                                                <span class="w-2 h-2 rounded-full mr-2 
+                                                    <?php echo $booking['booking_status'] === 'accepted' ? 'bg-green-500' : 'bg-yellow-500'; ?>">
+                                                </span>
+                                                <?php echo ucfirst($booking['booking_status']); ?>
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex space-x-2">
+                                                <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50 cancel-reservation"
+                                                        data-booking-id="<?php echo $booking['booking_id']; ?>"
+                                                        data-tippy-content="Cancel reservation">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -456,56 +522,221 @@ require_once 'customer_auth.php';
             }
 
             // Handle reservation cancellation
-            document.querySelectorAll('.fa-trash').forEach(button => {
-                button.addEventListener('click', function() {
-                    const confirmDialog = document.createElement('div');
-                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-                    confirmDialog.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
-                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
-                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+            // Handle reservation cancellation
+document.querySelectorAll('.cancel-reservation').forEach(button => {
+    button.addEventListener('click', function() {
+        const bookingId = this.getAttribute('data-booking-id');
+        
+        // Initial confirmation dialog
+        const confirmDialog = document.createElement('div');
+        confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+        confirmDialog.innerHTML = `
+            <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
+                <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+                <div class="flex justify-end space-x-4">
+                    <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
+                        Keep Reservation
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
+                        Yes, Cancel
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(confirmDialog);
+        document.body.classList.add('overflow-hidden');
+
+        document.getElementById('cancel-dialog').addEventListener('click', () => {
+            confirmDialog.remove();
+            document.body.classList.remove('overflow-hidden');
+        });
+
+        document.getElementById('confirm-cancel').addEventListener('click', () => {
+            confirmDialog.remove();
+            NProgress.start();
+
+            // Request OTP
+            fetch('reservationsAPI/otp_handler.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=generate_otp&booking_id=${bookingId}`
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                NProgress.done();
+                if (!data.success) {
+                    showToast(data.message || 'Failed to send OTP', 'error');
+                    document.body.classList.remove('overflow-hidden');
+                    return;
+                }
+
+                // Show OTP input modal
+                const otpDialog = document.createElement('div');
+                otpDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                otpDialog.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                        <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Enter OTP</h3>
+                        <p class="text-deep-brown/80 mb-4">An OTP has been sent to your registered phone number.</p>
+                        <form id="otp-form">
+                            <div class="flex justify-center space-x-2 mb-6">
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                                <input type="text" maxlength="1" class="otp-input" placeholder="0" required>
+                            </div>
+                            <p class="text-deep-brown/80 mb-4 text-sm">Didn't receive OTP? <a href="#" id="resend-otp" class="text-rich-brown hover:underline">Resend OTP</a></p>
                             <div class="flex justify-end space-x-4">
-                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
-                                    Keep Reservation
+                                <button type="button" class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-otp">
+                                    Cancel
                                 </button>
-                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
-                                    Yes, Cancel
+                                <button type="submit" class="px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition-colors duration-300" id="verify-otp">
+                                    Verify OTP
                                 </button>
                             </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(confirmDialog);
-                    document.body.classList.add('overflow-hidden');
+                        </form>
+                    </div>
+                `;
+                
+                document.body.appendChild(otpDialog);
 
-                    document.getElementById('cancel-dialog').addEventListener('click', () => {
-                        confirmDialog.remove();
-                        document.body.classList.remove('overflow-hidden');
+                // Handle OTP input
+                const otpInputs = otpDialog.querySelectorAll('.otp-input');
+                otpInputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                            otpInputs[index + 1].focus();
+                        }
                     });
-
-                    document.getElementById('confirm-cancel').addEventListener('click', () => {
-                        NProgress.start();
-                        setTimeout(() => {
-                            confirmDialog.remove();
-                            document.body.classList.remove('overflow-hidden');
-                            showToast('Reservation cancelled successfully');
-                            NProgress.done();
-                        }, 1000);
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
                     });
                 });
-            });
 
-            // Handle reservation editing
-            document.querySelectorAll('.fa-edit').forEach(button => {
-                button.addEventListener('click', function() {
-                    showToast('Opening reservation editor...', 'success');
+                // Cancel OTP dialog
+                document.getElementById('cancel-otp').addEventListener('click', () => {
+                    otpDialog.remove();
+                    document.body.classList.remove('overflow-hidden');
+                });
+
+                // Resend OTP
+                document.getElementById('resend-otp').addEventListener('click', (e) => {
+                    e.preventDefault();
                     NProgress.start();
-                    
-                    setTimeout(() => {
+                    fetch('reservationsAPI/otp_handler.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `action=generate_otp&booking_id=${bookingId}`
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
                         NProgress.done();
-                    }, 1000);
+                        if (data.success) {
+                            showToast('New OTP has been sent to your phone', 'success');
+                            // Clear existing OTP inputs
+                            otpInputs.forEach(input => input.value = '');
+                            otpInputs[0].focus();
+                        } else {
+                            showToast(data.message || 'Failed to resend OTP', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        NProgress.done();
+                        showToast('Error resending OTP: ' + error.message, 'error');
+                    });
                 });
+                
+                // Verify OTP
+                document.getElementById('otp-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const otp = Array.from(otpInputs).map(input => input.value).join('');
+                    if (otp.length !== 6) {
+                        showToast('Please enter a complete 6-digit OTP', 'error');
+                        return;
+                    }
+                
+                    NProgress.start();
+                    fetch('reservationsAPI/otp_handler.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `action=verify_otp&otp=${otp}`
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        NProgress.done();
+                        if (data.success) {
+                            // Show success SweetAlert with countdown
+                            let timerInterval;
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Reservation cancelled successfully',
+                                icon: 'success',
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                    otpDialog.remove();
+                                    document.body.classList.remove('overflow-hidden');
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            // Show error SweetAlert
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message || 'Invalid OTP. Please try again.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            }).then(() => {
+                                // Clear OTP inputs and focus on first input
+                                otpInputs.forEach(input => input.value = '');
+                                otpInputs[0].focus();
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        NProgress.done();
+                        showToast('Error verifying OTP: ' + error.message, 'error');
+                    });
+                });
+
+
+            })
+            .catch(error => {
+                document.body.classList.remove('overflow-hidden');
+                NProgress.done();
+                showToast('Error sending OTP: ' + error.message, 'error');
             });
+        });
+    });
+});
 
             // Load notifications
             function loadNotifications() {
