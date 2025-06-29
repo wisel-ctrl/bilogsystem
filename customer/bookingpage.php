@@ -1125,8 +1125,8 @@ require_once 'customer_auth.php';
                 
                 // If pax > 15, force-add both hall venues to the form data
                 if (paxValue > 15) {
-                    formData.set('hallVenue[]', 'privateHall');  // Use set() to overwrite existing values
-                    formData.append('hallVenue[]', 'functionHall');
+                    formData.set('hallVenue[]', 'Private Hall');  // Use set() to overwrite existing values
+                    formData.append('hallVenue[]', 'Function Hall');
                 }
                 
                 // Show loading state
