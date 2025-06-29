@@ -12,7 +12,7 @@ if ($_SESSION['usertype'] != 2) {
     // Redirect to appropriate page based on user type
     switch ($_SESSION['usertype']) {
         case 1:
-            header("Location: ../admin/adminindex.php");
+            header("Location: ../admin/admin_dashboard.php");
             break;
         case 3:
             header("Location: ../customer/customerindex.php");
