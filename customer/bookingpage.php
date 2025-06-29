@@ -776,6 +776,8 @@ require_once 'customer_auth.php';
                 });
             }
 
+            window.showReservationForm = showReservationForm;
+
             function showModal(title, content) {
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
@@ -806,6 +808,8 @@ require_once 'customer_auth.php';
                     document.body.style.overflow = '';
                 }
             }
+
+            window.closeModal = closeModal;
 
             // Order item function
             function orderItem(itemName, price) {
