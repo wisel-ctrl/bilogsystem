@@ -800,6 +800,7 @@ require_once 'customer_auth.php';
                                     </label>
                                     <input type="datetime-local" id="reservationDate" name="reservationDate" 
                                         class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                    <p id="dateError" class="text-red-500 text-sm mt-1 hidden">Please select a future date and time.</p>
                                 </div>
                                 
                                 <div>
@@ -809,6 +810,28 @@ require_once 'customer_auth.php';
                                     </label>
                                     <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
                                         class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                    <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number greater than 0.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eventType" class="block text-gray-700 mb-2 flex items-center">
+                                    <i class="fas fa-calendar-check mr-2 text-rich-brown"></i>
+                                    Event Type
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="eventType" name="eventType" list="eventSuggestions"
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" 
+                                        placeholder="e.g. Birthday, Anniversary, etc.">
+                                    <datalist id="eventSuggestions">
+                                        <option value="Birthday">
+                                        <option value="Anniversary">
+                                        <option value="Wedding">
+                                        <option value="Family Gathering">
+                                        <option value="Business Meeting">
+                                        <option value="Date Night">
+                                        <option value="Casual Dining">
+                                    </datalist>
                                 </div>
                             </div>
                             
@@ -868,7 +891,11 @@ require_once 'customer_auth.php';
                 // Add form submission handler
                 document.getElementById('reservationForm')?.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    submitReservation(packageId);
+                    
+                    // Validate inputs before submission
+                    if (validateReservationForm()) {
+                        submitReservation(packageId);
+                    }
                 });
                 
                 // Handle image preview when file is selected
@@ -888,6 +915,13 @@ require_once 'customer_auth.php';
                         previewContainer.classList.add('hidden');
                     }
                 });
+                
+                // Set minimum date/time to current moment
+                const now = new Date();
+                // Adjust for timezone offset
+                const timezoneOffset = now.getTimezoneOffset() * 60000;
+                const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
+                document.getElementById('reservationDate').min = localISOTime;
             }
 
             // Add clearImagePreview function to window
@@ -900,6 +934,39 @@ require_once 'customer_auth.php';
             };
 
             window.showReservationForm = showReservationForm;
+
+            window.validateReservationForm = function() {
+                let isValid = true;
+                
+                // Validate number of pax
+                const numberOfPax = document.getElementById('numberOfPax');
+                const paxError = document.getElementById('paxError');
+                if (numberOfPax.value <= 0 || isNaN(numberOfPax.value)) {
+                    paxError.classList.remove('hidden');
+                    numberOfPax.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    paxError.classList.add('hidden');
+                    numberOfPax.classList.remove('border-red-500');
+                }
+                
+                // Validate reservation date
+                const reservationDate = document.getElementById('reservationDate');
+                const dateError = document.getElementById('dateError');
+                const selectedDate = new Date(reservationDate.value);
+                const now = new Date();
+                
+                if (!reservationDate.value || selectedDate <= now) {
+                    dateError.classList.remove('hidden');
+                    reservationDate.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    dateError.classList.add('hidden');
+                    reservationDate.classList.remove('border-red-500');
+                }
+                
+                return isValid;
+            }
 
             function submitReservation(packageId) {
                 const form = document.getElementById('reservationForm');
