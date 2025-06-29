@@ -121,15 +121,15 @@ require_once 'customer_auth.php';
                 </div>
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="my_reservations.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         My Reservations
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="#menu" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Menu
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
@@ -217,10 +217,10 @@ require_once 'customer_auth.php';
                         <a href="#dashboard" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-home w-8"></i> Home
                         </a>
-                        <a href="#reservations" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                        <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-calendar-alt w-8"></i> My Reservations
                         </a>
-                        <a href="#menu" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                        <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
                         <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
