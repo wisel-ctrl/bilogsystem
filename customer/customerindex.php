@@ -335,7 +335,7 @@ require_once 'customer_auth.php'; ?>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Book a table or plan your next event with us.</p>
-                <a href="menu.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+                <a href="bookingpage.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Make Reservation</span>
                     <i class="fas fa-arrow-right transition-transform transform group-hover:translate-x-1"></i>
                 </a>
