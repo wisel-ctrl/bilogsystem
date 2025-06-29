@@ -612,17 +612,17 @@ require_once 'customer_auth.php';
                                         <div class="menu-card-footer">
                                             <div class="flex items-center justify-between mb-4">
                                                 <span class="price-display font-baskerville">
-                                                    ₱${parseFloat(package.price || 0).toFixed(2)}
+                                                    ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm">per pax</span>
                                                 </span>
                                                 <div class="text-sm text-deep-brown/60 font-baskerville">
                                                     <i class="fas fa-clock mr-1"></i>
                                                     Available
                                                 </div>
                                             </div>
-                                            <button class="order-btn btn-primary bg-rich-brown text-warm-cream rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 group"
-                                                    onclick="orderItem('${package.package_name}', ${package.price})"
-                                                    aria-label="Order ${package.package_name}">
-                                                <span>Order Now</span>
+                                            <button class="reserve-btn btn-primary bg-rich-brown text-warm-cream rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 group"
+                                                    onclick="showPackageDetails('${package.package_id}')"
+                                                    aria-label="Reserve ${package.package_name}">
+                                                <span>Reserve Now</span>
                                                 <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                                             </button>
                                         </div>
@@ -644,6 +644,165 @@ require_once 'customer_auth.php';
                     .finally(() => {
                         NProgress.done();
                     });
+            }
+
+            function showPackageDetails(packageId) {
+                // Fetch package details
+                fetch('bookingAPI/get_package_dishes.php?package_id=' + packageId)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success' && data.data && data.data.length > 0) {
+                            // Group dishes by category in the order we want
+                            const categoriesOrder = ['house-salad', 'spanish-dish', 'italian-dish', 'burgers', 'pizza', 'Pasta', 'pasta_caza', 'main-course', 'drinks', 'coffee', 'desserts'];
+                            const dishesByCategory = {};
+                            
+                            // Initialize categories
+                            categoriesOrder.forEach(category => {
+                                dishesByCategory[category] = [];
+                            });
+                            
+                            // Group dishes
+                            data.data.forEach(dish => {
+                                if (!dishesByCategory[dish.dish_category]) {
+                                    dishesByCategory[dish.dish_category] = [];
+                                }
+                                dishesByCategory[dish.dish_category].push(dish);
+                            });
+                            
+                            // Create modal content
+                            let modalContent = `
+                                <div class="package-details-modal">
+                                    <h3 class="text-2xl font-playfair font-bold mb-4">${data.data[0].package_name}</h3>
+                                    <p class="text-gray-700 mb-6">${data.data[0].package_description}</p>
+                                    
+                                    <div class="dishes-list">
+                            `;
+                            
+                            // Add dishes by category
+                            categoriesOrder.forEach(category => {
+                                if (dishesByCategory[category] && dishesByCategory[category].length > 0) {
+                                    modalContent += `
+                                        <div class="dish-category mb-6">
+                                            <h4 class="text-xl font-playfair font-semibold mb-3 capitalize">${category.replace('-', ' ')}</h4>
+                                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    `;
+                                    
+                                    dishesByCategory[category].forEach(dish => {
+                                        modalContent += `
+                                            <li class="flex justify-between items-center py-2 border-b border-gray-100">
+                                                <span class="font-medium">${dish.dish_name}</span>
+                                                <span class="text-sm text-gray-600">x${dish.quantity}</span>
+                                            </li>
+                                        `;
+                                    });
+                                    
+                                    modalContent += `
+                                            </ul>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            
+                            modalContent += `
+                                    </div>
+                                    
+                                    <div class="modal-actions flex justify-end gap-3 mt-6">
+                                        <button onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+                                            Cancel
+                                        </button>
+                                        <button onclick="showReservationForm('${packageId}')" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition">
+                                            Reserve Now
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // Show modal
+                            showModal('Package Details', modalContent);
+                        } else {
+                            showToast('Error loading package details.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching package details:', error);
+                        showToast('Error loading package details.', 'error');
+                    });
+            }
+
+            function showReservationForm(packageId) {
+                const formHtml = `
+                    <div class="reservation-form">
+                        <form id="reservationForm">
+                            <div class="mb-4">
+                                <label for="reservationDate" class="block text-gray-700 mb-2">Reservation Date</label>
+                                <input type="datetime-local" id="reservationDate" name="reservationDate" 
+                                    class="w-full px-3 py-2 border rounded-lg" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="numberOfPax" class="block text-gray-700 mb-2">Number of Pax</label>
+                                <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
+                                    class="w-full px-3 py-2 border rounded-lg" required>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="paymentProof" class="block text-gray-700 mb-2">Downpayment Proof (Screenshot)</label>
+                                <input type="file" id="paymentProof" name="paymentProof" 
+                                    accept="image/*" class="w-full px-3 py-2 border rounded-lg" required>
+                                <p class="text-sm text-gray-500 mt-1">Please upload a screenshot of your payment transaction.</p>
+                            </div>
+                            
+                            <div class="modal-actions flex justify-end gap-3">
+                                <button type="button" onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition">
+                                    Confirm Reservation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                
+                // Show modal
+                showModal('Complete Reservation', formHtml);
+                
+                // Add form submission handler
+                document.getElementById('reservationForm')?.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    submitReservation(packageId);
+                });
+            }
+
+            function showModal(title, content) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="p-6">
+                            <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                            ${content}
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                document.body.style.overflow = 'hidden';
+                
+                // Close modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+            }
+
+            function closeModal() {
+                const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
+                if (modal) {
+                    document.body.removeChild(modal);
+                    document.body.style.overflow = '';
+                }
             }
 
             // Order item function
