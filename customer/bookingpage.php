@@ -870,19 +870,40 @@ require_once 'customer_auth.php';
                         const reader = new FileReader();
                         reader.onload = function(event) {
                             const uploadArea = e.target.closest('label');
+                            // Keep the original input but hide it
+                            const originalInput = uploadArea.querySelector('input[type="file"]');
+                            originalInput.style.display = 'none';
+                            
                             uploadArea.innerHTML = `
                                 <div class="relative w-full h-full">
                                     <img src="${event.target.result}" class="w-full h-full object-contain rounded-lg" alt="Payment proof preview">
-                                    <button type="button" onclick="event.stopPropagation(); this.closest('label').querySelector('input').value = ''; this.closest('label').innerHTML = document.querySelector('#uploadTemplate').innerHTML;" 
+                                    <button type="button" onclick="event.stopPropagation(); resetUploadArea(this);" 
                                         class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
                                         <i class="fas fa-times text-xs"></i>
                                     </button>
                                 </div>
-                            `;
+                            ` + uploadArea.innerHTML; // Keep the original input in the DOM
                         };
                         reader.readAsDataURL(file);
                     }
                 });
+                    window.resetUploadArea = resetUploadArea;
+                // Add this helper function
+                function resetUploadArea(button) {
+                    const uploadArea = button.closest('label');
+                    const originalInput = uploadArea.querySelector('input[type="file"]');
+                    originalInput.value = '';
+                    originalInput.style.display = 'none'; // Keep it hidden but present
+                    
+                    uploadArea.innerHTML = `
+                        <div class="flex flex-col items-center justify-center pt-7">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
+                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
+                        </div>
+                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
+                    `;
+                }
                 
                 // Store upload template for reset
                 if (!document.getElementById('uploadTemplate')) {
