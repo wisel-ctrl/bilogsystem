@@ -729,7 +729,7 @@ require_once 'customer_auth.php';
                     });
             }
 
-            window.showPackageDetails = showPackageDetails;
+            window.showPackageDetails = showPackageDetails; 
 
             function showReservationForm(packageId) {
                 const formHtml = `
