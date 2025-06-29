@@ -20,6 +20,7 @@ try {
     $price = filter_input(INPUT_POST, 'package_price', FILTER_VALIDATE_FLOAT);
     $reservation_datetime = filter_input(INPUT_POST, 'reservationDate', FILTER_SANITIZE_STRING);
     $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
+    $event = filter_input(INPUT_POST, 'eventType', FILTER_SANITIZE_STRING);
     $customer_id = $_SESSION['user_id']; // You should replace this with actual customer ID from session or auth
 
     // Validate required fields
@@ -75,8 +76,8 @@ try {
 
     // Insert into database with booking_datetime
     $stmt = $conn->prepare("INSERT INTO booking_tb 
-    (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id, booking_datetime) 
-    VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id, :booking_datetime)");
+    (package_id, pax, totalPrice, reservation_datetime, notes, downpayment_img, customer_id, booking_datetime, event) 
+    VALUES (:package_id, :pax, :totalPrice, :reservation_datetime, :notes, :downpayment_img, :customer_id, :booking_datetime, :event)");
 
     $stmt->bindParam(':package_id', $package_id);
     $stmt->bindParam(':pax', $pax);
@@ -86,6 +87,7 @@ try {
     $stmt->bindParam(':downpayment_img', $downpayment_img);
     $stmt->bindParam(':customer_id', $customer_id);
     $stmt->bindParam(':booking_datetime', $booking_datetime);
+    $stmt->bindParam(':event', $event);
 
     if ($stmt->execute()) {
         $booking_id = $conn->lastInsertId();
