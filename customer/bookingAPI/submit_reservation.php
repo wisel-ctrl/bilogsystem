@@ -68,7 +68,7 @@ try {
 
     // Calculate total price (you should fetch package price from database)
     // For now, we'll use a placeholder - replace this with actual calculation
-    $totalPrice = $pax * $price; // Assuming 100 is the price per pax
+    $totalPrice = $pax * $price; // Assuming price is per pax
 
     date_default_timezone_set('Asia/Manila');
     $booking_datetime = date('Y-m-d H:i:s');
@@ -88,10 +88,95 @@ try {
     $stmt->bindParam(':booking_datetime', $booking_datetime);
 
     if ($stmt->execute()) {
+        $booking_id = $conn->lastInsertId();
+        
+        // Get customer contact number
+        $stmt = $conn->prepare("SELECT contact_number FROM users_tb WHERE id = :customer_id");
+        $stmt->bindParam(':customer_id', $customer_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && !empty($user['contact_number'])) {
+            // Send SMS notification via Semaphore API
+            $api_key = '487b60aae3df89ca35dc3b4dd69e2518';
+            $sendername = 'CaffeLilio';
+            $contact_number = $user['contact_number'];
+            
+            // Format the reservation datetime for better readability
+            $formatted_date = date('F j, Y h:i A', strtotime($reservation_datetime));
+            
+            // Prepare SMS message for customer
+            $message = "Thank you for your reservation at Caffe Lilio!\nBooking ID: $booking_id\nDate: $formatted_date\nPax: $pax, Total: PHP $totalPrice\nWe'll confirm soon!";
+            
+            // Prepare API request for customer
+            $ch = curl_init();
+            $parameters = [
+                'apikey' => $api_key,
+                'number' => $contact_number,
+                'message' => $message,
+                'sendername' => $sendername
+            ];
+            
+            curl_setopt($ch, CURLOPT_URL, 'https://api.semaphore.co/api/v4/messages');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            
+            $result = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            
+            if ($http_code !== 200) {
+                error_log('Customer SMS sending failed: ' . $result);
+            }
+        } else {
+            error_log('No valid contact number found for customer ID: ' . $customer_id);
+        }
+
+        // Admin Notification: Fetch admins with usertype = 1
+        $stmt = $conn->prepare("SELECT contact_number FROM users_tb WHERE usertype = 1");
+        $stmt->execute();
+        $admins = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($admins) {
+            // Prepare SMS message for admins
+            $admin_message = "New booking at Caffe Lilio!\nBooking ID: $booking_id\nCustomer ID: $customer_id\nDate: $formatted_date\nPax: $pax\nTotal: PHP $totalPrice";
+
+            // Send SMS to each admin
+            foreach ($admins as $admin) {
+                if (!empty($admin['contact_number'])) {
+                    $ch = curl_init();
+                    $parameters = [
+                        'apikey' => $api_key,
+                        'number' => $admin['contact_number'],
+                        'message' => $admin_message,
+                        'sendername' => $sendername
+                    ];
+
+                    curl_setopt($ch, CURLOPT_URL, 'https://api.semaphore.co/api/v4/messages');
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                    $result = curl_exec($ch);
+                    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    curl_close($ch);
+
+                    if ($http_code !== 200) {
+                        error_log('Admin SMS sending failed for number ' . $admin['contact_number'] . ': ' . $result);
+                    }
+                } else {
+                    error_log('No valid contact number found for admin with usertype = 1');
+                }
+            }
+        } else {
+            error_log('No admins found with usertype = 1');
+        }
+
         $response = [
             'status' => 'success',
             'message' => 'Reservation submitted successfully!',
-            'booking_id' => $conn->lastInsertId()
+            'booking_id' => $booking_id
         ];
     } else {
         throw new Exception('Failed to save reservation to database');
