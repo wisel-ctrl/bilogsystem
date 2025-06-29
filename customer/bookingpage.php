@@ -620,7 +620,7 @@ require_once 'customer_auth.php';
                                                 </div>
                                             </div>
                                             <button class="reserve-btn btn-primary bg-rich-brown text-warm-cream rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 group"
-                                                    onclick="showPackageDetails('${package.package_id}')"
+                                                    onclick="showPackageDetails(${package.package_id})"
                                                     aria-label="Reserve ${package.package_name}">
                                                 <span>Reserve Now</span>
                                                 <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
