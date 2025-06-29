@@ -781,7 +781,7 @@ require_once 'customer_auth.php';
             function showReservationForm(packageId, packagePrice) {
                 const formHtml = `
                     <div class="reservation-form">
-                        <form id="reservationForm">
+                        <form id="reservationForm" enctype="multipart/form-data">
                             <input type="hidden" name="package_price" value="${packagePrice}">
                             
                             <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
@@ -828,7 +828,7 @@ require_once 'customer_auth.php';
                                     Downpayment Proof (50% of package price)
                                 </label>
                                 <div class="flex items-center justify-center w-full">
-                                    <label for="paymentProof" class="flex flex-col w-full h-32 border-2 border-dashed hover:border-rich-brown hover:bg-amber-50 transition cursor-pointer rounded-lg">
+                                    <label for="paymentProof" class="flex flex-col w-full h-32 border-2 border-dashed hover:border-rich-brown hover:bg-amber-50 transition cursor-pointer rounded-lg" tabindex="0">
                                         <div class="flex flex-col items-center justify-center pt-7">
                                             <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
                                             <p class="text-sm text-gray-500">Click to upload screenshot</p>
@@ -887,9 +887,8 @@ require_once 'customer_auth.php';
                         reader.readAsDataURL(file);
                     }
                 });
-                    window.resetUploadArea = resetUploadArea;
-                // Add this helper function
-                function resetUploadArea(button) {
+                
+                window.resetUploadArea = function(button) {
                     const uploadArea = button.closest('label');
                     const originalInput = uploadArea.querySelector('input[type="file"]');
                     originalInput.value = '';
@@ -903,7 +902,31 @@ require_once 'customer_auth.php';
                         </div>
                         <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
                     `;
-                }
+                    
+                    // Reattach the event listener
+                    document.getElementById('paymentProof').addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                const uploadArea = e.target.closest('label');
+                                const originalInput = uploadArea.querySelector('input[type="file"]');
+                                originalInput.style.display = 'none';
+                                
+                                uploadArea.innerHTML = `
+                                    <div class="relative w-full h-full">
+                                        <img src="${event.target.result}" class="w-full h-full object-contain rounded-lg" alt="Payment proof preview">
+                                        <button type="button" onclick="event.stopPropagation(); resetUploadArea(this);" 
+                                            class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                    </div>
+                                ` + uploadArea.innerHTML; // Keep the original input in the DOM
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                };
                 
                 // Store upload template for reset
                 if (!document.getElementById('uploadTemplate')) {
@@ -934,6 +957,14 @@ require_once 'customer_auth.php';
                 const originalBtnText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
                 submitBtn.disabled = true;
+
+                const fileInput = document.getElementById('paymentProof');
+                if (fileInput.files.length > 0) {
+                    formData.append('payment_proof', fileInput.files[0]);
+                } else {
+                    showToast('Please upload payment proof', 'error');
+                    return;
+                }
 
                 for (let [key, value] of formData.entries()) {
                     console.log(key, value);
