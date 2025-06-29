@@ -652,6 +652,8 @@ require_once 'customer_auth.php';
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success' && data.data && data.data.length > 0) {
+                            const package = data.data[0];
+                            
                             // Group dishes by category in the order we want
                             const categoriesOrder = ['house-salad', 'spanish-dish', 'italian-dish', 'burgers', 'pizza', 'Pasta', 'pasta_caza', 'main-course', 'drinks', 'coffee', 'desserts'];
                             const dishesByCategory = {};
@@ -672,8 +674,29 @@ require_once 'customer_auth.php';
                             // Create modal content
                             let modalContent = `
                                 <div class="package-details-modal">
-                                    <h3 class="text-2xl font-playfair font-bold mb-4">${data.data[0].package_name}</h3>
-                                    <p class="text-gray-700 mb-6">${data.data[0].package_description}</p>
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-2xl font-playfair font-bold text-rich-brown">${package.package_name}</h3>
+                                            <div class="flex items-center mt-1 text-amber-600">
+                                                <i class="fas fa-tag mr-2"></i>
+                                                <span class="font-semibold">$${package.price}</span>
+                                            </div>
+                                        </div>
+                                        <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
+                                            <i class="fas fa-times text-xl"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6">
+                                        <div class="flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-info-circle text-amber-500"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm text-amber-700">${package.package_description}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                     
                                     <div class="dishes-list">
                             `;
@@ -683,15 +706,18 @@ require_once 'customer_auth.php';
                                 if (dishesByCategory[category] && dishesByCategory[category].length > 0) {
                                     modalContent += `
                                         <div class="dish-category mb-6">
-                                            <h4 class="text-xl font-playfair font-semibold mb-3 capitalize">${category.replace('-', ' ')}</h4>
+                                            <h4 class="text-xl font-playfair font-semibold mb-3 capitalize text-rich-brown flex items-center">
+                                                <i class="fas ${getCategoryIcon(category)} mr-2"></i>
+                                                ${category.replace(/-/g, ' ')}
+                                            </h4>
                                             <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     `;
                                     
                                     dishesByCategory[category].forEach(dish => {
                                         modalContent += `
-                                            <li class="flex justify-between items-center py-2 border-b border-gray-100">
-                                                <span class="font-medium">${dish.dish_name}</span>
-                                                <span class="text-sm text-gray-600">x${dish.quantity}</span>
+                                            <li class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
+                                                <span class="font-medium text-gray-800">${dish.dish_name}</span>
+                                                <span class="text-sm bg-amber-100 text-amber-800 px-2 py-1 rounded-full">x${dish.quantity}</span>
                                             </li>
                                         `;
                                     });
@@ -706,11 +732,13 @@ require_once 'customer_auth.php';
                             modalContent += `
                                     </div>
                                     
-                                    <div class="modal-actions flex justify-end gap-3 mt-6">
-                                        <button onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+                                    <div class="modal-actions flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                                        <button onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition flex items-center">
+                                            <i class="fas fa-times mr-2"></i>
                                             Cancel
                                         </button>
-                                        <button onclick="showReservationForm('${packageId}')" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition">
+                                        <button onclick="showReservationForm('${packageId}', ${package.price})" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition flex items-center">
+                                            <i class="fas fa-calendar-check mr-2"></i>
                                             Reserve Now
                                         </button>
                                     </div>
@@ -731,40 +759,94 @@ require_once 'customer_auth.php';
 
             window.showPackageDetails = showPackageDetails; 
 
-            function showReservationForm(packageId) {
+            function getCategoryIcon(category) {
+                const icons = {
+                    'house-salad': 'fa-leaf',
+                    'spanish-dish': 'fa-pepper-hot',
+                    'italian-dish': 'fa-pizza-slice',
+                    'burgers': 'fa-hamburger',
+                    'pizza': 'fa-pizza-slice',
+                    'Pasta': 'fa-utensils',
+                    'pasta_caza': 'fa-utensils',
+                    'main-course': 'fa-drumstick-bite',
+                    'drinks': 'fa-glass-martini-alt',
+                    'coffee': 'fa-coffee',
+                    'desserts': 'fa-ice-cream'
+                };
+                return icons[category] || 'fa-utensils';
+            }
+
+            window.getCategoryIcon = getCategoryIcon;
+
+            function showReservationForm(packageId, packagePrice) {
                 const formHtml = `
                     <div class="reservation-form">
                         <form id="reservationForm">
-                            <div class="mb-4">
-                                <label for="reservationDate" class="block text-gray-700 mb-2">Reservation Date</label>
-                                <input type="datetime-local" id="reservationDate" name="reservationDate" 
-                                    class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="hidden" name="package_price" value="${packagePrice}">
+                            
+                            <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <div class="flex items-center text-blue-800 mb-2">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <span class="font-medium">Package Price</span>
+                                </div>
+                                <div class="text-2xl font-bold text-rich-brown">$${packagePrice}</div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="reservationDate" class="block text-gray-700 mb-2 flex items-center">
+                                        <i class="fas fa-calendar-day mr-2 text-rich-brown"></i>
+                                        Reservation Date
+                                    </label>
+                                    <input type="datetime-local" id="reservationDate" name="reservationDate" 
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="numberOfPax" class="block text-gray-700 mb-2 flex items-center">
+                                        <i class="fas fa-users mr-2 text-rich-brown"></i>
+                                        Number of Pax
+                                    </label>
+                                    <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required>
+                                </div>
                             </div>
                             
                             <div class="mb-4">
-                                <label for="numberOfPax" class="block text-gray-700 mb-2">Number of Pax</label>
-                                <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
-                                    class="w-full px-3 py-2 border rounded-lg" required>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label for="notes" class="block text-gray-700 mb-2">Additional Notes</label>
+                                <label for="notes" class="block text-gray-700 mb-2 flex items-center">
+                                    <i class="fas fa-edit mr-2 text-rich-brown"></i>
+                                    Additional Notes
+                                </label>
                                 <textarea id="notes" name="notes" rows="3"
-                                    class="w-full px-3 py-2 border rounded-lg" placeholder="Any special requests or additional information..."></textarea>
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" 
+                                    placeholder="Any special requests or additional information..."></textarea>
                             </div>
                             
                             <div class="mb-6">
-                                <label for="paymentProof" class="block text-gray-700 mb-2">Downpayment Proof (Screenshot)</label>
-                                <input type="file" id="paymentProof" name="paymentProof" 
-                                    accept="image/*" class="w-full px-3 py-2 border rounded-lg" required>
-                                <p class="text-sm text-gray-500 mt-1">Please upload a screenshot of your payment transaction.</p>
+                                <label for="paymentProof" class="block text-gray-700 mb-2 flex items-center">
+                                    <i class="fas fa-receipt mr-2 text-rich-brown"></i>
+                                    Downpayment Proof (50% of package price)
+                                </label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label for="paymentProof" class="flex flex-col w-full h-32 border-2 border-dashed hover:border-rich-brown hover:bg-amber-50 transition cursor-pointer rounded-lg">
+                                        <div class="flex flex-col items-center justify-center pt-7">
+                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
+                                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
+                                        </div>
+                                        <input type="file" id="paymentProof" name="paymentProof" 
+                                            accept="image/*" class="hidden" required>
+                                    </label>
+                                </div>
                             </div>
                             
-                            <div class="modal-actions flex justify-end gap-3">
-                                <button type="button" onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+                            <div class="modal-actions flex justify-end gap-3 pt-4 border-t border-gray-200">
+                                <button type="button" onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition flex items-center">
+                                    <i class="fas fa-times mr-2"></i>
                                     Cancel
                                 </button>
-                                <button type="submit" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition">
+                                <button type="submit" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition flex items-center">
+                                    <i class="fas fa-check-circle mr-2"></i>
                                     Confirm Reservation
                                 </button>
                             </div>
@@ -780,6 +862,43 @@ require_once 'customer_auth.php';
                     e.preventDefault();
                     submitReservation(packageId);
                 });
+                
+                // Preview uploaded image
+                document.getElementById('paymentProof')?.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const uploadArea = e.target.closest('label');
+                            uploadArea.innerHTML = `
+                                <div class="relative w-full h-full">
+                                    <img src="${event.target.result}" class="w-full h-full object-contain rounded-lg" alt="Payment proof preview">
+                                    <button type="button" onclick="event.stopPropagation(); this.closest('label').querySelector('input').value = ''; this.closest('label').innerHTML = document.querySelector('#uploadTemplate').innerHTML;" 
+                                        class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition">
+                                        <i class="fas fa-times text-xs"></i>
+                                    </button>
+                                </div>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Store upload template for reset
+                if (!document.getElementById('uploadTemplate')) {
+                    const template = document.createElement('div');
+                    template.id = 'uploadTemplate';
+                    template.style.display = 'none';
+                    template.innerHTML = `
+                        <div class="flex flex-col items-center justify-center pt-7">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500">Click to upload screenshot</p>
+                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 2MB</p>
+                        </div>
+                        <input type="file" id="paymentProof" name="paymentProof" accept="image/*" class="hidden" required>
+                    `;
+                    document.body.appendChild(template);
+                }
             }
 
             window.showReservationForm = showReservationForm;
@@ -823,11 +942,16 @@ require_once 'customer_auth.php';
 
             function showModal(title, content) {
                 const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fadeIn';
                 modal.innerHTML = `
-                    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
                         <div class="p-6">
-                            <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-bold text-rich-brown">${title}</h2>
+                                <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
                             ${content}
                         </div>
                     </div>
@@ -847,10 +971,16 @@ require_once 'customer_auth.php';
             function closeModal() {
                 const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
                 if (modal) {
-                    document.body.removeChild(modal);
-                    document.body.style.overflow = '';
+                    modal.classList.add('animate-fadeOut');
+                    modal.querySelector('.animate-slideUp').classList.add('animate-slideDown');
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(modal);
+                        document.body.style.overflow = '';
+                    }, 300);
                 }
             }
+
 
             window.closeModal = closeModal;
 
