@@ -830,11 +830,35 @@ require_once 'customer_auth.php';
                                         <i class="fas fa-users mr-2 text-rich-brown"></i>
                                         Number of Pax
                                     </label>
-                                    <input type="number" id="numberOfPax" name="numberOfPax" min="1" 
+                                    <input type="number" id="numberOfPax" name="numberOfPax" min="1" max="30"
                                         class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required
-                                        oninput="calculateTotal()">
-                                    <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number greater than 0.</p>
+                                        oninput="handlePaxChange()">
+                                    <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number between 1 and 30.</p>
+                                    <p id="paxMaxInfo" class="text-gray-500 text-sm mt-1">Maximum capacity is 30 pax (15 per hall)</p>
                                 </div>
+                            </div>
+                            
+                            <!-- Hall Venue Selection -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 mb-2 flex items-center">
+                                    <i class="fas fa-building mr-2 text-rich-brown"></i>
+                                    Hall Venue
+                                </label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="privateHall" name="hallVenue[]" value="Private Hall" 
+                                            class="mr-2 h-5 w-5 text-rich-brown focus:ring-rich-brown border-gray-300 rounded"
+                                            onchange="handleHallSelection()">
+                                        <label for="privateHall" class="text-gray-700">Private Hall (max 15 pax)</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="functionHall" name="hallVenue[]" value="Function Hall" 
+                                            class="mr-2 h-5 w-5 text-rich-brown focus:ring-rich-brown border-gray-300 rounded"
+                                            onchange="handleHallSelection()">
+                                        <label for="functionHall" class="text-gray-700">Function Hall (max 15 pax)</label>
+                                    </div>
+                                </div>
+                                <p id="hallError" class="text-red-500 text-sm mt-1 hidden">Please select at least one hall that can accommodate your party size.</p>
                             </div>
                             
                             <!-- Total Amount and Downpayment Section -->
@@ -993,6 +1017,59 @@ require_once 'customer_auth.php';
                 calculateTotal();
             }
 
+            window.handlePaxChange = function() {
+                const paxInput = document.getElementById('numberOfPax');
+                const paxError = document.getElementById('paxError');
+                const privateHall = document.getElementById('privateHall');
+                const functionHall = document.getElementById('functionHall');
+                
+                // Validate pax input
+                const paxValue = parseInt(paxInput.value);
+                if (paxValue < 1 || paxValue > 30) {
+                    paxError.classList.remove('hidden');
+                } else {
+                    paxError.classList.add('hidden');
+                }
+                
+                // Automatically select halls based on pax
+                if (paxValue > 15) {
+                    privateHall.checked = true;
+                    functionHall.checked = true;
+                    privateHall.disabled = true;
+                    functionHall.disabled = true;
+                } else {
+                    privateHall.disabled = false;
+                    functionHall.disabled = false;
+                }
+                
+                // Recalculate total
+                calculateTotal();
+            }
+
+            window.handleHallSelection = function() {
+                const paxInput = document.getElementById('numberOfPax');
+                const privateHall = document.getElementById('privateHall');
+                const functionHall = document.getElementById('functionHall');
+                const hallError = document.getElementById('hallError');
+                
+                const paxValue = parseInt(paxInput.value) || 0;
+                const privateSelected = privateHall.checked;
+                const functionSelected = functionHall.checked;
+                
+                // Calculate total capacity of selected halls
+                const totalCapacity = (privateSelected ? 15 : 0) + (functionSelected ? 15 : 0);
+                
+                // Validate if selected halls can accommodate the pax
+                if (paxValue > 0 && paxValue > totalCapacity) {
+                    hallError.classList.remove('hidden');
+                } else {
+                    hallError.classList.add('hidden');
+                }
+                
+                // Recalculate total
+                calculateTotal();
+            }
+
             // Add clearImagePreview function to window
             window.clearImagePreview = function() {
                 const fileInput = document.getElementById('paymentProof');
@@ -1010,7 +1087,7 @@ require_once 'customer_auth.php';
                 // Validate number of pax
                 const numberOfPax = document.getElementById('numberOfPax');
                 const paxError = document.getElementById('paxError');
-                if (numberOfPax.value <= 0 || isNaN(numberOfPax.value)) {
+                if (numberOfPax.value <= 0 || isNaN(numberOfPax.value) || numberOfPax.value > 30) {
                     paxError.classList.remove('hidden');
                     numberOfPax.classList.add('border-red-500');
                     isValid = false;
