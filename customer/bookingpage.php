@@ -785,8 +785,19 @@ require_once 'customer_auth.php';
                 const totalAmount = packagePrice * numberOfPax;
                 const downpaymentAmount = totalAmount * 0.5; // 50% downpayment
                 
-                document.getElementById('totalAmountDisplay').textContent = `$${totalAmount.toFixed(2)}`;
-                document.getElementById('downpaymentAmountDisplay').textContent = `$${downpaymentAmount.toFixed(2)}`;
+                document.getElementById('totalAmountDisplay').textContent = totalAmount.toLocaleString('en-PH', {
+                    style: 'currency',
+                    currency: 'PHP',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                document.getElementById('downpaymentAmountDisplay').textContent = downpaymentAmount.toLocaleString('en-PH', {
+                    style: 'currency',
+                    currency: 'PHP',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
             }
 
             function showReservationForm(packageId, packagePrice) {
@@ -800,7 +811,7 @@ require_once 'customer_auth.php';
                                     <i class="fas fa-info-circle mr-2"></i>
                                     <span class="font-medium">Package Price</span>
                                 </div>
-                                <div class="text-2xl font-bold text-rich-brown">$${packagePrice}</div>
+                                <div class="text-2xl font-bold text-rich-brown">₱${packagePrice}</div>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
