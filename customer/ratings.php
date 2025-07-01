@@ -255,135 +255,153 @@
             <p class="font-baskerville text-lg text-deep-brown/80">We value your feedback! Please rate our food, ambiance, reservation experience, and service.</p>
         </section>
 
-        <!-- Ratings Form -->
-        <section class="bg-card rounded-xl p-6 shadow-md hover-lift mb-12">
-            <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Submit Your Rating</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Food Quality Rating -->
-                <div class="space-y-4">
-                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Food Quality</h4>
-                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the food quality">
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                    </div>
-                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
-                              placeholder="Tell us about the food..." rows="4"></textarea>
+<!-- Ratings Form -->
+<section class="bg-card rounded-xl p-6 shadow-md hover-lift mb-12">
+    <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Submit Your Rating</h3>
+    <form id="ratingForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Food Quality Rating -->
+            <div class="space-y-4">
+                <h4 class="font-baskerville text-xl font-bold text-deep-brown">Food Quality <span class="text-red-500">*</span></h4>
+                <div class="star-rating flex space-x-2" data-tippy-content="Rate the food quality">
+                    <input type="hidden" name="food_rating" id="food_rating" value="0" required>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="1" data-category="food"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="2" data-category="food"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="3" data-category="food"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="4" data-category="food"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="5" data-category="food"></i>
                 </div>
-                <!-- Ambiance Rating -->
-                <div class="space-y-4">
-                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Ambiance</h4>
-                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the ambiance of the place">
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                    </div>
-                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
-                              placeholder="Tell us about the ambiance..." rows="4"></textarea>
-                </div>
-                <!-- Reservation Experience Rating -->
-                <div class="space-y-4">
-                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Reservation Experience</h4>
-                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the reservation experience">
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                    </div>
-                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
-                              placeholder="Tell us about your reservation experience..." rows="4"></textarea>
-                </div>
-                <!-- Service Rating -->
-                <div class="space-y-4">
-                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Service</h4>
-                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the service">
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
-                    </div>
-                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
-                              placeholder="Tell us about the service..." rows="4"></textarea>
-                </div>
+                <div id="food-error" class="text-red-500 text-sm hidden">Please rate the food quality</div>
+                <textarea name="food_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                          placeholder="Tell us about the food..." rows="4" required></textarea>
+                <div id="food-comment-error" class="text-red-500 text-sm hidden">Please share your thoughts about the food</div>
             </div>
-            <div class="mt-6 flex justify-end">
-                <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
-                    <span>Submit Ratings</span>
-                    <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                </button>
+            
+            <!-- Ambiance Rating -->
+            <div class="space-y-4">
+                <h4 class="font-baskerville text-xl font-bold text-deep-brown">Ambiance <span class="text-red-500">*</span></h4>
+                <div class="star-rating flex space-x-2" data-tippy-content="Rate the ambiance of the place">
+                    <input type="hidden" name="ambiance_rating" id="ambiance_rating" value="0" required>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="1" data-category="ambiance"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="2" data-category="ambiance"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="3" data-category="ambiance"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="4" data-category="ambiance"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="5" data-category="ambiance"></i>
+                </div>
+                <div id="ambiance-error" class="text-red-500 text-sm hidden">Please rate the ambiance</div>
+                <textarea name="ambiance_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                          placeholder="Tell us about the ambiance..." rows="4" required></textarea>
+                <div id="ambiance-comment-error" class="text-red-500 text-sm hidden">Please share your thoughts about the ambiance</div>
             </div>
-        </section>
+            
+            <!-- Reservation Experience Rating -->
+            <div class="space-y-4">
+                <h4 class="font-baskerville text-xl font-bold text-deep-brown">Reservation Experience</h4>
+                <div class="star-rating flex space-x-2" data-tippy-content="Rate the reservation experience">
+                    <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="1" data-category="reservation"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="2" data-category="reservation"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="3" data-category="reservation"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="4" data-category="reservation"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="5" data-category="reservation"></i>
+                </div>
+                <textarea name="reservation_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                          placeholder="Tell us about your reservation experience..." rows="4"></textarea>
+            </div>
+            
+            <!-- Service Rating -->
+            <div class="space-y-4">
+                <h4 class="font-baskerville text-xl font-bold text-deep-brown">Service <span class="text-red-500">*</span></h4>
+                <div class="star-rating flex space-x-2" data-tippy-content="Rate the service">
+                    <input type="hidden" name="service_rating" id="service_rating" value="0" required>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="1" data-category="service"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="2" data-category="service"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="3" data-category="service"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="4" data-category="service"></i>
+                    <i class="fas fa-star text-2xl text-deep-brown/50 cursor-pointer hover:text-yellow-500 star" data-rating="5" data-category="service"></i>
+                </div>
+                <div id="service-error" class="text-red-500 text-sm hidden">Please rate the service</div>
+                <textarea name="service_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                          placeholder="Tell us about the service..." rows="4" required></textarea>
+                <div id="service-comment-error" class="text-red-500 text-sm hidden">Please share your thoughts about the service</div>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex justify-end">
+            <button type="submit" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
+                <span>Submit Ratings</span>
+                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+            </button>
+        </div>
+    </form>
+</section>
+
+
 
         <!-- Recent Reviews -->
         <section class="mb-12">
-    <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Recent Reviews</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Review Card 1 -->
-        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-            <div class="flex items-center justify-between mb-4">
-                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Amazing Food!</h4> -->
-                <div class="flex space-x-1">
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
+            <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Recent Reviews</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Review Card 1 -->
+                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <!-- <h4 class="font-baskerville font-bold text-deep-brown">Amazing Food!</h4> -->
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 mb-4">The pasta was divine, and the dessert was a perfect finish. Highly recommend!</p>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">John Doe • 2 days ago</span>
+                    </div>
                 </div>
-            </div>
-            <p class="font-baskerville text-deep-brown/80 mb-4">The pasta was divine, and the dessert was a perfect finish. Highly recommend!</p>
-            <div class="flex items-center space-x-2">
-                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                <span class="font-baskerville text-sm text-deep-brown/60">John Doe • 2 days ago</span>
-            </div>
-        </div>
-        
-        <!-- Review Card 2 -->
-        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-            <div class="flex items-center justify-between mb-4">
-                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Cozy Ambiance</h4> -->
-                <div class="flex space-x-1">
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star-half-alt text-yellow-500"></i>
+                
+                <!-- Review Card 2 -->
+                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <!-- <h4 class="font-baskerville font-bold text-deep-brown">Cozy Ambiance</h4> -->
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star-half-alt text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 mb-4">The warm lighting and decor made for a wonderful dining experience.</p>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
+                    </div>
                 </div>
-            </div>
-            <p class="font-baskerville text-deep-brown/80 mb-4">The warm lighting and decor made for a wonderful dining experience.</p>
-            <div class="flex items-center space-x-2">
-                <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
-            </div>
-        </div>
 
-        <!-- Review Card 3 -->
-        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-            <div class="flex items-center justify-between mb-4">
-                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Exceptional Service</h4> -->
-                <div class="flex space-x-1">
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <i class="fas fa-star text-yellow-500"></i>
+                <!-- Review Card 3 -->
+                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <!-- <h4 class="font-baskerville font-bold text-deep-brown">Exceptional Service</h4> -->
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 mb-4">The staff was attentive and made our evening truly special.</p>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=Emily+White&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">Emily White • 5 days ago</span>
+                    </div>
                 </div>
+                
             </div>
-            <p class="font-baskerville text-deep-brown/80 mb-4">The staff was attentive and made our evening truly special.</p>
-            <div class="flex items-center space-x-2">
-                <img src="https://ui-avatars.com/api/?name=Emily+White&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                <span class="font-baskerville text-sm text-deep-brown/60">Emily White • 5 days ago</span>
-            </div>
-        </div>
-        
-    </div>
-</section>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -547,5 +565,78 @@
             });
         });
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Star rating functionality
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = parseInt(this.getAttribute('data-rating'));
+            const category = this.getAttribute('data-category');
+            const starsInCategory = document.querySelectorAll(`.star[data-category="${category}"]`);
+            
+            // Update star colors
+            starsInCategory.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('text-deep-brown/50');
+                    s.classList.add('text-yellow-500');
+                } else {
+                    s.classList.remove('text-yellow-500');
+                    s.classList.add('text-deep-brown/50');
+                }
+            });
+            
+            // Update hidden input value
+            document.getElementById(`${category}_rating`).value = rating;
+            
+            // Clear error if present
+            const errorElement = document.getElementById(`${category}-error`);
+            if (errorElement) errorElement.classList.add('hidden');
+        });
+    });
+    
+    // Form validation
+    const form = document.getElementById('ratingForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        
+        // Validate required ratings
+        const requiredRatings = ['food', 'ambiance', 'service'];
+        requiredRatings.forEach(category => {
+            const rating = document.getElementById(`${category}_rating`).value;
+            if (rating === '0') {
+                document.getElementById(`${category}-error`).classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById(`${category}-error`).classList.add('hidden');
+            }
+        });
+        
+        // Validate required comments
+        const requiredComments = ['food_comment', 'ambiance_comment', 'service_comment'];
+        requiredComments.forEach(name => {
+            const comment = form.elements[name].value.trim();
+            if (comment === '') {
+                document.getElementById(`${name}-error`).classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById(`${name}-error`).classList.add('hidden');
+            }
+        });
+        
+        if (isValid) {
+            // Form is valid - you can submit it here
+            alert('Thank you for your review!');
+            form.reset();
+            // Reset star ratings visually
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('text-yellow-500');
+                star.classList.add('text-deep-brown/50');
+            });
+        }
+    });
+});
+</script>
 </body>
 </html>
