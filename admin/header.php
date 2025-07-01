@@ -5,7 +5,7 @@
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
-        <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+        <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4 hidden md:block">
             <i class="fas fa-calendar-alt mr-2"></i>
             <span id="current-date"></span>
         </div>
