@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +35,6 @@
 
         .hover-lift {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            willожалуй
-
             will-change: transform;
         }
 
@@ -47,9 +44,7 @@
         }
 
         .bg-warm-gradient {
-            background: linear。例えば
-
-            linear-gradient(135deg, #E8E0D5, #d4c8b9);
+            background: linear-gradient(135deg, #E8E0D5, #d4c8b9);
         }
 
         .bg-card {
@@ -147,10 +142,10 @@
                         Menu
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <!-- <a href="ratings.php" class="font-baskerville text-rich-brown transition-colors duration-300 relative group">
+                    <a href="ratings.php" class="font-baskerville text-rich-brown transition-colors duration-300 relative group">
                         Rate Us
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-100 transition-transform duration-300"></span>
-                    </a> -->
+                    </a>
                     <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Contact
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -183,6 +178,8 @@
                             </div>
                         </div>
                         <div class="relative group">
+                            <aientas
+
                             <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
@@ -228,14 +225,14 @@
                             <i class="fas fa-home w-8"></i> Home
                         </a>
                         <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
+                            <i class="fas fa-calendar-alt w-8"></i> Reservations
                         </a>
                         <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
-                        <!-- <a href="ratings.php" class="block font-baskerville text-rich-brown transition-colors duration-300 py-2">
+                        <a href="ratings.php" class="block font-baskerville text-rich-brown transition-colors duration-300 py-2">
                             <i class="fas fa-star w-8"></i> Rate Us
-                        </a> -->
+                        </a>
                         <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-envelope w-8"></i> Contact
                         </a>
@@ -255,14 +252,14 @@
         <!-- Ratings Header -->
         <section class="mb-12 animate-fade-in">
             <h2 class="font-playfair text-4xl font-bold mb-4 text-deep-brown">Rate Your Experience</h2>
-            <p class="font-baskerville text-lg text-deep-brown/80">We value your feedback! Please rate our food and reservation experience.</p>
+            <p class="font-baskerville text-lg text-deep-brown/80">We value your feedback! Please rate our food, ambiance, reservation experience, and service.</p>
         </section>
 
         <!-- Ratings Form -->
         <section class="bg-card rounded-xl p-6 shadow-md hover-lift mb-12">
             <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Submit Your Rating</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Food Rating -->
+                <!-- Food Quality Rating -->
                 <div class="space-y-4">
                     <h4 class="font-baskerville text-xl font-bold text-deep-brown">Food Quality</h4>
                     <div class="star-rating flex space-x-2" data-tippy-content="Rate the food quality">
@@ -275,7 +272,20 @@
                     <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
                               placeholder="Tell us about the food..." rows="4"></textarea>
                 </div>
-                <!-- Reservation Rating -->
+                <!-- Ambiance Rating -->
+                <div class="space-y-4">
+                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Ambiance</h4>
+                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the ambiance of the place">
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                    </div>
+                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                              placeholder="Tell us about the ambiance..." rows="4"></textarea>
+                </div>
+                <!-- Reservation Experience Rating -->
                 <div class="space-y-4">
                     <h4 class="font-baskerville text-xl font-bold text-deep-brown">Reservation Experience</h4>
                     <div class="star-rating flex space-x-2" data-tippy-content="Rate the reservation experience">
@@ -287,6 +297,19 @@
                     </div>
                     <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
                               placeholder="Tell us about your reservation experience..." rows="4"></textarea>
+                </div>
+                <!-- Service Rating -->
+                <div class="space-y-4">
+                    <h4 class="font-baskerville text-xl font-bold text-deep-brown">Service</h4>
+                    <div class="star-rating flex space-x-2" data-tippy-content="Rate the service">
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                        <i class="fas fa-star text-2xl text-deep-brown/50"></i>
+                    </div>
+                    <textarea class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-rich-brown focus:ring-2 focus:ring-rich-brown/20 transition-all"
+                              placeholder="Tell us about the service..." rows="4"></textarea>
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
@@ -320,6 +343,23 @@
                 </div>
                 <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
                     <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-baskerville font-bold text-deep-brown">Cozy Ambiance</h4>
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star-half-alt text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 mb-4">The warm lighting and decor made for a wonderful dining experience.</p>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
+                    </div>
+                </div>
+                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+                    <div class="flex items-center justify-between mb-4">
                         <h4 class="font-baskerville font-bold text-deep-brown">Smooth Reservation Process</h4>
                         <div class="flex space-x-1">
                             <i class="fas fa-star text-yellow-500"></i>
@@ -329,10 +369,27 @@
                             <i class="fas fa-star text-deep-brown/50"></i>
                         </div>
                     </div>
-                    <p class="font-baskerville text-deep-brown/80 mb-4">Booking was easy, and the staff was very accommodating. Will return!</p>
+                    <p class="font-baskerville text-deep-brown/80 mb-4.booking was easy, and the staff was very accommodating. Will return!</p>
                     <div class="flex items-center space-x-2">
-                        <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
+                        <img src="https://ui-avatars.com/api/?name=Alex+Brown&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">Alex Brown • 4 days ago</span>
+                    </div>
+                </div>
+                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-baskerville font-bold text-deep-brown">Exceptional Service</h4>
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <i class="fas fa-star text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 mb-4">The staff was attentive and made our evening truly special.</p>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=Emily+White&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="font-baskerville text-sm text-deep-brown/60">Emily White • 5 days ago</span>
                     </div>
                 </div>
             </div>
