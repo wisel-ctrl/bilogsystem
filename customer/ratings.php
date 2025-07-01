@@ -179,10 +179,7 @@
                         Menu
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
-                    <a href="ratings.php" class="font-baskerville text-rich-brown transition-colors duration-300 relative group">
-                        Rate Us
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-100 transition-transform duration-300"></span>
-                    </a>
+    
                     <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Contact
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -265,9 +262,7 @@
                         <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
-                        <a href="ratings.php" class="block font-baskerville text-rich-brown transition-colors duration-300 py-2">
-                            <i class="fas fa-star w-8"></i> Rate Us
-                        </a>
+             
                         <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-envelope w-8"></i> Contact
                         </a>
@@ -684,5 +679,6 @@
             });
         });
     </script>
+    
 </body>
 </html>
