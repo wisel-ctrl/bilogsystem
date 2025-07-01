@@ -127,6 +127,13 @@
             z-index: 100;
             align-items: center;
             justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
         }
 
         .modal-content {
@@ -141,17 +148,13 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .modal.show {
-            display: flex;
-        }
-
         .modal.show .modal-content {
             transform: translateY(0);
         }
     </style>
 </head>
 <body class="bg-warm-cream/50 text-deep-brown min-h-screen">
-    <!-- Navigation -->
+    <!-- Navigation (unchanged) -->
     <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -439,7 +442,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (unchanged) -->
     <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
@@ -604,11 +607,15 @@
             const closeModalButton = document.getElementById('closeModal');
             
             function showModal() {
+                console.log('Attempting to show modal'); // Debug log
                 modal.classList.add('show');
                 document.body.classList.add('overflow-hidden');
+                // Focus on close button for accessibility
+                closeModalButton.focus();
             }
             
             function hideModal() {
+                console.log('Closing modal'); // Debug log
                 modal.classList.remove('show');
                 document.body.classList.remove('overflow-hidden');
             }
@@ -622,10 +629,18 @@
                 }
             });
 
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    hideModal();
+                }
+            });
+
             // Form validation
             const form = document.getElementById('ratingForm');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                console.log('Form submitted'); // Debug log
                 let isValid = true;
                 
                 // Validate required ratings
@@ -633,6 +648,7 @@
                 requiredRatings.forEach(category => {
                     const rating = document.getElementById(`${category}_rating`).value;
                     if (rating === '0') {
+                        console.log(`Validation failed: ${category} rating is 0`); // Debug log
                         document.getElementById(`${category}-error`).classList.remove('hidden');
                         isValid = false;
                     } else {
@@ -645,6 +661,7 @@
                 requiredComments.forEach(name => {
                     const comment = form.elements[name].value.trim();
                     if (comment === '') {
+                        console.log(`Validation failed: ${name} is empty`); // Debug log
                         document.getElementById(`${name}-error`).classList.remove('hidden');
                         isValid = false;
                     } else {
@@ -653,7 +670,7 @@
                 });
                 
                 if (isValid) {
-                    // Show modal instead of alert
+                    console.log('Form is valid, showing modal'); // Debug log
                     showModal();
                     form.reset();
                     // Reset star ratings visually
@@ -661,6 +678,8 @@
                         star.classList.remove('text-yellow-500');
                         star.classList.add('text-deep-brown/50');
                     });
+                } else {
+                    console.log('Form validation failed'); // Debug log
                 }
             });
         });
