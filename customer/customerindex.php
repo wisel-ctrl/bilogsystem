@@ -349,9 +349,9 @@ try {
 
         <!-- Quick Actions -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-warm-cream/80 backdrop-blur-md rounded-xl p-6 shadow-md hover-lift border border-deep-brown/10" data-tippy-content="Make a new reservation">
+            <div class="bg-rich-brown backdrop-blur-md rounded-xl p-6 shadow-md hover-lift border border-deep-brown/10" data-tippy-content="Make a new reservation">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-playfair text-xl font-bold text-deep-brown">New Reservation</h3>
+                    <h3 class="font-playfair text-xl font-bold text-warm-cream">New Reservation</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Book a table or plan your next event with us.</p>
@@ -361,7 +361,7 @@ try {
                 </a>
             </div>
 
-            <div class="bg-deep-brown rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
+            <div class="bg-rich-brown rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-playfair text-xl font-bold text-deep-brown">View Menu</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
