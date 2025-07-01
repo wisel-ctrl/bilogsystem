@@ -161,6 +161,161 @@
         .modal.show .modal-content {
             transform: translateY(0);
         }
+
+
+
+
+
+
+
+
+
+
+
+        /* Enhanced hover effect */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(93, 47, 15, 0.15);
+        }
+
+        /* Improved background gradients */
+        .bg-warm-gradient {
+            background: linear-gradient(135deg, #E8E0D5, #d4c8b9);
+        }
+
+        .bg-card {
+            /* background: linear-gradient(145deg, #E8E0D5, #d6c7b6); */
+            background: white;
+            backdrop-filter: blur(8px);
+        }
+
+        .bg-nav {
+            background: linear-gradient(to bottom, #5D2F0F, #4a260d);
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Loading skeleton animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #E8E0D5 25%, #d4c8b9 50%, #E8E0D5 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Accessibility improvements */
+        :focus {
+            outline: 2px solid #8B4513;
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #E8E0D5;
+            box-shadow: 0 4px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Button animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            background: #8B4513;
+            color: #E8E0D5;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(232, 224, 213, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:active::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        /* Improved mobile menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Skeleton loading placeholder */
+        .skeleton-text {
+            height: 1em;
+            background: #e0e0e0;
+            margin: 0.5em 0;
+            border-radius: 4px;
+        }
+
+        /* Improved form inputs */
+        input, select, textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+        }
+
+
+
     </style>
 </head>
 <body class="bg-warm-cream/50 text-deep-brown min-h-screen">
