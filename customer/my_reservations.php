@@ -258,29 +258,26 @@ ob_end_flush();
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex-1 flex items-center justify-start">
-                    <a href="customerindex.php" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
+                    <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
                         <div>
                             <h1 class="font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
                             <p class="text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
                         </div>
                     </a>
                 </div>
+                <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/26/11/2024, 18:26:46 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="my_reservations.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        Reservations
+                        My Reservations
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Menu
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                    </a>
-                    <a href="ratings.php" class="font-baskerville text-rich-brown transition-colors duration-300 relative group">
-                        Rate Us
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Contact
@@ -288,12 +285,15 @@ ob_end_flush();
                     </a>
                 </div>
                 <div class="flex-1 flex items-center justify-end">
+                    <!-- Mobile Menu Button -->
                     <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
                             aria-label="Toggle menu"
                             id="mobile-menu-button">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
+
                     <div class="hidden md:flex items-center space-x-0">
+                        <!-- Notifications -->
                         <div class="relative group">
                             <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
                                     aria-label="Notifications"
@@ -306,21 +306,23 @@ ob_end_flush();
                                     <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
                                 </div>
                                 <div class="max-h-96 overflow-y-auto">
-                                    <div class="p-4 border-b border-deep-brown/10">
-                                        <p class="font-baskerville text-deep-brown">New special offer available!</p>
-                                        <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
+                                    <div class="animate-pulse p-4">
+                                        <div class="skeleton-text w-3/4"></div>
+                                        <div class="skeleton-text w-1/2"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- User Profile -->
                         <div class="relative group">
                             <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
-                                <img src="https://ui-avatars.com/api/?name=User+Name&background=E8E0D5&color=5D2F0F" 
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
                                      alt="Profile" 
                                      class="w-8 h-8 rounded-full border border-deep-brown/30">
-                                <span class="font-baskerville">User Name</span>
+                                <span class="font-baskerville">John Doe</span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
                             </a>
                             <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
@@ -343,6 +345,8 @@ ob_end_flush();
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Menu -->
         <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
             <div class="flex flex-col h-full">
                 <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
@@ -359,13 +363,10 @@ ob_end_flush();
                             <i class="fas fa-home w-8"></i> Home
                         </a>
                         <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-calendar-alt w-8"></i> Reservations
+                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
                         </a>
                         <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
-                        </a>
-                        <a href="ratings.php" class="block font-baskerville text-rich-brown transition-colors duration-300 py-2">
-                            <i class="fas fa-star w-8"></i> Rate Us
                         </a>
                         <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-envelope w-8"></i> Contact

@@ -319,7 +319,7 @@ require_once 'customer_auth.php';
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="customerindex.php#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        Reservations
+                        My Reservations
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
