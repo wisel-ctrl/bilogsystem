@@ -363,7 +363,7 @@ try {
 
             <div class="bg-rich-brown rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-playfair text-xl font-bold text-deep-brown">View Menu</h3>
+                    <h3 class="font-playfair text-xl font-bold text-warm-cream">View Menu</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Explore our latest dishes and seasonal specials.</p>
@@ -375,7 +375,7 @@ try {
 
             <div class="bg-rich-brown rounded-xl p-6 shadow-md hover-lift" data-tippy-content="Get assistance from our support team">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-playfair text-xl font-bold text-deep-brown">Contact Support</h3>
+                    <h3 class="font-playfair text-xl font-bold text-warm-cream">Contact Support</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
                 </div>
                 <p class="font-baskerville mb-4 text-deep-brown/80">Need help? Our team is here to assist you.</p>
