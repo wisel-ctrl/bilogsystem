@@ -26,8 +26,27 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-   /* Enhanced Modal Styles */
-   .modal-content {
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 42, 10, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000; /* Increased to ensure visibility */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
             background: #F5F0E8;
             border-radius: 1rem;
             padding: 2.5rem;
@@ -35,11 +54,12 @@
             width: 450px;
             text-align: center;
             box-shadow: 0 8px 32px rgba(74, 42, 10, 0.25);
+            border: 1px solid rgba(122, 59, 10, 0.1);
             transform: translateY(-20px);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            border: 1px solid rgba(122, 59, 10, 0.1);
         }
+
         .modal.show .modal-content {
             transform: translateY(0);
             opacity: 1;
@@ -57,6 +77,7 @@
             40% {transform: translateY(-20px);}
             60% {transform: translateY(-10px);}
         }
+
         body {
             background: linear-gradient(135deg, #F5F0E8, #E8E0D5);
             min-height: 100vh;
@@ -94,40 +115,6 @@
         .star-rating .fa-star.active {
             color: #FBBF24 !important;
             transform: scale(1.2);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(74, 42, 10, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: #F5F0E8;
-            border-radius: 1rem;
-            padding: 2rem;
-            max-width: 90%;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(74, 42, 10, 0.2);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal.show .modal-content {
-            transform: translateY(0);
         }
 
         .btn-primary {
@@ -268,26 +255,26 @@
             </form>
         </section>
 
- <!-- Enhanced Thank You Modal -->
- <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="modal-icon">
-                <i class="fas fa-check-circle"></i>
+        <!-- Enhanced Thank You Modal -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="modal-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-3">Thank You!</h3>
+                <p class="font-baskerville text-deep-brown/80 mb-6 text-lg leading-relaxed">
+                    We truly appreciate you taking the time to share your experience with us.<br>
+                    Your feedback helps us continue to improve and provide exceptional service.
+                </p>
+                <p class="font-baskerville italic text-accent-brown mb-8">
+                    We hope to welcome you back to Caffè Lilio soon!
+                </p>
+                <button id="closeModal" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
+                    <span>Close</span>
+                    <i class="fas fa-times transition-transform group-hover:scale-110"></i>
+                </button>
             </div>
-            <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-3">Thank You!</h3>
-            <p class="font-baskerville text-deep-brown/80 mb-6 text-lg leading-relaxed">
-                We truly appreciate you taking the time to share your experience with us.<br>
-                Your feedback helps us continue to improve and provide exceptional service.
-            </p>
-            <p class="font-baskerville italic text-accent-brown mb-8">
-                We hope to welcome you back to Caffè Lilio soon!
-            </p>
-            <button id="closeModal" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
-                <span>Close</span>
-                <i class="fas fa-times transition-transform group-hover:scale-110"></i>
-            </button>
         </div>
-    </div>
     </main>
 
     <script>
@@ -321,17 +308,19 @@
             const closeModalButton = document.getElementById('closeModal');
             
             function showModal() {
+                console.log('Showing modal'); // Debug log
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
                 document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
             }
             
             function hideModal() {
+                console.log('Hiding modal'); // Debug log
                 modal.classList.remove('show');
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
                 
-                // Reset form and stars (moved here from form submission)
+                // Reset form and stars
                 document.getElementById('ratingForm').reset();
                 document.querySelectorAll('.star').forEach(star => {
                     star.classList.remove('text-yellow-500');
@@ -351,11 +340,13 @@
             const form = document.getElementById('ratingForm');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                console.log('Form submitted'); // Debug log
                 let isValid = true;
                 
                 const requiredRatings = ['food', 'ambiance', 'service'];
                 requiredRatings.forEach(category => {
                     const rating = document.getElementById(`${category}_rating`).value;
+                    console.log(`${category}_rating: ${rating}`); // Debug log
                     if (rating === '0') {
                         document.getElementById(`${category}-error`).classList.remove('hidden');
                         isValid = false;
@@ -367,6 +358,7 @@
                 const requiredComments = ['food_comment', 'ambiance_comment', 'service_comment'];
                 requiredComments.forEach(name => {
                     const comment = form.elements[name].value.trim();
+                    console.log(`${name}: ${comment}`); // Debug log
                     if (comment === '') {
                         document.getElementById(`${name}-error`).classList.remove('hidden');
                         isValid = false;
@@ -376,16 +368,15 @@
                 });
                 
                 if (isValid) {
+                    console.log('Form is valid, showing modal'); // Debug log
                     showModal();
-                    form.reset();
-                    document.querySelectorAll('.star').forEach(star => {
-                        star.classList.remove('text-yellow-500');
-                        star.classList.add('text-deep-brown/30');
-                    });
+                } else {
+                    console.log('Form validation failed'); // Debug log
                 }
             });
-              // Close modal when pressing Escape key
-              document.addEventListener('keydown', function(e) {
+
+            // Close modal when pressing Escape key
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     hideModal();
                 }
