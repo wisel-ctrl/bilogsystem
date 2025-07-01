@@ -550,7 +550,7 @@ try {
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            <div class="bg-card rounded-xl p-6 shadow-md">
+            <div class="bg-warm-cream/80 rounded-xl p-6 shadow-md">
                 <div class="space-y-4">
                     <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
                         <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
