@@ -354,7 +354,7 @@ try {
                     <h3 class="font-playfair text-xl font-bold text-warm-cream">New Reservation</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
                 </div>
-                <p class="font-baskerville mb-4 text-deep-brown/80">Book a table or plan your next event with us.</p>
+                <p class="font-baskerville mb-4 text-warm-cream">Book a table or plan your next event with us.</p>
                 <a href="bookingpage.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Make Reservation</span>
                     <i class="fas fa-arrow-right transition-transform transform group-hover:translate-x-1"></i>
@@ -366,7 +366,7 @@ try {
                     <h3 class="font-playfair text-xl font-bold text-warm-cream">View Menu</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
                 </div>
-                <p class="font-baskerville mb-4 text-deep-brown/80">Explore our latest dishes and seasonal specials.</p>
+                <p class="font-baskerville mb-4 text-warm-cream">Explore our latest dishes and seasonal specials.</p>
                 <a href="menu.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Browse Menu</span>
                     <i class="fas fa-utensils ml-2"></i>
@@ -378,7 +378,7 @@ try {
                     <h3 class="font-playfair text-xl font-bold text-warm-cream">Contact Support</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
                 </div>
-                <p class="font-baskerville mb-4 text-deep-brown/80">Need help? Our team is here to assist you.</p>
+                <p class="font-baskerville mb-4 text-warm-cream">Need help? Our team is here to assist you.</p>
                 <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
                     <span>Get Help</span>
                     <i class="fas fa-headset ml-2"></i>
