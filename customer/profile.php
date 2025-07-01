@@ -126,7 +126,7 @@ require_once 'customer_auth.php';
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="my_reservations.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        My Reservations
+                        Reservations
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </a>
                     <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
@@ -218,7 +218,7 @@ require_once 'customer_auth.php';
                             <i class="fas fa-home w-8"></i> Home
                         </a>
                         <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
+                            <i class="fas fa-calendar-alt w-8"></i> Reservations
                         </a>
                         <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
