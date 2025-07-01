@@ -361,7 +361,7 @@ try {
                 </a>
             </div>
 
-            <div class="bg-card rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
+            <div class="bg-warm-cream/80 rounded-xl p-6 shadow-md hover-lift" data-tippy-content="View our current menu">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-playfair text-xl font-bold text-deep-brown">View Menu</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">🍽️</span>
@@ -373,7 +373,7 @@ try {
                 </a>
             </div>
 
-            <div class="bg-card rounded-xl p-6 shadow-md hover-lift" data-tippy-content="Get assistance from our support team">
+            <div class="bg-warm-cream/80 rounded-xl p-6 shadow-md hover-lift" data-tippy-content="Get assistance from our support team">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-playfair text-xl font-bold text-deep-brown">Contact Support</h3>
                     <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
