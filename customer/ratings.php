@@ -322,78 +322,68 @@
 
         <!-- Recent Reviews -->
         <section class="mb-12">
-            <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Recent Reviews</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-baskerville font-bold text-deep-brown">Amazing Food!</h4>
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                        </div>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 mb-4">The pasta was divine, and the dessert was a perfect finish. Highly recommend!</p>
-                    <div class="flex items-center space-x-2">
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="font-baskerville text-sm text-deep-brown/60">John Doe • 2 days ago</span>
-                    </div>
-                </div>
-                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-baskerville font-bold text-deep-brown">Cozy Ambiance</h4>
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star-half-alt text-yellow-500"></i>
-                        </div>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 mb-4">The warm lighting and decor made for a wonderful dining experience.</p>
-                    <div class="flex items-center space-x-2">
-                        <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
-                    </div>
-                </div>
-                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-baskerville font-bold text-deep-brown">Smooth Reservation Process</h4>
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-deep-brown/50"></i>
-                        </div>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 mb-4.booking was easy, and the staff was very accommodating. Will return!</p>
-                    <div class="flex items-center space-x-2">
-                        <img src="https://ui-avatars.com/api/?name=Alex+Brown&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="font-baskerville text-sm text-deep-brown/60">Alex Brown • 4 days ago</span>
-                    </div>
-                </div>
-                <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-baskerville font-bold text-deep-brown">Exceptional Service</h4>
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                        </div>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 mb-4">The staff was attentive and made our evening truly special.</p>
-                    <div class="flex items-center space-x-2">
-                        <img src="https://ui-avatars.com/api/?name=Emily+White&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="font-baskerville text-sm text-deep-brown/60">Emily White • 5 days ago</span>
-                    </div>
+    <h3 class="font-playfair text-2xl font-bold mb-6 text-deep-brown">Recent Reviews</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Review Card 1 -->
+        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+            <div class="flex items-center justify-between mb-4">
+                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Amazing Food!</h4> -->
+                <div class="flex space-x-1">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
                 </div>
             </div>
-        </section>
+            <p class="font-baskerville text-deep-brown/80 mb-4">The pasta was divine, and the dessert was a perfect finish. Highly recommend!</p>
+            <div class="flex items-center space-x-2">
+                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                <span class="font-baskerville text-sm text-deep-brown/60">John Doe • 2 days ago</span>
+            </div>
+        </div>
+        
+        <!-- Review Card 2 -->
+        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+            <div class="flex items-center justify-between mb-4">
+                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Cozy Ambiance</h4> -->
+                <div class="flex space-x-1">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star-half-alt text-yellow-500"></i>
+                </div>
+            </div>
+            <p class="font-baskerville text-deep-brown/80 mb-4">The warm lighting and decor made for a wonderful dining experience.</p>
+            <div class="flex items-center space-x-2">
+                <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                <span class="font-baskerville text-sm text-deep-brown/60">Jane Smith • 3 days ago</span>
+            </div>
+        </div>
+
+        <!-- Review Card 3 -->
+        <div class="bg-card rounded-xl p-6 shadow-md hover-lift">
+            <div class="flex items-center justify-between mb-4">
+                <!-- <h4 class="font-baskerville font-bold text-deep-brown">Exceptional Service</h4> -->
+                <div class="flex space-x-1">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <i class="fas fa-star text-yellow-500"></i>
+                </div>
+            </div>
+            <p class="font-baskerville text-deep-brown/80 mb-4">The staff was attentive and made our evening truly special.</p>
+            <div class="flex items-center space-x-2">
+                <img src="https://ui-avatars.com/api/?name=Emily+White&background=E8E0D5&color=5D2F0F" alt="Profile" class="w-8 h-8 rounded-full">
+                <span class="font-baskerville text-sm text-deep-brown/60">Emily White • 5 days ago</span>
+            </div>
+        </div>
+        
+    </div>
+</section>
     </main>
 
     <!-- Footer -->
