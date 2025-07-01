@@ -26,7 +26,37 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+   /* Enhanced Modal Styles */
+   .modal-content {
+            background: #F5F0E8;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(74, 42, 10, 0.25);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(122, 59, 10, 0.1);
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
 
+        .modal-icon {
+            font-size: 4rem;
+            color: #9B5C2F;
+            margin-bottom: 1.5rem;
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
         body {
             background: linear-gradient(135deg, #F5F0E8, #E8E0D5);
             min-height: 100vh;
@@ -238,17 +268,26 @@
             </form>
         </section>
 
-        <!-- Modal -->
-        <div class="modal" id="successModal">
-            <div class="modal-content">
-                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4">Thank You!</h3>
-                <p class="font-baskerville text-deep-brown/80 mb-6">Your feedback means the world to us! We’re excited to make your next visit to Caffè Lilio even better.</p>
-                <button id="closeModal" class="btn-primary px-6 py-2 rounded-lg font-baskerville text-base hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
-                    <span>Close</span>
-                    <i class="fas fa-times transition-transform group-hover:scale-110"></i>
-                </button>
+ <!-- Enhanced Thank You Modal -->
+ <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
             </div>
+            <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-3">Thank You!</h3>
+            <p class="font-baskerville text-deep-brown/80 mb-6 text-lg leading-relaxed">
+                We truly appreciate you taking the time to share your experience with us.<br>
+                Your feedback helps us continue to improve and provide exceptional service.
+            </p>
+            <p class="font-baskerville italic text-accent-brown mb-8">
+                We hope to welcome you back to Caffè Lilio soon!
+            </p>
+            <button id="closeModal" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
+                <span>Close</span>
+                <i class="fas fa-times transition-transform group-hover:scale-110"></i>
+            </button>
         </div>
+    </div>
     </main>
 
     <script>
@@ -283,12 +322,21 @@
             
             function showModal() {
                 modal.classList.add('show');
-                document.body.classList.add('overflow-hidden');
+                document.body.style.overflow = 'hidden';
+                document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
             }
             
             function hideModal() {
                 modal.classList.remove('show');
-                document.body.classList.remove('overflow-hidden');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                
+                // Reset form and stars (moved here from form submission)
+                document.getElementById('ratingForm').reset();
+                document.querySelectorAll('.star').forEach(star => {
+                    star.classList.remove('text-yellow-500');
+                    star.classList.add('text-deep-brown/30');
+                });
             }
             
             closeModalButton.addEventListener('click', hideModal);
@@ -334,6 +382,12 @@
                         star.classList.remove('text-yellow-500');
                         star.classList.add('text-deep-brown/30');
                     });
+                }
+            });
+              // Close modal when pressing Escape key
+              document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    hideModal();
                 }
             });
         });
