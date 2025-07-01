@@ -399,7 +399,7 @@ try {
             <div class="bg-card rounded-xl p-6 shadow-md">
                 <div class="overflow-x-auto">
                     <table class="w-full" role="table">
-                        <thead class="bg-warm-cresm">
+                        <thead class="bg-warm-cream">
                             <tr class="border-b border-deep-brown/20">
                                 <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Date & Time</th>
                                 <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
