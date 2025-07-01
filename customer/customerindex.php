@@ -76,7 +76,8 @@ try {
         }
 
         .bg-card {
-            background: linear-gradient(145deg, #E8E0D5, #d6c7b6);
+            /* background: linear-gradient(145deg, #E8E0D5, #d6c7b6); */
+            background: white;
             backdrop-filter: blur(8px);
         }
 
