@@ -33,6 +33,15 @@
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
 
+        /* Improved mobile menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
         .hover-lift {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: transform;
@@ -545,7 +554,6 @@
             </div>
         </div>
     </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips
@@ -554,6 +562,14 @@
                 animation: 'scale',
                 duration: [200, 150],
                 placement: 'bottom'
+            });
+
+            // Initialize loading bar
+            NProgress.configure({ 
+                showSpinner: false,
+                minimum: 0.3,
+                easing: 'ease',
+                speed: 500
             });
 
             // Mobile menu functionality
@@ -569,114 +585,137 @@
             mobileMenuButton.addEventListener('click', toggleMobileMenu);
             closeMobileMenu.addEventListener('click', toggleMobileMenu);
 
-            // Star rating functionality
-            const stars = document.querySelectorAll('.star');
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    const rating = parseInt(this.getAttribute('data-rating'));
-                    const category = this.getAttribute('data-category');
-                    const starsInCategory = document.querySelectorAll(`.star[data-category="${category}"]`);
-                    
-                    // Update star colors
-                    starsInCategory.forEach((s, index) => {
-                        if (index < rating) {
-                            s.classList.remove('text-deep-brown/50');
-                            s.classList.add('text-yellow-500');
-                        } else {
-                            s.classList.remove('text-yellow-500');
-                            s.classList.add('text-deep-brown/50');
-                        }
-                    });
-                    
-                    // Update hidden input value
-                    document.getElementById(`${category}_rating`).value = rating;
-                    
-                    // Clear error if present
-                    const errorElement = document.getElementById(`${category}-error`);
-                    if (errorElement) errorElement.classList.add('hidden');
+            // Show loading bar on navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    NProgress.start();
+
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // Simulate loading time
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 500);
                 });
             });
             
-            // Modal functionality
-            const modal = document.getElementById('successModal');
-            const closeModalButton = document.getElementById('closeModal');
-            
-            function showModal() {
-                console.log('Attempting to show modal'); // Debug log
-                modal.classList.add('show');
-                document.body.classList.add('overflow-hidden');
-                // Focus on close button for accessibility
-                closeModalButton.focus();
-            }
-            
-            function hideModal() {
-                console.log('Closing modal'); // Debug log
-                modal.classList.remove('show');
-                document.body.classList.remove('overflow-hidden');
-            }
-            
-            closeModalButton.addEventListener('click', hideModal);
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    hideModal();
-                }
+            // Handle regular links (like menu.php)
+            document.querySelectorAll('a[href$=".php"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    NProgress.start();
+                    // Let the default link behavior happen
+                });
             });
 
-            // Close modal with Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('show')) {
-                    hideModal();
-                }
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-${type === 'success' ? 'check-circle text-green-500' : 'exclamation-circle text-red-500'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                document.getElementById('toast-container').appendChild(toast);
+                
+                // Show toast
+                setTimeout(() => toast.classList.add('show'), 100);
+                
+                // Remove toast
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Handle reservation cancellation with improved UX
+            document.querySelectorAll('.fa-trash').forEach(button => {
+                button.addEventListener('click', function() {
+                    const confirmDialog = document.createElement('div');
+                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    confirmDialog.innerHTML = `
+                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
+                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+                            <div class="flex justify-end space-x-4">
+                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
+                                    Keep Reservation
+                                </button>
+                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
+                                    Yes, Cancel
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(confirmDialog);
+                    document.body.classList.add('overflow-hidden');
+
+                    document.getElementById('cancel-dialog').addEventListener('click', () => {
+                        confirmDialog.remove();
+                        document.body.classList.remove('overflow-hidden');
+                    });
+
+                    document.getElementById('confirm-cancel').addEventListener('click', () => {
+                        NProgress.start();
+                        setTimeout(() => {
+                            confirmDialog.remove();
+                            document.body.classList.remove('overflow-hidden');
+                            showToast('Reservation cancelled successfully');
+                            NProgress.done();
+                        }, 1000);
+                    });
+                });
             });
 
-            // Form validation
-            const form = document.getElementById('ratingForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                console.log('Form submitted'); // Debug log
-                let isValid = true;
-                
-                // Validate required ratings
-                const requiredRatings = ['food', 'ambiance', 'service'];
-                requiredRatings.forEach(category => {
-                    const rating = document.getElementById(`${category}_rating`).value;
-                    if (rating === '0') {
-                        console.log(`Validation failed: ${category} rating is 0`); // Debug log
-                        document.getElementById(`${category}-error`).classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById(`${category}-error`).classList.add('hidden');
-                    }
+            // Handle reservation editing
+            document.querySelectorAll('.fa-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    showToast('Opening reservation editor...', 'success');
+                    NProgress.start();
+                    
+                    setTimeout(() => {
+                        NProgress.done();
+                    }, 1000);
                 });
-                
-                // Validate required comments
-                const requiredComments = ['food_comment', 'ambiance_comment', 'service_comment'];
-                requiredComments.forEach(name => {
-                    const comment = form.elements[name].value.trim();
-                    if (comment === '') {
-                        console.log(`Validation failed: ${name} is empty`); // Debug log
-                        document.getElementById(`${name}-error`).classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById(`${name}-error`).classList.add('hidden');
-                    }
-                });
-                
-                if (isValid) {
-                    console.log('Form is valid, showing modal'); // Debug log
-                    showModal();
-                    form.reset();
-                    // Reset star ratings visually
-                    document.querySelectorAll('.star').forEach(star => {
-                        star.classList.remove('text-yellow-500');
-                        star.classList.add('text-deep-brown/50');
-                    });
-                } else {
-                    console.log('Form validation failed'); // Debug log
-                }
             });
+
+            // Add smooth scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Simulate loading states for dynamic content
+            function loadNotifications() {
+                const notificationsContainer = document.querySelector('#notifications-button + div .animate-pulse');
+                setTimeout(() => {
+                    notificationsContainer.innerHTML = `
+                        <div class="p-4 border-b border-deep-brown/10">
+                            <p class="font-baskerville text-deep-brown">New special offer available!</p>
+                            <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
+                        </div>
+                    `;
+                }, 1000);
+            }
+
+            // Initialize dynamic content loading
+            loadNotifications();
         });
     </script>
     
