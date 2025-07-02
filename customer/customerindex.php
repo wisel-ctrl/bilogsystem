@@ -118,7 +118,7 @@ ob_start();
         }
 
         /* Button animations */
-        .btn-primary {
+        /* .btn-primary {
             position: relative;
             overflow: hidden;
             background: #8B4513;
@@ -141,7 +141,7 @@ ob_start();
         .btn-primary:active::after {
             width: 200%;
             height: 200%;
-        }
+        } */
 
         /* Improved mobile menu */
         .mobile-menu {
