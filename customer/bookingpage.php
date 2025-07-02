@@ -406,11 +406,11 @@ ob_start();
                                         <i class="fas fa-users mr-2 text-rich-brown"></i>
                                         Number of Pax
                                     </label>
-                                    <input type="number" id="numberOfPax" name="numberOfPax" min="1" max="30"
+                                    <input type="number" id="numberOfPax" name="numberOfPax" min="1" max="95"
                                         class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-rich-brown focus:border-rich-brown" required
                                         oninput="handlePaxChange()">
-                                    <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number between 1 and 30.</p>
-                                    <p id="paxMaxInfo" class="text-gray-500 text-sm mt-1">Maximum capacity is 30 pax (15 per hall)</p>
+                                    <p id="paxError" class="text-red-500 text-sm mt-1 hidden">Please enter a number between 1 and 95.</p>
+                                    <p id="paxMaxInfo" class="text-gray-500 text-sm mt-1">Maximum capacity is 95 pax (50 in Main Hall, 15 in Private Hall, 30 in Al Fresco)</p>
                                 </div>
                             </div>
                             
@@ -420,7 +420,7 @@ ob_start();
                                     <i class="fas fa-building mr-2 text-rich-brown"></i>
                                     Hall Venue
                                 </label>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div class="flex items-center">
                                         <input type="checkbox" id="privateHall" name="hallVenue[]" value="Private Hall" 
                                             class="mr-2 h-5 w-5 text-rich-brown focus:ring-rich-brown border-gray-300 rounded"
@@ -428,13 +428,19 @@ ob_start();
                                         <label for="privateHall" class="text-gray-700">Private Hall (max 15 pax)</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input type="checkbox" id="functionHall" name="hallVenue[]" value="Function Hall" 
+                                        <input type="checkbox" id="mainHall" name="hallVenue[]" value="Main Hall" 
                                             class="mr-2 h-5 w-5 text-rich-brown focus:ring-rich-brown border-gray-300 rounded"
                                             onchange="handleHallSelection()">
-                                        <label for="functionHall" class="text-gray-700">Function Hall (max 15 pax)</label>
+                                        <label for="mainHall" class="text-gray-700">Main Hall (max 50 pax)</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="alFresco" name="hallVenue[]" value="Al Fresco" 
+                                            class="mr-2 h-5 w-5 text-rich-brown focus:ring-rich-brown border-gray-300 rounded"
+                                            onchange="handleHallSelection()">
+                                        <label for="alFresco" class="text-gray-700">Al Fresco (max 30 pax)</label>
                                     </div>
                                 </div>
-                                <p id="hallError" class="text-red-500 text-sm mt-1 hidden">Please select at least one hall that can accommodate your party size.</p>
+                                <p id="hallError" class="text-red-500 text-sm mt-1 hidden">Please select hall(s) that can accommodate your party size.</p>
                             </div>
                             
                             <!-- Total Amount and Downpayment Section -->
@@ -597,26 +603,41 @@ ob_start();
                 const paxInput = document.getElementById('numberOfPax');
                 const paxError = document.getElementById('paxError');
                 const privateHall = document.getElementById('privateHall');
-                const functionHall = document.getElementById('functionHall');
+                const mainHall = document.getElementById('mainHall');
+                const alFresco = document.getElementById('alFresco');
+                const hallError = document.getElementById('hallError');
                 
                 // Validate pax input
                 const paxValue = parseInt(paxInput.value);
-                if (paxValue < 1 || paxValue > 30) {
+                if (paxValue < 1 || paxValue > 95) {
                     paxError.classList.remove('hidden');
                 } else {
                     paxError.classList.add('hidden');
                 }
                 
-                // Automatically select halls based on pax
+                // Automatically suggest halls based on pax
                 if (paxValue > 15) {
-                    privateHall.checked = true;
-                    functionHall.checked = true;
-                    privateHall.disabled = true;
-                    functionHall.disabled = true;
-                    showToast('Both halls automatically selected for parties over 15 people', 'info');
+                    mainHall.checked = true;
+                    if (paxValue > 50) {
+                        alFresco.checked = true;
+                        if (paxValue > 80) {
+                            privateHall.checked = true;
+                        }
+                    }
+                    showToast('Suggested halls selected based on party size', 'info');
+                }
+                
+                // Validate if selected halls can accommodate the pax
+                const privateSelected = privateHall.checked;
+                const mainSelected = mainHall.checked;
+                const alFrescoSelected = alFresco.checked;
+                
+                const totalCapacity = (privateSelected ? 15 : 0) + (mainSelected ? 50 : 0) + (alFrescoSelected ? 30 : 0);
+                
+                if (paxValue > 0 && paxValue > totalCapacity) {
+                    hallError.classList.remove('hidden');
                 } else {
-                    privateHall.disabled = false;
-                    functionHall.disabled = false;
+                    hallError.classList.add('hidden');
                 }
                 
                 // Recalculate total
@@ -626,15 +647,17 @@ ob_start();
             window.handleHallSelection = function() {
                 const paxInput = document.getElementById('numberOfPax');
                 const privateHall = document.getElementById('privateHall');
-                const functionHall = document.getElementById('functionHall');
+                const mainHall = document.getElementById('mainHall');
+                const alFresco = document.getElementById('alFresco');
                 const hallError = document.getElementById('hallError');
                 
                 const paxValue = parseInt(paxInput.value) || 0;
                 const privateSelected = privateHall.checked;
-                const functionSelected = functionHall.checked;
+                const mainSelected = mainHall.checked;
+                const alFrescoSelected = alFresco.checked;
                 
                 // Calculate total capacity of selected halls
-                const totalCapacity = (privateSelected ? 15 : 0) + (functionSelected ? 15 : 0);
+                const totalCapacity = (privateSelected ? 15 : 0) + (mainSelected ? 50 : 0) + (alFrescoSelected ? 30 : 0);
                 
                 // Validate if selected halls can accommodate the pax
                 if (paxValue > 0 && paxValue > totalCapacity) {
@@ -699,10 +722,24 @@ ob_start();
                 // Get the pax value
                 const paxValue = parseInt(formData.get('numberOfPax') || 0);
                 
-                // If pax > 15, force-add both hall venues to the form data
-                if (paxValue > 15) {
-                    formData.set('hallVenue[]', 'Private Hall');  // Use set() to overwrite existing values
-                    formData.append('hallVenue[]', 'Function Hall');
+                // Get selected halls
+                const privateHall = document.getElementById('privateHall').checked;
+                const mainHall = document.getElementById('mainHall').checked;
+                const alFresco = document.getElementById('alFresco').checked;
+                
+                // Clear any existing hall venue entries
+                formData.delete('hallVenue[]');
+                
+                // Add selected halls to form data
+                if (privateHall) formData.append('hallVenue[]', 'Private Hall');
+                if (mainHall) formData.append('hallVenue[]', 'Main Hall');
+                if (alFresco) formData.append('hallVenue[]', 'Al Fresco');
+                
+                // Validate that selected halls can accommodate the pax
+                const totalCapacity = (privateHall ? 15 : 0) + (mainHall ? 50 : 0) + (alFresco ? 30 : 0);
+                if (paxValue > totalCapacity) {
+                    showToast('Selected halls cannot accommodate the number of guests', 'error');
+                    return;
                 }
                 
                 // Show loading state
