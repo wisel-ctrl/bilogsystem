@@ -293,7 +293,7 @@ ob_start();
             
             <div class="bg-card rounded-xl p-4 sm:p-6 shadow-md">
                 <!-- Loading State -->
-                <div id="menu-loading" class="menu-grid">
+                <!-- <div id="menu-loading" class="menu-grid">
                     <div class="loading-card skeleton">
                         <div class="loading-header skeleton"></div>
                         <div class="loading-text w-3/4 skeleton"></div>
@@ -315,7 +315,7 @@ ob_start();
                         <div class="loading-text w-1/2 skeleton"></div>
                         <div class="loading-button skeleton"></div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Menu Container -->
                 <div id="menu-container" class="hidden menu-grid"></div>
@@ -736,6 +736,7 @@ ob_start();
             console.log('Menu page initialized successfully');
         });
     </script>
+
 <?php
 $content = ob_get_clean();
 include 'layout_customer.php';
