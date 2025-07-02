@@ -842,10 +842,10 @@
             ],
             responsive: true,
             order: [[4, 'desc']],
-            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"f>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
+            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"f><"flex items-center gap-4"B>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
             buttons: [
                 {
-                    text: '<i class="fas fa-file-pdf mr-2"></i> PDF',
+                    text: '<i class="fas fa-file-pdf mr-2"></i> Export as PDF',
                     className: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg',
                     action: function (e, dt, node, config) {
                         exportToPDF();
@@ -878,6 +878,10 @@
 
         // Custom PDF Export Function
         function exportToPDF() {
+            // Clone the table and remove the actions column
+            var tableClone = $('#restaurant-bookings-table').clone();
+            tableClone.find('th:nth-child(6), td:nth-child(6)').remove(); // Remove actions column (6th column)
+            
             // Get the DataTable API instance
             var table = $('#restaurant-bookings-table').DataTable();
             
@@ -910,7 +914,7 @@
             
             // Add table data
             doc.autoTable({
-                html: '#restaurant-bookings-table',
+                html: tableClone[0],
                 startY: 140,
                 styles: {
                     fontSize: 10,
@@ -925,10 +929,6 @@
                 },
                 alternateRowStyles: {
                     fillColor: [240, 240, 240]
-                },
-                columnStyles: {
-                    // Hide the actions column (index 5)
-                    5: {cellWidth: 0}
                 },
                 margin: {top: 20, right: 40, bottom: 60, left: 40},
                 didDrawPage: function (data) {
@@ -955,6 +955,9 @@
             
             // Save the PDF
             doc.save('Pending_Bookings_Report_' + new Date().toISOString().slice(0, 10) + '.pdf');
+            
+            // Remove the cloned table
+            tableClone.remove();
         }
     });
 
