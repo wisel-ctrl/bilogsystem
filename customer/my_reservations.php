@@ -252,7 +252,7 @@ ob_end_flush();
         }
     </style>
 </head>
-<body class="bg-warm-cream text-deep-brown min-h-screen">
+<body class="bg-warm-cream/50 text-deep-brown min-h-screen">
     <!-- Navigation -->
     <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -399,7 +399,7 @@ ob_end_flush();
                     <i class="fas fa-calendar-plus"></i>
                 </a>
             </div>
-            <div class="bg-card rounded-xl p-6 shadow-md">
+            <div class="bg-white/50 rounded-xl p-6 shadow-md">
                 <div class="overflow-x-auto">
                     <table class="w-full" role="table">
                         <thead>
