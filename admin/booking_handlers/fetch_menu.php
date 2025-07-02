@@ -1,11 +1,9 @@
 <?php
 require_once '../../db_connect.php';
 
-// Database connection
-$db = new DB_CONNECT();
 
 // Fetch distinct menu packages
-$result = $db->query("SELECT DISTINCT package_name FROM menu_packages_tb ORDER BY package_name");
+$result = $conn->query("SELECT DISTINCT package_name FROM menu_packages_tb ORDER BY package_name");
 
 $menus = array();
 while ($row = $result->fetchArray()) {
