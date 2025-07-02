@@ -170,7 +170,7 @@
     }
 </style>
 
-                <div class="dashboard-card animate-on-scroll rounded-lg shadow-sm">
+                <div class="dashboard-card animate-on-scroll bg-white rounded-lg shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-deep-brown flex items-center">
                             <i class="fas fa-calendar-check mr-2 text-accent-brown"></i>
@@ -842,16 +842,7 @@
             ],
             responsive: true,
             order: [[4, 'desc']],
-            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"f><"flex items-center gap-4"B>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
-            buttons: [
-                {
-                    text: '<i class="fas fa-file-pdf mr-2"></i> Export as PDF',
-                    className: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg',
-                    action: function (e, dt, node, config) {
-                        exportToPDF();
-                    }
-                }
-            ],
+            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"f>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             pageLength: 10,
             language: {
@@ -875,90 +866,6 @@
         $('.dataTables_filter label').contents().filter(function() {
             return this.nodeType === 3;
         }).remove();
-
-        // Custom PDF Export Function
-        function exportToPDF() {
-            // Clone the table and remove the actions column
-            var tableClone = $('#restaurant-bookings-table').clone();
-            tableClone.find('th:nth-child(6), td:nth-child(6)').remove(); // Remove actions column (6th column)
-            
-            // Get the DataTable API instance
-            var table = $('#restaurant-bookings-table').DataTable();
-            
-            // Create a new PDF document
-            var doc = new jsPDF('p', 'pt', 'a4');
-            
-            // Add header
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(40, 40, 40);
-            doc.text('Business Name', 40, 50);
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Business Location, City, Country', 40, 70);
-            
-            // Add a line separator
-            doc.setDrawColor(200, 200, 200);
-            doc.setLineWidth(1);
-            doc.line(40, 80, 550, 80);
-            
-            // Add title
-            doc.setFontSize(16);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Pending Bookings Report', 40, 100);
-            
-            // Add date
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Generated on: ' + new Date().toLocaleDateString(), 40, 120);
-            
-            // Add table data
-            doc.autoTable({
-                html: tableClone[0],
-                startY: 140,
-                styles: {
-                    fontSize: 10,
-                    cellPadding: 5,
-                    overflow: 'linebreak',
-                    valign: 'middle'
-                },
-                headStyles: {
-                    fillColor: [70, 130, 180], // Steel blue color for header
-                    textColor: 255,
-                    fontStyle: 'bold'
-                },
-                alternateRowStyles: {
-                    fillColor: [240, 240, 240]
-                },
-                margin: {top: 20, right: 40, bottom: 60, left: 40},
-                didDrawPage: function (data) {
-                    // Footer
-                    doc.setFontSize(10);
-                    doc.setFont('helvetica', 'italic');
-                    doc.setTextColor(100, 100, 100);
-                    
-                    // Footer line
-                    doc.setDrawColor(200, 200, 200);
-                    doc.setLineWidth(0.5);
-                    doc.line(40, doc.internal.pageSize.height - 50, 550, doc.internal.pageSize.height - 50);
-                    
-                    // Footer text
-                    doc.text('Thank you for your business!', 40, doc.internal.pageSize.height - 40);
-                    doc.text('For more inquiries, please contact us at:', 40, doc.internal.pageSize.height - 30);
-                    doc.text('Phone: +1 (123) 456-7890 | Email: info@business.com', 40, doc.internal.pageSize.height - 20);
-                    
-                    // Page number
-                    var pageCount = doc.internal.getNumberOfPages();
-                    doc.text('Page ' + data.pageNumber + ' of ' + pageCount, 520, doc.internal.pageSize.height - 20, null, null, 'right');
-                }
-            });
-            
-            // Save the PDF
-            doc.save('Pending_Bookings_Report_' + new Date().toISOString().slice(0, 10) + '.pdf');
-            
-            // Remove the cloned table
-            tableClone.remove();
-        }
     });
 
     // Helper function to format datetime
@@ -980,8 +887,6 @@
         return str.replace(/'/g, "\\'");
     }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <?php
 $page_scripts = ob_get_clean();
 
