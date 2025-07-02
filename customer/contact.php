@@ -9,15 +9,21 @@ $page_title = "Contact Us - Caffè Lilio";
 ob_start();
 ?>
 
-<!-- Hero Section -->
-<section class="relative bg-warm-gradient py-12 mb-12 overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
+<!-- Hero Section with ::after overlay -->
+<section class="relative py-12 mb-12 overflow-hidden bg-cover bg-center" 
+         style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+    <!-- ::after pseudo-element for overlay -->
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    
+    <!-- Rest of your content remains the same as above -->
+    <div class="absolute inset-0 opacity-10 z-10">
         <div class="absolute top-10 left-10 w-32 h-32 border border-deep-brown/20 rounded-full animate-pulse"></div>
         <div class="absolute bottom-10 right-10 w-24 h-24 border border-deep-brown/20 rounded-full animate-pulse"></div>
     </div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-playfair text-5xl font-bold text-deep-brown mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
-        <p class="font-baskerville text-xl text-deep-brown/80 max-w-2xl mx-auto animate-fade-in-up">
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
+        <h2 class="font-playfair text-5xl font-bold text-white mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
+        <p class="font-baskerville text-xl text-white/80 max-w-2xl mx-auto animate-fade-in-up">
             Have questions or feedback? We're here to help you plan your perfect dining experience.
         </p>
     </div>
@@ -34,7 +40,7 @@ ob_start();
                     <input type="text" id="name" name="name" required
                            class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
                            placeholder="Your Name" data-tippy-content="Enter your full name">
-                    <label for="name" class="absolute left-4 -top-2.5 px-1 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
+                    <label for="name" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Name
                     </label>
                     <p class="text-red-600 text-sm mt-1 hidden" id="name-error">Name must be at least 2 characters</p>
