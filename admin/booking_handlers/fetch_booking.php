@@ -4,8 +4,6 @@ require_once '../../db_connect.php';
 // Set the timezone to Philippine Time
 date_default_timezone_set('Asia/Manila');
 
-// Database connection
-$db = new DB_CONNECT();
 
 // Get the request parameters for DataTables
 $requestData = $_REQUEST;
@@ -49,7 +47,7 @@ WHERE b.booking_status = ?";
 $params = array($_POST['status']);
 
 // Total records without filtering
-$totalRecords = $db->query("SELECT COUNT(*) as total FROM booking_tb WHERE booking_status = ?", $params)->fetchArray()['total'];
+$totalRecords = $conn->query("SELECT COUNT(*) as total FROM booking_tb WHERE booking_status = ?", $params)->fetchArray()['total'];
 
 // Search functionality
 if (!empty($requestData['search']['value'])) {
@@ -59,7 +57,7 @@ if (!empty($requestData['search']['value'])) {
 }
 
 // Total records with filtering
-$totalFiltered = $db->query(str_replace("SELECT b.booking_id, mp.package_name", "SELECT COUNT(*) as total", $query), $params)->fetchArray()['total'];
+$totalFiltered = $conn->query(str_replace("SELECT b.booking_id, mp.package_name", "SELECT COUNT(*) as total", $query), $params)->fetchArray()['total'];
 
 // Ordering
 if (isset($requestData['order'][0]['column'])) {
@@ -77,7 +75,7 @@ if (isset($requestData['start']) && $requestData['length'] != -1) {
 }
 
 // Execute the query
-$result = $db->query($query, $params);
+$result = $conn->query($query, $params);
 
 // Prepare the data
 $data = array();
