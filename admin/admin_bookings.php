@@ -58,85 +58,22 @@
                             Restaurant Bookings
                         </h3>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
+                    <div class="overflow-x-auto p-4">
+                        <table id="restaurant-bookings-table" class="w-full stripe hover" style="width:100%">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Name</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Menu Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested DateTime</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pax</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reservation DateTime</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="bookings-table">
-                                <!-- Sample booking data -->
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Maria Santos</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 915 123 4567</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Wedding Package</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 15, 2024 - 6:00 PM</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button onclick="openBookingDetails('BOOK001', 'Maria Santos', '+63 915 123 4567', 'Wedding Package', '₱25,000', 'Dec 15, 2024 - 6:00 PM', '50', 'Please prepare vegetarian options for 5 guests.')"
-                                        class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
-                                        <i class="fas fa-eye text-sm"></i>
-                                        <span>Details</span>
-                                    </button>
-
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Juan Dela Cruz</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 917 987 6543</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Birthday Party Package</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 20, 2024 - 2:00 PM</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="openBookingDetails('BOOK002', 'Juan Dela Cruz', '+63 917 987 6543', 'Birthday Party Package', '₱15,000', 'Dec 20, 2024 - 2:00 PM', '30', 'Need sound system for karaoke. Birthday celebrant is turning 50.')" 
-                                            class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
-                                            <i class="fas fa-eye text-sm"></i>
-                                            <span>Details</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ana Rodriguez</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+63 922 456 7890</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Corporate Event Package</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 18, 2024 - 12:00 PM</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button 
-                                            onclick="openBookingDetails('BOOK003', 'Ana Rodriguez', '+63 922 456 7890', 'Corporate Event Package', '₱18,500', 'Dec 18, 2024 - 12:00 PM', '40', 'Company year-end party. Please prepare presentation setup and microphone.')"
-                                            class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
-                                            <i class="fas fa-eye text-sm"></i>
-                                            <span>Details</span>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be loaded via AJAX -->
                             </tbody>
                         </table>
-                        <!-- Add pagination controls for Restaurant Bookings -->
-                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
-                                Showing <span id="restaurant-bookings-start">1</span> to <span id="restaurant-bookings-end">5</span> of <span id="restaurant-bookings-total">0</span> entries
-                            </div>
-                            <div class="flex space-x-2">
-                                <button onclick="changePage('restaurant', 'first')" id="restaurant-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;&lt;
-                                </button>
-                                <button onclick="changePage('restaurant', 'prev')" id="restaurant-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;
-                                </button>
-                                <div id="restaurant-pagination-numbers" class="flex space-x-1">
-                                    <!-- Pagination numbers will be inserted here -->
-                                </div>
-                                <button onclick="changePage('restaurant', 'next')" id="restaurant-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;
-                                </button>
-                                <button onclick="changePage('restaurant', 'last')" id="restaurant-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;&gt;
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -729,6 +666,133 @@
 
 
         
+    </script>
+
+    <script>
+        $(document).ready(function() {
+    var restaurantTable = $('#restaurant-bookings-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: 'booking_handlers/fetch_bookings.php', // You'll need to create this file
+            type: 'POST',
+            data: {
+                status: 'pending' // Only fetch pending bookings
+            }
+        },
+        columns: [
+            { data: 'customer_name', name: 'customer_name' },
+            { data: 'contact_number', name: 'contact_number' },
+            { data: 'package_name', name: 'package_name' },
+            { data: 'pax', name: 'pax' },
+            { 
+                data: 'reservation_datetime', 
+                name: 'reservation_datetime',
+                render: function(data, type, row) {
+                    return formatDateTime(data);
+                }
+            },
+            { 
+                data: 'booking_id',
+                name: 'actions',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `
+                        <button onclick="openBookingDetails(
+                            '${row.booking_id}',
+                            '${escapeSingleQuote(row.customer_name)}',
+                            '${row.contact_number}',
+                            '${escapeSingleQuote(row.package_name)}',
+                            '₱${parseFloat(row.totalPrice).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}',
+                            '${formatDateTime(row.reservation_datetime)}',
+                            '${row.pax}',
+                            '${escapeSingleQuote(row.notes || 'No notes')}'
+                        )" class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                            <i class="fas fa-eye text-sm"></i>
+                            <span>Details</span>
+                        </button>
+                    `;
+                }
+            }
+        ],
+        responsive: true,
+        order: [[4, 'desc']], // Default sort by reservation_datetime descending
+        dom: '<"flex flex-col md:flex-row md:items-center md:justify-between"<"mb-4 md:mb-0"l><"mb-4 md:mb-0"f><"flex"B>>rt<"flex flex-col md:flex-row md:items-center md:justify-between"ip>',
+        buttons: [
+            {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel mr-2"></i> Excel',
+                className: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg'
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf mr-2"></i> PDF',
+                className: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg ml-2'
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print mr-2"></i> Print',
+                className: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg ml-2'
+            }
+        ],
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        pageLength: 10,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search bookings...",
+            lengthMenu: "Show _MENU_ bookings",
+            info: "Showing _START_ to _END_ of _TOTAL_ bookings",
+            infoEmpty: "No bookings available",
+            infoFiltered: "(filtered from _MAX_ total bookings)",
+            zeroRecords: "No matching bookings found",
+            paginate: {
+                first: "First",
+                last: "Last",
+                next: "Next",
+                previous: "Previous"
+            }
+        }
+    });
+
+    // Add custom filter for menu package
+    $('<div class="flex items-center mb-4"><label class="mr-2 text-sm text-gray-600">Filter by Menu:</label><select id="menu-filter" class="border rounded px-3 py-1 text-sm"><option value="">All Menus</option></select></div>')
+        .insertBefore('#restaurant-bookings-table_wrapper .dataTables_filter');
+
+    // Load menu filter options via AJAX
+    $.ajax({
+        url: 'booking_handlers/fetch_menus.php', // Create this endpoint to fetch distinct menu packages
+        method: 'GET',
+        success: function(response) {
+            response.forEach(function(menu) {
+                $('#menu-filter').append(`<option value="${menu}">${menu}</option>`);
+            });
+        }
+    });
+
+    $('#menu-filter').on('change', function() {
+        restaurantTable.column(2).search(this.value).draw();
+    });
+});
+
+// Helper function to format datetime
+function formatDateTime(datetimeString) {
+    if (!datetimeString) return '';
+    
+    const date = new Date(datetimeString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Helper function to escape single quotes for JS
+function escapeSingleQuote(str) {
+    return str.replace(/'/g, "\\'");
+}
     </script>
 <?php
 $page_scripts = ob_get_clean();
