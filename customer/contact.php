@@ -33,7 +33,7 @@ ob_start();
                 <div class="relative">
                     <input type="text" id="name" name="name" required
                            class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
-                           placeholder="Your Name">
+                           placeholder="Your Name" data-tippy-content="Enter your full name">
                     <label for="name" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Name
                     </label>
@@ -42,7 +42,7 @@ ob_start();
                 <div class="relative">
                     <input type="email" id="email" name="email" required
                            class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
-                           placeholder="Your Email">
+                           placeholder="Your Email" data-tippy-content="Enter a valid email address">
                     <label for="email" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Email
                     </label>
@@ -51,7 +51,7 @@ ob_start();
                 <div class="relative">
                     <input type="text" id="subject" name="subject" required
                            class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
-                           placeholder="Subject">
+                           placeholder="Subject" data-tippy-content="Enter the subject of your message">
                     <label for="subject" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Subject
                     </label>
@@ -60,7 +60,7 @@ ob_start();
                 <div class="relative">
                     <textarea id="message" name="message" required rows="5"
                               class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
-                              placeholder="Your Message"></textarea>
+                              placeholder="Your Message" data-tippy-content="Enter your message or inquiry"></textarea>
                     <label for="message" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Message
                     </label>
@@ -74,7 +74,8 @@ ob_start();
                         <i class="fas fa-eraser"></i>
                     </button>
                     <button type="submit" id="submit-form"
-                            class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            data-tippy-content="Send your message">
                         <span>Send Message</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -88,15 +89,15 @@ ob_start();
             <div class="space-y-4">
                 <div class="flex items-center space-x-3 group">
                     <i class="fas fa-map-marker-alt text-warm-cream/70 w-6 group-hover:text-warm-cream transition-colors"></i>
-                    <p class="font-baskerville group-hover:text-warm-cream/90 transition-colors">123 Restaurant St., Food District, City</p>
+                    <p class="font-baskerville group-hover:text-warm-cream/90 transition-colors">Brgy. Rizal St. cr. 4th St., Liliw, Laguna, Philippines, 4004</p>
                 </div>
                 <div class="flex items-center space-x-3 group">
                     <i class="fas fa-phone text-warm-cream/70 w-6 group-hover:text-warm-cream transition-colors"></i>
-                    <a href="tel:+639123456789" class="font-baskerville group-hover:text-warm-cream/90 transition-colors">+63 912 345 6789</a>
+                    <a href="tel:+492542084" class="font-baskerville group-hover:text-warm-cream/90 transition-colors">+49 2542 084</a>
                 </div>
                 <div class="flex items-center space-x-3 group">
                     <i class="fas fa-envelope text-warm-cream/70 w-6 group-hover:text-warm-cream transition-colors"></i>
-                    <a href="mailto:info@caffelilio.com" class="font-baskerville group-hover:text-warm-cream/90 transition-colors">info@caffelilio.com</a>
+                    <a href="mailto:caffelilio.liliw@gmail.com" class="font-baskerville group-hover:text-warm-cream/90 transition-colors">caffelilio.liliw@gmail.com</a>
                 </div>
                 <div class="flex items-start space-x-3 group">
                     <i class="fas fa-clock text-warm-cream/70 w-6 group-hover:text-warm-cream transition-colors"></i>
@@ -126,24 +127,24 @@ ob_start();
                     </a>
                 </div>
             </div>
-            <!-- Map Placeholder -->
+            <!-- Map Section -->
             <div class="mt-6">
                 <h4 class="font-playfair text-lg font-semibold mb-4">Find Us</h4>
-                <div class="relative h-48 rounded-lg overflow-hidden bg-warm-cream/50">
-    <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
-        class="w-full h-full"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-    <div class="absolute inset-0 bg-gradient-to-r from-deep-brown/10 to-rich-brown/10 animate-pulse"></div>
-</div>
-                <a href="https://maps.google.com" target="_blank"
-                   class="mt-4 inline-block btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300">
-                    View on Google Maps
-                </a>
+                <div class="rounded-lg overflow-hidden shadow-md border border-warm-cream/50">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+                            width="100%"
+                            height="180"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="fade-in"></iframe>
+                </div>
+                <button id="get-directions"
+                        class="mt-4 w-full btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300"
+                        data-tippy-content="Get directions to Caffè Lilio">
+                    Get Directions
+                </button>
             </div>
         </div>
     </div>
@@ -151,8 +152,6 @@ ob_start();
 
 <!-- Page-specific CSS -->
 <style>
-            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-
     .animate-fade-in-down {
         animation: fadeInDown 0.6s ease-out;
     }
@@ -181,26 +180,24 @@ ob_start();
         from { opacity: 0; transform: translateX(20px); }
         to { opacity: 1; transform: translateX(0); }
     }
-    .otp-input {
-        width: 2.5rem;
-        text-align: center;
-        border: 1px solid #5D2F0F20;
-        border-radius: 0.5rem;
-        padding: 0.5rem;
-        background: #E8E0D5;
-        color: #5D2F0F;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .otp-input:focus {
-        border-color: #8B4513;
-        box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
-        outline: none;
+    .warm-gradient {
+        background: linear-gradient(to bottom, #E8E0D5, #F5F0E9);
     }
 </style>
 
 <!-- Page-specific JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
 <script>
+    // Initialize Tippy.js for tooltips
+    tippy('[data-tippy-content]', {
+        theme: 'light',
+        animation: 'scale',
+        placement: 'top'
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const contactForm = document.getElementById('contact-form');
         const nameInput = document.getElementById('name');
@@ -209,6 +206,7 @@ ob_start();
         const messageInput = document.getElementById('message');
         const submitButton = document.getElementById('submit-form');
         const clearButton = document.getElementById('clear-form');
+        const directionsButton = document.getElementById('get-directions');
 
         // Auto-focus on name input
         nameInput.focus();
@@ -364,11 +362,72 @@ ob_start();
             });
         });
 
+        // Get Directions functionality
+        directionsButton.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Get Directions to Caffè Lilio',
+                text: 'Enter your starting location or open Google Maps directly.',
+                input: 'text',
+                inputPlaceholder: 'Enter your starting address',
+                showCancelButton: true,
+                confirmButtonText: 'Get Directions',
+                cancelButtonText: 'Open Google Maps',
+                customClass: {
+                    confirmButton: 'btn-primary bg-rich-brown text-warm-cream px-4 py-2 rounded-lg',
+                    cancelButton: 'px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10'
+                },
+                inputValidator: (value) => {
+                    if (value && value.trim().length < 3) {
+                        return 'Please enter a valid starting address';
+                    }
+                }
+            }).then((result) => {
+                const destination = encodeURIComponent('Brgy. Rizal St. cr. 4th St., Liliw, Laguna, Philippines, 4004');
+                if (result.isConfirmed && result.value) {
+                    const origin = encodeURIComponent(result.value);
+                    window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`, '_blank');
+                } else if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+                    window.open('https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7', '_blank');
+                }
+            });
+        });
+
         // Smooth scroll to form if query parameter ?form=1 is present
         if (window.location.search.includes('form=1')) {
             document.querySelector('#contact-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     });
+
+    // Toast notification function (assumed to be in layout_customer.php)
+    function showToast(message, type) {
+        Swal.fire({
+            text: message,
+            icon: type,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: type === 'success' ? '#E8E0D5' : '#FEE2E2',
+            customClass: {
+                popup: 'font-baskerville text-deep-brown'
+            }
+        });
+    }
 </script>
 
 <?php
