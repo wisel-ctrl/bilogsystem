@@ -7,7 +7,7 @@ $page_title = "Menu - Caffè Lilio";
 ob_start();
 ?>
 
-    <style>
+    <!-- <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
         .font-playfair { font-family: 'Playfair Display', serif; }
@@ -269,7 +269,7 @@ ob_start();
             border-radius: 0.5rem;
             margin-top: auto;
         }
-    </style>
+    </style> -->
 
 
 
