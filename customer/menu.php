@@ -272,11 +272,6 @@ ob_start();
     </style>
 
 
-    <!-- Loading Progress Bar -->
-    <div id="nprogress-container"></div>
-
-    <!-- Toast Notifications Container -->
-    <div id="toast-container"></div>
 
     <!-- Main Content -->
         <!-- Menu Section -->
