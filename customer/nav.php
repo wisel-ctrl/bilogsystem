@@ -20,7 +20,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
             <!-- Desktop Navigation -->
             <div class="hidden md:flex flex-1 justify-center space-x-8">
-                <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                     Home
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
