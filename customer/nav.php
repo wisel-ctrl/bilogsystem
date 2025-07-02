@@ -1,20 +1,10 @@
 <?php
-require_once 'customer_auth.php';
-require_once '../db_connect.php';
-
-try {
-    $user_id = $_SESSION['user_id'];
-    $stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$user) {
-        throw new Exception("User not found");
-    }
-} catch(Exception $e) {
-    die("Error fetching user data: " . $e->getMessage());
-}
+// Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
+$stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
@@ -28,6 +18,7 @@ try {
                     </div>
                 </a>
             </div>
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex flex-1 justify-center space-x-8">
                 <a href="#dashboard" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                     Home
@@ -47,12 +38,15 @@ try {
                 </a>
             </div>
             <div class="flex-1 flex items-center justify-end">
+                <!-- Mobile Menu Button -->
                 <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
                         aria-label="Toggle menu"
                         id="mobile-menu-button">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
+
                 <div class="hidden md:flex items-center space-x-0">
+                    <!-- Notifications -->
                     <div class="relative group">
                         <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
                                 aria-label="Notifications"
@@ -72,6 +66,8 @@ try {
                             </div>
                         </div>
                     </div>
+
+                    <!-- User Profile -->
                     <div class="relative group">
                         <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                 aria-label="User menu"
@@ -101,6 +97,8 @@ try {
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Menu -->
         <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
             <div class="flex flex-col h-full">
                 <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
@@ -134,5 +132,4 @@ try {
                 </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>

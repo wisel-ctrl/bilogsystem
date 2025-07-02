@@ -1,6 +1,6 @@
 <?php
-// Start output buffering to capture content
-ob_start();
+require_once 'customer_auth.php';
+require_once '../db_connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +8,7 @@ ob_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Dashboard - Caffè Lilio</title>
+    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Caffè Lilio'; ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="../tailwind.js"></script>
@@ -168,23 +168,25 @@ ob_start();
 
         input:focus, select:focus, textarea:focus {
             border-color: #8B4513;
-            box-shadow: 0 0aturenewed 0 2px rgba(139, 69, 19, 0.2);
+            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
         }
     </style>
 </head>
 <body class="bg-warm-cream/50 text-deep-brown min-h-screen">
-    <?php require_once 'nav.php'; ?>
+    <?php include 'nav.php'; ?>
 
+    <!-- Loading Progress Bar -->
     <div id="nprogress-container"></div>
+
+    <!-- Toast Notifications Container -->
     <div id="toast-container"></div>
 
+    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <?php
-        // Output the content of the specific page
-        echo $content;
-        ?>
+        <?php echo $content; ?>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
@@ -326,12 +328,14 @@ ob_start();
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     NProgress.start();
+
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
                         target.scrollIntoView({
                             behavior: 'smooth'
                         });
                     }
+
                     setTimeout(() => {
                         NProgress.done();
                     }, 500);
@@ -354,7 +358,9 @@ ob_start();
                     </div>
                 `;
                 document.getElementById('toast-container').appendChild(toast);
+                
                 setTimeout(() => toast.classList.add('show'), 100);
+                
                 setTimeout(() => {
                     toast.classList.remove('show');
                     setTimeout(() => toast.remove(), 300);
@@ -379,6 +385,7 @@ ob_start();
                             </div>
                         </div>
                     `;
+                    
                     document.body.appendChild(confirmDialog);
                     document.body.classList.add('overflow-hidden');
 
@@ -403,6 +410,7 @@ ob_start();
                 button.addEventListener('click', function() {
                     showToast('Opening reservation editor...', 'success');
                     NProgress.start();
+                    
                     setTimeout(() => {
                         NProgress.done();
                     }, 1000);
@@ -439,8 +447,3 @@ ob_start();
     </script>
 </body>
 </html>
-
-<?php
-// Get the buffered content and clean the buffer
-$content = ob_get_clean();
-?>
