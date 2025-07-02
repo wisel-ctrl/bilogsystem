@@ -67,11 +67,10 @@ try {
 ob_end_flush();
 
 // Set page title
-$page_title = "My Reservations - Caffè Lilio";
+$page_title = "Menu - Caffè Lilio";
 
 // Capture content
 ob_start();
-?>
 ?>
 
 

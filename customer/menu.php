@@ -896,5 +896,7 @@ require_once 'customer_auth.php';
             console.log('Menu page initialized successfully');
         });
     </script>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include 'layout_customer.php';
+?>
