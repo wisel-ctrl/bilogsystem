@@ -687,7 +687,7 @@ ob_start();
                 // Validate number of pax
                 const numberOfPax = document.getElementById('numberOfPax');
                 const paxError = document.getElementById('paxError');
-                if (numberOfPax.value <= 0 || isNaN(numberOfPax.value) || numberOfPax.value > 30) {
+                if (numberOfPax.value <= 0 || isNaN(numberOfPax.value) || numberOfPax.value > 95) {
                     paxError.classList.remove('hidden');
                     numberOfPax.classList.add('border-red-500');
                     isValid = false;
