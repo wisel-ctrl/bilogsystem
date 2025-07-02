@@ -10,7 +10,7 @@ ob_start();
 ?>
 
 <!-- Hero Section with ::after overlay -->
-<section class="relative py-12 mb-12 overflow-hidden bg-cover bg-center" 
+<section class="relative py-12 mb-12 overflow-hidden bg-cover bg-center rounded-md" 
          style="background-image: url(/images/bg4.jpg);">
     <!-- ::after pseudo-element for overlay -->
     <div class="absolute inset-0 bg-black opacity-70"></div>
@@ -22,7 +22,7 @@ ob_start();
     </div>
     
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <h2 class="font-playfair text-5xl font-bold text-rich-brown mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
+        <h2 class="font-playfair text-5xl font-bold text-rich-brown/80 mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
         <p class="font-baskerville text-xl text-warm-cream max-w-2xl mx-auto animate-fade-in-up">
             Have questions or feedback? We're here to help you plan your perfect dining experience.
         </p>
