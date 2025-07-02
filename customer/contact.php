@@ -22,8 +22,8 @@ ob_start();
     </div>
     
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <h2 class="font-playfair text-5xl font-bold text-warm-cream mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
-        <p class="font-baskerville text-xl text-white/80 max-w-2xl mx-auto animate-fade-in-up">
+        <h2 class="font-playfair text-5xl font-bold text-rich-brown mb-4 animate-fade-in-down">Contact Caffè Lilio</h2>
+        <p class="font-baskerville text-xl text-warm-cream max-w-2xl mx-auto animate-fade-in-up">
             Have questions or feedback? We're here to help you plan your perfect dining experience.
         </p>
     </div>
