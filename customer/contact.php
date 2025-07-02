@@ -147,7 +147,7 @@ ob_start();
                             class="fade-in"></iframe>
                 </div>
                 <button id="get-directions"
-                        class="mt-4 w-full btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300"
+                        class="mt-4 w-full btn-primary bg-warm-cream text-rich-brown px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300"
                         data-tippy-content="Get directions to Caffè Lilio">
                     Get Directions
                 </button>
