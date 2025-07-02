@@ -34,7 +34,7 @@ ob_start();
                     <input type="text" id="name" name="name" required
                            class="w-full px-4 py-3 rounded-lg border border-deep-brown/20 bg-warm-cream/50 text-deep-brown placeholder-transparent focus:outline-none focus:border-rich-brown transition-all peer"
                            placeholder="Your Name" data-tippy-content="Enter your full name">
-                    <label for="name" class="absolute left-4 -top-2.5 px-1 bg-white/70 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
+                    <label for="name" class="absolute left-4 -top-2.5 px-1 text-deep-brown/80 text-sm font-baskerville transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
                         Name
                     </label>
                     <p class="text-red-600 text-sm mt-1 hidden" id="name-error">Name must be at least 2 characters</p>
