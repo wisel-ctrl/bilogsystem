@@ -11,7 +11,7 @@ ob_start();
 
 <!-- Hero Section with ::after overlay -->
 <section class="relative py-12 mb-12 overflow-hidden bg-cover bg-center" 
-         style="background-image: url(images/bg4.jpg);">
+         style="background-image: url(/images/bg4.jpg);">
     <!-- ::after pseudo-element for overlay -->
     <div class="absolute inset-0 bg-black opacity-80"></div>
     
