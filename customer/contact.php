@@ -151,6 +151,8 @@ ob_start();
 
 <!-- Page-specific CSS -->
 <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
     .animate-fade-in-down {
         animation: fadeInDown 0.6s ease-out;
     }
