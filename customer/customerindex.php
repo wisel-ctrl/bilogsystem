@@ -185,7 +185,7 @@ ob_start();
             <span class="text-2xl transform transition-transform group-hover:rotate-12">📅</span>
         </div>
         <p class="font-baskerville mb-4 text-warm-cream">Book a table or plan your next event with us.</p>
-        <a href="bookingpage.php" class="btn-primary bg-warm-cream text-deep-brown px-6 py-3 rounded-lg font-baskerville hover:bg-rich-brown transition-all duration-300 w-full flex items-center justify-center space-x-2">
+        <a href="bookingpage.php" class="btn-primary bg-warm-cream text-deep-brown px-6 py-3 rounded-lg font-baskerville hover:bg-warm-cream/80 transition-all duration-300 w-full flex items-center justify-center space-x-2">
             <span>Make Reservation</span>
             <i class="fas fa-arrow-right transition-transform transform group-hover:translate-x-1"></i>
         </a>
