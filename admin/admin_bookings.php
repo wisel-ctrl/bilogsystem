@@ -788,7 +788,7 @@
     </script>
 
     <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
         // Initialize DataTable
         var restaurantTable = $('#restaurant-bookings-table').DataTable({
             processing: true,
@@ -842,7 +842,7 @@
             ],
             responsive: true,
             order: [[4, 'desc']],
-            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"fB>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
+            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"Bf>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
             buttons: [
                 {
                     extend: 'excel',
@@ -876,60 +876,6 @@
                     next: "Next",
                     previous: "Previous"
                 }
-            },
-            initComplete: function() {
-                // Add filter menu button after initialization
-                $('.dataTables_filter').append(
-                    '<div class="filter-menu-container">' +
-                    '<button class="filter-menu-btn" id="filter-menu-btn" title="Filter by Menu">' +
-                    '<i class="fas fa-filter"></i>' +
-                    '</button>' +
-                    '<div class="filter-menu-dropdown" id="filter-menu-dropdown">' +
-                    '<div class="filter-menu-dropdown-header">Filter by Menu</div>' +
-                    '<div class="filter-menu-dropdown-body" id="filter-menu-options">' +
-                    '<button class="filter-menu-option active" data-value="">All Menus</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
-                );
-                
-                // Load menu filter options via AJAX
-                $.ajax({
-                    url: 'booking_handlers/fetch_menu.php',
-                    method: 'GET',
-                    success: function(response) {
-                        response.forEach(function(menu) {
-                            $('#filter-menu-options').append(
-                                '<button class="filter-menu-option" data-value="' + menu + '">' + menu + '</button>'
-                            );
-                        });
-                    }
-                });
-                
-                // Toggle filter menu dropdown
-                $('#filter-menu-btn').on('click', function(e) {
-                    e.stopPropagation();
-                    $(this).toggleClass('active');
-                    $('#filter-menu-dropdown').toggleClass('show');
-                });
-                
-                // Filter menu option click handler
-                $(document).on('click', '.filter-menu-option', function() {
-                    const value = $(this).data('value');
-                    $('.filter-menu-option').removeClass('active');
-                    $(this).addClass('active');
-                    restaurantTable.column(2).search(value).draw();
-                    $('#filter-menu-dropdown').removeClass('show');
-                    $('#filter-menu-btn').removeClass('active');
-                });
-                
-                // Close dropdown when clicking outside
-                $(document).on('click', function(e) {
-                    if (!$(e.target).closest('.filter-menu-container').length) {
-                        $('#filter-menu-dropdown').removeClass('show');
-                        $('#filter-menu-btn').removeClass('active');
-                    }
-                });
             }
         });
         
