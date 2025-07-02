@@ -130,11 +130,16 @@ ob_start();
             <div class="mt-6">
                 <h4 class="font-playfair text-lg font-semibold mb-4">Find Us</h4>
                 <div class="relative h-48 rounded-lg overflow-hidden bg-warm-cream/50">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <p class="font-baskerville text-deep-brown/80">Map Placeholder (Google Maps API)</p>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-deep-brown/10 to-rich-brown/10 animate-pulse"></div>
-                </div>
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5834.00236310445!2d121.43328019283992!3d14.13211205286109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5bc02c4f1977%3A0x88727b5a78560087!2sCaff%C3%A8%20Lilio!5e0!3m2!1sen!2sph!4v1744473249809!5m2!1sen!2sph"
+        class="w-full h-full"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    <div class="absolute inset-0 bg-gradient-to-r from-deep-brown/10 to-rich-brown/10 animate-pulse"></div>
+</div>
                 <a href="https://maps.google.com" target="_blank"
                    class="mt-4 inline-block btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300">
                     View on Google Maps
