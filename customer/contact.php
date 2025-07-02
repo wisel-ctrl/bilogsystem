@@ -371,7 +371,7 @@ ob_start();
         // Get Directions functionality
         directionsButton.addEventListener('click', () => {
             Swal.fire({
-                // title: 'Get Directions to Caffè Lilio',
+                title: 'Get Directions to Caffè Lilio',
                 text: 'Enter your starting location or open Google Maps directly.',
                 input: 'text',
                 inputPlaceholder: 'Enter your starting address',
