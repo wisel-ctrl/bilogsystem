@@ -15,81 +15,161 @@
 
 
 <style>
-    #profileMenu {
-        z-index: 49 !important;
-        transform: translateY(0) !important;
+    /* Custom DataTables styles */
+    .dataTables_wrapper .dataTables_filter {
+        float: right !important;
+        margin-bottom: 1rem !important;
     }
     
-    /* Remove conflicting DataTables styles */
-    .dataTables_wrapper .dataTables_filter {
-        float: none !important;
-        text-align: left !important;
-        margin-bottom: 1rem !important;
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        background-color: white;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        width: 220px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+        padding-right: 2.5rem;
+    }
+    
+    .dataTables_wrapper .dataTables_filter input:focus {
+        outline: none;
+        border-color: #d97706;
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
     }
     
     .dataTables_wrapper .dataTables_length {
-        float: none !important;
+        float: left !important;
         margin-bottom: 1rem !important;
     }
     
-    /* Style for the filter container */
-    .filter-container {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    /* Style for the menu filter */
-    #menu-filter {
+    .dataTables_wrapper .dataTables_length select {
         border: 1px solid #d1d5db;
         border-radius: 0.375rem;
-        padding: 0.375rem 0.75rem;
+        padding: 0.5rem 2rem 0.5rem 1rem;
         font-size: 0.875rem;
-        line-height: 1.25rem;
-        color: #374151;
         background-color: white;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
     }
     
-    @media (max-width: 640px) {
-        table {
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-        thead {
-            display: none;
-        }
-        tbody tr {
-            display: block;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        tbody td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            text-align: left;
-        }
-        tbody td:before {
-            content: attr(data-label);
-            font-weight: 600;
-            color: #374151;
-            width: 40%;
-            min-width: 120px;
+    /* Filter menu styles */
+    .filter-menu-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 1rem;
+    }
+    
+    .filter-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+        background-color: white;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .filter-menu-btn:hover {
+        background-color: #f3f4f6;
+        color: #4b5563;
+    }
+    
+    .filter-menu-btn.active {
+        background-color: #fef3c7;
+        border-color: #f59e0b;
+        color: #d97706;
+    }
+    
+    .filter-menu-dropdown {
+        position: absolute;
+        right: 0;
+        z-index: 10;
+        margin-top: 0.5rem;
+        width: 200px;
+        border-radius: 0.375rem;
+        border: 1px solid #e5e7eb;
+        background-color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+    }
+    
+    .filter-menu-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .filter-menu-dropdown-header {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+    }
+    
+    .filter-menu-dropdown-body {
+        padding: 0.5rem 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .filter-menu-option {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        text-align: left;
+        font-size: 0.875rem;
+        color: #374151;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.1s ease;
+    }
+    
+    .filter-menu-option:hover {
+        background-color: #f3f4f6;
+    }
+    
+    .filter-menu-option.active {
+        background-color: #fef3c7;
+        color: #d97706;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .dataTables_wrapper .dataTables_filter {
+            float: none !important;
+            text-align: left !important;
+            margin-top: 1rem;
         }
         
-        /* Adjust filter container for mobile */
-        .filter-container {
-            flex-direction: column;
-            align-items: flex-start;
+        .dataTables_wrapper .dataTables_length {
+            float: none !important;
+        }
+        
+        .filter-menu-container {
+            margin-left: 0;
+            margin-top: 1rem;
         }
     }
 </style>
 
-                <!-- Restaurant Bookings Section -->
                 <div class="dashboard-card animate-on-scroll rounded-lg shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-deep-brown flex items-center">
@@ -98,16 +178,6 @@
                         </h3>
                     </div>
                     <div class="overflow-x-auto p-4">
-                        <!-- Filter container moved inside the card -->
-                        <div class="filter-container">
-                            <div>
-                                <label class="mr-2 text-sm text-gray-600">Filter by Menu:</label>
-                                <select id="menu-filter" class="border rounded px-3 py-1 text-sm">
-                                    <option value="">All Menus</option>
-                                </select>
-                            </div>
-                        </div>
-                        
                         <table id="restaurant-bookings-table" class="w-full stripe hover" style="width:100%">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -718,7 +788,8 @@
     </script>
 
     <script>
-    $(document).ready(function() {
+     $(document).ready(function() {
+        // Initialize DataTable
         var restaurantTable = $('#restaurant-bookings-table').DataTable({
             processing: true,
             serverSide: true,
@@ -771,7 +842,7 @@
             ],
             responsive: true,
             order: [[4, 'desc']],
-            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex-1"f><"flex items-center gap-4"lB>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
+            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex items-center gap-4"l><"flex items-center gap-4"fB>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
             buttons: [
                 {
                     extend: 'excel',
@@ -792,9 +863,9 @@
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             pageLength: 10,
             language: {
-                search: "_INPUT_",
+                search: "",
                 searchPlaceholder: "Search bookings...",
-                lengthMenu: "Show _MENU_ bookings",
+                lengthMenu: "Show _MENU_",
                 info: "Showing _START_ to _END_ of _TOTAL_ bookings",
                 infoEmpty: "No bookings available",
                 infoFiltered: "(filtered from _MAX_ total bookings)",
@@ -807,23 +878,65 @@
                 }
             },
             initComplete: function() {
+                // Add filter menu button after initialization
+                $('.dataTables_filter').append(
+                    '<div class="filter-menu-container">' +
+                    '<button class="filter-menu-btn" id="filter-menu-btn" title="Filter by Menu">' +
+                    '<i class="fas fa-filter"></i>' +
+                    '</button>' +
+                    '<div class="filter-menu-dropdown" id="filter-menu-dropdown">' +
+                    '<div class="filter-menu-dropdown-header">Filter by Menu</div>' +
+                    '<div class="filter-menu-dropdown-body" id="filter-menu-options">' +
+                    '<button class="filter-menu-option active" data-value="">All Menus</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+                
                 // Load menu filter options via AJAX
                 $.ajax({
                     url: 'booking_handlers/fetch_menu.php',
                     method: 'GET',
                     success: function(response) {
                         response.forEach(function(menu) {
-                            $('#menu-filter').append(`<option value="${menu}">${menu}</option>`);
+                            $('#filter-menu-options').append(
+                                '<button class="filter-menu-option" data-value="' + menu + '">' + menu + '</button>'
+                            );
                         });
+                    }
+                });
+                
+                // Toggle filter menu dropdown
+                $('#filter-menu-btn').on('click', function(e) {
+                    e.stopPropagation();
+                    $(this).toggleClass('active');
+                    $('#filter-menu-dropdown').toggleClass('show');
+                });
+                
+                // Filter menu option click handler
+                $(document).on('click', '.filter-menu-option', function() {
+                    const value = $(this).data('value');
+                    $('.filter-menu-option').removeClass('active');
+                    $(this).addClass('active');
+                    restaurantTable.column(2).search(value).draw();
+                    $('#filter-menu-dropdown').removeClass('show');
+                    $('#filter-menu-btn').removeClass('active');
+                });
+                
+                // Close dropdown when clicking outside
+                $(document).on('click', function(e) {
+                    if (!$(e.target).closest('.filter-menu-container').length) {
+                        $('#filter-menu-dropdown').removeClass('show');
+                        $('#filter-menu-btn').removeClass('active');
                     }
                 });
             }
         });
-
-        // Menu filter event
-        $('#menu-filter').on('change', function() {
-            restaurantTable.column(2).search(this.value).draw();
-        });
+        
+        // Move the search label inside the input as placeholder
+        $('.dataTables_filter label').contents().filter(function() {
+            return this.nodeType === 3;
+        }).remove();
     });
 
     // Helper function to format datetime
