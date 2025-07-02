@@ -589,5 +589,5 @@ ob_start();
 <?php
 // Capture the content and include the layout
 $content = ob_get_clean();
-require_once 'layout.php';
+require_once 'layout_customer.php';
 ?>
