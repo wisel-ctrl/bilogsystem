@@ -7,7 +7,269 @@ $page_title = "Menu - Caffè Lilio";
 ob_start();
 ?>
 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+        
+        /* Enhanced hover effect */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(93, 47, 15, 0.15);
+        }
 
+        /* Improved background gradients */
+        .bg-warm-gradient {
+            background: linear-gradient(135deg, #E8E0D5, #d4c8b9);
+        }
+
+        .bg-card {
+            background: linear-gradient(145deg, #E8E0D5, #d6c7b6);
+            backdrop-filter: blur(8px);
+        }
+
+        .bg-nav {
+            background: linear-gradient(to bottom, #5D2F0F, #4a260d);
+        }
+
+        /* Menu card improvements */
+        .menu-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .menu-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card-description {
+            flex: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.5;
+            min-height: 4.5em; /* 3 lines * 1.5 line-height */
+        }
+
+        .menu-card-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        /* Consistent button sizing */
+        .order-btn {
+            width: 100%;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Loading skeleton animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #E8E0D5 25%, #d4c8b9 50%, #E8E0D5 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Accessibility improvements */
+        :focus {
+            outline: 2px solid #8B4513;
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #E8E0D5;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D2F0F;
+        }
+
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #E8E0D5;
+            box-shadow: 0 4px 12px rgba(93, 47, 15, 0.15);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Button animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            background: #8B4513;
+            color: #E8E0D5;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(232, 224, 213, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:active::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        /* Improved mobile menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Skeleton loading placeholder */
+        .skeleton-text {
+            height: 1em;
+            background: #e0e0e0;
+            margin: 0.5em 0;
+            border-radius: 4px;
+        }
+
+        /* Improved form inputs */
+        input, select, textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+        }
+
+        /* Price display */
+        .price-display {
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #5D2F0F;
+        }
+
+        /* Package type badge */
+        .package-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #5D2F0F;
+            color: #E8E0D5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive grid improvements */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .menu-card {
+                min-height: 350px;
+            }
+            
+            .package-badge {
+                top: 0.75rem;
+                right: 0.75rem;
+                font-size: 0.625rem;
+                padding: 0.125rem 0.5rem;
+            }
+        }
+
+        /* Loading states */
+        .loading-card {
+            min-height: 400px;
+            background: linear-gradient(145deg, #E8E0D5, #d6c7b6);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .loading-header {
+            height: 1.5rem;
+            background: #d4c8b9;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            height: 1rem;
+            background: #d4c8b9;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-button {
+            height: 3rem;
+            background: #d4c8b9;
+            border-radius: 0.5rem;
+            margin-top: auto;
+        }
+    </style>
 
 
     <!-- Loading Progress Bar -->
