@@ -11,9 +11,9 @@ ob_start();
 
 <!-- Hero Section with ::after overlay -->
 <section class="relative py-12 mb-12 overflow-hidden bg-cover bg-center" 
-         style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+         style="background-image: url(images/bg4.jpg);">
     <!-- ::after pseudo-element for overlay -->
-    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="absolute inset-0 bg-black opacity-80"></div>
     
     <!-- Rest of your content remains the same as above -->
     <div class="absolute inset-0 opacity-10 z-10">
