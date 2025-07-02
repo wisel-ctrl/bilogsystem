@@ -422,6 +422,13 @@ ob_start();
         </div>
     </footer>
 
+    <?php
+    $page_content = ob_get_clean();
+
+    // Capture page-specific scripts
+    ob_start();
+?>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips
