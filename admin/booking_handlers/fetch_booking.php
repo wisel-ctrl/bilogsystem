@@ -1,5 +1,5 @@
 <?php
-require_once '../db_connect.php';
+require_once '../../db_connect.php';
 
 // Set the timezone to Philippine Time
 date_default_timezone_set('Asia/Manila');

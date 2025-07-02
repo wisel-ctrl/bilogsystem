@@ -674,7 +674,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'booking_handlers/fetch_bookings.php', // You'll need to create this file
+            url: 'booking_handlers/fetch_booking.php', // You'll need to create this file
             type: 'POST',
             data: {
                 status: 'pending' // Only fetch pending bookings
@@ -761,7 +761,7 @@
 
     // Load menu filter options via AJAX
     $.ajax({
-        url: 'booking_handlers/fetch_menus.php', // Create this endpoint to fetch distinct menu packages
+        url: 'booking_handlers/fetch_menu.php', // Create this endpoint to fetch distinct menu packages
         method: 'GET',
         success: function(response) {
             response.forEach(function(menu) {
