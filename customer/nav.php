@@ -32,7 +32,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     Menu
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                <a href="contact.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                     Contact
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
