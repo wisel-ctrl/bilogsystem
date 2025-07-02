@@ -1,40 +1,13 @@
 <?php
 require_once 'customer_auth.php';
+// Set page title
+$page_title = "Bookings - Caffè Lilio";
+
+// Capture content
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu - Caffè Lilio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="../tailwind.js"></script>
-    <!-- Add loading animation library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-    <!-- Add tooltip library -->
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'warm-cream': '#E8E0D5',
-                        'rich-brown': '#8B4513',
-                        'deep-brown': '#5D2F0F',
-                        'accent-brown': '#A0522D'
-                    },
-                    fontFamily: {
-                        'playfair': ['Playfair Display', serif],
-                        'baskerville': ['Libre Baskerville', serif]
-                    }
-                }
-            }
-        }
-    </script>
+
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -298,146 +271,12 @@ require_once 'customer_auth.php';
             margin-top: auto;
         }
     </style>
-</head>
-<body class="bg-warm-cream text-deep-brown min-h-screen">
-    <!-- Navigation -->
-    <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex-1 flex items-center justify-start">
-                    <a href="customerindex.php" class="flex items-center space-x-2 hover:opacity-90 transition-opacity" aria-label="Home">
-                        <div>
-                            <h1 class="font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
-                            <p class="text-xs tracking-widest text-deep-brown/90">RISTORANTE</p>
-                        </div>
-                    </a>
-                </div>
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex flex-1 justify-center space-x-8">
-                    <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        Home
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                    </a>
-                    <a href="customerindex.php#reservations" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        My Reservations
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                    </a>
-                    <a href="menu.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        Menu
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                    </a>
-                    <a href="customerindex.php#contact" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
-                        Contact
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-deep-brown transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                    </a>
-                </div>
-                <div class="flex-1 flex items-center justify-end">
-                    <!-- Mobile Menu Button -->
-                    <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
-                            aria-label="Toggle menu"
-                            id="mobile-menu-button">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
 
-                    <div class="hidden md:flex items-center space-x-0">
-                        <!-- Notifications -->
-                        <div class="relative group">
-                            <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
-                                    aria-label="Notifications"
-                                    id="notifications-button">
-                                <i class="fas fa-bell text-deep-brown"></i>
-                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                            </button>
-                            <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
-                                <div class="px-4 py-2 border-b border-deep-brown/10">
-                                    <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
-                                </div>
-                                <div class="max-h-96 overflow-y-auto">
-                                    <!-- Notification items will be dynamically loaded -->
-                                    <div class="animate-pulse p-4">
-                                        <div class="skeleton-text w-3/4"></div>
-                                        <div class="skeleton-text w-1/2"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- User Profile -->
-                        <div class="relative group">
-                            <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
-                                    aria-label="User menu"
-                                    id="user-menu-button">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
-                                     alt="Profile" 
-                                     class="w-8 h-8 rounded-full border border-deep-brown/30">
-                                <span class="font-baskerville">John Doe</span>
-                                <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
-                            </a>
-                            <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
-                                <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
-                                    <i class="fas fa-user-circle w-5"></i>
-                                    <span>Profile Settings</span>
-                                </a>
-                                <a href="#notifications" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
-                                    <i class="fas fa-bell w-5"></i>
-                                    <span>Notifications</span>
-                                </a>
-                                <hr class="my-2 border-deep-brown/20">
-                                <a href="../logout.php" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
-                                    <i class="fas fa-sign-out-alt w-5"></i>
-                                    <span>Logout</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Mobile Menu -->
-        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
-            <div class="flex flex-col h-full">
-                <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
-                    <h2 class="font-playfair text-xl text-deep-brown">Menu</h2>
-                    <button class="text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
-                            aria-label="Close menu"
-                            id="close-mobile-menu">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-                </div>
-                <nav class="flex-1 overflow-y-auto p-4">
-                    <div class="space-y-4">
-                        <a href="customerindex.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-home w-8"></i> Home
-                        </a>
-                        <a href="customerindex.php#reservations" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-calendar-alt w-8"></i> My Reservations
-                        </a>
-                        <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-utensils w-8"></i> Menu
-                        </a>
-                        <a href="customerindex.php#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
-                            <i class="fas fa-envelope w-8"></i> Contact
-                        </a>
-                    </div>
-                </nav>
-                <div class="p-4 border-t border-warm-cream">
-                    <a href="../logout.php" class="flex items-center text-red-600 hover:text-red-500 transition-colors duration-300">
-                        <i class="fas fa-sign-out-alt w-8"></i> Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Loading Progress Bar -->
-    <div id="nprogress-container"></div>
-
-    <!-- Toast Notifications Container -->
-    <div id="toast-container"></div>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Menu Section -->
         <section class="mb-12">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
@@ -491,7 +330,6 @@ require_once 'customer_auth.php';
                 </div>
             </div>
         </section>
-    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1492,5 +1330,8 @@ require_once 'customer_auth.php';
             console.log('Menu page initialized successfully');
         });
     </script>
-</body>
-</html>
+    
+    <?php
+$content = ob_get_clean();
+include 'layout_customer.php';
+?>
