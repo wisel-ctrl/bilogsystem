@@ -678,6 +678,10 @@
             type: 'POST',
             data: {
                 status: 'pending' // Only fetch pending bookings
+            },
+            error: function(xhr, error, thrown) {
+                console.log('AJAX Error:', xhr.responseText);
+                alert('Error loading data. See console for details.');
             }
         },
         columns: [
