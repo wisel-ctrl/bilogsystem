@@ -15,40 +15,79 @@
 
 
 <style>
-            #profileMenu {
-            z-index: 49 !important;
-            transform: translateY(0) !important;
+    #profileMenu {
+        z-index: 49 !important;
+        transform: translateY(0) !important;
+    }
+    
+    /* Remove conflicting DataTables styles */
+    .dataTables_wrapper .dataTables_filter {
+        float: none !important;
+        text-align: left !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .dataTables_wrapper .dataTables_length {
+        float: none !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Style for the filter container */
+    .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Style for the menu filter */
+    #menu-filter {
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: #374151;
+        background-color: white;
+    }
+    
+    @media (max-width: 640px) {
+        table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
         }
-                        @media (max-width: 640px) {
-                            table {
-                                display: block;
-                                overflow-x: auto;
-                                white-space: nowrap;
-                            }
-                            thead {
-                                display: none;
-                            }
-                            tbody tr {
-                                display: block;
-                                margin-bottom: 1rem;
-                                border-bottom: 2px solid #e5e7eb;
-                            }
-                            tbody td {
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: center;
-                                padding: 0.75rem 1rem;
-                                text-align: left;
-                            }
-                            tbody td:before {
-                                content: attr(data-label);
-                                font-weight: 600;
-                                color: #374151;
-                                width: 40%;
-                                min-width: 120px;
-                            }
-                        }
-                    </style>
+        thead {
+            display: none;
+        }
+        tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        tbody td:before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: #374151;
+            width: 40%;
+            min-width: 120px;
+        }
+        
+        /* Adjust filter container for mobile */
+        .filter-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
 
                 <!-- Restaurant Bookings Section -->
                 <div class="dashboard-card animate-on-scroll rounded-lg shadow-sm">
@@ -59,6 +98,16 @@
                         </h3>
                     </div>
                     <div class="overflow-x-auto p-4">
+                        <!-- Filter container moved inside the card -->
+                        <div class="filter-container">
+                            <div>
+                                <label class="mr-2 text-sm text-gray-600">Filter by Menu:</label>
+                                <select id="menu-filter" class="border rounded px-3 py-1 text-sm">
+                                    <option value="">All Menus</option>
+                                </select>
+                            </div>
+                        </div>
+                        
                         <table id="restaurant-bookings-table" class="w-full stripe hover" style="width:100%">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -669,134 +718,132 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-    var restaurantTable = $('#restaurant-bookings-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: 'booking_handlers/fetch_booking.php', // You'll need to create this file
-            type: 'POST',
-            data: {
-                status: 'pending' // Only fetch pending bookings
-            },
-            error: function(xhr, error, thrown) {
-                console.log('AJAX Error:', xhr.responseText);
-                alert('Error loading data. See console for details.');
-            }
-        },
-        columns: [
-            { data: 'customer_name', name: 'customer_name' },
-            { data: 'contact_number', name: 'contact_number' },
-            { data: 'package_name', name: 'package_name' },
-            { data: 'pax', name: 'pax' },
-            { 
-                data: 'reservation_datetime', 
-                name: 'reservation_datetime',
-                render: function(data, type, row) {
-                    return formatDateTime(data);
+    $(document).ready(function() {
+        var restaurantTable = $('#restaurant-bookings-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: 'booking_handlers/fetch_booking.php',
+                type: 'POST',
+                data: {
+                    status: 'pending'
+                },
+                error: function(xhr, error, thrown) {
+                    console.log('AJAX Error:', xhr.responseText);
+                    alert('Error loading data. See console for details.');
                 }
             },
-            { 
-                data: 'booking_id',
-                name: 'actions',
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row) {
-                    return `
-                        <button onclick="openBookingDetails(
-                            '${row.booking_id}',
-                            '${escapeSingleQuote(row.customer_name)}',
-                            '${row.contact_number}',
-                            '${escapeSingleQuote(row.package_name)}',
-                            '₱${parseFloat(row.totalPrice).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}',
-                            '${formatDateTime(row.reservation_datetime)}',
-                            '${row.pax}',
-                            '${escapeSingleQuote(row.notes || 'No notes')}'
-                        )" class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
-                            <i class="fas fa-eye text-sm"></i>
-                            <span>Details</span>
-                        </button>
-                    `;
+            columns: [
+                { data: 'customer_name', name: 'customer_name' },
+                { data: 'contact_number', name: 'contact_number' },
+                { data: 'package_name', name: 'package_name' },
+                { data: 'pax', name: 'pax' },
+                { 
+                    data: 'reservation_datetime', 
+                    name: 'reservation_datetime',
+                    render: function(data, type, row) {
+                        return formatDateTime(data);
+                    }
+                },
+                { 
+                    data: 'booking_id',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return `
+                            <button onclick="openBookingDetails(
+                                '${row.booking_id}',
+                                '${escapeSingleQuote(row.customer_name)}',
+                                '${row.contact_number}',
+                                '${escapeSingleQuote(row.package_name)}',
+                                '₱${parseFloat(row.totalPrice).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}',
+                                '${formatDateTime(row.reservation_datetime)}',
+                                '${row.pax}',
+                                '${escapeSingleQuote(row.notes || 'No notes')}'
+                            )" class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                                <i class="fas fa-eye text-sm"></i>
+                                <span>Details</span>
+                            </button>
+                        `;
+                    }
                 }
-            }
-        ],
-        responsive: true,
-        order: [[4, 'desc']], // Default sort by reservation_datetime descending
-        dom: '<"flex flex-col md:flex-row md:items-center md:justify-between"<"mb-4 md:mb-0"l><"mb-4 md:mb-0"f><"flex"B>>rt<"flex flex-col md:flex-row md:items-center md:justify-between"ip>',
-        buttons: [
-            {
-                extend: 'excel',
-                text: '<i class="fas fa-file-excel mr-2"></i> Excel',
-                className: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg'
+            ],
+            responsive: true,
+            order: [[4, 'desc']],
+            dom: '<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"<"flex-1"f><"flex items-center gap-4"lB>>rt<"flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4"ip>',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel mr-2"></i> Excel',
+                    className: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf mr-2"></i> PDF',
+                    className: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print mr-2"></i> Print',
+                    className: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg'
+                }
+            ],
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            pageLength: 10,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search bookings...",
+                lengthMenu: "Show _MENU_ bookings",
+                info: "Showing _START_ to _END_ of _TOTAL_ bookings",
+                infoEmpty: "No bookings available",
+                infoFiltered: "(filtered from _MAX_ total bookings)",
+                zeroRecords: "No matching bookings found",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
+                }
             },
-            {
-                extend: 'pdf',
-                text: '<i class="fas fa-file-pdf mr-2"></i> PDF',
-                className: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg ml-2'
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print mr-2"></i> Print',
-                className: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg ml-2'
+            initComplete: function() {
+                // Load menu filter options via AJAX
+                $.ajax({
+                    url: 'booking_handlers/fetch_menu.php',
+                    method: 'GET',
+                    success: function(response) {
+                        response.forEach(function(menu) {
+                            $('#menu-filter').append(`<option value="${menu}">${menu}</option>`);
+                        });
+                    }
+                });
             }
-        ],
-        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-        pageLength: 10,
-        language: {
-            search: "_INPUT_",
-            searchPlaceholder: "Search bookings...",
-            lengthMenu: "Show _MENU_ bookings",
-            info: "Showing _START_ to _END_ of _TOTAL_ bookings",
-            infoEmpty: "No bookings available",
-            infoFiltered: "(filtered from _MAX_ total bookings)",
-            zeroRecords: "No matching bookings found",
-            paginate: {
-                first: "First",
-                last: "Last",
-                next: "Next",
-                previous: "Previous"
-            }
-        }
+        });
+
+        // Menu filter event
+        $('#menu-filter').on('change', function() {
+            restaurantTable.column(2).search(this.value).draw();
+        });
     });
 
-    // Add custom filter for menu package
-    $('<div class="flex items-center mb-4"><label class="mr-2 text-sm text-gray-600">Filter by Menu:</label><select id="menu-filter" class="border rounded px-3 py-1 text-sm"><option value="">All Menus</option></select></div>')
-        .insertBefore('#restaurant-bookings-table_wrapper .dataTables_filter');
+    // Helper function to format datetime
+    function formatDateTime(datetimeString) {
+        if (!datetimeString) return '';
+        
+        const date = new Date(datetimeString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
 
-    // Load menu filter options via AJAX
-    $.ajax({
-        url: 'booking_handlers/fetch_menu.php', // Create this endpoint to fetch distinct menu packages
-        method: 'GET',
-        success: function(response) {
-            response.forEach(function(menu) {
-                $('#menu-filter').append(`<option value="${menu}">${menu}</option>`);
-            });
-        }
-    });
-
-    $('#menu-filter').on('change', function() {
-        restaurantTable.column(2).search(this.value).draw();
-    });
-});
-
-// Helper function to format datetime
-function formatDateTime(datetimeString) {
-    if (!datetimeString) return '';
-    
-    const date = new Date(datetimeString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
-
-// Helper function to escape single quotes for JS
-function escapeSingleQuote(str) {
-    return str.replace(/'/g, "\\'");
-}
+    // Helper function to escape single quotes for JS
+    function escapeSingleQuote(str) {
+        return str.replace(/'/g, "\\'");
+    }
     </script>
 <?php
 $page_scripts = ob_get_clean();
