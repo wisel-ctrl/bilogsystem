@@ -1,8 +1,31 @@
 <?php
 require_once 'customer_auth.php'; 
+require_once '../db_connect.php'; // Include PDO database connection
+
+// Fetch user data from users_tb
+$user_id = $_SESSION['user_id']; // Assuming customer_auth.php sets this
+try {
+    $query = "SELECT first_name, middle_name, last_name, suffix, username, contact_number 
+              FROM users_tb 
+              WHERE id = :user_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        die("User not found.");
+    }
+} catch (PDOException $e) {
+    die("Query failed: " . $e->getMessage());
+}
+
+// Construct full name for display
+$fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
 
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,23 +114,15 @@ require_once 'customer_auth.php';
             font-weight: 600;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            font-weight: 500;
+        input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
-        .status-confirmed { background-color: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
-        .status-pending { background-color: #FEF3C7; color: #92400E; border: 1px solid #FBBF24; }
-        .status-completed { background-color: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
-        .status-cancelled { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
-
     </style>
 </head>
 <body class="bg-warm-cream text-deep-brown min-h-screen font-baskerville">
-    <!-- Navigation -->
+    <!-- Navigation (unchanged) -->
     <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -119,7 +134,6 @@ require_once 'customer_auth.php';
                         </div>
                     </a>
                 </div>
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
                     <a href="customerindex.php" class="font-baskerville hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Home
@@ -139,15 +153,12 @@ require_once 'customer_auth.php';
                     </a>
                 </div>
                 <div class="flex-1 flex items-center justify-end">
-                    <!-- Mobile Menu Button -->
                     <button class="md:hidden text-deep-brown hover:text-deep-brown/80 transition-colors duration-300" 
                             aria-label="Toggle menu"
                             id="mobile-menu-button">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
-
                     <div class="hidden md:flex items-center space-x-0">
-                        <!-- Notifications -->
                         <div class="relative group">
                             <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
                                     aria-label="Notifications"
@@ -160,7 +171,6 @@ require_once 'customer_auth.php';
                                     <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
                                 </div>
                                 <div class="max-h-96 overflow-y-auto">
-                                    <!-- Notification items will be dynamically loaded -->
                                     <div class="animate-pulse p-4">
                                         <div class="skeleton-text w-3/4"></div>
                                         <div class="skeleton-text w-1/2"></div>
@@ -168,16 +178,14 @@ require_once 'customer_auth.php';
                                 </div>
                             </div>
                         </div>
-
-                        <!-- User Profile -->
                         <div class="relative group">
                             <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                     aria-label="User menu"
                                     id="user-menu-button">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=E8E0D5&color=5D2F0F" 
+                                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($fullName); ?>&background=E8E0D5&color=5D2F0F" 
                                      alt="Profile" 
                                      class="w-8 h-8 rounded-full border border-deep-brown/30">
-                                <span class="font-baskerville">John Doe</span>
+                                <span class="font-baskerville"><?php echo htmlspecialchars($fullName); ?></span>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
                             </a>
                             <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
@@ -200,9 +208,7 @@ require_once 'customer_auth.php';
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
+        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40 hidden" id="mobile-menu">
             <div class="flex flex-col h-full">
                 <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
                     <h2 class="font-playfair text-xl text-deep-brown">Menu</h2>
@@ -241,185 +247,124 @@ require_once 'customer_auth.php';
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header class="mb-10">
             <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
-            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile, password, and view your booking history.</p>
+            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
         </header>
 
         <!-- Notification Placeholder -->
-        <div id="notification-area"></div>
+        <div id="notification-area" class="relative"></div>
 
-        <!-- Tab Navigation -->
-        <div class="mb-8 border-b border-deep-brown/20">
-            <nav class="flex space-x-8" aria-label="Tabs">
-                <button id="profile-tab" class="tab-button active py-4 px-1 border-b-2 font-medium text-lg leading-5 transition-colors duration-300" data-tab="profile">
-                    Profile Settings
-                </button>
-                <button id="bookings-tab" class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-lg leading-5 text-deep-brown/60 hover:text-deep-brown transition-colors duration-300" data-tab="bookings">
-                    My Bookings
-                </button>
-            </nav>
-        </div>
-
-        <!-- Tab Content -->
-        <div>
-            <!-- Profile Information Tab -->
-            <div id="profile-content">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-1">
-                        <div class="bg-card rounded-xl p-6 shadow-md text-center sticky top-28">
-                            <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4">Profile Picture</h3>
-                             <div class="relative inline-block group mb-4">
-                                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($fullName); ?>&background=E8E0D5&color=5D2F0F&bold=true&size=128" 
-                                     alt="Profile" 
-                                     class="w-32 h-32 rounded-full border-4 border-white shadow-lg mx-auto">
-                                <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                    <label for="avatar-upload" class="text-white font-baskerville cursor-pointer text-center">
-                                        <i class="fas fa-camera fa-2x"></i>
-                                        <span class="block mt-1 text-sm">Change</span>
-                                    </label>
-                                    <input type="file" id="avatar-upload" class="hidden" accept="image/*">
-                                </div>
+        <!-- Profile Information Tab -->
+        <div id="profile-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="bg-card rounded-xl p-6 shadow-md text-center sticky top-28">
+                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4">Profile Picture</h3>
+                        <div class="relative inline-block group mb-4">
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($fullName); ?>&background=E8E0D5&color=5D2F0F&bold=true&size=128" 
+                                 alt="Profile" 
+                                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg mx-auto">
+                            <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                <label for="avatar-upload" class="text-white font-baskerville cursor-pointer text-center">
+                                    <i class="fas fa-camera fa-2x"></i>
+                                    <span class="block mt-1 text-sm">Change</span>
+                                </label>
+                                <input type="file" id="avatar-upload" class="hidden" accept="image/*">
                             </div>
-                            <h4 class="font-playfair text-xl font-bold text-deep-brown"><?php echo htmlspecialchars($fullName); ?></h4>
-                            <p class="font-baskerville text-sm text-deep-brown/70"><?php echo htmlspecialchars($user['email']); ?></p>
                         </div>
-                    </div>
-                    <div class="lg:col-span-2 space-y-8">
-                        <div class="bg-card rounded-xl p-6 shadow-md">
-                            <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Personal Information</h3>
-                            <form id="profile-update-form" class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="first-name" class="block text-sm font-medium text-deep-brown/80 mb-1">First Name</label>
-                                        <input type="text" id="first-name" value="<?php echo htmlspecialchars($user['firstname']); ?>" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown">
-                                    </div>
-                                    <div>
-                                        <label for="last-name" class="block text-sm font-medium text-deep-brown/80 mb-1">Last Name</label>
-                                        <input type="text" id="last-name" value="<?php echo htmlspecialchars($user['lastname']); ?>" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-deep-brown/80 mb-1">Email Address</label>
-                                    <input type="email" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown">
-                                </div>
-                                <div>
-                                    <label for="phone" class="block text-sm font-medium text-deep-brown/80 mb-1">Phone Number</label>
-                                    <input type="tel" id="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown">
-                                </div>
-                                <div class="pt-4 border-t border-deep-brown/10 text-right">
-                                    <button type="submit" class="bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="bg-card rounded-xl p-6 shadow-md">
-                            <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Change Password</h3>
-                            <form id="password-update-form" class="space-y-6">
-                                <div>
-                                    <label for="current-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Current Password</label>
-                                    <input type="password" id="current-password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                                </div>
-                                <div>
-                                    <label for="new-password" class="block text-sm font-medium text-deep-brown/80 mb-1">New Password</label>
-                                    <input type="password" id="new-password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                                </div>
-                                <div>
-                                    <label for="confirm-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Confirm New Password</label>
-                                    <input type="password" id="confirm-password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                                </div>
-                                <div class="pt-4 border-t border-deep-brown/10 text-right">
-                                    <button type="submit" class="bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                        Update Password
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                        <h4 class="font-playfair text-xl font-bold text-deep-brown"><?php echo htmlspecialchars($fullName); ?></h4>
+                        <p class="font-baskerville text-sm text-deep-brown/70"><?php echo htmlspecialchars($user['username']); ?></p>
                     </div>
                 </div>
-            </div>
-
-            <!-- My Bookings Tab -->
-            <div id="bookings-content" class="hidden">
-                <div class="bg-card rounded-xl p-6 shadow-md">
-                    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Your Bookings</h3>
-                    <!-- Desktop Table -->
-                    <div class="hidden md:block overflow-x-auto">
-                        <table class="w-full min-w-[640px]" role="table">
-                            <thead>
-                                <tr class="border-b border-deep-brown/20">
-                                    <th class="text-left py-3 px-4 font-semibold text-deep-brown" scope="col">Date & Time</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-deep-brown" scope="col">Event Type</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-deep-brown" scope="col">Guests</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-deep-brown" scope="col">Status</th>
-                                    <th class="text-right py-3 px-4 font-semibold text-deep-brown" scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-deep-brown/10">
-                                <?php foreach ($bookings as $booking): ?>
-                                <tr class="hover:bg-deep-brown/5 transition-colors duration-300">
-                                    <td class="py-4 px-4">
-                                        <div class="font-medium text-deep-brown"><?php echo date('F j, Y', strtotime($booking['date'])); ?></div>
-                                        <div class="text-sm text-deep-brown/60"><?php echo date('g:i A', strtotime($booking['date'])); ?></div>
-                                    </td>
-                                    <td class="py-4 px-4 text-deep-brown"><?php echo htmlspecialchars($booking['type']); ?></td>
-                                    <td class="py-4 px-4 text-deep-brown"><?php echo $booking['guests']; ?></td>
-                                    <td class="py-4 px-4">
-                                        <span class="status-badge status-<?php echo strtolower($booking['status']); ?>">
-                                            <?php echo htmlspecialchars($booking['status']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="py-4 px-4 text-right">
-                                        <div class="flex space-x-2 justify-end">
-                                            <button data-tippy-content="Edit Booking" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"><i class="fas fa-edit"></i></button>
-                                            <button data-tippy-content="Cancel Booking" class="text-red-600 hover:text-red-800 transition-colors duration-300 p-2 rounded-full hover:bg-warm-cream"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Mobile Card View -->
-                    <div class="md:hidden space-y-4">
-                        <?php foreach ($bookings as $booking): ?>
-                        <div class="bg-warm-cream/50 p-4 rounded-lg border border-deep-brown/10 shadow-sm">
-                            <div class="flex justify-between items-start">
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="bg-card rounded-xl p-6 shadow-md">
+                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Personal Information</h3>
+                        <form id="profile-update-form" action="profileAPI/update_profile.php" method="POST" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <p class="font-bold text-deep-brown"><?php echo htmlspecialchars($booking['type']); ?></p>
-                                    <p class="text-sm text-deep-brown/60"><?php echo date('F j, Y', strtotime($booking['date'])); ?> at <?php echo date('g:i A', strtotime($booking['date'])); ?></p>
+                                    <label for="first-name" class="block text-sm font-medium text-deep-brown/80 mb-1">First Name</label>
+                                    <input type="text" id="first-name" name="first_name"
+                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['first_name']))); ?>"
+                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
+                                           disabled required>
                                 </div>
-                                <span class="status-badge status-<?php echo strtolower($booking['status']); ?>">
-                                    <?php echo htmlspecialchars($booking['status']); ?>
-                                </span>
-                            </div>
-                            <div class="mt-4 pt-4 border-t border-deep-brown/10 flex justify-between items-center">
-                                <p class="text-sm text-deep-brown"><?php echo $booking['guests']; ?> Guests</p>
-                                <div class="flex space-x-2">
-                                    <button data-tippy-content="Edit Booking" class="text-deep-brown hover:text-rich-brown transition-colors duration-300 p-2 rounded-full hover:bg-deep-brown/10"><i class="fas fa-edit"></i></button>
-                                    <button data-tippy-content="Cancel Booking" class="text-red-600 hover:text-red-800 transition-colors duration-300 p-2 rounded-full hover:bg-red-50"><i class="fas fa-trash"></i></button>
+                                <div>
+                                    <label for="middle-name" class="block text-sm font-medium text-deep-brown/80 mb-1">Middle Name</label>
+                                    <input type="text" id="middle-name" name="middle_name"
+                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['middle_name'] ?? ''))); ?>"
+                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
+                                           disabled>
+                                </div>
+                                <div>
+                                    <label for="last-name" class="block text-sm font-medium text-deep-brown/80 mb-1">Last Name</label>
+                                    <input type="text" id="last-name" name="last_name"
+                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['last_name']))); ?>"
+                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
+                                           disabled required>
+                                </div>
+
+                                <div>
+                                    <label for="suffix" class="block text-sm font-medium text-deep-brown/80 mb-1">Suffix</label>
+                                    <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($user['suffix'] ?? ''); ?>" 
+                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled>
                                 </div>
                             </div>
-                        </div>
-                        <?php endforeach; ?>
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-deep-brown/80 mb-1">Username</label>
+                                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" 
+                                       class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled required>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-deep-brown/80 mb-1">Phone Number</label>
+                                <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number']); ?>" 
+                                       class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled required>
+                            </div>
+                            <div class="pt-4 border-t border-deep-brown/10 text-right space-x-4">
+                                <button type="button" id="edit-profile-btn" class="bg-accent-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                    Edit
+                                </button>
+                                <button type="submit" id="save-profile-btn" class="hidden bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="bg-card rounded-xl p-6 shadow-md">
+                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Change Password</h3>
+                        <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
+                            <div>
+                                <label for="current-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Current Password</label>
+                                <input type="password" id="current-password" name="current_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
+                            </div>
+                            <div>
+                                <label for="new-password" class="block text-sm font-medium text-deep-brown/80 mb-1">New Password</label>
+                                <input type="password" id="new-password" name="new_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
+                            </div>
+                            <div>
+                                <label for="confirm-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Confirm New Password</label>
+                                <input type="password" id="confirm-password" name="confirm_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
+                            </div>
+                            <div class="pt-4 border-t border-deep-brown/10 text-right">
+                                <button type="submit" class="bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <!-- Modern Footer -->
+
+    <!-- Footer (unchanged) -->
     <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
-        <!-- Decorative background elements -->
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
             <div class="absolute bottom-12 right-12 w-24 h-24 border border-warm-cream rounded-full"></div>
             <div class="absolute top-1/2 left-1/4 w-2 h-2 bg-warm-cream rounded-full"></div>
             <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-warm-cream rounded-full"></div>
         </div>
-
         <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <!-- Main Footer Content -->
             <div class="py-2">
-                <!-- Brand Section -->
                 <div class="text-center mb-12">
                     <div class="inline-flex items-center space-x-3 mt-4 mb-4">
                         <div>
@@ -428,10 +373,7 @@ require_once 'customer_auth.php';
                         </div>
                     </div>
                 </div>
-
-                <!-- Info Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                    <!-- Contact Info -->
                     <div class="lg:col-span-1">
                         <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Contact
@@ -452,8 +394,6 @@ require_once 'customer_auth.php';
                             </div>
                         </div>
                     </div>
-
-                    <!-- Quick Links -->
                     <div class="lg:col-span-1">
                         <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Navigate
@@ -466,8 +406,6 @@ require_once 'customer_auth.php';
                             <a href="#contact" class="block text-warm-cream/90 hover:text-warm-cream transition-colors">Visit Us</a>
                         </nav>
                     </div>
-
-                    <!-- Hours -->
                     <div class="lg:col-span-1">
                         <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Hours
@@ -484,15 +422,11 @@ require_once 'customer_auth.php';
                             </div>
                         </div>
                     </div>
-
-                    <!-- Social & Connect -->
                     <div class="lg:col-span-1">
                         <h3 class="font-playfair font-semibold text-lg mb-4 relative">
                             Connect
                             <div class="absolute -bottom-1 left-0 w-6 h-0.5 bg-warm-cream/60"></div>
                         </h3>
-                        
-                        <!-- Social Links -->
                         <div class="flex space-x-3 mb-4">
                             <a href="https://web.facebook.com/caffelilio.ph" target="_blank" 
                                class="w-10 h-10 bg-warm-cream/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-warm-cream/20 hover:bg-warm-cream/20 transition-colors">
@@ -503,8 +437,6 @@ require_once 'customer_auth.php';
                                 <i class="fab fa-instagram text-warm-cream text-sm"></i>
                             </a>
                         </div>
-
-                        <!-- Simple Newsletter -->
                         <div class="space-y-2">
                             <p class="text-warm-cream/80 text-xs font-inter">Stay updated</p>
                             <div class="flex">
@@ -518,8 +450,6 @@ require_once 'customer_auth.php';
                     </div>
                 </div>
             </div>
-
-            <!-- Bottom Bar -->
             <div class="border-t border-warm-cream/10 py-6">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
                     <p class="font-inter text-warm-cream/70 text-xs">
@@ -538,30 +468,179 @@ require_once 'customer_auth.php';
         document.addEventListener('DOMContentLoaded', function() {
             NProgress.start();
 
-            // Tab functionality
-            const tabs = document.querySelectorAll('.tab-button');
-            const contents = {
-                profile: document.getElementById('profile-content'),
-                bookings: document.getElementById('bookings-content'),
-            };
+            // Toggle edit mode for profile form
+            const editButton = document.getElementById('edit-profile-btn');
+            const saveButton = document.getElementById('save-profile-btn');
+            const profileForm = document.getElementById('profile-update-form');
+            const profileFormInputs = document.querySelectorAll('#profile-update-form input');
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.dataset.tab;
+            editButton.addEventListener('click', () => {
+                // Enable all input fields
+                profileFormInputs.forEach(input => input.disabled = false);
+                // Hide Edit button, show Save button
+                editButton.classList.add('hidden');
+                saveButton.classList.remove('hidden');
+            });
 
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    for (const content in contents) {
-                        contents[content].classList.toggle('hidden', content !== target);
+            // Profile form submission with SweetAlert confirmation
+            profileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: 'Confirm Changes',
+                    text: 'Are you sure you want to save these changes to your profile?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8B4513',
+                    cancelButtonColor: '#A0522D',
+                    confirmButtonText: 'Yes, Save',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        NProgress.start();
+                        const formData = new FormData(profileForm);
+                        
+                        fetch('profileAPI/update_profile.php', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            NProgress.done();
+                            if (data.success) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Profile Updated',
+                                    text: 'Your profile information has been updated successfully!',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    background: '#E8E0D5',
+                                    color: '#5D2F0F'
+                                });
+                                // Disable inputs again
+                                profileFormInputs.forEach(input => input.disabled = true);
+                                // Show Edit button, hide Save button
+                                editButton.classList.remove('hidden');
+                                saveButton.classList.add('hidden');
+                                // Update displayed username and full name
+                                document.querySelector('.font-baskerville.text-sm.text-deep-brown\\/70').textContent = formData.get('username');
+                                const fullName = `${formData.get('first_name')} ${formData.get('middle_name') ? formData.get('middle_name') + ' ' : ''}${formData.get('last_name')} ${formData.get('suffix') || ''}`.trim();
+                                document.querySelector('.font-playfair.text-xl.font-bold').textContent = fullName;
+                                document.querySelector('#user-menu-button img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E8E0D5&color=5D2F0F`;
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message || 'Failed to update profile.',
+                                    confirmButtonColor: '#8B4513'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            NProgress.done();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while updating the profile.',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        });
                     }
                 });
             });
 
+            // Password form submission
+            document.getElementById('password-update-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (newPassword !== confirmPassword) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'New passwords do not match.',
+                        confirmButtonColor: '#8B4513'
+                    });
+                    return;
+                }
+
+                NProgress.start();
+                const formData = new FormData(e.target);
+                Swal.fire({
+                    title: 'Confirm Password Change',
+                    text: 'Are you sure you want to update your password?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8B4513',
+                    cancelButtonColor: '#A0522D',
+                    confirmButtonText: 'Yes, Update',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('profileAPI/update_password.php', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            NProgress.done();
+                            if (data.success) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Password Updated',
+                                    text: 'Your password has been updated successfully!',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    background: '#E8E0D5',
+                                    color: '#5D2F0F'
+                                });
+                                document.getElementById('password-update-form').reset();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message || 'Failed to update password.',
+                                    confirmButtonColor: '#8B4513'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            NProgress.done();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while updating the password.',
+                                confirmButtonColor: '#8B4513'
+                            });
+                        });
+                    }
+                });
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+
             // User menu dropdown
             const userMenuButton = document.getElementById('user-menu-button');
-            const userMenu = document.getElementById('user-menu');
-            const menuChevron = document.getElementById('menu-chevron');
+            const userMenu = document.querySelector('#user-menu-button + .absolute');
+            const menuChevron = userMenuButton.querySelector('i.fas.fa-chevron-down');
 
             userMenuButton.addEventListener('click', () => {
                 const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
@@ -572,7 +651,6 @@ require_once 'customer_auth.php';
                 menuChevron.classList.toggle('rotate-180');
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', (event) => {
                 if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
                     userMenuButton.setAttribute('aria-expanded', 'false');
@@ -581,53 +659,10 @@ require_once 'customer_auth.php';
                 }
             });
 
-            // Tooltips
             tippy('[data-tippy-content]', {
                 animation: 'scale-subtle',
                 theme: 'light-border',
             });
-
-            // Fake form submission feedback
-            const showNotification = (message, type = 'success') => {
-                const bgColor = type === 'success' ? 'bg-green-100 border-green-200' : 'bg-red-100 border-red-200';
-                const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
-                
-                const notification = `
-                    <div class="mb-8 p-4 rounded-lg ${bgColor} ${textColor} border flex justify-between items-center animate-fade-in-down">
-                        <p>${message}</p>
-                        <button onclick="this.parentElement.remove()" class="text-xl">&times;</button>
-                    </div>
-                `;
-                document.getElementById('notification-area').innerHTML = notification;
-            };
-
-            document.getElementById('profile-update-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                NProgress.start();
-                setTimeout(() => {
-                    showNotification('Profile information updated successfully!');
-                    NProgress.done();
-                }, 1000);
-            });
-            
-            document.getElementById('password-update-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const newPassword = document.getElementById('new-password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-
-                if (newPassword !== confirmPassword) {
-                    showNotification('New passwords do not match.', 'error');
-                    return;
-                }
-                
-                NProgress.start();
-                setTimeout(() => {
-                    showNotification('Password updated successfully!');
-                    document.getElementById('password-update-form').reset();
-                    NProgress.done();
-                }, 1000);
-            });
-
 
             window.onload = function() {
                 NProgress.done();
@@ -635,4 +670,4 @@ require_once 'customer_auth.php';
         });
     </script>
 </body>
-</html> 
+</html>
