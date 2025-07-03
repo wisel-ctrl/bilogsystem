@@ -5,7 +5,7 @@ require_once '../db_connect.php'; // Include PDO database connection
 // Fetch user data from users_tb
 $user_id = $_SESSION['user_id']; // Assuming customer_auth.php sets this
 try {
-    $query = "SELECT first_name, middle_name, last_name, suffix, username, contact_number 
+    $query = "SELECT first_name, middle_name, last_name, suffix, username, contact_number, profile_picture 
               FROM users_tb 
               WHERE id = :user_id";
     $stmt = $conn->prepare($query);
@@ -23,8 +23,11 @@ try {
 // Construct full name for display
 $fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
 
-
+// Set profile picture path
+$profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . $user['profile_picture'] : 
+    'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=E8E0D5&color=5D2F0F&bold=true&size=128';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -260,9 +263,9 @@ $fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
                     <div class="bg-card rounded-xl p-6 shadow-md text-center sticky top-28">
                         <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4">Profile Picture</h3>
                         <div class="relative inline-block group mb-4">
-                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($fullName); ?>&background=E8E0D5&color=5D2F0F&bold=true&size=128" 
+                            <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
                                  alt="Profile" 
-                                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg mx-auto">
+                                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg mx-auto object-cover">
                             <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <label for="avatar-upload" class="text-white font-baskerville cursor-pointer text-center">
                                     <i class="fas fa-camera fa-2x"></i>
@@ -467,6 +470,156 @@ $fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             NProgress.start();
+            
+            // Profile picture upload functionality
+            const avatarUpload = document.getElementById('avatar-upload');
+            const profileImage = document.getElementById('profile-image');
+            
+            avatarUpload.addEventListener('change', function(e) {
+    if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        
+        // Validate file type
+        if (!allowedTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File Type',
+                text: 'Please upload a JPEG, PNG, GIF, or WEBP image.',
+                confirmButtonColor: '#8B4513'
+            });
+            return;
+        }
+        
+        // Validate file size
+        if (file.size > maxSize) {
+            Swal.fire({
+                icon: 'error',
+                title: 'File Too Large',
+                text: 'Please upload an image smaller than 2MB.',
+                confirmButtonColor: '#8B4513'
+            });
+            return;
+        }
+        
+        // Create a smaller preview image
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                // Create a canvas to resize the image
+                const canvas = document.createElement('canvas');
+                const maxWidth = 300; // Reduced size for preview
+                const maxHeight = 300;
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Use the resized image for preview
+                const resizedDataUrl = canvas.toDataURL(file.type);
+                profileImage.src = resizedDataUrl;
+                
+                // Ask for confirmation with the resized image
+                Swal.fire({
+                    title: 'Update Profile Picture?',
+                    text: 'Are you sure you want to upload this image as your new profile picture?',
+                    imageUrl: resizedDataUrl,
+                    imageWidth: width,
+                    imageHeight: height,
+                    imageAlt: 'Profile picture preview',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8B4513',
+                    cancelButtonColor: '#A0522D',
+                    confirmButtonText: 'Yes, upload it!',
+                    cancelButtonText: 'No, cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        uploadProfilePicture(file);
+                    } else {
+                        // Reset to original image if cancelled
+                        profileImage.src = '<?php echo htmlspecialchars($profilePicture); ?>';
+                        avatarUpload.value = '';
+                    }
+                });
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+            
+            function uploadProfilePicture(file) {
+                NProgress.start();
+                const formData = new FormData();
+                formData.append('profile_picture', file);
+                formData.append('user_id', <?php echo $user_id; ?>);
+                
+                fetch('profileAPI/upload_profile_picture.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    NProgress.done();
+                    if (data.success) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Profile Picture Updated',
+                            text: 'Your profile picture has been updated successfully!',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            background: '#E8E0D5',
+                            color: '#5D2F0F'
+                        });
+                        
+                        // Update profile picture in navigation
+                        document.querySelector('#user-menu-button img').src = data.new_image_path + '?t=' + new Date().getTime();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Failed to update profile picture.',
+                            confirmButtonColor: '#8B4513'
+                        });
+                        // Revert to original image
+                        profileImage.src = '<?php echo htmlspecialchars($profilePicture); ?>';
+                    }
+                    avatarUpload.value = '';
+                })
+                .catch(error => {
+                    NProgress.done();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while uploading the profile picture.',
+                        confirmButtonColor: '#8B4513'
+                    });
+                    // Revert to original image
+                    profileImage.src = '<?php echo htmlspecialchars($profilePicture); ?>';
+                    avatarUpload.value = '';
+                });
+            }
+
 
             // Toggle edit mode for profile form
             const editButton = document.getElementById('edit-profile-btn');
