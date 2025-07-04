@@ -177,7 +177,7 @@
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Periods</option>
-                    <option value="daily">Daily</option>
+                    <option value="daily">Today</option>
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>
                 </select>
@@ -203,19 +203,19 @@
     </div>
 </div>
 
-    <!-- Daily Revenue Table -->
-    <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <!-- Today Revenue Table -->
+    <div id="todayRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-coins mr-2 text-accent-brown"></i>
-                Daily Revenue
+                Today Revenue
             </h3>
             <div class="space-x-2">
 
                 <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button> -->
-                <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <button onclick="printTable('dailyRevenueTable', 'Today Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
             </div>
@@ -356,19 +356,19 @@
         </div>
     </div>
 
-    <!-- Daily Orders Table -->
+    <!-- Today Orders Table -->
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
-                Daily Orders
+                Today Orders
             </h3>
             <div class="space-x-2">
 
                 <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button> -->
-                <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <button onclick="printTable('dailyOrdersTable', 'Today Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
             </div>
@@ -621,7 +621,7 @@ ob_start();
             const category = document.getElementById('categoryFilter').value;
             const period = document.getElementById('periodFilter').value;
             const sections = [
-                'dailyRevenueSection',
+                'todayRevenueSection',
                 'monthlyRevenueSection',
                 'yearlyRevenueSection',
                 'dailyOrdersSection',
@@ -637,12 +637,12 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Daily Revenue
-                document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                // If both filters are "All", show only Today Revenue
+                document.getElementById('todayRevenueSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
                 if (category === 'revenue') {
-                    if (period === 'daily') targetSection = 'dailyRevenueSection';
+                    if (period === 'daily') targetSection = 'todayRevenueSection';
                     else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
                     else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
                 } else if (category === 'orders') {
@@ -654,7 +654,7 @@ ob_start();
                 } else if (category === '' && period) {
                     // If category is "All" but period is selected, show all tables for that period
                     if (period === 'daily') {
-                        document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                        document.getElementById('todayRevenueSection').classList.remove('hidden');
                         document.getElementById('dailyOrdersSection').classList.remove('hidden');
                     } else if (period === 'monthly') {
                         document.getElementById('monthlyRevenueSection').classList.remove('hidden');
@@ -677,7 +677,7 @@ ob_start();
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
             const sections = [
-                'dailyRevenueSection',
+                'todayRevenueSection',
                 'monthlyRevenueSection',
                 'yearlyRevenueSection',
                 'dailyOrdersSection',
@@ -685,11 +685,11 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Daily Revenue
+            // Hide all sections except Today Revenue
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
-            document.getElementById('dailyRevenueSection').classList.remove('hidden');
+            document.getElementById('todayRevenueSection').classList.remove('hidden');
         }
 
         // Event listeners for filter buttons
