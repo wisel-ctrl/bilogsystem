@@ -153,30 +153,32 @@
 
 <!-- Main Content Area -->
 <div class="p-6">
-    <!-- Header Section -->
-    <div class="dashboard-card fade-in bg-white rounded-xl shadow-lg p-8 mb-8">
-        <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair flex items-center">
-            <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
-            Reports
-        </h3>
-        <p class="text-rich-brown font-baskerville">View detailed reports for revenue, orders, and customer satisfaction across different time periods.</p>
+<div class="dashboard-card fade-in bg-white rounded-xl shadow-lg p-6 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        <div class="flex items-center mb-3 md:mb-0">
+            <h3 class="text-2xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
+                Reports
+            </h3>
+        </div>
+        <p class="text-rich-brown font-baskerville text-sm md:text-base md:max-w-xs">
+            View detailed reports for revenue, orders, and customer satisfaction.
+        </p>
     </div>
 
-    <!-- Filters Section -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
-        <h4 class="text-lg font-semibold text-deep-brown font-playfair mb-4">Filters</h4>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Date Range</label>
+    <div class="border-t border-warm-cream/30 pt-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="md:col-span-1">
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Date Range</label>
                 <div class="flex space-x-2">
-                    <input type="date" id="startDate" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <span class="text-rich-brown font-baskerville self-center">to</span>
-                    <input type="date" id="endDate" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <input type="date" id="startDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <span class="text-rich-brown font-baskerville self-center text-sm">to</span>
+                    <input type="date" id="endDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Period</label>
-                <select id="periodFilter" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
+                <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Periods</option>
                     <option value="daily">Daily</option>
                     <option value="monthly">Monthly</option>
@@ -184,24 +186,25 @@
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Category</label>
-                <select id="categoryFilter" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
+                <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Categories</option>
                     <option value="revenue">Revenue</option>
                     <option value="orders">Orders</option>
                     <option value="customer_satisfaction">Customer Satisfaction</option>
                 </select>
             </div>
-        </div>
-        <div class="mt-4 flex justify-end space-x-2">
-            <button id="applyFilters" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                <i class="fas fa-filter mr-2"></i> Apply Filters
-            </button>
-            <button id="resetFilters" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                <i class="fas fa-undo mr-2"></i> Reset
-            </button>
+            <div class="flex items-end space-x-2">
+                <button id="applyFilters" class="w-full bg-deep-brown hover:bg-rich-brown text-warm-cream px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
+                    <i class="fas fa-filter mr-2"></i> Apply
+                </button>
+                <button id="resetFilters" class="w-full bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
+                    <i class="fas fa-undo mr-2"></i> Reset
+                </button>
+            </div>
         </div>
     </div>
+</div>
 
     <!-- Daily Revenue Table -->
     <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
