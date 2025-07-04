@@ -256,106 +256,164 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . $us
         <!-- Notification Placeholder -->
         <div id="notification-area" class="relative"></div>
 
-        <!-- Profile Information Tab -->
-        <div id="profile-content">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1">
-                    <div class="bg-card rounded-xl p-6 shadow-md text-center sticky top-28">
-                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-4">Profile Picture</h3>
-                        <div class="relative inline-block group mb-4">
-                            <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
-                                 alt="Profile" 
-                                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg mx-auto object-cover">
-                            <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <label for="avatar-upload" class="text-white font-baskerville cursor-pointer text-center">
-                                    <i class="fas fa-camera fa-2x"></i>
-                                    <span class="block mt-1 text-sm">Change</span>
-                                </label>
-                                <input type="file" id="avatar-upload" class="hidden" accept="image/*">
-                            </div>
-                        </div>
-                        <h4 class="font-playfair text-xl font-bold text-deep-brown"><?php echo htmlspecialchars($fullName); ?></h4>
-                        <p class="font-baskerville text-sm text-deep-brown/70"><?php echo htmlspecialchars($user['username']); ?></p>
-                    </div>
+    <!-- Profile Information Tab -->
+<div id="profile-content" class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profile Picture Card -->
+        <div class="lg:col-span-1">
+            <div class="bg-gradient-to-br from-warm-cream/20 to-white rounded-2xl p-6 shadow-lg text-center sticky top-28 transition-all duration-300 hover:shadow-xl">
+                <div class="relative mx-auto w-40 h-40 group mb-5">
+                    <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
+                         alt="Profile" 
+                         class="w-full h-full rounded-full border-4 border-white shadow-lg object-cover transition-transform duration-300 group-hover:scale-105">
+                    <label for="avatar-upload" class="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <i class="fas fa-camera text-2xl text-white mb-1"></i>
+                        <span class="text-white font-baskerville text-sm">Change Photo</span>
+                        <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+                    </label>
                 </div>
-                <div class="lg:col-span-2 space-y-8">
-                    <div class="bg-card rounded-xl p-6 shadow-md">
-                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Personal Information</h3>
-                        <form id="profile-update-form" action="profileAPI/update_profile.php" method="POST" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="first-name" class="block text-sm font-medium text-deep-brown/80 mb-1">First Name</label>
-                                    <input type="text" id="first-name" name="first_name"
-                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['first_name']))); ?>"
-                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
-                                           disabled required>
-                                </div>
-                                <div>
-                                    <label for="middle-name" class="block text-sm font-medium text-deep-brown/80 mb-1">Middle Name</label>
-                                    <input type="text" id="middle-name" name="middle_name"
-                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['middle_name'] ?? ''))); ?>"
-                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
-                                           disabled>
-                                </div>
-                                <div>
-                                    <label for="last-name" class="block text-sm font-medium text-deep-brown/80 mb-1">Last Name</label>
-                                    <input type="text" id="last-name" name="last_name"
-                                           value="<?php echo ucwords(strtolower(htmlspecialchars($user['last_name']))); ?>"
-                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown"
-                                           disabled required>
-                                </div>
-
-                                <div>
-                                    <label for="suffix" class="block text-sm font-medium text-deep-brown/80 mb-1">Suffix</label>
-                                    <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($user['suffix'] ?? ''); ?>" 
-                                           class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="username" class="block text-sm font-medium text-deep-brown/80 mb-1">Username</label>
-                                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" 
-                                       class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled required>
-                            </div>
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-deep-brown/80 mb-1">Phone Number</label>
-                                <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number']); ?>" 
-                                       class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" disabled required>
-                            </div>
-                            <div class="pt-4 border-t border-deep-brown/10 text-right space-x-4">
-                                <button type="button" id="edit-profile-btn" class="bg-accent-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                    Edit
-                                </button>
-                                <button type="submit" id="save-profile-btn" class="hidden bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="bg-card rounded-xl p-6 shadow-md">
-                        <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Change Password</h3>
-                        <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
-                            <div>
-                                <label for="current-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Current Password</label>
-                                <input type="password" id="current-password" name="current_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                            </div>
-                            <div>
-                                <label for="new-password" class="block text-sm font-medium text-deep-brown/80 mb-1">New Password</label>
-                                <input type="password" id="new-password" name="new_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                            </div>
-                            <div>
-                                <label for="confirm-password" class="block text-sm font-medium text-deep-brown/80 mb-1">Confirm New Password</label>
-                                <input type="password" id="confirm-password" name="confirm_password" class="w-full px-4 py-2 bg-warm-cream/50 border border-deep-brown/20 rounded-lg focus:ring-rich-brown focus:border-rich-brown" required>
-                            </div>
-                            <div class="pt-4 border-t border-deep-brown/10 text-right">
-                                <button type="submit" class="bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                    Update Password
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                
+                <h4 class="font-playfair text-2xl font-bold text-deep-brown mb-1"><?php echo htmlspecialchars($fullName); ?></h4>
+                <p class="font-baskerville text-sm text-deep-brown/70 mb-4">@<?php echo htmlspecialchars($user['username']); ?></p>
+                
+                <div class="bg-warm-cream/30 rounded-lg p-3">
+                    <p class="font-baskerville text-xs text-deep-brown/80">Member since <?php echo date('F Y', strtotime($user['created_at'])); ?></p>
                 </div>
             </div>
         </div>
+
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Personal Information Card -->
+            <div class="bg-gradient-to-br from-warm-cream/10 to-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-playfair text-2xl font-bold text-deep-brown">Personal Information</h3>
+                    <button type="button" id="edit-profile-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
+                        <i class="fas fa-edit mr-2"></i>
+                        <span class="font-baskerville">Edit Profile</span>
+                    </button>
+                </div>
+
+                <form id="profile-update-form" action="profileAPI/update_profile.php" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="block text-sm font-medium text-deep-brown/80">First Name</label>
+                            <div class="relative">
+                                <input type="text" id="first-name" name="first_name"
+                                       value="<?php echo ucwords(strtolower(htmlspecialchars($user['first_name']))); ?>"
+                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                                       disabled required>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <i class="fas fa-user text-deep-brown/30"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="block text-sm font-medium text-deep-brown/80">Middle Name</label>
+                            <input type="text" id="middle-name" name="middle_name"
+                                   value="<?php echo ucwords(strtolower(htmlspecialchars($user['middle_name'] ?? ''))); ?>"
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                                   disabled>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="block text-sm font-medium text-deep-brown/80">Last Name</label>
+                            <input type="text" id="last-name" name="last_name"
+                                   value="<?php echo ucwords(strtolower(htmlspecialchars($user['last_name']))); ?>"
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                                   disabled required>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="block text-sm font-medium text-deep-brown/80">Suffix</label>
+                            <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($user['suffix'] ?? ''); ?>" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <label class="block text-sm font-medium text-deep-brown/80">Username</label>
+                        <div class="relative">
+                            <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-at text-deep-brown/30"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <label class="block text-sm font-medium text-deep-brown/80">Phone Number</label>
+                        <div class="relative">
+                            <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number']); ?>" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-phone text-deep-brown/30"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-warm-cream flex justify-end space-x-3">
+                        <button type="button" id="cancel-edit-btn" class="hidden px-5 py-2.5 rounded-lg font-baskerville text-deep-brown hover:bg-warm-cream/50 transition-all">
+                            Cancel
+                        </button>
+                        <button type="submit" id="save-profile-btn" class="hidden bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Change Password Card -->
+            <div class="bg-gradient-to-br from-warm-cream/10 to-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
+                
+                <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
+                    <div class="space-y-1">
+                        <label class="block text-sm font-medium text-deep-brown/80">Current Password</label>
+                        <div class="relative">
+                            <input type="password" id="current-password" name="current_password" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <label class="block text-sm font-medium text-deep-brown/80">New Password</label>
+                        <div class="relative">
+                            <input type="password" id="new-password" name="new_password" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-deep-brown/50 mt-1">Minimum 8 characters with at least one number</p>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <label class="block text-sm font-medium text-deep-brown/80">Confirm New Password</label>
+                        <div class="relative">
+                            <input type="password" id="confirm-password" name="confirm_password" 
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-warm-cream text-right">
+                        <button type="submit" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
+                            Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
 
     <!-- Footer (unchanged) -->
