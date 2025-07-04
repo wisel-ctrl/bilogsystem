@@ -638,7 +638,7 @@ ob_start();
             // Show relevant section based on filters
             if (!category && !period) {
                 // If both filters are "All", show only Daily Revenue
-                document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
                 if (category === 'revenue') {
@@ -689,7 +689,7 @@ ob_start();
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
-            document.getElementById('dailyRevenueSection').classList.remove('hidden');
+            document.getElementById('customerSatisfactionSection').classList.remove('hidden');
         }
 
         // Event listeners for filter buttons
