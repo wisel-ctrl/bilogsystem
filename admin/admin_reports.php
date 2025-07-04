@@ -185,7 +185,7 @@
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
                 <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <option value="">--</option>
+                    <option value="">Customer Satisfaction</option>
                     <option value="revenue">Revenue</option>
                     <option value="orders">Orders</option>
                     <option value="customer_satisfaction">Customer Satisfaction</option>
