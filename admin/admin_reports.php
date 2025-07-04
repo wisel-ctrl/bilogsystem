@@ -159,7 +159,7 @@
             <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
             Reports
         </h3>
-        <p class="text-rich-brown font-baskerville">Generate and view detailed reports for transactions, user activity, and form requests.</p>
+        <p class="text-rich-brown font-baskerville">View detailed reports for revenue, orders, and customer satisfaction across different time periods.</p>
     </div>
 
     <!-- Filters Section -->
@@ -175,21 +175,21 @@
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Status</label>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Period</label>
                 <select class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <option value="">All Statuses</option>
-                    <option value="completed">Completed</option>
-                    <option value="pending">Pending</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="">All Periods</option>
+                    <option value="daily">Daily</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
                 </select>
             </div>
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Category</label>
                 <select class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Categories</option>
-                    <option value="transactions">Transactions</option>
-                    <option value="user_activity">User Activity</option>
-                    <option value="form_requests">Form Requests</option>
+                    <option value="revenue">Revenue</option>
+                    <option value="orders">Orders</option>
+                    <option value="customer_satisfaction">Customer Satisfaction</option>
                 </select>
             </div>
         </div>
@@ -203,12 +203,12 @@
         </div>
     </div>
 
-    <!-- Transactions Table -->
+    <!-- Daily Revenue Table -->
     <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-shopping-cart mr-2 text-accent-brown"></i>
-                Transactions
+                <i class="fas fa-coins mr-2 text-accent-brown"></i>
+                Daily Revenue
             </h3>
             <div class="space-x-2">
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
@@ -217,55 +217,51 @@
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
-                <button onclick="printTable('transactionsTable', 'Transactions Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
             </div>
         </div>
         <div class="overflow-x-auto">
-            <table id="transactionsTable" class="report-table">
+            <table id="dailyRevenueTable" class="report-table">
                 <thead>
                     <tr>
-                        <th>Transaction ID</th>
                         <th>Date</th>
-                        <th>Customer</th>
-                        <th>Amount</th>
-                        <th>Status</th>
+                        <th>Total Revenue</th>
+                        <th>Number of Transactions</th>
+                        <th>Average Transaction</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>#1234</td>
                         <td>2025-07-04</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>₱385</td>
-                        <td><span class="text-green-600 font-baskerville">Completed</span></td>
+                        <td>₱2,450</td>
+                        <td>124</td>
+                        <td>₱19.76</td>
                     </tr>
                     <tr>
-                        <td>#1235</td>
-                        <td>2025-07-04</td>
-                        <td>Maria Santos</td>
-                        <td>₱250</td>
-                        <td><span class="text-yellow-600 font-baskerville">Pending</span></td>
-                    </tr>
-                    <tr>
-                        <td>#1236</td>
                         <td>2025-07-03</td>
-                        <td>Pedro Reyes</td>
-                        <td>₱450</td>
-                        <td><span class="text-red-600 font-baskerville">Cancelled</span></td>
+                        <td>₱2,200</td>
+                        <td>110</td>
+                        <td>₱20.00</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-02</td>
+                        <td>₱2,300</td>
+                        <td>115</td>
+                        <td>₱20.00</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- User Activity Table -->
+    <!-- Monthly Revenue Table -->
     <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-user mr-2 text-accent-brown"></i>
-                User Activity
+                <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
+                Monthly Revenue
             </h3>
             <div class="space-x-2">
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
@@ -274,55 +270,263 @@
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
-                <button onclick="printTable('userActivityTable', 'User Activity Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
             </div>
         </div>
         <div class="overflow-x-auto">
-            <table id="userActivityTable" class="report-table">
+            <table id="monthlyRevenueTable" class="report-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                        <th>Timestamp</th>
+                        <th>Month</th>
+                        <th>Total Revenue</th>
+                        <th>Number of Transactions</th>
+                        <th>Average Transaction</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>U001</td>
-                        <td>Maria Santos</td>
-                        <td>Barista</td>
-                        <td>Logged In</td>
-                        <td>2025-07-04 08:00 AM</td>
+                        <td>July 2025</td>
+                        <td>₱84,320</td>
+                        <td>3,847</td>
+                        <td>₱21.92</td>
                     </tr>
                     <tr>
-                        <td>U002</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>Manager</td>
-                        <td>Updated Inventory</td>
-                        <td>2025-07-04 07:30 AM</td>
+                        <td>June 2025</td>
+                        <td>₱78,500</td>
+                        <td>3,600</td>
+                        <td>₱21.81</td>
                     </tr>
                     <tr>
-                        <td>U003</td>
-                        <td>Pedro Reyes</td>
-                        <td>Cashier</td>
-                        <td>Processed Payment</td>
-                        <td>2025-07-03 06:45 PM</td>
+                        <td>May 2025</td>
+                        <td>₱82,000</td>
+                        <td>3,750</td>
+                        <td>₱21.87</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Form Requests Table -->
+    <!-- Yearly Revenue Table -->
+    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-trophy mr-2 text-accent-brown"></i>
+                Yearly Revenue
+            </h3>
+            <div class="space-x-2">
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                </button>
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button>
+                <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="yearlyRevenueTable" class="report-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Total Revenue</th>
+                        <th>Number of Transactions</th>
+                        <th>Average Transaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025</td>
+                        <td>₱950,680</td>
+                        <td>45,320</td>
+                        <td>₱20.98</td>
+                    </tr>
+                    <tr>
+                        <td>2024</td>
+                        <td>₱780,000</td>
+                        <td>38,000</td>
+                        <td>₱20.53</td>
+                    </tr>
+                    <tr>
+                        <td>2023</td>
+                        <td>₱700,000</td>
+                        <td>35,000</td>
+                        <td>₱20.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Daily Orders Table -->
+    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
+                Daily Orders
+            </h3>
+            <div class="space-x-2">
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                </button>
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button>
+                <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="dailyOrdersTable" class="report-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Orders</th>
+                        <th>Completed Orders</th>
+                        <th>Pending Orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-07-04</td>
+                        <td>124</td>
+                        <td>100</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-03</td>
+                        <td>110</td>
+                        <td>90</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-02</td>
+                        <td>115</td>
+                        <td>95</td>
+                        <td>20</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Monthly Orders Table -->
+    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
+                Monthly Orders
+            </h3>
+            <div class="space-x-2">
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                </button>
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button>
+                <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="monthlyOrdersTable" class="report-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Orders</th>
+                        <th>Completed Orders</th>
+                        <th>Pending Orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>July 2025</td>
+                        <td>3,847</td>
+                        <td>3,500</td>
+                        <td>347</td>
+                    </tr>
+                    <tr>
+                        <td>June 2025</td>
+                        <td>3,600</td>
+                        <td>3,300</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>May 2025</td>
+                        <td>3,750</td>
+                        <td>3,400</td>
+                        <td>350</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Yearly Orders Table -->
+    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-award mr-2 text-accent-brown"></i>
+                Yearly Orders
+            </h3>
+            <div class="space-x-2">
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                </button>
+                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button>
+                <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="yearlyOrdersTable" class="report-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Total Orders</th>
+                        <th>Completed Orders</th>
+                        <th>Pending Orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025</td>
+                        <td>45,320</td>
+                        <td>42,000</td>
+                        <td>3,320</td>
+                    </tr>
+                    <tr>
+                        <td>2024</td>
+                        <td>38,000</td>
+                        <td>35,000</td>
+                        <td>3,000</td>
+                    </tr>
+                    <tr>
+                        <td>2023</td>
+                        <td>35,000</td>
+                        <td>32,000</td>
+                        <td>3,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Customer Satisfaction Table -->
     <div class="dashboard-card fade-in bg-white rounded-xl p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
-                Form Requests
+                <i class="fas fa-smile mr-2 text-accent-brown"></i>
+                Customer Satisfaction
             </h3>
             <div class="space-x-2">
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
@@ -331,43 +535,47 @@
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
-                <button onclick="printTable('formRequestsTable', 'Form Requests Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
             </div>
         </div>
         <div class="overflow-x-auto">
-            <table id="formRequestsTable" class="report-table">
+            <table id="customerSatisfactionTable" class="report-table">
                 <thead>
                     <tr>
-                        <th>Request ID</th>
-                        <th>Request Type</th>
-                        <th>Submitted By</th>
-                        <th>Date</th>
-                        <th>Status</th>
+                        <th>Period</th>
+                        <th>Excellent</th>
+                        <th>Good</th>
+                        <th>Average</th>
+                        <th>Poor</th>
+                        <th>Total Responses</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>R001</td>
-                        <td>Leave Request</td>
-                        <td>Maria Santos</td>
-                        <td>2025-07-04</td>
-                        <td><span class="text-yellow-600 font-baskerville">Pending</span></td>
+                        <td>July 2025</td>
+                        <td>65%</td>
+                        <td>25%</td>
+                        <td>8%</td>
+                        <td>2%</td>
+                        <td>1,000</td>
                     </tr>
                     <tr>
-                        <td>R002</td>
-                        <td>Inventory Request</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>2025-07-03</td>
-                        <td><span class="text-green-600 font-baskerville">Approved</span></td>
+                        <td>June 2025</td>
+                        <td>60%</td>
+                        <td>28%</td>
+                        <td>10%</td>
+                        <td>2%</td>
+                        <td>950</td>
                     </tr>
                     <tr>
-                        <td>R003</td>
-                        <td>Maintenance Request</td>
-                        <td>Pedro Reyes</td>
-                        <td>2025-07-02</td>
-                        <td><span class="text-red-600 font-baskerville">Rejected</span></td>
+                        <td>2025</td>
+                        <td>62%</td>
+                        <td>26%</td>
+                        <td>9%</td>
+                        <td>3%</td>
+                        <td>12,000</td>
                     </tr>
                 </tbody>
             </table>
