@@ -212,9 +212,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -263,9 +263,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -314,9 +314,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -365,9 +365,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -416,9 +416,9 @@
             </h3>
             <div class="space-x-2">
  
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -467,9 +467,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -518,9 +518,9 @@
             </h3>
             <div class="space-x-2">
 
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button>
+                </button> -->
                 <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
