@@ -169,14 +169,14 @@
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Date Range</label>
                 <div class="flex space-x-2">
-                    <input type="date" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <input type="date" id="startDate" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <span class="text-rich-brown font-baskerville self-center">to</span>
-                    <input type="date" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <input type="date" id="endDate" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                 </div>
             </div>
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Period</label>
-                <select class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                <select id="periodFilter" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Periods</option>
                     <option value="daily">Daily</option>
                     <option value="monthly">Monthly</option>
@@ -185,7 +185,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-2">Category</label>
-                <select class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                <select id="categoryFilter" class="w-full p-2 rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
                     <option value="">All Categories</option>
                     <option value="revenue">Revenue</option>
                     <option value="orders">Orders</option>
@@ -194,17 +194,17 @@
             </div>
         </div>
         <div class="mt-4 flex justify-end space-x-2">
-            <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+            <button id="applyFilters" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                 <i class="fas fa-filter mr-2"></i> Apply Filters
             </button>
-            <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+            <button id="resetFilters" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                 <i class="fas fa-undo mr-2"></i> Reset
             </button>
         </div>
     </div>
 
     <!-- Daily Revenue Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-coins mr-2 text-accent-brown"></i>
@@ -257,7 +257,7 @@
     </div>
 
     <!-- Monthly Revenue Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
@@ -310,7 +310,7 @@
     </div>
 
     <!-- Yearly Revenue Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-trophy mr-2 text-accent-brown"></i>
@@ -363,7 +363,7 @@
     </div>
 
     <!-- Daily Orders Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
@@ -416,7 +416,7 @@
     </div>
 
     <!-- Monthly Orders Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
@@ -469,7 +469,7 @@
     </div>
 
     <!-- Yearly Orders Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-award mr-2 text-accent-brown"></i>
@@ -522,7 +522,7 @@
     </div>
 
     <!-- Customer Satisfaction Table -->
-    <div class="dashboard-card fade-in bg-white rounded-xl p-6">
+    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-smile mr-2 text-accent-brown"></i>
@@ -599,36 +599,104 @@ ob_start();
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
             reportsLink.classList.add('active');
         }
-    });
 
-    // Set current date
-    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    // Scroll animation observer
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('animated');
-                }, index * 100);
-            }
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
-    }, observerOptions);
 
-    document.querySelectorAll('.fade-in').forEach(element => {
-        observer.observe(element);
+        // Scroll animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('animated');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Filter tables function
+        function filterTables() {
+            const category = document.getElementById('categoryFilter').value;
+            const period = document.getElementById('periodFilter').value;
+            const sections = [
+                'dailyRevenueSection',
+                'monthlyRevenueSection',
+                'yearlyRevenueSection',
+                'dailyOrdersSection',
+                'monthlyOrdersSection',
+                'yearlyOrdersSection',
+                'customerSatisfactionSection'
+            ];
+
+            // Hide all sections
+            sections.forEach(section => {
+                document.getElementById(section).classList.add('hidden');
+            });
+
+            // Show relevant section based on filters
+            if (!category || !period) {
+                // If either filter is "All", show all sections
+                sections.forEach(section => {
+                    document.getElementById(section).classList.remove('hidden');
+                });
+            } else {
+                let targetSection = '';
+                if (category === 'revenue') {
+                    if (period === 'daily') targetSection = 'dailyRevenueSection';
+                    else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
+                    else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
+                } else if (category === 'orders') {
+                    if (period === 'daily') targetSection = 'dailyOrdersSection';
+                    else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
+                    else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
+                } else if (category === 'customer_satisfaction') {
+                    targetSection = 'customerSatisfactionSection';
+                }
+                if (targetSection) {
+                    document.getElementById(targetSection).classList.remove('hidden');
+                }
+            }
+        }
+
+        // Reset filters function
+        function resetFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('periodFilter').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            const sections = [
+                'dailyRevenueSection',
+                'monthlyRevenueSection',
+                'yearlyRevenueSection',
+                'dailyOrdersSection',
+                'monthlyOrdersSection',
+                'yearlyOrdersSection',
+                'customerSatisfactionSection'
+            ];
+            sections.forEach(section => {
+                document.getElementById(section).classList.remove('hidden');
+            });
+        }
+
+        // Event listeners for filter buttons
+        document.getElementById('applyFilters').addEventListener('click', filterTables);
+        document.getElementById('resetFilters').addEventListener('click', resetFilters);
     });
 
     // Print table function
