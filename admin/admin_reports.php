@@ -257,7 +257,7 @@
     </div>
 
     <!-- Monthly Revenue Table -->
-    <div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
@@ -310,7 +310,7 @@
     </div>
 
     <!-- Yearly Revenue Table -->
-    <div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-trophy mr-2 text-accent-brown"></i>
@@ -363,7 +363,7 @@
     </div>
 
     <!-- Daily Orders Table -->
-    <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
@@ -416,7 +416,7 @@
     </div>
 
     <!-- Monthly Orders Table -->
-    <div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
@@ -469,7 +469,7 @@
     </div>
 
     <!-- Yearly Orders Table -->
-    <div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-award mr-2 text-accent-brown"></i>
@@ -522,7 +522,7 @@
     </div>
 
     <!-- Customer Satisfaction Table -->
-    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6">
+    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-smile mr-2 text-accent-brown"></i>
