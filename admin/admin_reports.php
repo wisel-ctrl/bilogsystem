@@ -366,7 +366,7 @@
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
@@ -650,11 +650,9 @@ ob_start();
             });
 
             // Show relevant section based on filters
-            if (!category || !period) {
-                // If either filter is "All", show all sections
-                sections.forEach(section => {
-                    document.getElementById(section).classList.remove('hidden');
-                });
+            if (!category && !period) {
+                // If both filters are "All", show only Daily Revenue
+                document.getElementById('dailyRevenueSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
                 if (category === 'revenue') {
@@ -667,6 +665,18 @@ ob_start();
                     else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
                 } else if (category === 'customer_satisfaction') {
                     targetSection = 'customerSatisfactionSection';
+                } else if (category === '' && period) {
+                    // If category is "All" but period is selected, show all tables for that period
+                    if (period === 'daily') {
+                        document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                        document.getElementById('dailyOrdersSection').classList.remove('hidden');
+                    } else if (period === 'monthly') {
+                        document.getElementById('monthlyRevenueSection').classList.remove('hidden');
+                        document.getElementById('monthlyOrdersSection').classList.remove('hidden');
+                    } else if (period === 'yearly') {
+                        document.getElementById('yearlyRevenueSection').classList.remove('hidden');
+                        document.getElementById('yearlyOrdersSection').classList.remove('hidden');
+                    }
                 }
                 if (targetSection) {
                     document.getElementById(targetSection).classList.remove('hidden');
@@ -689,14 +699,19 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
+            // Hide all sections except Daily Revenue
             sections.forEach(section => {
-                document.getElementById(section).classList.remove('hidden');
+                document.getElementById(section).classList.add('hidden');
             });
+            document.getElementById('dailyRevenueSection').classList.remove('hidden');
         }
 
         // Event listeners for filter buttons
         document.getElementById('applyFilters').addEventListener('click', filterTables);
         document.getElementById('resetFilters').addEventListener('click', resetFilters);
+
+        // Initialize default state
+        filterTables();
     });
 
     // Print table function
