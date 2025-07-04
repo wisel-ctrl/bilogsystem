@@ -211,9 +211,7 @@
                 Daily Revenue
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -264,9 +262,7 @@
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -317,9 +313,7 @@
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -370,9 +364,7 @@
                 Daily Orders
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -423,9 +415,7 @@
                 Monthly Orders
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+ 
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -476,9 +466,7 @@
                 Yearly Orders
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
@@ -529,9 +517,7 @@
                 Customer Satisfaction
             </h3>
             <div class="space-x-2">
-                <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
-                </button>
+
                 <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-file-pdf mr-2"></i> Export PDF
                 </button>
