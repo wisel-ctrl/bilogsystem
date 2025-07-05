@@ -507,8 +507,8 @@
     </section>
 
     <!-- Packages Section -->
-<div class="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-warm-cream to-amber-50">
-        <div class="text-center mb-10 sm:mb-12 md:mb-16 fade-in px-4">
+    <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-warm-cream to-amber-50">
+    <div class="text-center mb-10 sm:mb-12 md:mb-16 fade-in px-4">
             <h2 class="font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-deep-brown mb-4 sm:mb-6">Buffet Packages</h2>
             <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-6 sm:mb-8"></div>
             <p class="font-baskerville text-base sm:text-lg md:text-xl text-rich-brown max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
@@ -855,7 +855,7 @@
             </svg>
         </div>
     </div>
-    </div>
+
     <style>
         /* Update the support widget styles */
         .support-widget {
