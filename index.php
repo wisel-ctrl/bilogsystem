@@ -507,148 +507,149 @@
     </section>
 
     <!-- Packages Section -->
-    <div class="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-warm-cream to-amber-50">
-    <div class="text-center mb-10 sm:mb-12 md:mb-16 fade-in px-4">
-        <h2 class="font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-deep-brown mb-4 sm:mb-6">Buffet Packages</h2>
-        <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-6 sm:mb-8"></div>
-        <p class="font-baskerville text-base sm:text-lg md:text-xl text-rich-brown max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-            Choose from our carefully curated packages, perfect for any occasion. From intimate gatherings to grand celebrations.
-        </p>
-    </div>
+<div class="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+        <div class="text-center mb-10 sm:mb-12 md:mb-16 fade-in px-4">
+            <h2 class="font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-deep-brown mb-4 sm:mb-6">Buffet Packages</h2>
+            <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-6 sm:mb-8"></div>
+            <p class="font-baskerville text-base sm:text-lg md:text-xl text-rich-brown max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
+                Choose from our carefully curated packages, perfect for any occasion. From intimate gatherings to grand celebrations.
+            </p>
+        </div>
 
     <!-- Packages Carousel Section -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Previous Button -->
-    <button id="prevBtnPackages" class="absolute left-4 sm:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 z-10 bg-rich-brown text-warm-cream w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300 focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-    </button>
+        <!-- Previous Button -->
+        <button id="prevBtnPackages" class="absolute left-4 sm:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 z-10 bg-rich-brown text-warm-cream w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
 
-    <!-- Carousel Container -->
-    <div class="overflow-hidden px-12 sm:px-14 lg:px-16"> <!-- Added padding to avoid overlap with buttons -->
-        <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out">
-            <!-- Slide 1 -->
-            <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 7</h3>
-                                    <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+        <!-- Carousel Container -->
+        <div class="overflow-hidden px-12 sm:px-14 lg:px-16"> <!-- Added padding to avoid overlap with buttons -->
+            <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out">
+                <!-- Slide 1 -->
+                <div class="w-full flex-shrink-0 px-2 sm:px-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 7</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 1</h3>
-                                    <p class="font-baskerville text-sm">₱2,200 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 1</h3>
+                                        <p class="font-baskerville text-sm">₱2,200 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto hidden lg:block">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 2</h3>
-                                    <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto hidden lg:block">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 2</h3>
+                                        <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 2 -->
-            <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
-                    <div class="w-full max-w-sm mx-auto lg:hidden">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 2</h3>
-                                    <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                <!-- Slide 2 -->
+                <div class="w-full flex-shrink-0 px-2 sm:px-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
+                        <div class="w-full max-w-sm mx-auto lg:hidden">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 2</h3>
+                                        <p class="font-baskerville text-sm">₱1,950 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 3</h3>
-                                    <p class="font-baskerville text-sm">₱1,500 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 3</h3>
+                                        <p class="font-baskerville text-sm">₱1,500 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 4</h3>
-                                    <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 4</h3>
+                                        <p class="font-baskerville text-sm">₱1,300 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto hidden lg:block">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 5</h3>
-                                    <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto hidden lg:block">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 5</h3>
+                                        <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 3 -->
-            <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 justify-center max-w-4xl mx-auto">
-                    <div class="w-full max-w-sm mx-auto lg:hidden">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 5</h3>
-                                    <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                <!-- Slide 3 -->
+                <div class="w-full flex-shrink-0 px-2 sm:px-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 justify-center max-w-4xl mx-auto">
+                        <div class="w-full max-w-sm mx-auto lg:hidden">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 5</h3>
+                                        <p class="font-baskerville text-sm">₱1,200 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 6</h3>
-                                    <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Buffet 6</h3>
+                                        <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full max-w-sm mx-auto">
-                        <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
-                            <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
-                                    <h3 class="font-playfair text-base sm:text-lg font-bold">Sit-down Plated</h3>
-                                    <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                        <div class="w-full max-w-sm mx-auto">
+                            <div class="shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
+                                <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
+                                    <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-warm-cream p-3 sm:p-4">
+                                        <h3 class="font-playfair text-base sm:text-lg font-bold">Sit-down Plated</h3>
+                                        <p class="font-baskerville text-sm">₱900 +10% Service Charge</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -656,22 +657,21 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Next Button -->
-    <button id="nextBtnPackages" class="absolute right-4 sm:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-10 bg-rich-brown text-warm-cream w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300 focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-    </button>
+        <!-- Next Button -->
+        <button id="nextBtnPackages" class="absolute right-4 sm:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-10 bg-rich-brown text-warm-cream w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
 
-    <!-- Carousel Indicators -->
-    <div class="flex justify-center mt-6 sm:mt-8 space-x-2">
-        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="0"></button>
-        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="1"></button>
-        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="2"></button>
+        <!-- Carousel Indicators -->
+        <div class="flex justify-center mt-6 sm:mt-8 space-x-2">
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="0"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="1"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 package-indicator" data-index="2"></button>
+        </div>
     </div>
-</div>
 
     <!-- What We Offer Section -->
     <section id="services" class="py-20 bg-warm-cream">
@@ -742,64 +742,64 @@
                 
                 <div class="fade-in">
                     <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
-    <p>
-        At Caffè Lilio, we believe that every occasion—big or small—deserves a memorable setting and flavorful experience. 
-        That's why we offer a range of services designed to bring people together through food, ambiance, and thoughtful service.
-    </p>
-    <p>
-        Whether you're planning an intimate family gathering, a corporate event, or a grand celebration, we're here to make it seamless. 
-        Our team provides customizable event packages, catering services, and venue reservations tailored to your guest count and preferred setup.
-    </p>
-    <p>
-        We have various venue options, each with a different ambiance and capacity, so you can choose the space that fits your celebration best. 
-        From classic sit-down dinners to themed celebrations, we're ready to help you design a setting that reflects your taste.
-    </p>
-    <p>
-        Our goal is to make hosting easier for you—whether that means delivering delicious food to your location or taking care of everything 
-        from the table setup to the last toast of the night.
-    </p>
-</div>
+                        <p>
+                            At Caffè Lilio, we believe that every occasion—big or small—deserves a memorable setting and flavorful experience. 
+                            That's why we offer a range of services designed to bring people together through food, ambiance, and thoughtful service.
+                        </p>
+                        <p>
+                            Whether you're planning an intimate family gathering, a corporate event, or a grand celebration, we're here to make it seamless. 
+                            Our team provides customizable event packages, catering services, and venue reservations tailored to your guest count and preferred setup.
+                        </p>
+                        <p>
+                            We have various venue options, each with a different ambiance and capacity, so you can choose the space that fits your celebration best. 
+                            From classic sit-down dinners to themed celebrations, we're ready to help you design a setting that reflects your taste.
+                        </p>
+                        <p>
+                            Our goal is to make hosting easier for you—whether that means delivering delicious food to your location or taking care of everything 
+                            from the table setup to the last toast of the night.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-<!-- Footer -->
-<footer class="bg-deep-brown text-warm-cream py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-            <!-- Logo and Tagline -->
-            <div class="flex items-center justify-center space-x-3 mb-6">
-                <div>
-                    <h3 class="font-playfair font-bold text-xl sm:text-2xl">Caffè Lilio</h3>
-                    <p class="text-xs sm:text-sm tracking-widest opacity-75">RISTORANTE</p>
+    <!-- Footer -->
+    <footer class="bg-deep-brown text-warm-cream py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <!-- Logo and Tagline -->
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div>
+                        <h3 class="font-playfair font-bold text-xl sm:text-2xl">Caffè Lilio</h3>
+                        <p class="text-xs sm:text-sm tracking-widest opacity-75">RISTORANTE</p>
+                    </div>
+                </div>
+                
+                <!-- Social Media Links -->
+                <div class="flex justify-center space-x-6 sm:space-x-8 mb-8">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465.66.255 1.216.567 1.772 1.123.556.556.868 1.112 1.123 1.772.247.636.416 1.363.465 2.427.048 1.024.06 1.379.06 3.808 0 2.43-.013 2.784-.06 3.808-.049 1.064-.218 1.791-.465 2.427-.255.66-.567 1.216-1.123 1.772-.556.556-1.112.868-1.772 1.123-.636.247-1.363.416-2.427.465-1.024.048-1.379.06-3.808.06-2.43 0-2.784-.013-3.808-.06-1.064-.049-1.791-.218-2.427-.465-.66-.255-1.216-.567-1.772-1.123-.556-.556-.868-1.112-1.123-1.772-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.379-.06-3.808 0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427.255-.66.567-1.216 1.123-1.772.556-.556 1.112-.868 1.772-1.123.636-.247 1.363-.416 2.427-.465 1.024-.048 1.379-.06 3.808-.06zm0-1.315c-2.486 0-2.847.013-3.846.06-1.07.05-1.791.222-2.423.475-.662.262-1.223.582-1.785 1.144-.562.562-.882 1.123-1.144 1.785-.253.632-.425 1.353-.475 2.423-.047.999-.06 1.36-.06 3.846s.013 2.847.06 3.846c.05 1.07.222 1.791.475 2.423.262.662.582 1.223 1.144 1.785.562.562 1.123.882 1.785 1.144.632.253 1.353.425 2.423.475.999.047 1.36.06 3.846.06s2.847-.013 3.846-.06c1.07-.05 1.791-.222 2.423-.475.662-.262 1.223-.582 1.785-1.144.562-.562.882-1.123 1.144-1.785.253-.632.425-1.353.475-2.423.047-.999.06-1.36.06-3.846s-.013-2.847-.06-3.846c-.05-1.07-.222-1.791-.475-2.423-.262-.662-.582-1.223-1.144-1.785-.562-.562-1.123-.882-1.785-1.144-.632-.253-1.353-.425-2.423-.475-1.024-.047-1.379-.06-3.846-.06zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- Copyright and Tagline -->
+                <div class="border-t border-rich-brown pt-6 sm:pt-8">
+                    <p class="font-baskerville text-sm sm:text-base opacity-75">
+                        © 2025 Caffè Lilio Ristorante. All rights reserved. | 
+                        <span class="italic">Authentically Italian and Spanish since 2021</span>
+                    </p>
                 </div>
             </div>
-            
-            <!-- Social Media Links -->
-            <div class="flex justify-center space-x-6 sm:space-x-8 mb-8">
-                <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
-                    <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-                <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
-                    <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465.66.255 1.216.567 1.772 1.123.556.556.868 1.112 1.123 1.772.247.636.416 1.363.465 2.427.048 1.024.06 1.379.06 3.808 0 2.43-.013 2.784-.06 3.808-.049 1.064-.218 1.791-.465 2.427-.255.66-.567 1.216-1.123 1.772-.556.556-1.112.868-1.772 1.123-.636.247-1.363.416-2.427.465-1.024.048-1.379.06-3.808.06-2.43 0-2.784-.013-3.808-.06-1.064-.049-1.791-.218-2.427-.465-.66-.255-1.216-.567-1.772-1.123-.556-.556-.868-1.112-1.123-1.772-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.379-.06-3.808 0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427.255-.66.567-1.216 1.123-1.772.556-.556 1.112-.868 1.772-1.123.636-.247 1.363-.416 2.427-.465 1.024-.048 1.379-.06 3.808-.06zm0-1.315c-2.486 0-2.847.013-3.846.06-1.07.05-1.791.222-2.423.475-.662.262-1.223.582-1.785 1.144-.562.562-.882 1.123-1.144 1.785-.253.632-.425 1.353-.475 2.423-.047.999-.06 1.36-.06 3.846s.013 2.847.06 3.846c.05 1.07.222 1.791.475 2.423.262.662.582 1.223 1.144 1.785.562.562 1.123.882 1.785 1.144.632.253 1.353.425 2.423.475.999.047 1.36.06 3.846.06s2.847-.013 3.846-.06c1.07-.05 1.791-.222 2.423-.475.662-.262 1.223-.582 1.785-1.144.562-.562.882-1.123 1.144-1.785.253-.632.425-1.353.475-2.423.047-.999.06-1.36.06-3.846s-.013-2.847-.06-3.846c-.05-1.07-.222-1.791-.475-2.423-.262-.662-.582-1.223-1.144-1.785-.562-.562-1.123-.882-1.785-1.144-.632-.253-1.353-.425-2.423-.475-1.024-.047-1.379-.06-3.846-.06zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-            
-            <!-- Copyright and Tagline -->
-            <div class="border-t border-rich-brown pt-6 sm:pt-8">
-                <p class="font-baskerville text-sm sm:text-base opacity-75">
-                    © 2025 Caffè Lilio Ristorante. All rights reserved. | 
-                    <span class="italic">Authentically Italian and Spanish since 2021</span>
-                </p>
-            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <!-- Modal for zoomed image -->
     <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
@@ -855,7 +855,7 @@
             </svg>
         </div>
     </div>
-
+    </div>
     <style>
         /* Update the support widget styles */
         .support-widget {
