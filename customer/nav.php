@@ -126,7 +126,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </nav>
                 <div class="p-4 border-t border-warm-cream/10">
-                    <a href="../logout.php?usertype=cashier" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
+                    <a href="../logout.php?usertype=customer" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
                         <i class="fas fa-sign-out-alt w-8"></i> Logout
                     </a>
                 </div>

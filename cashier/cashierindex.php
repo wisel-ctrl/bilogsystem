@@ -392,7 +392,7 @@ require_once 'cashier_auth.php';
                         <span id="current-date"></span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <a href="../logout.php?usertype=customer" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                        <a href="../logout.php?usertype=cashier" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
                             <i class="fas fa-sign-out-alt text-deep-brown"></i>
                             <span class="text-sm font-medium text-deep-brown font-baskerville">Sign Out</span>
                         </a>
