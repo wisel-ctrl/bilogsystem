@@ -313,7 +313,7 @@ ob_start();
         </div>
     </footer>
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             NProgress.start();
             
@@ -637,26 +637,26 @@ ob_start();
             });
 
             // User menu dropdown
-            const userMenuButton = document.getElementById('user-menu-button');
-            const userMenu = document.querySelector('#user-menu-button + .absolute');
-            const menuChevron = userMenuButton.querySelector('i.fas.fa-chevron-down');
+            // const userMenuButton = document.getElementById('user-menu-button');
+            // const userMenu = document.querySelector('#user-menu-button + .absolute');
+            // const menuChevron = userMenuButton.querySelector('i.fas.fa-chevron-down');
 
-            userMenuButton.addEventListener('click', () => {
-                const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                userMenuButton.setAttribute('aria-expanded', !isExpanded);
-                userMenu.classList.toggle('hidden');
-                userMenu.classList.toggle('opacity-0');
-                userMenu.classList.toggle('scale-95');
-                menuChevron.classList.toggle('rotate-180');
-            });
+            // userMenuButton.addEventListener('click', () => {
+            //     const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+            //     userMenuButton.setAttribute('aria-expanded', !isExpanded);
+            //     userMenu.classList.toggle('hidden');
+            //     userMenu.classList.toggle('opacity-0');
+            //     userMenu.classList.toggle('scale-95');
+            //     menuChevron.classList.toggle('rotate-180');
+            // });
 
-            document.addEventListener('click', (event) => {
-                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-                    userMenuButton.setAttribute('aria-expanded', 'false');
-                    userMenu.classList.add('hidden', 'opacity-0', 'scale-95');
-                    menuChevron.classList.remove('rotate-180');
-                }
-            });
+            // document.addEventListener('click', (event) => {
+            //     if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+            //         userMenuButton.setAttribute('aria-expanded', 'false');
+            //         userMenu.classList.add('hidden', 'opacity-0', 'scale-95');
+            //         menuChevron.classList.remove('rotate-180');
+            //     }
+            // });
 
             tippy('[data-tippy-content]', {
                 animation: 'scale-subtle',
@@ -667,7 +667,8 @@ ob_start();
                 NProgress.done();
             };
         });
-    </script>
+</script>
+
 <?php
 // Capture content and include layout
 $content = ob_get_clean();
