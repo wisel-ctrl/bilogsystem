@@ -1,8 +1,8 @@
 <?php
-// Enable error reporting for debugging (disable in production)
-ini_set('display_errors', 0);
+// Enable error reporting for debugging
+ini_set('display_errors', 0); // Set to 0 in production
 ini_set('log_errors', 1);
-error_log("Logout script started at " . date('Y-m-d H:i:s'));
+error_log("Logout script started");
 
 // Get the usertype from the URL parameter
 $usertype = $_GET['usertype'] ?? '';
@@ -10,7 +10,7 @@ error_log("Usertype received: $usertype");
 
 // Map usertype to session name
 $session_name = '';
-switch (strtolower($usertype)) {
+switch ($usertype) {
     case 'admin':
         $session_name = 'ADMIN_SESSION';
         break;
@@ -26,25 +26,20 @@ switch (strtolower($usertype)) {
         exit();
 }
 
-// Set secure session cookie parameters
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => '/',
-    'secure' => true,      // Requires HTTPS
-    'httponly' => true,
-    'samesite' => 'Strict'
-]);
-
-// Set the session name and start the session
+// Set the session name
 session_name($session_name);
-session_start();
-error_log("Session started successfully for $session_name");
+error_log("Session name set to: $session_name");
 
-// Log session data before destruction
-error_log("Session data before destruction: " . json_encode($_SESSION));
+// Start the session
+if (session_start()) {
+    error_log("Session started successfully for $session_name");
+} else {
+    error_log("Failed to start session for $session_name");
+}
 
 // Unset all session variables
 $_SESSION = [];
+error_log("Session variables unset for $session_name");
 
 // Delete the session cookie
 if (ini_get("session.use_cookies")) {
@@ -54,7 +49,7 @@ if (ini_get("session.use_cookies")) {
         '',
         time() - 42000,
         $params["path"],
-        $params["domain"] ?? '',
+        $params["domain"],
         $params["secure"],
         $params["httponly"]
     );
