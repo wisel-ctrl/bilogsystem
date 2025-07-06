@@ -30,15 +30,18 @@ switch (strtolower($usertype)) {
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => '/',
-    'secure' => true,      // Requires HTTPS
+    'secure' => true, // Requires HTTPS
     'httponly' => true,
     'samesite' => 'Strict'
 ]);
 
 // Set the session name and start the session
 session_name($session_name);
-session_start();
-error_log("Session started successfully for $session_name");
+if (session_start()) {
+    error_log("Session started successfully for $session_name");
+} else {
+    error_log("Failed to start session for $session_name");
+}
 
 // Log session data before destruction
 error_log("Session data before destruction: " . json_encode($_SESSION));
@@ -54,7 +57,7 @@ if (ini_get("session.use_cookies")) {
         '',
         time() - 42000,
         $params["path"],
-        $params["domain"] ?? '',
+        $params["domain"],
         $params["secure"],
         $params["httponly"]
     );

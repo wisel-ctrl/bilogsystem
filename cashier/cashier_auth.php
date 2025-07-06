@@ -8,13 +8,13 @@ session_set_cookie_params([
     'samesite' => 'Strict'
 ]);
 
-// Set session name for admin
+// Set session name for cashier
 session_name('CASHIER_SESSION');
 session_start();
 
-// Check if user is logged in and has admin user type
+// Check if user is logged in and has cashier user type
 if (!isset($_SESSION['user_id']) || $_SESSION['usertype'] != 2) {
-    error_log("Admin auth failed: user_id=" . ($_SESSION['user_id'] ?? 'not set') . ", usertype=" . ($_SESSION['usertype'] ?? 'not set'));
+    error_log("Cashier auth failed: user_id=" . ($_SESSION['user_id'] ?? 'not set') . ", usertype=" . ($_SESSION['usertype'] ?? 'not set'));
     session_destroy();
     header("Location: ../login.php");
     exit();

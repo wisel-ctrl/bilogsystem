@@ -1,5 +1,6 @@
 <?php 
-require_once 'cashier_auth.php'; 
+// require_once 'cashier_auth.php'; 
+require_once '../cashier_auth.php';
 ?>
 
 <!DOCTYPE html>

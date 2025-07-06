@@ -8,13 +8,13 @@ session_set_cookie_params([
     'samesite' => 'Strict'
 ]);
 
-// Set session name for admin
+// Set session name for customer
 session_name('CUSTOMER_SESSION');
 session_start();
 
-// Check if user is logged in and has admin user type
+// Check if user is logged in and has customer user type
 if (!isset($_SESSION['user_id']) || $_SESSION['usertype'] != 3) {
-    error_log("Admin auth failed: user_id=" . ($_SESSION['user_id'] ?? 'not set') . ", usertype=" . ($_SESSION['usertype'] ?? 'not set'));
+    error_log("Customer auth failed: user_id=" . ($_SESSION['user_id'] ?? 'not set') . ", usertype=" . ($_SESSION['usertype'] ?? 'not set'));
     session_destroy();
     header("Location: ../login.php");
     exit();
