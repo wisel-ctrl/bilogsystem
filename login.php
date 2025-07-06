@@ -1,7 +1,7 @@
 <?php
 require_once 'db_connect.php';
 
-// Start session with a unique name based on user type
+// Function to start a session with a specific name
 function start_user_session($usertype) {
     $session_name = '';
     switch ($usertype) {
@@ -18,31 +18,49 @@ function start_user_session($usertype) {
             return false;
     }
     session_name($session_name);
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => true, // Requires HTTPS
+        'httponly' => true,
+        'samesite' => 'Strict'
+    ]);
     session_start();
+    error_log("Started session: $session_name");
     return true;
 }
 
-// If user is already logged in, redirect them to appropriate page
-if (isset($_COOKIE['ADMIN_SESSION']) && session_name('ADMIN_SESSION') && session_start()) {
-    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 1) {
-        header("Location: admin/admin_dashboard.php");
-        exit();
-    }
-}
-if (isset($_COOKIE['CASHIER_SESSION']) && session_name('CASHIER_SESSION') && session_start()) {
-    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 2) {
-        header("Location: cashier/cashierindex.php");
-        exit();
-    }
-}
-if (isset($_COOKIE['CUSTOMER_SESSION']) && session_name('CUSTOMER_SESSION') && session_start()) {
-    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 3) {
-        header("Location: customer/customerindex.php");
-        exit();
+// Check for existing sessions and redirect only if the session is valid
+$session_names = ['ADMIN_SESSION', 'CASHIER_SESSION', 'CUSTOMER_SESSION'];
+$usertype_map = [
+    'ADMIN_SESSION' => 1,
+    'CASHIER_SESSION' => 2,
+    'CUSTOMER_SESSION' => 3
+];
+
+foreach ($session_names as $session_name) {
+    if (isset($_COOKIE[$session_name])) {
+        session_name($session_name);
+        session_start();
+        if (isset($_SESSION['user_id']) && isset($_SESSION['usertype']) && $_SESSION['usertype'] == $usertype_map[$session_name]) {
+            error_log("Active session found for $session_name, user_id: {$_SESSION['user_id']}");
+            switch ($_SESSION['usertype']) {
+                case 1:
+                    header("Location: admin/admin_dashboard.php");
+                    exit();
+                case 2:
+                    header("Location: cashier/cashierindex.php");
+                    exit();
+                case 3:
+                    header("Location: customer/customerindex.php");
+                    exit();
+            }
+        }
+        session_destroy(); // Clean up invalid or stale session
     }
 }
 
-// Reset to default session for login
+// Start default session for login form
 session_name('PHPSESSID');
 session_start();
 
@@ -66,8 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                // Start a new session with user-type-specific name
-                session_destroy(); // Clear default session
+                // Destroy default session
+                session_destroy();
+
+                // Start new session for the user type
                 if (start_user_session($user['usertype'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
