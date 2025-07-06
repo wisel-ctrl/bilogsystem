@@ -205,7 +205,7 @@ ob_start();
 </div>
 
     <!-- Footer (unchanged) -->
-    <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
+    <!-- <footer class="bg-deep-brown text-warm-cream relative overflow-hidden">
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-8 left-8 w-32 h-32 border border-warm-cream rounded-full"></div>
             <div class="absolute bottom-12 right-12 w-24 h-24 border border-warm-cream rounded-full"></div>
@@ -311,7 +311,7 @@ ob_start();
                 </div>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
 <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -352,64 +352,64 @@ ob_start();
         // Create a smaller preview image
         const reader = new FileReader();
         reader.onload = function(e) {
-            const img = new Image();
-            img.onload = function() {
-                // Create a canvas to resize the image
-                const canvas = document.createElement('canvas');
-                const maxWidth = 300; // Reduced size for preview
-                const maxHeight = 300;
-                let width = img.width;
-                let height = img.height;
-                
-                if (width > height) {
-                    if (width > maxWidth) {
-                        height *= maxWidth / width;
-                        width = maxWidth;
-                    }
-                } else {
-                    if (height > maxHeight) {
-                        width *= maxHeight / height;
-                        height = maxHeight;
-                    }
-                }
-                
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                // Use the resized image for preview
-                const resizedDataUrl = canvas.toDataURL(file.type);
-                profileImage.src = resizedDataUrl;
-                
-                // Ask for confirmation with the resized image
-                Swal.fire({
-                    title: 'Update Profile Picture?',
-                    text: 'Are you sure you want to upload this image as your new profile picture?',
-                    imageUrl: resizedDataUrl,
-                    imageWidth: width,
-                    imageHeight: height,
-                    imageAlt: 'Profile picture preview',
-                    showCancelButton: true,
-                    confirmButtonColor: '#8B4513',
-                    cancelButtonColor: '#A0522D',
-                    confirmButtonText: 'Yes, upload it!',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        uploadProfilePicture(file);
+                const img = new Image();
+                img.onload = function() {
+                    // Create a canvas to resize the image
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 300; // Reduced size for preview
+                    const maxHeight = 300;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
                     } else {
-                        // Reset to original image if cancelled
-                        profileImage.src = '<?php echo htmlspecialchars($profilePicture); ?>';
-                        avatarUpload.value = '';
+                        if (height > maxHeight) {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
                     }
-                });
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Use the resized image for preview
+                    const resizedDataUrl = canvas.toDataURL(file.type);
+                    profileImage.src = resizedDataUrl;
+                    
+                    // Ask for confirmation with the resized image
+                    Swal.fire({
+                        title: 'Update Profile Picture?',
+                        text: 'Are you sure you want to upload this image as your new profile picture?',
+                        imageUrl: resizedDataUrl,
+                        imageWidth: width,
+                        imageHeight: height,
+                        imageAlt: 'Profile picture preview',
+                        showCancelButton: true,
+                        confirmButtonColor: '#8B4513',
+                        cancelButtonColor: '#A0522D',
+                        confirmButtonText: 'Yes, upload it!',
+                        cancelButtonText: 'No, cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            uploadProfilePicture(file);
+                        } else {
+                            // Reset to original image if cancelled
+                            profileImage.src = '<?php echo htmlspecialchars($profilePicture); ?>';
+                            avatarUpload.value = '';
+                        }
+                    });
+                };
+                img.src = e.target.result;
             };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
+            reader.readAsDataURL(file);
+        }
+    });
             
             function uploadProfilePicture(file) {
                 NProgress.start();
