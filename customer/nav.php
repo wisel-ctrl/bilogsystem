@@ -88,7 +88,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <span>Notifications</span>
                             </a>
                             <hr class="my-2 border-deep-brown/20">
-                            <a href="../logout.php" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
+                            <a href="../logout.php?usertype=cashier" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
                                 <i class="fas fa-sign-out-alt w-5"></i>
                                 <span>Logout</span>
                             </a>
@@ -126,7 +126,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </nav>
                 <div class="p-4 border-t border-warm-cream/10">
-                    <a href="../logout.php" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
+                    <a href="../logout.php?usertype=cashier" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
                         <i class="fas fa-sign-out-alt w-8"></i> Logout
                     </a>
                 </div>
