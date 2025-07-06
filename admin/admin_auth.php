@@ -1,4 +1,6 @@
 <?php
+// Set session name for admin
+session_name('ADMIN_SESSION');
 session_start();
 
 // Check if user is logged in
@@ -9,19 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 
 // Check for admin user type (usertype = 1)
 if ($_SESSION['usertype'] != 1) {
-    // Redirect to appropriate page based on user type
-    switch ($_SESSION['usertype']) {
-        case 2:
-            header("Location: ../cashier/cashierindex.php");
-            break;
-        case 3:
-            header("Location: ../customer/customerindex.php");
-            break;
-        default:
-            // Invalid usertype - destroy session and redirect to login
-            session_destroy();
-            header("Location: ../login.php");
-    }
+    session_destroy();
+    header("Location: ../login.php");
     exit();
 }
 

@@ -1,25 +1,50 @@
 <?php
 require_once 'db_connect.php';
-session_start();
 
-// If user is already logged in, redirect them to appropriate page
-if (isset($_SESSION['user_id'])) {
-    switch ($_SESSION['usertype']) {
+// Start session with a unique name based on user type
+function start_user_session($usertype) {
+    $session_name = '';
+    switch ($usertype) {
         case 1:
-            header("Location: admin/admin_dashboard.php");
+            $session_name = 'ADMIN_SESSION';
             break;
         case 2:
-            header("Location: cashier/cashierindex.php");
+            $session_name = 'CASHIER_SESSION';
             break;
         case 3:
-            header("Location: customer/customerindex.php");
+            $session_name = 'CUSTOMER_SESSION';
             break;
         default:
-            // Invalid usertype - destroy session
-            session_destroy();
+            return false;
     }
-    exit();
+    session_name($session_name);
+    session_start();
+    return true;
 }
+
+// If user is already logged in, redirect them to appropriate page
+if (isset($_COOKIE['ADMIN_SESSION']) && session_name('ADMIN_SESSION') && session_start()) {
+    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 1) {
+        header("Location: admin/admin_dashboard.php");
+        exit();
+    }
+}
+if (isset($_COOKIE['CASHIER_SESSION']) && session_name('CASHIER_SESSION') && session_start()) {
+    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 2) {
+        header("Location: cashier/cashierindex.php");
+        exit();
+    }
+}
+if (isset($_COOKIE['CUSTOMER_SESSION']) && session_name('CUSTOMER_SESSION') && session_start()) {
+    if (isset($_SESSION['user_id']) && $_SESSION['usertype'] == 3) {
+        header("Location: customer/customerindex.php");
+        exit();
+    }
+}
+
+// Reset to default session for login
+session_name('PHPSESSID');
+session_start();
 
 // Prevent caching
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -41,20 +66,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['usertype'] = $user['usertype'];
-                $_SESSION['phone'] = $user['contact_number'];
-                
-                // Redirect based on usertype
-                if ($user['usertype'] == 3) {
-                    header("Location: customer/customerindex.php");
-                } elseif ($user['usertype'] == 2) {
-                    header("Location: cashier/cashierindex.php");
-                } elseif ($user['usertype'] == 1) {
-                    header("Location: admin/admin_dashboard.php");
+                // Start a new session with user-type-specific name
+                session_destroy(); // Clear default session
+                if (start_user_session($user['usertype'])) {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['usertype'] = $user['usertype'];
+                    $_SESSION['phone'] = $user['contact_number'];
+
+                    // Redirect based on usertype
+                    switch ($user['usertype']) {
+                        case 1:
+                            header("Location: admin/admin_dashboard.php");
+                            break;
+                        case 2:
+                            header("Location: cashier/cashierindex.php");
+                            break;
+                        case 3:
+                            header("Location: customer/customerindex.php");
+                            break;
+                    }
+                    exit();
+                } else {
+                    $login_error = 'Invalid user type';
                 }
-                exit();
             } else {
                 $login_error = 'Invalid username or password';
             }

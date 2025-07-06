@@ -1,4 +1,6 @@
 <?php
+// Set session name for cashier
+session_name('CASHIER_SESSION');
 session_start();
 
 // Check if user is logged in
@@ -9,19 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 
 // Check for cashier user type (usertype = 2)
 if ($_SESSION['usertype'] != 2) {
-    // Redirect to appropriate page based on user type
-    switch ($_SESSION['usertype']) {
-        case 1:
-            header("Location: ../admin/admin_dashboard.php");
-            break;
-        case 3:
-            header("Location: ../customer/customerindex.php");
-            break;
-        default:
-            // Invalid usertype - destroy session and redirect to login
-            session_destroy();
-            header("Location: ../login.php");
-    }
+    session_destroy();
+    header("Location: ../login.php");
     exit();
 }
 
