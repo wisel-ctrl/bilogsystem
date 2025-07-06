@@ -47,14 +47,14 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 <div class="hidden md:flex items-center space-x-0">
                     <!-- Notifications -->
-                    <div class="relative group">
+                    <div class="relative">
                         <button class="p-2 hover:bg-deep-brown/10 rounded-full transition-colors duration-300" 
                                 aria-label="Notifications"
                                 id="notifications-button">
                             <i class="fas fa-bell text-deep-brown"></i>
                             <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                         </button>
-                        <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50">
+                        <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50" id="notifications-dropdown">
                             <div class="px-4 py-2 border-b border-deep-brown/10">
                                 <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
                             </div>
@@ -68,17 +68,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
 
                     <!-- User Profile -->
-                    <div class="relative group">
-                        <a href="profile.php" class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                 aria-label="User menu"
                                 id="user-menu-button">
                             <img src="https://ui-avatars.com/api/?name=<?php echo substr($user['first_name'], 0, 1) . '+' . $user['last_name']; ?>&background=E8E0D5&color=5D2F0F" 
                                  alt="Profile" 
                                  class="w-8 h-8 rounded-full border border-deep-brown/30">
                             <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
-                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
-                        </a>
-                        <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden group-hover:block border border-deep-brown/10 z-50 transition-all duration-300">
+                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50 transition-all duration-300" id="user-dropdown">
                             <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
                                 <i class="fas fa-user-circle w-5"></i>
                                 <span>Profile Settings</span>
@@ -99,7 +99,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Mobile Menu -->
-        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40" id="mobile-menu">
+        <div class="md:hidden mobile-menu fixed inset-0 bg-warm-cream/95 z-40 hidden" id="mobile-menu">
             <div class="flex flex-col h-full">
                 <div class="flex justify-between items-center p-4 border-b border-deep-brown/10">
                     <h2 class="font-playfair text-xl text-deep-brown">Menu</h2>
@@ -110,8 +110,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     </button>
                 </div>
                 <nav class="flex-1 overflow-y-auto p-4">
-                    <div class="space-y-4">
-                        <a href="#dashboard" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+ |                    <div class="space-y-4 Sex                    <a href="customerindex.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-home w-8"></i> Home
                         </a>
                         <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
@@ -120,7 +119,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                         <a href="menu.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-utensils w-8"></i> Menu
                         </a>
-                        <a href="#contact" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                        <a href="contact.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-envelope w-8"></i> Contact
                         </a>
                     </div>
@@ -132,4 +131,58 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        document.getElementById('close-mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+
+        // User dropdown toggle
+        document.getElementById('user-menu-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('user-dropdown');
+            const chevron = document.getElementById('chevron-icon');
+            const isHidden = dropdown.classList.contains('hidden');
+            
+            // Close notifications dropdown if open
+            document.getElementById('notifications-dropdown').classList.add('hidden');
+            
+            dropdown.classList.toggle('hidden', !isHidden);
+            chevron.classList.toggle('rotate-180', isHidden);
+        });
+
+        // Notifications dropdown toggle
+        document.getElementById('notifications-button').addEventListener('click', function() {
+            const dropdown = document.getElementById('notifications-dropdown');
+            const isHidden = dropdown.classList.contains('hidden');
+            
+            // Close user dropdown if open
+            document.getElementById('user-dropdown').classList.add('hidden');
+            document.getElementById('chevron-icon').classList.remove('rotate-180');
+            
+            dropdown.classList.toggle('hidden', !isHidden);
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const userButton = document.getElementById('user-menu-button');
+            const notificationsButton = document.getElementById('notifications-button');
+            const userDropdown = document.getElementById('user-dropdown');
+            const notificationsDropdown = document.getElementById('notifications-dropdown');
+
+            if (!userButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add('hidden');
+                document.getElementById('chevron-icon').classList.remove('rotate-180');
+            }
+
+            if (!notificationsButton.contains(event.target) && !notificationsDropdown.contains(event.target)) {
+                notificationsDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</nav>
