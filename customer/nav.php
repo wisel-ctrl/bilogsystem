@@ -1,11 +1,19 @@
 <?php
 // Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
 $user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
+$stmt = $conn->prepare("SELECT first_name, last_name, profile_picture FROM users_tb WHERE id = :id");
 $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Construct full name for fallback avatar
+$fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
+
+// Set profile picture with a fallback
+$profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htmlspecialchars($user['profile_picture']) : 
+    'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=E8E0D5&color=5D2F0F&bold=true&size=128';
 ?>
+
 
 <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,16 +77,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     <!-- User Profile -->
                     <div class="relative">
-                    <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
-                            aria-label="User menu"
-                            id="user-menu-button">
-                        <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
-                            alt="Profile" 
-                            class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
-                            id="nav-profile-image">
-                        <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
-                        <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
-                    </button>
+         <!-- Navigation Button with Profile Picture -->
+<button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+        aria-label="User menu"
+        id="user-menu-button">
+    <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
+         alt="Profile" 
+         class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
+         id="nav-profile-image">
+    <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
+    <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
+</button>
 
                         <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50 transition-all duration-300" id="user-dropdown">
                             <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
