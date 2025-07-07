@@ -703,17 +703,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Mobile menu toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            // const mobileMenuButton = document.getElementById('mobile-menu-button');
+            // const mobileMenu = document.getElementById('mobile-menu');
+            // const closeMobileMenu = document.getElementById('close-mobile-menu');
 
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            // mobileMenuButton.addEventListener('click', () => {
+            //     mobileMenu.classList.toggle('hidden');
+            // });
 
-            closeMobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
+            // closeMobileMenu.addEventListener('click', () => {
+            //     mobileMenu.classList.add('hidden');
+            // });
 
             // User menu dropdown
             // const userMenuButton = document.getElementById('user-menu-button');
