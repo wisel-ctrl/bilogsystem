@@ -50,7 +50,7 @@ ob_start();
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Profile Picture Card -->
         <div class="lg:col-span-1">
-            <div class="bg-gradient-to-br from-warm-cream/20 to-white rounded-2xl p-6 shadow-lg text-center sticky top-28 transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white/90 rounded-2xl p-6 shadow-lg text-center sticky top-28 transition-all duration-300 hover:shadow-xl">
                 <div class="relative mx-auto w-40 h-40 group mb-5">
                     <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
                          alt="Profile" 
@@ -74,7 +74,7 @@ ob_start();
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Personal Information Card -->
-            <div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="font-playfair text-2xl font-bold text-deep-brown">Personal Information</h3>
                     <button type="button" id="edit-profile-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
@@ -155,7 +155,7 @@ ob_start();
             </div>
 
             <!-- Change Password Card -->
-            <div class="bg-gradient-to-br from-warm-cream/10 to-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
                 <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
                 
                 <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
