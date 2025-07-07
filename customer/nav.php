@@ -69,15 +69,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     <!-- User Profile -->
                     <div class="relative">
-                        <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
-                                aria-label="User menu"
-                                id="user-menu-button">
-                            <img src="https://ui-avatars.com/api/?name=<?php echo substr($user['first_name'], 0, 2) . '+' . $user['last_name']; ?>&background=E8E0D5&color=5D2F0F" 
-                                 alt="Profile" 
-                                 class="w-8 h-8 rounded-full border border-deep-brown/30">
-                            <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
-                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
-                        </button>
+                    <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+                            aria-label="User menu"
+                            id="user-menu-button">
+                        <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
+                            alt="Profile" 
+                            class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
+                            id="nav-profile-image">
+                        <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
+                        <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
+                    </button>
+
                         <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50 transition-all duration-300" id="user-dropdown">
                             <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
                                 <i class="fas fa-user-circle w-5"></i>
@@ -133,6 +135,69 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </div>
     <script>
+
+
+// Function to update profile images across the page
+function updateProfileImages(newImageUrl) {
+    const profileImages = document.querySelectorAll('#profile-image, #nav-profile-image');
+    profileImages.forEach(img => {
+        img.src = newImageUrl;
+        img.alt = 'Profile';
+    });
+}
+
+// Handle profile picture upload
+document.addEventListener('DOMContentLoaded', () => {
+    const avatarUpload = document.getElementById('avatar-upload');
+    if (avatarUpload) {
+        avatarUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                return;
+            }
+
+            // Validate file size (e.g., max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image file size must be less than 5MB.');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('avatar', file);
+                formData.append('user_id', '<?php echo $_SESSION['user_id']; ?>');
+
+                const response = await fetch('profileAPI/upload_avatar.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    updateProfileImages(result.imageUrl);
+                    alert('Profile picture updated successfully!');
+                } else {
+                    alert('Failed to update profile picture: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error uploading profile picture:', error);
+                alert('An error occurred while uploading the profile picture.');
+            }
+        });
+    }
+});
+
+
+
+
+
+
+
+
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
