@@ -1,4 +1,7 @@
-
+<?php
+// Buffer the output to capture content
+ob_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -902,3 +905,7 @@
 </body>
 </html>
 
+<?php
+// Capture the content and include it in the layout
+$content = ob_get_clean();
+?>
