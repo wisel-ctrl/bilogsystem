@@ -72,7 +72,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                         <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
                                 aria-label="User menu"
                                 id="user-menu-button">
-                            <img src="https://ui-avatars.com/api/?name=<?php echo substr($user['first_name'], 0, 1) . '+' . $user['last_name']; ?>&background=E8E0D5&color=5D2F0F" 
+                            <img src="https://ui-avatars.com/api/?name=<?php echo substr($user['first_name'], 0, 2) . '+' . $user['last_name']; ?>&background=E8E0D5&color=5D2F0F" 
                                  alt="Profile" 
                                  class="w-8 h-8 rounded-full border border-deep-brown/30">
                             <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
