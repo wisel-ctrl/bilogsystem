@@ -1,5 +1,4 @@
 <?php
-require_once 'customer_auth.php';
 require_once '../db_connect.php';
 
 // Set page title
