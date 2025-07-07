@@ -10,7 +10,7 @@ function formatMemberSince($timestamp) {
 // Fetch user data from users_tb
 $user_id = $_SESSION['user_id']; // Assuming customer_auth.php sets this
 try {
-    $query = "SELECT first_name, middle_name, last_name, suffix, username, contact_number, profile_picture 
+    $query = "SELECT first_name, middle_name, last_name, suffix, username, contact_number, profile_picture, created_at
               FROM users_tb 
               WHERE id = :user_id";
     $stmt = $conn->prepare($query);
