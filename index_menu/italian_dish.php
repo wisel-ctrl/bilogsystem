@@ -148,7 +148,7 @@
                 <!-- Menu Item 3 -->
                 <div class="hover-lift fade-in">
                     <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="images/lasagna.jpg" alt="Lasagna" class="w-full h-48 object-cover">
+                        <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Lasagna</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$16.75</div>
