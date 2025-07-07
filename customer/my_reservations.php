@@ -324,17 +324,17 @@ ob_start();
             });
 
             // Mobile menu functionality
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            // const mobileMenu = document.getElementById('mobile-menu');
+            // const mobileMenuButton = document.getElementById('mobile-menu-button');
+            // const closeMobileMenu = document.getElementById('close-mobile-menu');
 
-            function toggleMobileMenu() {
-                mobileMenu.classList.toggle('open');
-                document.body.classList.toggle('overflow-hidden');
-            }
+            // function toggleMobileMenu() {
+            //     mobileMenu.classList.toggle('open');
+            //     document.body.classList.toggle('overflow-hidden');
+            // }
 
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            closeMobileMenu.addEventListener('click', toggleMobileMenu);
+            // mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            // closeMobileMenu.addEventListener('click', toggleMobileMenu);
 
             // Handle regular links
             document.querySelectorAll('a[href$=".php"]').forEach(anchor => {
