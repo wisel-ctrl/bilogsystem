@@ -37,10 +37,7 @@ ob_start();
 
 
     <!-- Main Content -->
-        <header class="mb-10">
-            <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
-            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
-        </header>
+ 
 
         <!-- Notification Placeholder -->
         <div id="notification-area" class="relative"></div>
@@ -49,7 +46,11 @@ ob_start();
 <div id="profile-content" class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Profile Picture Card -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 sticky">
+        <header class="mb-10">
+            <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
+            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
+        </header>
             <div class="bg-white/90 rounded-2xl p-6 shadow-lg text-center sticky top-28 transition-all duration-300 hover:shadow-xl">
                 <div class="relative mx-auto w-40 h-40 group mb-5">
                     <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
