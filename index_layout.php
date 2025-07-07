@@ -178,28 +178,19 @@ ob_start();
     <!-- JavaScript -->
     <script>
         // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const href = this.getAttribute('href');
-                if (href.includes('#')) {
-                    const [page, section] = href.split('#');
-                    if (!page || window.location.pathname.endsWith(page)) {
-                        const target = document.querySelector(`#${section}`);
-                        if (target) {
-                            const headerOffset = 80;
-                            const elementPosition = target.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                            window.scrollTo({
-                                top: offsetPosition,
-                                behavior: 'smooth'
-                            });
-                        }
-                    } else {
-                        window.location.href = href;
-                    }
-                } else {
-                    window.location.href = href;
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80; // Adjust this value based on your navbar height
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
@@ -228,9 +219,9 @@ ob_start();
         const navButton = document.querySelector('.nav-button');
 
         window.addEventListener('scroll', () => {
-            const isHeroSection = window.scrollY === 0 && window.location.pathname.includes('customerindex.php');
+            const isHeroSection = window.scrollY === 0;
 
-            if (window.scrollY > 0 || !window.location.pathname.includes('customerindex.php')) {
+            if (window.scrollY > 0) {
                 navbar.classList.add('glass-effect');
                 navbar.classList.add('shadow-lg');
             } else {
@@ -311,7 +302,7 @@ ob_start();
             const scrollPosition = window.pageYOffset;
 
             sections.forEach(section => {
-                const sectionTop = section.offsetTop - 150;
+                const sectionTop = section.offsetTop - 150; // Adjusted offset for better UX
                 const sectionHeight = section.clientHeight;
                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                     current = section.getAttribute('id');
@@ -321,14 +312,78 @@ ob_start();
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 const underline = link.querySelector('span');
-                const href = link.getAttribute('href');
-                if (href.includes(`#${current}`) && href.includes('customerindex.php')) {
+                if (link.getAttribute('href') === `#${current}`) {
                     link.classList.add('active');
                     underline.style.width = '100%';
                 } else {
                     underline.style.width = '0';
                 }
             });
+        });
+
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.getElementById('menuCarousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            let currentIndex = 0;
+            const totalSlides = 6;
+
+            function updateCarousel() {
+                const offset = currentIndex * -100;
+                carousel.style.transform = `translateX(${offset}%)`;
+                
+                // Update indicators
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('opacity-100');
+                        indicator.classList.remove('opacity-50');
+                    } else {
+                        indicator.classList.add('opacity-50');
+                        indicator.classList.remove('opacity-100');
+                    }
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            }
+
+            // Auto-advance carousel every 7 seconds (increased from 5 to give more reading time)
+            let autoAdvance = setInterval(nextSlide, 7000);
+
+            // Event listeners for manual navigation
+            prevBtn.addEventListener('click', () => {
+                clearInterval(autoAdvance);
+                prevSlide();
+                autoAdvance = setInterval(nextSlide, 7000);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                clearInterval(autoAdvance);
+                nextSlide();
+                autoAdvance = setInterval(nextSlide, 7000);
+            });
+
+            // Event listeners for indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(autoAdvance);
+                    currentIndex = index;
+                    updateCarousel();
+                    autoAdvance = setInterval(nextSlide, 7000);
+                });
+            });
+
+            // Initialize carousel
+            updateCarousel();
         });
 
         // Modal functionality
@@ -342,6 +397,7 @@ ob_start();
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
+            // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
         }
 
@@ -351,22 +407,135 @@ ob_start();
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             
+            // Restore body scroll
             document.body.style.overflow = 'auto';
         }
 
+        // Close modal when clicking outside the image
         document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
+        // Close modal with escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
         });
 
-        // FAQ Data
+        // Package carousel functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const packageCarousel = document.getElementById('packageCarousel');
+            const prevBtnPackages = document.getElementById('prevBtnPackages');
+            const nextBtnPackages = document.getElementById('nextBtnPackages');
+            const packageIndicators = document.querySelectorAll('.package-indicator');
+            let currentPackageIndex = 0;
+            const totalPackageSlides = 3;
+
+            function updatePackageCarousel() {
+                const offset = currentPackageIndex * -100;
+                packageCarousel.style.transform = `translateX(${offset}%)`;
+                
+                // Update indicators
+                packageIndicators.forEach((indicator, index) => {
+                    if (index === currentPackageIndex) {
+                        indicator.classList.add('opacity-100');
+                        indicator.classList.remove('opacity-50');
+                    } else {
+                        indicator.classList.add('opacity-50');
+                        indicator.classList.remove('opacity-100');
+                    }
+                });
+            }
+
+            function nextPackageSlide() {
+                currentPackageIndex = (currentPackageIndex + 1) % totalPackageSlides;
+                updatePackageCarousel();
+            }
+
+            function prevPackageSlide() {
+                currentPackageIndex = (currentPackageIndex - 1 + totalPackageSlides) % totalPackageSlides;
+                updatePackageCarousel();
+            }
+
+            // Auto-advance carousel every 7 seconds
+            let autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+
+            // Event listeners for manual navigation
+            prevBtnPackages.addEventListener('click', () => {
+                clearInterval(autoAdvancePackages);
+                prevPackageSlide();
+                autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+            });
+
+            nextBtnPackages.addEventListener('click', () => {
+                clearInterval(autoAdvancePackages);
+                nextPackageSlide();
+                autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+            });
+
+            // Event listeners for indicators
+            packageIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(autoAdvancePackages);
+                    currentPackageIndex = index;
+                    updatePackageCarousel();
+                    autoAdvancePackages = setInterval(nextPackageSlide, 7000);
+                });
+            });
+
+            // Initialize carousel
+            updatePackageCarousel();
+        });
+
+        // Services carousel functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const servicesCarousel = document.getElementById('servicesCarousel');
+            const servicesIndicators = document.querySelectorAll('.services-indicator');
+            let currentServicesIndex = 0;
+            const totalServicesSlides = 4;
+
+            function updateServicesCarousel() {
+                const offset = currentServicesIndex * -100;
+                servicesCarousel.style.transform = `translateX(${offset}%)`;
+                
+                // Update indicators
+                servicesIndicators.forEach((indicator, index) => {
+                    if (index === currentServicesIndex) {
+                        indicator.classList.add('opacity-100');
+                        indicator.classList.remove('opacity-50');
+                    } else {
+                        indicator.classList.add('opacity-50');
+                        indicator.classList.remove('opacity-100');
+                    }
+                });
+            }
+
+            function nextServicesSlide() {
+                currentServicesIndex = (currentServicesIndex + 1) % totalServicesSlides;
+                updateServicesCarousel();
+            }
+
+            // Auto-advance carousel every 5 seconds
+            let autoAdvanceServices = setInterval(nextServicesSlide, 5000);
+
+            // Event listeners for indicators
+            servicesIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(autoAdvanceServices);
+                    currentServicesIndex = index;
+                    updateServicesCarousel();
+                    autoAdvanceServices = setInterval(nextServicesSlide, 5000);
+                });
+            });
+
+            // Initialize carousel
+            updateServicesCarousel();
+        });
+
+        // FAQ Data (Filtered)
         const faqData = {
             location: [
                 {
@@ -432,25 +601,31 @@ ob_start();
             const closeSupport = document.getElementById('closeSupport');
             const inputArea = document.getElementById('inputArea');
             const userInput = document.getElementById('userInput');
-            let currentCategory = null;
+            let currentCategory = null; // Track current category
 
+            // Load conversation from localStorage if available
             const loadConversation = () => {
                 const savedConvo = localStorage.getItem('caffeLilioChat');
-                chatContent.innerHTML = '';
+                chatContent.innerHTML = ''; // Clear chat content to avoid duplication
                 if (savedConvo && savedConvo.trim() !== '') {
                     chatContent.innerHTML = savedConvo;
+                    // Reattach event listeners to any buttons in the saved conversation
                     attachEventListeners();
                 } else {
+                    // Show initial greeting if no saved conversation
                     showWelcomeMessage();
                 }
+                // Ensure input area is visible
                 inputArea.classList.remove('hidden');
-                chatContent.scrollTop = chatContent.scrollHeight;
+                chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
             };
 
+            // Save conversation to localStorage
             const saveConversation = () => {
                 localStorage.setItem('caffeLilioChat', chatContent.innerHTML);
             };
 
+            // Keyword responses
             const keywordResponses = {
                 'location': " everlasting 📍 Our location: Brgy. Rizal st. cr. 4th St., Liliw, Laguna<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>",
                 'hours': "⏰ Our opening hours are 9am - 8pm daily",
@@ -462,6 +637,7 @@ ob_start();
                 'thanks': "😊 You're welcome! Is there anything else I can help with?"
             };
 
+            // Check for keywords in user message
             const checkKeywords = (message) => {
                 const lowerMsg = message.toLowerCase();
                 for (const [keyword, response] of Object.entries(keywordResponses)) {
@@ -472,6 +648,7 @@ ob_start();
                 return null;
             };
 
+            // Add a message to the chat
             const addMessage = (sender, message, isHTML = false) => {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `chat-message ${sender}-message bg-deep-brown/${sender === 'bot' ? '10' : '5'} text-deep-brown p-3 rounded-lg mb-2`;
@@ -487,6 +664,7 @@ ob_start();
                 saveConversation();
             };
 
+            // Show welcome message with categories
             const showWelcomeMessage = () => {
                 const welcomeDiv = document.createElement('div');
                 welcomeDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
@@ -503,15 +681,18 @@ ob_start();
                 chatContent.scrollTop = chatContent.scrollHeight;
                 saveConversation();
                 
+                // Reattach event listeners
                 attachEventListeners();
             };
 
+            // Handle user input
             const handleUserInput = () => {
                 const message = userInput.value.trim();
                 if (message) {
                     addMessage('user', message);
                     userInput.value = '';
                     
+                    // Check for keywords first
                     const keywordResponse = checkKeywords(message);
                     if (keywordResponse) {
                         setTimeout(() => {
@@ -520,6 +701,7 @@ ob_start();
                         return;
                     }
                     
+                    // If no keywords matched, show default response
                     setTimeout(() => {
                         addMessage('bot', "I'm sorry, I didn't understand that. Could you try asking in a different way or choose from the categories below?", true);
                         showCategories();
@@ -527,6 +709,7 @@ ob_start();
                 }
             };
 
+            // Show categories
             const showCategories = () => {
                 const categoriesDiv = document.createElement('div');
                 categoriesDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
@@ -546,10 +729,13 @@ ob_start();
                 chatContent.scrollTop = chatContent.scrollHeight;
                 saveConversation();
                 
+                // Reattach event listeners
                 attachEventListeners();
             };
 
+            // Attach event listeners to dynamic elements
             const attachEventListeners = () => {
+                // Remove existing event listeners to prevent duplicates
                 document.querySelectorAll('.category-btn').forEach(btn => {
                     const newBtn = btn.cloneNode(true);
                     btn.parentNode.replaceChild(newBtn, btn);
@@ -567,6 +753,7 @@ ob_start();
                     btn.parentNode.replaceChild(newBtn, btn);
                 });
 
+                // Add new event listeners
                 document.querySelectorAll('.category-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -600,7 +787,9 @@ ob_start();
                 });
             };
 
+            // Show questions for a category
             function showCategoryQuestions(category) {
+                // Append back button and questions to chat content without clearing
                 const questionsDiv = document.createElement('div');
                 questionsDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
                 questionsDiv.innerHTML = `
@@ -614,6 +803,7 @@ ob_start();
                 `;
                 chatContent.appendChild(questionsDiv);
 
+                // Add questions for this category
                 faqData[category].forEach(item => {
                     const questionDiv = document.createElement('div');
                     questionDiv.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
@@ -622,13 +812,17 @@ ob_start();
                     chatContent.appendChild(questionDiv);
                 });
 
+                // Scroll to bottom
                 chatContent.scrollTop = chatContent.scrollHeight;
                 saveConversation();
 
+                // Reattach event listeners
                 attachEventListeners();
             }
 
+            // Show selected question and answer only
             function showAnswer(question, answer) {
+                // Append question and answer to chat content
                 const questionMessage = document.createElement('div');
                 questionMessage.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg';
                 questionMessage.innerHTML = question;
@@ -648,12 +842,15 @@ ob_start();
                 `;
                 chatContent.appendChild(backButton);
 
+                // Scroll to bottom
                 chatContent.scrollTop = chatContent.scrollHeight;
                 saveConversation();
 
+                // Reattach event listeners
                 attachEventListeners();
             }
 
+            // Toggle chat window
             supportToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (supportWindow.classList.contains('hidden')) {
@@ -670,6 +867,7 @@ ob_start();
                 }
             });
 
+            // Close button for chat window
             closeSupport.addEventListener('click', (e) => {
                 e.stopPropagation();
                 supportWindow.classList.add('closed');
@@ -679,6 +877,7 @@ ob_start();
                 }, 300);
             });
 
+            // Close when clicking outside
             document.addEventListener('click', (e) => {
                 if (!supportWindow.contains(e.target) && e.target !== supportToggle && !supportWindow.classList.contains('hidden')) {
                     supportWindow.classList.add('closed');
@@ -689,14 +888,17 @@ ob_start();
                 }
             });
 
+            // Handle Enter key in input field
             userInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     handleUserInput();
                 }
             });
 
+            // Show input area by default
             inputArea.classList.remove('hidden');
             
+            // Load any saved conversation when page loads
             loadConversation();
         });
     </script>
