@@ -1,7 +1,10 @@
 <?php
 // Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
 $user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT first_name, last_name, profile_picture FROM users_tb WHERE id = :id");
+$query = "SELECT profile_picture
+FROM users_tb 
+WHERE id = :user_id";
+$stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
 $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
