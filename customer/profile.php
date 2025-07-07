@@ -48,29 +48,33 @@ ob_start();
         <!-- Profile Picture Card -->
         <div class="lg:col-span-1">
             
-            <div class="bg-white/90 rounded-2xl p-6 shadow-lg text-center sticky top-28 transition-all duration-300 hover:shadow-xl">
-            <header class="mb-10">
-            <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
-            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
-        </header>
-                <div class="relative mx-auto w-40 h-40 group mb-5">
-                    <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
-                         alt="Profile" 
-                         class="w-full h-full rounded-full border-4 border-white shadow-lg object-cover transition-transform duration-300 group-hover:scale-105">
-                    <label for="avatar-upload" class="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                        <i class="fas fa-camera text-2xl text-white mb-1"></i>
-                        <span class="text-white font-baskerville text-sm">Change Photo</span>
-                        <input type="file" id="avatar-upload" class="hidden" accept="image/*">
-                    </label>
-                </div>
-                
-                <h4 class="font-playfair text-2xl font-bold text-deep-brown mb-1"><?php echo htmlspecialchars($fullName); ?></h4>
-                <p class="font-baskerville text-sm text-deep-brown/70 mb-4">@<?php echo htmlspecialchars($user['username']); ?></p>
-                
-                <div class="bg-warm-cream/30 rounded-lg p-3">
-                    <p class="font-baskerville text-xs text-deep-brown/80">Member since <?php echo date('F Y', strtotime($user['created_at'])); ?></p>
-                </div>
-            </div>
+            <!-- Sticky Header Outside the Card -->
+<header class="bg-white/90 rounded-2xl p-4 shadow-md text-center sticky top-10 z-30 transition-all duration-300">
+    <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
+    <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
+</header>
+
+<!-- Sticky Account Card -->
+<div class="bg-white/90 rounded-2xl p-6 shadow-lg text-center sticky top-36 z-20 transition-all duration-300 hover:shadow-xl mt-6">
+    <div class="relative mx-auto w-40 h-40 group mb-5">
+        <img id="profile-image" src="<?php echo htmlspecialchars($profilePicture); ?>" 
+             alt="Profile" 
+             class="w-full h-full rounded-full border-4 border-white shadow-lg object-cover transition-transform duration-300 group-hover:scale-105">
+        <label for="avatar-upload" class="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+            <i class="fas fa-camera text-2xl text-white mb-1"></i>
+            <span class="text-white font-baskerville text-sm">Change Photo</span>
+            <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+        </label>
+    </div>
+
+    <h4 class="font-playfair text-2xl font-bold text-deep-brown mb-1"><?php echo htmlspecialchars($fullName); ?></h4>
+    <p class="font-baskerville text-sm text-deep-brown/70 mb-4">@<?php echo htmlspecialchars($user['username']); ?></p>
+
+    <div class="bg-warm-cream/30 rounded-lg p-3">
+        <p class="font-baskerville text-xs text-deep-brown/80">Member since <?php echo date('F Y', strtotime($user['created_at'])); ?></p>
+    </div>
+</div>
+
         </div>
 
         <!-- Main Content -->
