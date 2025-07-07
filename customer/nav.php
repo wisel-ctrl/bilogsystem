@@ -1,13 +1,13 @@
 <?php
 // Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
 $user_id = $_SESSION['user_id'];
-$query = "SELECT profile_picture
-FROM users_tb 
-WHERE id = :user_id";
-$stmt = $conn->prepare("SELECT first_name, last_name FROM users_tb WHERE id = :id");
+$stmt = $conn->prepare("SELECT first_name, last_name, profile_picture FROM users_tb WHERE id = :id");
 $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Set profile picture with a fallback
+$profilePicture = !empty($user['profile_picture']) ? '/Uploads/Avatars/' . htmlspecialchars($user['profile_picture']) : 'https://ui-avatars.com/api/?name=' . urlencode(substr($user['first_name'], 0, 1) . '+' . $user['last_name']) . '&background=E8E0D5&color=5D2F0F';
 ?>
 
 <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
@@ -72,16 +72,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     <!-- User Profile -->
                     <div class="relative">
-                    <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
-                            aria-label="User menu"
-                            id="user-menu-button">
-                        <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
-                            alt="Profile" 
-                            class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
-                            id="nav-profile-image">
-                        <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
-                        <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
-                    </button>
+          <!-- Navigation Button with Profile Picture -->
+<button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+        aria-label="User menu"
+        id="user-menu-button">
+    <img src="<?php echo $profilePicture; ?>" 
+         alt="Profile" 
+         class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
+         id="nav-profile-image">
+    <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
+    <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
+</button>
 
                         <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50 transition-all duration-300" id="user-dropdown">
                             <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
@@ -139,18 +140,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     </div>
     <script>
 
-
-// Function to update profile images across the page
-function updateProfileImages(newImageUrl) {
-    const profileImages = document.querySelectorAll('#profile-image, #nav-profile-image');
-    profileImages.forEach(img => {
-        img.src = newImageUrl;
-        img.alt = 'Profile';
-    });
-}
-
-// Handle profile picture upload
 document.addEventListener('DOMContentLoaded', () => {
+    // Function to update profile images across the page
+    function updateProfileImages(newImageUrl) {
+        const profileImages = document.querySelectorAll('#profile-image, #nav-profile-image');
+        profileImages.forEach(img => {
+            img.src = newImageUrl;
+            img.alt = 'Profile';
+        });
+    }
+
+    // Handle profile picture upload
     const avatarUpload = document.getElementById('avatar-upload');
     if (avatarUpload) {
         avatarUpload.addEventListener('change', async (e) => {
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Validate file size (e.g., max 5MB)
+            // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 alert('Image file size must be less than 5MB.');
                 return;
@@ -193,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 
 
 
