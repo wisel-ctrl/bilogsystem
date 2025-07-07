@@ -2,6 +2,11 @@
 require_once 'customer_auth.php'; 
 require_once '../db_connect.php'; // Include PDO database connection
 
+// Function to format "Member since" date
+function formatMemberSince($timestamp) {
+    return date('F Y', strtotime($timestamp));
+}
+
 // Fetch user data from users_tb
 $user_id = $_SESSION['user_id']; // Assuming customer_auth.php sets this
 try {
@@ -66,7 +71,7 @@ ob_start();
                 <p class="font-baskerville text-sm text-deep-brown/70 mb-4">@<?php echo htmlspecialchars($user['username']); ?></p>
                 
                 <div class="bg-warm-cream/30 rounded-lg p-3">
-                    <p class="font-baskerville text-xs text-deep-brown/80">Member since <?php echo date('F Y', strtotime($user['created_at'])); ?></p>
+                    <p class="font-baskerville text-xs text-deep-brown/80">Member since <?php echo formatMemberSince($user['created_at']); ?></p>
                 </div>
             </div>
         </div>
