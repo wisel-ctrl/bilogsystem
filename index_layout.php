@@ -1,7 +1,8 @@
 <?php
-// Start output buffering to capture content
+// Buffer the output to capture content
 ob_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +54,7 @@ ob_start();
             transform: translateY(0);
         }
         
+        /* Customer Support Widget Styles */
         .support-widget {
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -77,25 +79,24 @@ ob_start();
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Include Navigation -->
-    <?php include 'nav.php'; ?>
+    <?php include 'index_nav.php'; ?>
 
     <!-- Content Placeholder -->
-    <?php
-    // Output the content defined in the specific page
-    echo $content ?? '<!-- Page content goes here -->';
-    ?>
+    <?php echo $content; ?>
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
+                <!-- Logo and Tagline -->
                 <div class="flex items-center justify-center space-x-3 mb-6">
                     <div>
                         <h3 class="font-playfair font-bold text-xl sm:text-2xl">Caffè Lilio</h3>
                         <p class="text-xs sm:text-sm tracking-widest opacity-75">RISTORANTE</p>
                     </div>
                 </div>
+                
+                <!-- Social Media Links -->
                 <div class="flex justify-center space-x-6 sm:space-x-8 mb-8">
                     <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
                         <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -108,6 +109,8 @@ ob_start();
                         </svg>
                     </a>
                 </div>
+                
+                <!-- Copyright and Tagline -->
                 <div class="border-t border-rich-brown pt-6 sm:pt-8">
                     <p class="font-baskerville text-sm sm:text-base opacity-75">
                         © 2025 Caffè Lilio Ristorante. All rights reserved. | 
@@ -118,9 +121,23 @@ ob_start();
         </div>
     </footer>
 
+    <!-- Modal for zoomed image -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
+        <div class="relative max-w-7xl mx-auto px-4 py-8 w-full h-full flex items-center justify-center">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain">
+        </div>
+    </div>
+    
     <!-- Support Widget -->
     <div class="fixed bottom-6 right-6 z-50 flex items-end space-x-4">
+        <!-- Chat Window -->
         <div id="supportWindow" class="support-widget bg-warm-cream rounded-lg overflow-hidden hidden closed flex flex-col" style="height: 500px; width: 320px;">
+            <!-- Header -->
             <div class="bg-deep-brown text-warm-cream p-4 flex justify-between items-center">
                 <h3 class="font-playfair font-bold">Caffè Lilio Support</h3>
                 <button id="closeSupport" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
@@ -129,7 +146,10 @@ ob_start();
                     </svg>
                 </button>
             </div>
+            
+            <!-- Chat Content -->
             <div id="chatContent" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Initial welcome message -->
                 <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
                     <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
                     <div class="mt-2 grid grid-cols-1 gap-2">
@@ -140,10 +160,14 @@ ob_start();
                     </div>
                 </div>
             </div>
+            
+            <!-- Input Area -->
             <div class="p-3 border-t border-deep-brown/20" id="inputArea">
                 <input type="text" id="userInput" placeholder="Type your question..." class="w-full p-2 border border-deep-brown/30 rounded">
             </div>
         </div>
+
+        <!-- Chat Toggle Button -->
         <div id="supportToggle" class="support-toggle bg-deep-brown text-warm-cream w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-rich-brown transition-all duration-300 shadow-lg">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -154,19 +178,28 @@ ob_start();
     <!-- JavaScript -->
     <script>
         // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href*="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const headerOffset = 80;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                const href = this.getAttribute('href');
+                if (href.includes('#')) {
+                    const [page, section] = href.split('#');
+                    if (!page || window.location.pathname.endsWith(page)) {
+                        const target = document.querySelector(`#${section}`);
+                        if (target) {
+                            const headerOffset = 80;
+                            const elementPosition = target.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    } else {
+                        window.location.href = href;
+                    }
+                } else {
+                    window.location.href = href;
                 }
             });
         });
@@ -195,9 +228,9 @@ ob_start();
         const navButton = document.querySelector('.nav-button');
 
         window.addEventListener('scroll', () => {
-            const isHeroSection = window.scrollY === 0;
+            const isHeroSection = window.scrollY === 0 && window.location.pathname.includes('customerindex.php');
 
-            if (window.scrollY > 0) {
+            if (window.scrollY > 0 || !window.location.pathname.includes('customerindex.php')) {
                 navbar.classList.add('glass-effect');
                 navbar.classList.add('shadow-lg');
             } else {
@@ -205,6 +238,7 @@ ob_start();
                 navbar.classList.remove('shadow-lg');
             }
 
+            // Update nav links color based on section
             navLinks.forEach(link => {
                 if (isHeroSection) {
                     link.classList.remove('text-deep-brown', 'hover:text-deep-brown/80');
@@ -215,6 +249,7 @@ ob_start();
                 }
             });
 
+            // Update underline color based on section
             navUnderlines.forEach(underline => {
                 if (isHeroSection) {
                     underline.classList.remove('bg-deep-brown');
@@ -225,11 +260,13 @@ ob_start();
                 }
             });
 
+            // Update nav title and subtitle colors
             if (isHeroSection) {
                 navTitle.classList.remove('text-deep-brown');
                 navTitle.classList.add('text-warm-cream');
                 navSubtitle.classList.remove('text-deep-brown');
                 navSubtitle.classList.add('text-warm-cream');
+                // Update register button colors for hero section
                 if (navButton) {
                     navButton.classList.remove('bg-deep-brown', 'text-warm-cream');
                     navButton.classList.add('bg-warm-cream', 'text-deep-brown');
@@ -239,6 +276,7 @@ ob_start();
                 navTitle.classList.add('text-deep-brown');
                 navSubtitle.classList.remove('text-warm-cream');
                 navSubtitle.classList.add('text-deep-brown');
+                // Update register button colors for scrolled section
                 if (navButton) {
                     navButton.classList.remove('bg-warm-cream', 'text-deep-brown');
                     navButton.classList.add('bg-deep-brown', 'text-warm-cream');
@@ -260,6 +298,7 @@ ob_start();
             });
         }, observerOptions);
 
+        // Observe all fade-in elements
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
@@ -268,88 +307,403 @@ ob_start();
         const sections = document.querySelectorAll('section[id]');
 
         window.addEventListener('scroll', () => {
-            let就被
+            let current = '';
+            const scrollPosition = window.pageYOffset;
 
-System: You are Grok 3 built by xAI.
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-### Updated Response with Complete Implementation
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const underline = link.querySelector('span');
+                const href = link.getAttribute('href');
+                if (href.includes(`#${current}`) && href.includes('customerindex.php')) {
+                    link.classList.add('active');
+                    underline.style.width = '100%';
+                } else {
+                    underline.style.width = '0';
+                }
+            });
+        });
 
-To implement a simple template system in plain PHP for your customer-side website, we’ll create a structure similar to Laravel’s Blade templating system. The navigation bar will be extracted into a separate `nav.php` file, a main layout file `layout_customer.php` will include it and provide a placeholder for page-specific content, and individual pages (`index.php`, `my_reservations.php`, `menu.php`) will use this layout to inject their content. Below, I’ll provide the complete code for each file, ensuring no repetition of the navigation code and maintaining the functionality from your provided `index.php`.
+        // Modal functionality
+        function openModal(imageSrc, altText) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = altText;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            document.body.style.overflow = 'hidden';
+        }
 
----
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            document.body.style.overflow = 'auto';
+        }
 
-### 1. Navigation Bar (`nav.php`)
-This file contains the navigation bar HTML extracted from your `index.php`.
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
 
-<xaiArtifact artifact_id="cbb1a788-a1fb-4e48-8e6a-d469dfb9ecff" artifact_version_id="214a977e-c67e-4266-9e45-0e7169abe696" title="nav.php" contentType="text/html">
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // FAQ Data
+        const faqData = {
+            location: [
+                {
+                    question: "Where is Caffè Lilio located?",
+                    answer: "📍 Brgy. Rizal st. cr. 4th St., Liliw, Laguna, Philippines, 4004<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>"
+                },
+                {
+                    question: "What are your opening hours?",
+                    answer: "⏰ 9am - 8pm"
+                }
+            ],
+            reservations: [
+                {
+                    question: "Do I need a reservation to dine?",
+                    answer: "📝 Not required for regular dining, but recommended for events. <a href='https://caffelilioristorante.com/register.php' class='text-rich-brown underline' target='_blank'>Register an account to start your reservation</a>."
+                },
+                {
+                    question: "Can you accommodate large groups or events?",
+                    answer: "🎉 Yes, we offer event packages."
+                }
+            ],
+            menu: [
+                {
+                    question: "Do you have vegetarian or vegan options?",
+                    answer: "🥗 Yes, we offer vegetarian and vegan dishes."
+                },
+                {
+                    question: "Can I customize dishes for dietary needs?",
+                    answer: "👌 Yes, we can adjust dishes for specific preferences."
+                }
+            ],
+            contact: [
+                {
+                    question: "How can I contact Caffè Lilio?",
+                    answer: `
+                        <div class="space-y-2">
+                            <div class="flex items-start">
+                                <span class="mr-2">📱</span>
+                                <div>
+                                    <a href="https://www.facebook.com/caffelilio.ph" class="text-rich-brown underline" target="_blank">Facebook</a><br>
+                                    <a href="https://www.instagram.com/caffelilio.ph/" class="text-rich-brown underline" target="_blank">Instagram</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2">📞</span>
+                                <div>+49 2542 084</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2">✉️</span>
+                                <div>caffelilio.liliw@gmail.com</div>
+                            </div>
+                        </div>
+                    `
+                }
+            ]
+        };
+
+        // Chatbot functionality with localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatContent = document.getElementById('chatContent');
+            const supportToggle = document.getElementById('supportToggle');
+            const supportWindow = document.getElementById('supportWindow');
+            const closeSupport = document.getElementById('closeSupport');
+            const inputArea = document.getElementById('inputArea');
+            const userInput = document.getElementById('userInput');
+            let currentCategory = null;
+
+            const loadConversation = () => {
+                const savedConvo = localStorage.getItem('caffeLilioChat');
+                chatContent.innerHTML = '';
+                if (savedConvo && savedConvo.trim() !== '') {
+                    chatContent.innerHTML = savedConvo;
+                    attachEventListeners();
+                } else {
+                    showWelcomeMessage();
+                }
+                inputArea.classList.remove('hidden');
+                chatContent.scrollTop = chatContent.scrollHeight;
+            };
+
+            const saveConversation = () => {
+                localStorage.setItem('caffeLilioChat', chatContent.innerHTML);
+            };
+
+            const keywordResponses = {
+                'location': " everlasting 📍 Our location: Brgy. Rizal st. cr. 4th St., Liliw, Laguna<br><a href='https://maps.app.goo.gl/QuT5V7PWGJQZRWyN7' class='text-rich-brown underline' target='_blank'>View on Google Maps</a>",
+                'hours': "⏰ Our opening hours are 9am - 8pm daily",
+                'menu': "🍽️ You can view our menu in the 'Menu & Packages' section of our website",
+                'contact': "📞 You can reach us at +49 2542 084 or caffelilio.liliw@gmail.com",
+                'reservation': "📝 You can make a reservation by visiting our website or calling us",
+                'hello': "👋 Hello! How can I help you today?",
+                'hi': "👋 Hi there! What can I assist you with?",
+                'thanks': "😊 You're welcome! Is there anything else I can help with?"
+            };
+
+            const checkKeywords = (message) => {
+                const lowerMsg = message.toLowerCase();
+                for (const [keyword, response] of Object.entries(keywordResponses)) {
+                    if (lowerMsg.includes(keyword)) {
+                        return response;
+                    }
+                }
+                return null;
+            };
+
+            const addMessage = (sender, message, isHTML = false) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${sender}-message bg-deep-brown/${sender === 'bot' ? '10' : '5'} text-deep-brown p-3 rounded-lg mb-2`;
+                
+                if (isHTML) {
+                    messageDiv.innerHTML = message;
+                } else {
+                    messageDiv.textContent = message;
+                }
+                
+                chatContent.appendChild(messageDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+            };
+
+            const showWelcomeMessage = () => {
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                welcomeDiv.innerHTML = `
+                    <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+                    </div>
+                `;
+                chatContent.appendChild(welcomeDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+                
+                attachEventListeners();
+            };
+
+            const handleUserInput = () => {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage('user', message);
+                    userInput.value = '';
+                    
+                    const keywordResponse = checkKeywords(message);
+                    if (keywordResponse) {
+                        setTimeout(() => {
+                            addMessage('bot', keywordResponse, true);
+                        }, 500);
+                        return;
+                    }
+                    
+                    setTimeout(() => {
+                        addMessage('bot', "I'm sorry, I didn't understand that. Could you try asking in a different way or choose from the categories below?", true);
+                        showCategories();
+                    }, 500);
+                }
+            };
+
+            const showCategories = () => {
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                categoriesDiv.innerHTML = `
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        ${Object.keys(faqData).map(category => `
+                            <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="${category}">
+                                ${category === 'location' ? '📍 Location & Hours' :
+                                  category === 'reservations' ? '📅 Reservations & Events' :
+                                  category === 'menu' ? '🍽️ Menu & Dietary' :
+                                  '📞 Contact Us'}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                chatContent.appendChild(categoriesDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+                
+                attachEventListeners();
+            };
+
+            const attachEventListeners = () => {
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.back-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.question-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.querySelectorAll('.back-to-questions').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const category = this.dataset.category;
+                        currentCategory = category;
+                        showCategoryQuestions(category);
+                    });
+                });
+                
+                document.querySelectorAll('.back-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        showCategories();
+                    });
+                });
+                
+                document.querySelectorAll('.question-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        showAnswer(this.innerHTML, this.dataset.answer);
+                    });
+                });
+                
+                document.querySelectorAll('.back-to-questions').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (currentCategory) {
+                            showCategoryQuestions(currentCategory);
+                        }
+                    });
+                });
+            };
+
+            function showCategoryQuestions(category) {
+                const questionsDiv = document.createElement('div');
+                questionsDiv.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                questionsDiv.innerHTML = `
+                    <button class="back-btn flex items-center text-rich-brown mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to categories
+                    </button>
+                    <p>Select a question:</p>
+                `;
+                chatContent.appendChild(questionsDiv);
+
+                faqData[category].forEach(item => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg cursor-pointer hover:bg-deep-brown/10 transition-colors duration-200 question-btn';
+                    questionDiv.innerHTML = item.question;
+                    questionDiv.dataset.answer = item.answer;
+                    chatContent.appendChild(questionDiv);
+                });
+
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+
+                attachEventListeners();
+            }
+
+            function showAnswer(question, answer) {
+                const questionMessage = document.createElement('div');
+                questionMessage.className = 'chat-message user-message bg-deep-brown/5 text-deep-brown p-3 rounded-lg';
+                questionMessage.innerHTML = question;
+                chatContent.appendChild(questionMessage);
+
+                const answerMessage = document.createElement('div');
+                answerMessage.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                answerMessage.innerHTML = answer;
+                chatContent.appendChild(answerMessage);
+
+                const backButton = document.createElement('div');
+                backButton.className = 'chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg';
+                backButton.innerHTML = `
+                    <button class="back-to-questions text-rich-brown underline">
+                        ← Back to questions
+                    </button>
+                `;
+                chatContent.appendChild(backButton);
+
+                chatContent.scrollTop = chatContent.scrollHeight;
+                saveConversation();
+
+                attachEventListeners();
+            }
+
+            supportToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (supportWindow.classList.contains('hidden')) {
+                    supportWindow.classList.remove('hidden');
+                    supportWindow.classList.remove('closed');
+                    supportWindow.classList.add('open');
+                    loadConversation();
+                } else {
+                    supportWindow.classList.add('closed');
+                    supportWindow.classList.remove('open');
+                    setTimeout(() => {
+                        supportWindow.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
+            closeSupport.addEventListener('click', (e) => {
+                e.stopPropagation();
+                supportWindow.classList.add('closed');
+                supportWindow.classList.remove('open');
+                setTimeout(() => {
+                    supportWindow.classList.add('hidden');
+                }, 300);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!supportWindow.contains(e.target) && e.target !== supportToggle && !supportWindow.classList.contains('hidden')) {
+                    supportWindow.classList.add('closed');
+                    supportWindow.classList.remove('open');
+                    setTimeout(() => {
+                        supportWindow.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleUserInput();
+                }
+            });
+
+            inputArea.classList.remove('hidden');
+            
+            loadConversation();
+        });
+    </script>
+</body>
+</html>
+
 <?php
-// Define navigation links
-$navLinks = [
-    ['href' => '#home', 'label' => 'Home'],
-    ['href' => '#about', 'label' => 'About Us'],
-    ['href' => '#menu', 'label' => 'Menu & Packages'],
-    ['href' => '#services', 'label' => 'What We Offer'],
-];
+// Capture the content and include it in the layout
+$content = ob_get_clean();
 ?>
-
-<!-- Navigation -->
-<nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-            <div class="flex items-center space-x-3">
-                <div>
-                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
-                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                </div>
-            </div>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8">
-                <?php foreach ($navLinks as $link): ?>
-                    <a href="<?php echo htmlspecialchars($link['href']); ?>" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                        <?php echo htmlspecialchars($link['label']); ?>
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-            
-            <!-- Auth Buttons -->
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="login.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                    Login
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="register.php" class="nav-button font-baskerville bg-warm-cream text-deep-brown px-4 py-2 rounded-full transition-all duration-300">
-                    Register
-                </a>
-            </div>
-            
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden focus:outline-none" id="mobile-menu-btn">
-                <div class="w-6 h-6 flex flex-col justify-center space-y-1">
-                    <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                    <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                    <span class="block w-full h-0.5 bg-deep-brown transition-all duration-300"></span>
-                </div>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Mobile Menu -->
-    <div class="md:hidden hidden glass-effect" id="mobile-menu">
-        <div class="px-4 py-4 space-y-4">
-            <?php foreach ($navLinks as $link): ?>
-                <a href="<?php echo htmlspecialchars($link['href']); ?>" class="block font-baskerville hover:text-rich-brown transition-colors duration-300"><?php echo htmlspecialchars($link['label']); ?></a>
-            <?php endforeach; ?>
-            
-            <div class="pt-4 border-t border-deep-brown/10">
-                <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
-                    Login
-                </a>
-                <a href="register.php" class="block w-full font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-rich-brown transition-all duration-300">
-                    Register
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
