@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
-                            background: '#E8E0D5',
+                            background: '#ffffff',
                             color: '#5D2F0F'
                         });
                         
@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     showConfirmButton: false,
                                     timer: 3000,
                                     timerProgressBar: true,
-                                    background: '#E8E0D5',
+                                    background: '#ffffff',
                                     color: '#5D2F0F'
                                 });
                                 document.getElementById('password-update-form').reset();
