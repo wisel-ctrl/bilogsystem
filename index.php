@@ -289,8 +289,7 @@
     </div>
 </section>
 
-    <!-- Menu Section -->
-    <section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
+<section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
@@ -300,204 +299,108 @@
                 </p>
             </div>
 
-            <div class="relative">
-                <!-- Previous Button -->
-                <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
-
-                <!-- Carousel Container -->
-                <div class="overflow-hidden">
-                    <div id="menuCarousel" class="flex transition-transform duration-500 ease-in-out">
-                        <!-- Slide 1 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_bestseller.jpg', 'Best Sellers Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/01_bestseller.jpg" alt="Best Sellers Menu" class="w-full h-full object-cover">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_italian.jpg', 'Italian Dishes Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/02_italian.jpg" alt="Italian Dishes Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_spanish.jpg', 'Spanish Dishes Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/03_spanish.jpg" alt="Spanish Dishes Menu" class="w-full h-full object-cover">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 2 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_salad_soup.jpg', 'Salads and Soups Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/04_salad_soup.jpg" alt="Salads and Soups Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_burger.jpg', 'Burgers Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/05_burger.jpg" alt="Burgers Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_pizza.jpg', 'Pizza Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/06_pizza.jpg" alt="Pizza Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 3 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_pasta.jpg', 'Pasta Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/07_pasta.jpg" alt="Pasta Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/08_pasta_2.jpg', 'Special Pasta Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/08_pasta_2.jpg" alt="Special Pasta Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/09_dessert.jpg', 'Dessert Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/09_dessert.jpg" alt="Dessert Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 4 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/10_maincourse_fish.jpg', 'Fish Main Course Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/10_maincourse_fish.jpg" alt="Fish Main Course Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/11_maincourse_chicken.jpg', 'Chicken Main Course Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/11_maincourse_chicken.jpg" alt="Chicken Main Course Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/12_maincourse_pork.jpg', 'Pork Main Course Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/12_maincourse_pork.jpg" alt="Pork Main Course Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 5 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/13_maincourse_beef.jpg', 'Beef Main Course Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/13_maincourse_beef.jpg" alt="Beef Main Course Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/14_drinks.jpg', 'Drinks Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/14_drinks.jpg" alt="Drinks Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/15_coffee.jpg', 'Coffee Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/15_coffee.jpg" alt="Coffee Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 6 -->
-                        <div class="w-full flex-shrink-0 px-4 flex space-x-4">
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/16_liquor.jpg', 'Liquor Menu')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/16_liquor.jpg" alt="Liquor Menu" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cheesewheelpasta.jpg', 'Cheese Wheel Pasta')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/cheesewheelpasta.jpg" alt="Cheese Wheel Pasta" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-1/3">
-                                <div class="bg-deep-brown/40 rounded-xl p-2 shadow-lg hover-lift fade-in cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/cochinillo.jpg', 'Cochinillo')">
-                                    <div class="aspect-[3/4] relative overflow-hidden rounded-lg">
-                                        <img src="images/cochinillo.jpg" alt="Cochinillo" class="w-full h-full object-cover">
-                                         
-                                    </div>
-                                </div>
-                            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Best-Sellers -->
+                <a href="/menu/best-sellers" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/best-sellers.jpg" alt="Best Sellers" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Best-Sellers</h3>
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <!-- Next Button -->
-                <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-rich-brown text-warm-cream w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-deep-brown transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+                <!-- Cake & Pastries -->
+                <a href="/menu/cake-pastries" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/cake-pastries.jpg" alt="Cake & Pastries" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Cake & Pastries</h3>
+                        </div>
+                    </div>
+                </a>
 
-                <!-- Carousel Indicators -->
-                <div class="flex justify-center mt-8 space-x-2">
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="0"></button>
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="1"></button>
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="2"></button>
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="3"></button>
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="4"></button>
-                    <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 carousel-indicator" data-index="5"></button>
-                    
-                </div>
+                <!-- Italian Dish -->
+                <a href="/menu/italian-dish" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/italian-dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Italian Dish</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- All Day Main Course -->
+                <a href="/menu/main-course" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/main-course.jpg" alt="All Day Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">All Day Main Course</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Coffee -->
+                <a href="/menu/coffee" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/coffee.jpg" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Coffee</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Liquor -->
+                <a href="/menu/liquor" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/liquor.jpg" alt="Liquor" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Liquor</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Spanish Dish -->
+                <a href="/menu/spanish-dish" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/spanish-dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Spanish Dish</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Burgers & Pizza -->
+                <a href="/menu/burgers-pizza" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/burgers-pizza.jpg" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Burgers & Pizza</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Pasta & Salads -->
+                <a href="/menu/pasta-salads" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/pasta-salads.jpg" alt="Pasta & Salads" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta & Salads</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Desserts -->
+                <a href="/menu/desserts" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Desserts</h3>
+                        </div>
+                    </div>
+                </a>
             </div>
-            
+
             <div class="text-center mt-12 fade-in">
                 <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
                     Download Full Menu
