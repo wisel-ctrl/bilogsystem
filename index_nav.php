@@ -1,3 +1,13 @@
+<?php
+// Define the navigation links
+$navLinks = [
+    ['href' => '#home', 'label' => 'Home'],
+    ['href' => '#about', 'label' => 'About Us'],
+    ['href' => '#menu', 'label' => 'Menu & Packages'],
+    ['href' => '#services', 'label' => 'What We Offer'],
+];
+?>
+
 <!-- Navigation -->
 <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,22 +21,12 @@
             
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8">
-                <a href="customerindex.php#home" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                    Home
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="customerindex.php#about" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                    About Us
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="menu.php" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                    Menu & Packages
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="customerindex.php#services" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
-                    What We Offer
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                <?php foreach ($navLinks as $link): ?>
+                    <a href="<?php echo htmlspecialchars($link['href']); ?>" class="nav-link font-baskerville text-warm-cream hover:text-warm-cream/80 transition-colors duration-300 relative group">
+                        <?php echo htmlspecialchars($link['label']); ?>
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-warm-cream transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                <?php endforeach; ?>
             </div>
             
             <!-- Auth Buttons -->
@@ -54,10 +54,9 @@
     <!-- Mobile Menu -->
     <div class="md:hidden hidden glass-effect" id="mobile-menu">
         <div class="px-4 py-4 space-y-4">
-            <a href="customerindex.php#home" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Home</a>
-            <a href="customerindex.php#about" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">About Us</a>
-            <a href="menu.php" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">Menu & Packages</a>
-            <a href="customerindex.php#services" class="block font-baskerville hover:text-rich-brown transition-colors duration-300">What We Offer</a>
+            <?php foreach ($navLinks as $link): ?>
+                <a href="<?php echo htmlspecialchars($link['href']); ?>" class="block font-baskerville hover:text-rich-brown transition-colors duration-300"><?php echo htmlspecialchars($link['label']); ?></a>
+            <?php endforeach; ?>
             
             <div class="pt-4 border-t border-deep-brown/10">
                 <a href="login.php" class="block w-full text-left font-baskerville hover:text-rich-brown transition-colors duration-300 mb-3">
