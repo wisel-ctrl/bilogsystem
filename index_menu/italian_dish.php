@@ -126,7 +126,9 @@
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Margherita Pizza</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$12.99</div>
-                        
+                            <p class="text-sm text-[#4A3728] leading-relaxed">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -137,7 +139,9 @@
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Spaghetti Carbonara</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$14.50</div>
-                         
+                            <p class="text-sm text-[#4A3728] leading-relaxed">
+                                Creamy pasta with pancetta, egg, Parmesan cheese, and a touch of black pepper.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +152,9 @@
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Lasagna</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$16.75</div>
-                            
+                            <p class="text-sm text-[#4A3728] leading-relaxed">
+                                Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -159,7 +165,9 @@
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Mushroom Risotto</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$15.25</div>
-                          
+                            <p class="text-sm text-[#4A3728] leading-relaxed">
+                                Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -170,7 +178,9 @@
                         <div class="p-6">
                             <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Tiramisu</h3>
                             <div class="text-lg text-[#8B5A2B] mb-3">$8.99</div>
-                           
+                            <p class="text-sm text-[#4A3728] leading-relaxed">
+                                Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
+                            </p>
                         </div>
                     </div>
                 </div>
