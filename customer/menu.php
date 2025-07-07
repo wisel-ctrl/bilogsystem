@@ -347,24 +347,24 @@ ob_start();
             });
 
             // Mobile menu functionality
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            // const mobileMenu = document.getElementById('mobile-menu');
+            // const mobileMenuButton = document.getElementById('mobile-menu-button');
+            // const closeMobileMenu = document.getElementById('close-mobile-menu');
 
-            function toggleMobileMenu() {
-                mobileMenu.classList.toggle('open');
-                document.body.classList.toggle('overflow-hidden');
-            }
+            // function toggleMobileMenu() {
+            //     mobileMenu.classList.toggle('open');
+            //     document.body.classList.toggle('overflow-hidden');
+            // }
 
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            closeMobileMenu.addEventListener('click', toggleMobileMenu);
+            // mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            // closeMobileMenu.addEventListener('click', toggleMobileMenu);
 
-            // Close mobile menu when clicking outside
-            mobileMenu.addEventListener('click', function(e) {
-                if (e.target === mobileMenu) {
-                    toggleMobileMenu();
-                }
-            });
+            // // Close mobile menu when clicking outside
+            // mobileMenu.addEventListener('click', function(e) {
+            //     if (e.target === mobileMenu) {
+            //         toggleMobileMenu();
+            //     }
+            // });
 
             // Show loading bar on navigation
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
