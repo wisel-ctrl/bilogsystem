@@ -14,7 +14,6 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
     'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=E8E0D5&color=5D2F0F&bold=true&size=128';
 ?>
 
-
 <nav class="bg-warm-cream text-deep-brown shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
@@ -77,17 +76,17 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
 
                     <!-- User Profile -->
                     <div class="relative">
-         <!-- Navigation Button with Profile Picture -->
-<button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
-        aria-label="User menu"
-        id="user-menu-button">
-    <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
-         alt="Profile" 
-         class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
-         id="nav-profile-image">
-    <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
-    <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
-</button>
+                        <!-- Navigation Button with Profile Picture -->
+                        <button class="flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors duration-300 text-deep-brown hover:text-deep-brown/80"
+                                aria-label="User menu"
+                                id="user-menu-button">
+                            <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
+                                 alt="Profile" 
+                                 class="w-8 h-8 rounded-full border border-deep-brown/30 object-cover"
+                                 id="nav-profile-image">
+                            <span class="font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></span>
+                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="chevron-icon"></i>
+                        </button>
 
                         <div class="absolute right-0 mt-2 w-48 bg-warm-cream rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50 transition-all duration-300" id="user-dropdown">
                             <a href="profile.php" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
@@ -121,7 +120,35 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
                     </button>
                 </div>
                 <nav class="flex-1 overflow-y-auto p-4">
- |                    <div class="space-y-4 Sex                    <a href="customerindex.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
+                    <div class="space-y-4">
+                        <!-- User Profile Section -->
+                        <div class="flex items-center space-x-3 p-2 border-b border-deep-brown/10">
+                            <img src="<?php echo htmlspecialchars($profilePicture); ?>" 
+                                 alt="Profile" 
+                                 class="w-10 h-10 rounded-full border border-deep-brown/30 object-cover"
+                                 id="mobile-nav-profile-image">
+                            <div>
+                                <p class="font-baskerville text-deep-brown"><?php echo htmlspecialchars(ucfirst($user['first_name'])) . ' ' . htmlspecialchars(ucfirst($user['last_name'])); ?></p>
+                                <button class="flex items-center text-deep-brown hover:text-deep-brown/80 text-sm font-baskerville mt-1" 
+                                        id="mobile-user-menu-button">
+                                    Account Options
+                                    <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300" id="mobile-chevron-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pl-4 space-y-2 hidden" id="mobile-user-dropdown">
+                            <a href="profile.php" class="flex items-center text-deep-brown hover:text-deep-brown/80 transition-colors duration-300">
+                                <i class="fas fa-user-circle w-8"></i> Profile Settings
+                            </a>
+                            <a href="#notifications" class="flex items-center text-deep-brown hover:text-deep-brown/80 transition-colors duration-300">
+                                <i class="fas fa-bell w-8"></i> Notifications
+                            </a>
+                            <a href="../logout.php?usertype=customer" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
+                                <i class="fas fa-sign-out-alt w-8"></i> Logout
+                            </a>
+                        </div>
+                        <!-- Navigation Links -->
+                        <a href="customerindex.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
                             <i class="fas fa-home w-8"></i> Home
                         </a>
                         <a href="my_reservations.php" class="block font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 py-2">
@@ -135,78 +162,10 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
                         </a>
                     </div>
                 </nav>
-                <div class="p-4 border-t border-warm-cream/10">
-                    <a href="../logout.php?usertype=customer" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
-                        <i class="fas fa-sign-out-alt w-8"></i> Logout
-                    </a>
-                </div>
             </div>
         </div>
     </div>
     <script>
-
-
-// Function to update profile images across the page
-function updateProfileImages(newImageUrl) {
-    const profileImages = document.querySelectorAll('#profile-image, #nav-profile-image');
-    profileImages.forEach(img => {
-        img.src = newImageUrl;
-        img.alt = 'Profile';
-    });
-}
-
-// Handle profile picture upload
-document.addEventListener('DOMContentLoaded', () => {
-    const avatarUpload = document.getElementById('avatar-upload');
-    if (avatarUpload) {
-        avatarUpload.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('Please select a valid image file.');
-                return;
-            }
-
-            // Validate file size (e.g., max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image file size must be less than 5MB.');
-                return;
-            }
-
-            try {
-                const formData = new FormData();
-                formData.append('avatar', file);
-                formData.append('user_id', '<?php echo $_SESSION['user_id']; ?>');
-
-                const response = await fetch('profileAPI/upload_avatar.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    updateProfileImages(result.imageUrl);
-                    alert('Profile picture updated successfully!');
-                } else {
-                    alert('Failed to update profile picture: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error uploading profile picture:', error);
-                alert('An error occurred while uploading the profile picture.');
-            }
-        });
-    }
-});
-
-
-
-
-
-
-
-
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
@@ -214,9 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('close-mobile-menu').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.add('hidden');
+            // Reset mobile user dropdown when closing menu
+            document.getElementById('mobile-user-dropdown').classList.add('hidden');
+            document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
         });
 
-        // User dropdown toggle
+        // User dropdown toggle (desktop)
         document.getElementById('user-menu-button').addEventListener('click', function(e) {
             e.preventDefault();
             const dropdown = document.getElementById('user-dropdown');
@@ -225,6 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Close notifications dropdown if open
             document.getElementById('notifications-dropdown').classList.add('hidden');
+            
+            dropdown.classList.toggle('hidden', !isHidden);
+            chevron.classList.toggle('rotate-180', isHidden);
+        });
+
+        // User dropdown toggle (mobile)
+        document.getElementById('mobile-user-menu-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('mobile-user-dropdown');
+            const chevron = document.getElementById('mobile-chevron-icon');
+            const isHidden = dropdown.classList.contains('hidden');
             
             dropdown.classList.toggle('hidden', !isHidden);
             chevron.classList.toggle('rotate-180', isHidden);
@@ -245,13 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(event) {
             const userButton = document.getElementById('user-menu-button');
+            const mobileUserButton = document.getElementById('mobile-user-menu-button');
             const notificationsButton = document.getElementById('notifications-button');
             const userDropdown = document.getElementById('user-dropdown');
+            const mobileUserDropdown = document.getElementById('mobile-user-dropdown');
             const notificationsDropdown = document.getElementById('notifications-dropdown');
 
             if (!userButton.contains(event.target) && !userDropdown.contains(event.target)) {
                 userDropdown.classList.add('hidden');
                 document.getElementById('chevron-icon').classList.remove('rotate-180');
+            }
+
+            if (!mobileUserButton.contains(event.target) && !mobileUserDropdown.contains(event.target)) {
+                mobileUserDropdown.classList.add('hidden');
+                document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
             }
 
             if (!notificationsButton.contains(event.target) && !notificationsDropdown.contains(event.target)) {
