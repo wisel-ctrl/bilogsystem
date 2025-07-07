@@ -36,16 +36,16 @@ ob_start();
 
 
 
-   <!-- Main Content -->
-<header class="mb-10 sticky top-0 bg-white z-10 pt-6 pb-4 transition-all duration-300 shadow-sm">
-    <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
-    <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
-</header>
+    <!-- Main Content -->
+        <header class="mb-10">
+            <h2 class="font-playfair text-4xl md:text-5xl font-bold text-deep-brown">My Account</h2>
+            <p class="font-baskerville mt-2 text-deep-brown/70">Manage your profile</p>
+        </header>
 
-<!-- Notification Placeholder -->
-<div id="notification-area" class="relative"></div>
+        <!-- Notification Placeholder -->
+        <div id="notification-area" class="relative"></div>
 
-<!-- Profile Information Tab -->
+    <!-- Profile Information Tab -->
 <div id="profile-content" class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Profile Picture Card -->
