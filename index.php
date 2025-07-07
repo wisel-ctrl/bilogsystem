@@ -321,7 +321,7 @@
                 </a>
 
                 <!-- Italian Dish -->
-                <a href="/menu/italian-dish" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="/index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/italian-dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -350,16 +350,7 @@
                     </div>
                 </a>
 
-                <!-- Liquor -->
-                <a href="/menu/liquor" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/liquor.jpg" alt="Liquor" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Liquor</h3>
-                        </div>
-                    </div>
-                </a>
-
+      
                 <!-- Spanish Dish -->
                 <a href="/menu/spanish-dish" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
