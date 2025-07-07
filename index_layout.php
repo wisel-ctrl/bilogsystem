@@ -79,7 +79,7 @@ ob_start();
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <?php include 'nav.php'; ?>
+    <?php include 'index_nav.php'; ?>
 
     <!-- Content Placeholder -->
     <?php echo $content; ?>
