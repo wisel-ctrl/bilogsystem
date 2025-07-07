@@ -159,52 +159,126 @@ ob_start();
                 </form>
             </div>
 
-            <!-- Change Password Card -->
-            <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
-                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
-                
-                <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">Current Password</label>
-                        <div class="relative">
-                            <input type="password" id="current-password" name="current_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">New Password</label>
-                        <div class="relative">
-                            <input type="password" id="new-password" name="new_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
-                            </div>
-                        </div>
-                        <p class="text-xs text-deep-brown/50 mt-1">Minimum 8 characters with at least one number</p>
-                    </div>
-                    
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">Confirm New Password</label>
-                        <div class="relative">
-                            <input type="password" id="confirm-password" name="confirm_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="pt-4 border-t border-warm-cream text-right">
-                        <button type="submit" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
-                            Update Password
-                        </button>
-                    </div>
-                </form>
+<!-- Change Password Card -->
+<div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
+    
+    <form id="password-update-form" action="profileAPI/update_password.php" method="POST" class="space-y-6">
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Current Password</label>
+            <div class="relative">
+                <input type="password" id="current-password" name="current_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                </div>
             </div>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">New Password</label>
+            <div class="relative">
+                <input type="password" id="new-password" name="new_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                </div>
+            </div>
+            <p class="text-xs text-deep-brown/50 mt-1">Minimum 8 characters, one uppercase letter, and one number</p>
+            <ul id="password-requirements" class="text-xs text-deep-brown/70 mt-2 space-y-1">
+                <li id="length-check" class="flex items-center"><span class="mr-2">•</span> At least 8 characters</li>
+                <li id="uppercase-check" class="flex items-center"><span class="mr-2">•</span> At least one uppercase letter</li>
+                <li id="number-check" class="flex items-center"><span class="mr-2">•</span> At least one number</li>
+            </ul>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Confirm New Password</label>
+            <div class="relative">
+                <input type="password" id="confirm-password" name="confirm_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <i class="fas fa-eye-slash text-deep-brown/30 cursor-pointer toggle-password"></i>
+                </div>
+            </div>
+            <p id="confirm-match" class="text-xs text-deep-brown/50 mt-1 hidden">Passwords must match</p>
+        </div>
+        
+        <div class="pt-4 border-t border-warm-cream text-right">
+            <button type="submit" id="submit-button" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]" disabled>
+                Update Password
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('password-update-form');
+    const newPassword = document.getElementById('new-password');
+    const confirmPassword = document.getElementById('confirm-password');
+    const submitButton = document.getElementById('submit-button');
+    const lengthCheck = document.getElementById('length-check');
+    const uppercaseCheck = document.getElementById('uppercase-check');
+    const numberCheck = document.getElementById('number-check');
+    const confirmMatch = document.getElementById('confirm-match');
+
+    // Password validation regex
+    const minLength = /.{8,}/;
+    const hasUppercase = /[A-Z]/;
+    const hasNumber = /[0-9]/;
+
+    function validatePassword() {
+        const password = newPassword.value;
+        const confirm = confirmPassword.value;
+        
+        // Check requirements
+        const isLengthValid = minLength.test(password);
+        const isUppercaseValid = hasUppercase.test(password);
+        const isNumberValid = hasNumber.test(password);
+        const isMatch = password === confirm && password !== '';
+
+        // Update visual feedback
+        lengthCheck.style.color = isLengthValid ? 'green' : 'inherit';
+        uppercaseCheck.style.color = isUppercaseValid ? 'green' : 'inherit';
+        numberCheck.style.color = isNumberValid ? 'green' : 'inherit';
+        
+        confirmMatch.classList.toggle('hidden', password === '' || isMatch);
+        confirmMatch.style.color = isMatch ? 'green' : 'red';
+        confirmMatch.textContent = isMatch ? 'Passwords match' : 'Passwords do not match';
+
+        // Enable/disable submit button
+        submitButton.disabled = !(isLengthValid && isUppercaseValid && isNumberValid && isMatch);
+    }
+
+    // Add event listeners for real-time validation
+    newPassword.addEventListener('input', validatePassword);
+    confirmPassword.addEventListener('input', validatePassword);
+
+    // Form submission validation
+    form.addEventListener('submit', (e) => {
+        const password = newPassword.value;
+        if (!minLength.test(password) || !hasUppercase.test(password) || !hasNumber.test(password)) {
+            e.preventDefault();
+            alert('Password must be at least 8 characters long, contain one uppercase letter, and one number.');
+        } else if (newPassword.value !== confirmPassword.value) {
+            e.preventDefault();
+            alert('Passwords do not match.');
+        }
+    });
+
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', () => {
+            const input = icon.closest('.relative').querySelector('input');
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('fa-eye', isPassword);
+            icon.classList.toggle('fa-eye-slash', !isPassword);
+        });
+    });
+});
+</script>
         </div>
     </div>
 </div>
