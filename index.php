@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caffè Lilio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="tailwind.js"></script>
+<?php
+
+// Set page title
+$page_title = "Home - Caffè Lilio";
+
+// Capture content
+ob_start();
+?>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -73,7 +73,6 @@
         }
     </style>
 </head>
-<body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1502,5 +1501,8 @@
         });
     </script>
     
-</body>
-</html>
+    <?php
+// Capture content and include layout
+$content = ob_get_clean();
+include 'index_nav.php';
+?>
