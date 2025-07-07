@@ -74,7 +74,7 @@ ob_start();
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Personal Information Card -->
-            <div class="bg-gradient-to-br from-warm-cream/10 to-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white/80 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="font-playfair text-2xl font-bold text-deep-brown">Personal Information</h3>
                     <button type="button" id="edit-profile-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
