@@ -222,7 +222,6 @@ ob_start();
         });
     </script>
 <?php
-// Capture content and include layout
 $content = ob_get_clean();
-include 'index_layout.php';
+require 'index_layout.php';
 ?>
