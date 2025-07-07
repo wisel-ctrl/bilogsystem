@@ -223,5 +223,5 @@ ob_start();
     </script>
 <?php
 $content = ob_get_clean();
-require 'index_layout.php';
+include 'index_layout.php';
 ?>
