@@ -1,15 +1,262 @@
 <?php
-    require_once 'admin_auth.php';
-    require_once '../db_connect.php';
+require_once 'admin_auth.php';
+require_once '../db_connect.php';
+
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
+
+// Define page title
+$page_title = "Reports";
+
+// Function to fetch daily revenue data
+function getDailyRevenue($conn, $start_date = null, $end_date = null) {
+    $sql = "SELECT 
+                DATE(order_date) as date,
+                SUM(total_amount) as total_revenue,
+                COUNT(*) as num_transactions,
+                AVG(total_amount) as avg_transaction
+            FROM orders
+            WHERE status = 'completed'";
     
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
+    if ($start_date && $end_date) {
+        $sql .= " AND DATE(order_date) BETWEEN ? AND ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $start_date, $end_date);
+    } else {
+        $sql .= " GROUP BY DATE(order_date) ORDER BY date DESC LIMIT 7";
+        $stmt = $conn->prepare($sql);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'date' => $row['date'],
+            'total_revenue' => number_format($row['total_revenue'], 2),
+            'num_transactions' => $row['num_transactions'],
+            'avg_transaction' => number_format($row['avg_transaction'], 2)
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
 
-    // Define page title
-    $page_title = "Reports";
+// Function to fetch monthly revenue data
+function getMonthlyRevenue($conn, $year = null) {
+    $sql = "SELECT 
+                DATE_FORMAT(order_date, '%Y-%m') as month,
+                SUM(total_amount) as total_revenue,
+                COUNT(*) as num_transactions,
+                AVG(total_amount) as avg_transaction
+            FROM orders
+            WHERE status = 'completed'";
+    
+    if ($year) {
+        $sql .= " AND YEAR(order_date) = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $year);
+    } else {
+        $sql .= " GROUP BY DATE_FORMAT(order_date, '%Y-%m') ORDER BY month DESC LIMIT 12";
+        $stmt = $conn->prepare($sql);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'month' => date('F Y', strtotime($row['month'] . '-01')),
+            'total_revenue' => number_format($row['total_revenue'], 2),
+            'num_transactions' => $row['num_transactions'],
+            'avg_transaction' => number_format($row['avg_transaction'], 2)
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
 
-    // Capture page content
-    ob_start();
+// Function to fetch yearly revenue data
+function getYearlyRevenue($conn) {
+    $sql = "SELECT 
+                YEAR(order_date) as year,
+                SUM(total_amount) as total_revenue,
+                COUNT(*) as num_transactions,
+                AVG(total_amount) as avg_transaction
+            FROM orders
+            WHERE status = 'completed'
+            GROUP BY YEAR(order_date)
+            ORDER BY year DESC
+            LIMIT 5";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'year' => $row['year'],
+            'total_revenue' => number_format($row['total_revenue'], 2),
+            'num_transactions' => $row['num_transactions'],
+            'avg_transaction' => number_format($row['avg_transaction'], 2)
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
+
+// Function to fetch daily orders data
+function getDailyOrders($conn, $start_date = null, $end_date = null) {
+    $sql = "SELECT 
+                DATE(order_date) as date,
+                COUNT(*) as total_orders,
+                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders
+            FROM orders";
+    
+    if ($start_date && $end_date) {
+        $sql .= " WHERE DATE(order_date) BETWEEN ? AND ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $start_date, $end_date);
+    } else {
+        $sql .= " GROUP BY DATE(order_date) ORDER BY date DESC LIMIT 7";
+        $stmt = $conn->prepare($sql);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'date' => $row['date'],
+            'total_orders' => $row['total_orders'],
+            'completed_orders' => $row['completed_orders'],
+            'pending_orders' => $row['pending_orders']
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
+
+// Function to fetch monthly orders data
+function getMonthlyOrders($conn, $year = null) {
+    $sql = "SELECT 
+                DATE_FORMAT(order_date, '%Y-%m') as month,
+                COUNT(*) as total_orders,
+                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders
+            FROM orders";
+    
+    if ($year) {
+        $sql .= " WHERE YEAR(order_date) = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $year);
+    } else {
+        $sql .= " GROUP BY DATE_FORMAT(order_date, '%Y-%m') ORDER BY month DESC LIMIT 12";
+        $stmt = $conn->prepare($sql);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'month' => date('F Y', strtotime($row['month'] . '-01')),
+            'total_orders' => $row['total_orders'],
+            'completed_orders' => $row['completed_orders'],
+            'pending_orders' => $row['pending_orders']
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
+
+// Function to fetch yearly orders data
+function getYearlyOrders($conn) {
+    $sql = "SELECT 
+                YEAR(order_date) as year,
+                COUNT(*) as total_orders,
+                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders
+            FROM orders
+            GROUP BY YEAR(order_date)
+            ORDER BY year DESC
+            LIMIT 5";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'year' => $row['year'],
+            'total_orders' => $row['total_orders'],
+            'completed_orders' => $row['completed_orders'],
+            'pending_orders' => $row['pending_orders']
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
+
+// Function to fetch customer satisfaction data
+function getCustomerSatisfaction($conn, $period = 'monthly') {
+    $sql = "";
+    if ($period == 'monthly') {
+        $sql = "SELECT 
+                    DATE_FORMAT(feedback_date, '%Y-%m') as period,
+                    SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) / COUNT(*) * 100 as excellent,
+                    SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) / COUNT(*) * 100 as good,
+                    SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) / COUNT(*) * 100 as average,
+                    SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) / COUNT(*) * 100 as poor,
+                    COUNT(*) as total_responses
+                FROM customer_feedback
+                GROUP BY DATE_FORMAT(feedback_date, '%Y-%m')
+                ORDER BY period DESC
+                LIMIT 12";
+    } else {
+        $sql = "SELECT 
+                    YEAR(feedback_date) as period,
+                    SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) / COUNT(*) * 100 as excellent,
+                    SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) / COUNT(*) * 100 as good,
+                    SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) / COUNT(*) * 100 as average,
+                    SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) / COUNT(*) * 100 as poor,
+                    COUNT(*) as total_responses
+                FROM customer_feedback
+                GROUP BY YEAR(feedback_date)
+                ORDER BY period DESC
+                LIMIT 5";
+    }
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'period' => $period == 'monthly' ? date('F Y', strtotime($row['period'] . '-01')) : $row['period'],
+            'excellent' => number_format($row['excellent'], 1) . '%',
+            'good' => number_format($row['good'], 1) . '%',
+            'average' => number_format($row['average'], 1) . '%',
+            'poor' => number_format($row['poor'], 1) . '%',
+            'total_responses' => $row['total_responses']
+        ];
+    }
+    $stmt->close();
+    return $data;
+}
+
+// Fetch data for all tables
+$daily_revenue = getDailyRevenue($conn);
+$monthly_revenue = getMonthlyRevenue($conn);
+$yearly_revenue = getYearlyRevenue($conn);
+$daily_orders = getDailyOrders($conn);
+$monthly_orders = getMonthlyOrders($conn);
+$yearly_orders = getYearlyOrders($conn);
+$customer_satisfaction = getCustomerSatisfaction($conn);
+
+// Capture page content
+ob_start();
 ?>
 
 <style>
@@ -165,14 +412,6 @@
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- <div class="md:col-span-1">
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Date Range</label>
-                <div class="flex space-x-2">
-                    <input type="date" id="startDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <span class="text-rich-brown font-baskerville self-center text-sm">to</span>
-                    <input type="date" id="endDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                </div>
-            </div> -->
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -191,6 +430,14 @@
                     <option value="customer_satisfaction">Customer Satisfaction</option>
                 </select>
             </div>
+            <div>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Start Date</label>
+                <input type="date" id="startDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">End Date/Year</label>
+                <input type="text" id="endDate" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville" placeholder="YYYY or YYYY-MM-DD">
+            </div>
             <div class="flex items-end space-x-2">
                 <button id="applyFilters" class="w-full bg-deep-brown hover:bg-rich-brown text-warm-cream px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
                     <i class="fas fa-filter mr-2"></i> Apply
@@ -206,19 +453,15 @@
     <!-- Daily Revenue Table -->
     <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-coins mr-2 text-accent-brown"></i>
-                Daily Revenue
-            </h3>
-            <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
-                <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-coins mr-2 text-accent-brown"></i>
+            Daily Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
         </div>
         <div class="overflow-x-auto">
             <table id="dailyRevenueTable" class="report-table">
@@ -231,24 +474,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>₱2,450</td>
-                        <td>124</td>
-                        <td>₱19.76</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>₱2,200</td>
-                        <td>110</td>
-                        <td>₱20.00</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>₱2,300</td>
-                        <td>115</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php foreach ($daily_revenue as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['date']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['total_revenue']); ?></td>
+                            <td><?php echo htmlspecialchars($row['num_transactions']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['avg_transaction']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -262,10 +495,6 @@
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -282,24 +511,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>₱84,320</td>
-                        <td>3,847</td>
-                        <td>₱21.92</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>₱78,500</td>
-                        <td>3,600</td>
-                        <td>₱21.81</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>₱82,000</td>
-                        <td>3,750</td>
-                        <td>₱21.87</td>
-                    </tr>
+                    <?php foreach ($monthly_revenue as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['month']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['total_revenue']); ?></td>
+                            <td><?php echo htmlspecialchars($row['num_transactions']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['avg_transaction']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -313,10 +532,6 @@
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -333,24 +548,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>₱950,680</td>
-                        <td>45,320</td>
-                        <td>₱20.98</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>₱780,000</td>
-                        <td>38,000</td>
-                        <td>₱20.53</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>₱700,000</td>
-                        <td>35,000</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php foreach ($yearly_revenue as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['year']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['total_revenue']); ?></td>
+                            <td><?php echo htmlspecialchars($row['num_transactions']); ?></td>
+                            <td>₱<?php echo htmlspecialchars($row['avg_transaction']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -360,14 +565,10 @@
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -384,24 +585,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>124</td>
-                        <td>100</td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>110</td>
-                        <td>90</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>115</td>
-                        <td>95</td>
-                        <td>20</td>
-                    </tr>
+                    <?php foreach ($daily_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['date']); ?></td>
+                            <td><?php echo htmlspecialchars($row['total_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['completed_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -415,10 +606,6 @@
                 Monthly Orders
             </h3>
             <div class="space-x-2">
- 
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -435,24 +622,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>3,847</td>
-                        <td>3,500</td>
-                        <td>347</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>3,600</td>
-                        <td>3,300</td>
-                        <td>300</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>3,750</td>
-                        <td>3,400</td>
-                        <td>350</td>
-                    </tr>
+                    <?php foreach ($monthly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['month']); ?></td>
+                            <td><?php echo htmlspecialchars($row['total_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['completed_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -466,10 +643,6 @@
                 Yearly Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -486,41 +659,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>45,320</td>
-                        <td>42,000</td>
-                        <td>3,320</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>38,000</td>
-                        <td>35,000</td>
-                        <td>3,000</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>35,000</td>
-                        <td>32,000</td>
-                        <td>3,000</td>
-                    </tr>
+                    <?php foreach ($yearly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['year']); ?></td>
+                            <td><?php echo htmlspecialchars($row['total_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['completed_orders']); ?></td>
+                            <td><?php echo htmlspecialchars($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
     <!-- Customer Satisfaction Table -->
-    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
+    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
                 <i class="fas fa-smile mr-2 text-accent-brown"></i>
                 Customer Satisfaction
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -539,30 +698,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>65%</td>
-                        <td>25%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>1,000</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>60%</td>
-                        <td>28%</td>
-                        <td>10%</td>
-                        <td>2%</td>
-                        <td>950</td>
-                    </tr>
-                    <tr>
-                        <td>2025</td>
-                        <td>62%</td>
-                        <td>26%</td>
-                        <td>9%</td>
-                        <td>3%</td>
-                        <td>12,000</td>
-                    </tr>
+                    <?php foreach ($customer_satisfaction as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['period']); ?></td>
+                            <td><?php echo htmlspecialchars($row['excellent']); ?></td>
+                            <td><?php echo htmlspecialchars($row['good']); ?></td>
+                            <td><?php echo htmlspecialchars($row['average']); ?></td>
+                            <td><?php echo htmlspecialchars($row['poor']); ?></td>
+                            <td><?php echo htmlspecialchars($row['total_responses']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
