@@ -516,7 +516,7 @@ ob_start();
                                     showConfirmButton: false,
                                     timer: 3000,
                                     timerProgressBar: true,
-                                    background: '#E8E0D5',
+                                    background: '#ffffff',
                                     color: '#5D2F0F'
                                 });
                                 // Disable inputs again
