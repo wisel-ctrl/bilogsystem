@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Dish Menu - Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
@@ -44,7 +42,7 @@
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Navigation (Reused from index.php) -->
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -127,54 +125,15 @@
             </p>
         </div>
 
-        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+        <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
             <!-- Menu Item 1 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-                    <!-- Menu Item 1 -->
-                    <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-                    <!-- Menu Item 1 -->
-                    <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-                    <!-- Menu Item 1 -->
-                    <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$12.99</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
                         </p>
                     </div>
@@ -182,12 +141,12 @@
             </div>
             <!-- Menu Item 2 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/spaghetti-carbonara.jpg" alt="Spaghetti Carbonara" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Spaghetti Carbonara</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$14.50</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/spaghetti-carbonara.jpg" alt="Spaghetti Carbonara" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Spaghetti Carbonara</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$14.50</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Creamy pasta with pancetta, egg, Parmesan cheese, and a touch of black pepper.
                         </p>
                     </div>
@@ -195,12 +154,12 @@
             </div>
             <!-- Menu Item 3 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$16.75</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$16.75</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
                         </p>
                     </div>
@@ -208,12 +167,12 @@
             </div>
             <!-- Menu Item 4 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$15.25</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$15.25</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
                         </p>
                     </div>
@@ -221,12 +180,12 @@
             </div>
             <!-- Menu Item 5 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$8.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$8.99</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
                         </p>
                     </div>
@@ -234,25 +193,25 @@
             </div>
             <!-- Menu Item 6 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$9.50</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$9.50</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
                         </p>
                     </div>
                 </div>
             </div>
-            <!-- Menu Item 7 (added for testing 3 cards in a row) -->
+            <!-- Menu Item 7 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/pesto-pasta.jpg" alt="Pesto Pasta" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$13.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                    <img src="images/italian/pesto-pasta.jpg" alt="Pesto Pasta" class="w-full h-40 sm:h-56 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
+                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$13.99</div>
+                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                             Fresh pasta tossed in a vibrant basil pesto sauce with pine nuts and Parmesan.
                         </p>
                     </div>
@@ -261,8 +220,6 @@
         </div>
     </div>
 </section>
-
-
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
@@ -335,7 +292,7 @@
             });
         });
 
-        // Navbar scroll effect (only background and shadow change)
+        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
 
         window.addEventListener('scroll', () => {
@@ -365,11 +322,7 @@
         });
     </script>
 
-
-
-
-
-<script>
+    <script>
     function adjustCardWidths() {
         const grid = document.getElementById('menu-grid');
         const cards = Array.from(grid.querySelectorAll('.menu-card'));
@@ -380,7 +333,7 @@
 
         // Determine current breakpoint and columns
         const windowWidth = window.innerWidth;
-        let colsPerRow = 1;
+        let colsPerRow = windowWidth < 640 ? 2 : 1; // Default to 2 cols for mobile
         if (windowWidth >= breakpoints.lg.minWidth) {
             colsPerRow = breakpoints.lg.cols;
         } else if (windowWidth >= breakpoints.sm.minWidth) {
@@ -389,7 +342,7 @@
 
         // Reset col-span classes
         cards.forEach(card => {
-            card.classList.remove('sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
+            card.classList.remove('col-span-1', 'col-span-2', 'sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
             card.classList.add('col-span-1');
         });
 
@@ -398,29 +351,25 @@
             const rowCards = cards.slice(i, i + colsPerRow);
             if (rowCards.length < colsPerRow && rowCards.length > 0) {
                 if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
-                    // Special case: 3 cards in 4-column row
                     rowCards.forEach((card, index) => {
                         if (index < 2) {
-                            card.classList.add('lg:col-span-1'); // First two cards normal size
+                            card.classList.add('lg:col-span-1');
                         } else {
-                            card.classList.add('lg:col-span-2'); // Last card spans 2 columns
+                            card.classList.add('lg:col-span-2');
                         }
                     });
                 } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
-                    // Two cards in 4-column row: both span 2 columns
                     rowCards.forEach(card => card.classList.add('lg:col-span-2'));
                 } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
-                    // One card in 4-column row: spans 2 columns
                     rowCards[0].classList.add('lg:col-span-2');
                 } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
-                    // One card in 2-column row: spans 2 columns
                     rowCards[0].classList.add('sm:col-span-2');
+                } else if (colsPerRow === 2 && rowCards.length === 1 && windowWidth < 640) {
+                    rowCards[0].classList.add('col-span-2');
                 } else {
-                    // Default: all cards normal size
                     rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
                 }
             } else {
-                // Full row: all cards normal size
                 rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
             }
         }
@@ -430,10 +379,6 @@
     window.addEventListener('load', adjustCardWidths);
     window.addEventListener('resize', adjustCardWidths);
 </script>
-
-
-
-
 
 </body>
 </html>
