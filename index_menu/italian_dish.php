@@ -197,8 +197,8 @@
             <!-- Menu Item 7 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="images/italian/pesto-pasta.jpg" alt="Pesto Pasta" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
+                <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
+                <div class="p-4 sm:p-6">
                         <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
                         <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$13.99</div>
                         <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
