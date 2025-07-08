@@ -77,11 +77,11 @@
                 
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="login.php" class="nav-link font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="../login.php" class="nav-link font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Login
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="register.php" class="nav-button font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full transition-all duration-300">
+                    <a href="../register.php" class="nav-button font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full transition-all duration-300">
                         Register
                     </a>
                 </div>
