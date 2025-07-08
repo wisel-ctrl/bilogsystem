@@ -261,51 +261,14 @@
             });
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect (only background and shadow change)
         const navbar = document.getElementById('navbar');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const navUnderlines = document.querySelectorAll('.nav-link span');
-        const navTitle = document.querySelector('.nav-title');
-        const navSubtitle = document.querySelector('.nav-subtitle');
-        const navButton = document.querySelector('.nav-button');
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 0) {
                 navbar.classList.add('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
-                navLinks.forEach(link => {
-                    link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-                    link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-                });
-                navUnderlines.forEach(underline => {
-                    underline.classList.remove('bg-[#FFF8E7]');
-                    underline.classList.add('bg-[#3C2F2F]');
-                });
-                navTitle.classList.remove('text-[#FFF8E7]');
-                navTitle.classList.add('text-[#3C2F2F]');
-                navSubtitle.classList.remove('text-[#FFF8E7]');
-                navSubtitle.classList.add('text-[#3C2F2F]');
-                if (navButton) {
-                    navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-                    navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-                }
             } else {
                 navbar.classList.remove('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
-                navLinks.forEach(link => {
-                    link.classList.remove('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-                    link.classList.add('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-                });
-                navUnderlines.forEach(underline => {
-                    underline.classList.remove('bg-[#3C2F2F]');
-                    underline.classList.add('bg-[#FFF8E7]');
-                });
-                navTitle.classList.remove('text-[#3C2F2F]');
-                navTitle.classList.add('text-[#FFF8E7]');
-                navSubtitle.classList.remove('text-[#3C2F2F]');
-                navSubtitle.classList.add('text-[#FFF8E7]');
-                if (navButton) {
-                    navButton.classList.remove('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-                    navButton.classList.add('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-                }
             }
         });
 
@@ -327,5 +290,6 @@
             observer.observe(el);
         });
     </script>
+
 </body>
 </html>
