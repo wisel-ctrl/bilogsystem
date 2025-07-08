@@ -77,11 +77,11 @@
                 
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="/login.php" class="nav-link font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 relative group">
+                    <a href="../login.php" class="nav-link font-baskerville text-deep-brown hover:text-deep-brown/80 transition-colors duration-300 relative group">
                         Login
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="/register.php" class="nav-button font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full transition-all duration-300">
+                    <a href="../register.php" class="nav-button font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full transition-all duration-300">
                         Register
                     </a>
                 </div>
@@ -106,10 +106,10 @@
                 <a href="/index.php#services" class="block font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300">What We Offer</a>
                 
                 <div class="pt-4 border-t border-[#3C2F2F]/10">
-                    <a href="login.php" class="block w-full text-left font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300 mb-3">
+                    <a href="../login.php" class="block w-full text-left font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300 mb-3">
                         Login
                     </a>
-                    <a href="register.php" class="block w-full font-baskerville bg-[#3C2F2F] text-[#FFF8E7] px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
+                    <a href="../register.php" class="block w-full font-baskerville bg-[#3C2F2F] text-[#FFF8E7] px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
                         Register
                     </a>
                 </div>
