@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="../tailwind.js"></script>
 
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -166,76 +165,42 @@
 
             <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
                 <!-- Margherita Pizza -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough" data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
+                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
                     <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
                         <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start mb-2">
+                        <div class="p-4 flex flex-col">
+                            <div class="flex justify-between items-center">
                                 <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
                                 <span class="font-medium text-amber-600">$12.99</span>
                             </div>
-                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4 mt-auto">
+                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough" data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
+                
+                <!-- Repeat for other menu items with same structure -->
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
+                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
                     <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
                         <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start mb-2">
+                        <div class="p-4 flex flex-col">
+                            <div class="flex justify-between items-center">
                                 <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
                                 <span class="font-medium text-amber-600">$12.99</span>
                             </div>
-                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4 mt-auto">
+                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough" data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4 mt-auto">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough" data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4 mt-auto">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough" data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4 mt-auto">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                
+                <!-- Add more menu items following the same pattern -->
             </div>
         </div>
     </section>
@@ -245,13 +210,12 @@
         <div class="modal-content font-baskerville">
             <span class="modal-close">×</span>
             <h3 id="modal-title" class="font-playfair text-xl sm:text-2xl font-bold text-gray-900 mb-4"></h3>
-            <h4 class="text-lg font-semibold text-amber-600 mb-2">Description</h4>
+            <div class="text-lg font-semibold text-amber-600 mb-2">$<span id="modal-price"></span></div>
             <p id="modal-description" class="text-sm text-gray-600 leading-relaxed mb-4"></p>
             <h4 class="text-lg font-semibold text-amber-600 mb-2">Ingredients</h4>
             <p id="modal-ingredients" class="text-sm text-gray-600 leading-relaxed"></p>
         </div>
     </div>
-
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
@@ -356,22 +320,21 @@
         // Modal functionality
         const modal = document.getElementById('menu-modal');
         const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalDescription = document.getElementById('modal-description');
         const modalIngredients = document.getElementById('modal-ingredients');
         const closeModal = document.querySelector('.modal-close');
 
-// Modal functionality
-document.querySelectorAll('.view-ingredients').forEach(button => {
-    button.addEventListener('click', () => {
-        const card = button.closest('.menu-card');
-        const dishName = card.querySelector('h3').textContent;
-        const ingredients = card.getAttribute('data-ingredients');
-        const description = card.getAttribute('data-description');
-        modalTitle.textContent = dishName;
-        modalIngredients.textContent = ingredients;
-        modalDescription.textContent = description;
-        modal.classList.add('active');
-    });
-});
+        document.querySelectorAll('.view-ingredients').forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.closest('.menu-card');
+                modalTitle.textContent = card.querySelector('h3').textContent;
+                modalPrice.textContent = card.querySelector('span').textContent.replace('$', '');
+                modalDescription.textContent = card.getAttribute('data-description');
+                modalIngredients.textContent = card.getAttribute('data-ingredients');
+                modal.classList.add('active');
+            });
+        });
 
         closeModal.addEventListener('click', () => {
             modal.classList.remove('active');
