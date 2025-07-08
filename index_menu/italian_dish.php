@@ -33,6 +33,14 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
@@ -109,86 +117,87 @@
         </div>
     </nav>
 
-    <!-- Italian Dish Menu Section -->
-    <section id="italian-dish" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h1 class="font-playfair text-5xl md:text-6xl font-bold text-[#3C2F2F] mb-6">Italian Dish Menu</h1>
-                <div class="w-24 h-1 bg-gradient-to-r from-[#8B5A2B] to-[#6B4E31] mx-auto mb-8"></div>
-                <p class="font-baskerville text-xl text-[#4A3728] max-w-4xl mx-auto leading-relaxed">
-                    Indulge in our authentic Italian dishes, crafted with the finest ingredients and traditional recipes.
-                </p>
-            </div>
+    <section id="italian-dish" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 animate-fade-in">
+            <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight">Italian Dish Menu</h1>
+            <div class="w-32 h-1 bg-gradient-to-r from-amber-600 to-amber-800 mx-auto mb-6"></div>
+            <p class="font-baskerville text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                Savor the essence of Italy with our authentic dishes, crafted with premium ingredients and time-honored recipes.
+            </p>
+        </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Menu Item 1 -->
-                <div class="hover-lift fade-in">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Margherita Pizza</h3>
-                            <div class="text-lg text-[#8B5A2B] mb-3">$12.99</div>
-                            <p class="text-sm text-[#4A3728] leading-relaxed">
-                                Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                            </p>
-                        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+            <!-- Menu Item 1 -->
+            <div class="hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1 lg:col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
+                        </p>
                     </div>
                 </div>
-                <!-- Menu Item 2 -->
-                <div class="hover-lift fade-in">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="images/italian/spaghetti-carbonara.jpg" alt="Spaghetti Carbonara" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Spaghetti Carbonara</h3>
-                            <div class="text-lg text-[#8B5A2B] mb-3">$14.50</div>
-                            <p class="text-sm text-[#4A3728] leading-relaxed">
-                                Creamy pasta with pancetta, egg, Parmesan cheese, and a touch of black pepper.
-                            </p>
-                        </div>
+            </div>
+            <!-- Menu Item 2 -->
+            <div class="hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1 lg:col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="images/italian/spaghetti-carbonara.jpg" alt="Spaghetti Carbonara" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Spaghetti Carbonara</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$14.50</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Creamy pasta with pancetta, egg, Parmesan cheese, and a touch of black pepper.
+                        </p>
                     </div>
                 </div>
-                <!-- Menu Item 3 -->
-                <div class="hover-lift fade-in">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Lasagna</h3>
-                            <div class="text-lg text-[#8B5A2B] mb-3">$16.75</div>
-                            <p class="text-sm text-[#4A3728] leading-relaxed">
-                                Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
-                            </p>
-                        </div>
+            </div>
+            <!-- Menu Item 3 -->
+            <div class="hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1 lg:col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$16.75</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
+                        </p>
                     </div>
                 </div>
-                <!-- Menu Item 4 -->
-                <div class="hover-lift fade-in">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Mushroom Risotto</h3>
-                            <div class="text-lg text-[#8B5A2B] mb-3">$15.25</div>
-                            <p class="text-sm text-[#4A3728] leading-relaxed">
-                                Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
-                            </p>
-                        </div>
+            </div>
+            <!-- Menu Item 4 -->
+            <div class="hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1 lg:col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$15.25</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
+                        </p>
                     </div>
                 </div>
-                <!-- Menu Item 5 -->
-                <div class="hover-lift fade-in">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                        <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-playfair text-xl font-bold text-[#3C2F2F] mb-2">Tiramisu</h3>
-                            <div class="text-lg text-[#8B5A2B] mb-3">$8.99</div>
-                            <p class="text-sm text-[#4A3728] leading-relaxed">
-                                Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
-                            </p>
-                        </div>
+            </div>
+            <!-- Menu Item 5 (spans 2 columns in lg screens when fewer items) -->
+            <div class="hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1 sm:col-span-2 lg:col-span-2">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$8.99</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
