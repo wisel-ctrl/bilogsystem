@@ -73,7 +73,7 @@
                         Login
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="register.php" class="nav-button font-baskerville bg-[#FFF8E7] text-[#3C2F2F] px-4 py-2 rounded-full transition-all duration-300">
+                    <a href="register.php" class="nav-button font-baskerville bg-deep-brown text-warm-cream px-4 py-2 rounded-full transition-all duration-300">
                         Register
                     </a>
                 </div>
