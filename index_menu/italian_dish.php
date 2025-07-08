@@ -259,7 +259,7 @@
         });
     });
 
-    // Navbar scroll effect
+    // Navbar fixed background and text color (no scroll effect)
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.nav-link');
     const navUnderlines = document.querySelectorAll('.nav-link span');
@@ -267,52 +267,33 @@
     const navSubtitle = document.querySelector('.nav-subtitle');
     const navButton = document.querySelector('.nav-button');
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 0) {
-            // Make navbar solid on scroll
-            // Commented out the transparent class and replaced with fixed color
-            navbar.classList.add('bg-[#FFF8E7]', 'shadow-lg'); // fixed solid color
-            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md'); // remove transparent background
+    // Set fixed style immediately and remove scroll listener
+    navbar.classList.add('bg-[#FFF8E7]', 'shadow-lg');
+    navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md');
 
-            navLinks.forEach(link => {
-                link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-                link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-            });
-            navUnderlines.forEach(underline => {
-                underline.classList.remove('bg-[#FFF8E7]');
-                underline.classList.add('bg-[#3C2F2F]');
-            });
-            navTitle.classList.remove('text-[#FFF8E7]');
-            navTitle.classList.add('text-[#3C2F2F]');
-            navSubtitle.classList.remove('text-[#FFF8E7]');
-            navSubtitle.classList.add('text-[#3C2F2F]');
-            if (navButton) {
-                navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-                navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-            }
-        } else {
-            // Keep solid color even at top — remove transparent style here too
-            navbar.classList.add('bg-[#FFF8E7]'); // fixed solid color
-            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md', 'shadow-lg');
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-                link.classList.add('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-            });
-            navUnderlines.forEach(underline => {
-                underline.classList.remove('bg-[#3C2F2F]');
-                underline.classList.add('bg-[#FFF8E7]');
-            });
-            navTitle.classList.remove('text-[#3C2F2F]');
-            navTitle.classList.add('text-[#FFF8E7]');
-            navSubtitle.classList.remove('text-[#3C2F2F]');
-            navSubtitle.classList.add('text-[#FFF8E7]');
-            if (navButton) {
-                navButton.classList.remove('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-                navButton.classList.add('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-            }
-        }
+    navLinks.forEach(link => {
+        link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
+        link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
     });
+
+    navUnderlines.forEach(underline => {
+        underline.classList.remove('bg-[#FFF8E7]');
+        underline.classList.add('bg-[#3C2F2F]');
+    });
+
+    navTitle.classList.remove('text-[#FFF8E7]');
+    navTitle.classList.add('text-[#3C2F2F]');
+
+    navSubtitle.classList.remove('text-[#FFF8E7]');
+    navSubtitle.classList.add('text-[#3C2F2F]');
+
+    if (navButton) {
+        navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
+        navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
+    }
+
+    // Disable scroll listener since we don't want to change anything on scroll
+    // window.addEventListener('scroll', ...) — removed
 
     // Intersection Observer for fade-in animations
     const observerOptions = {
@@ -332,6 +313,7 @@
         observer.observe(el);
     });
 </script>
+
 
 </body>
 </html>
