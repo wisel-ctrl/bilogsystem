@@ -311,7 +311,7 @@
                 </a>
 
                 <!-- Cake & Pastries -->
-                <a href="/menu/cake-pastries" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="index_menu/cake_pastries.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/cake-pastries.jpg" alt="Cake & Pastries" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -330,18 +330,18 @@
                     </div>
                 </a>
 
-                <!-- All Day Main Course -->
-                <a href="/menu/main-course" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <!-- Spanish Dish -->
+                <a href="index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/main-course.jpg" alt="All Day Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">All Day Main Course</h3>
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Spanish Dish</h3>
                         </div>
                     </div>
                 </a>
 
                 <!-- Coffee -->
-                <a href="/menu/coffee" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/coffee.jpg" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -350,39 +350,49 @@
                     </div>
                 </a>
 
-      
-                <!-- Spanish Dish -->
-                <a href="/menu/spanish-dish" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                   <!-- Drinks -->
+                <a href="index_menu/drink.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
-                        <img src="images/spanish-dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <img src="images/coffee.jpg" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Spanish Dish</h3>
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Drinks</h3>
                         </div>
                     </div>
                 </a>
 
-                <!-- Burgers & Pizza -->
-                <a href="/menu/burgers-pizza" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+      
+                <!-- Pizza & Burgers -->
+                <a href="index_menu/pizza_burger.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
-                        <img src="images/burgers-pizza.jpg" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <img src="images/spanish-dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                             <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Burgers & Pizza</h3>
                         </div>
                     </div>
                 </a>
 
-                <!-- Pasta & Salads -->
-                <a href="/menu/pasta-salads" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <!-- Pasta -->
+                <a href="index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/burgers-pizza.jpg" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta</h3>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Pasta e Caza -->
+                <a href="index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/pasta-salads.jpg" alt="Pasta & Salads" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta & Salads</h3>
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta e Caza</h3>
                         </div>
                     </div>
                 </a>
 
                 <!-- Desserts -->
-                <a href="/menu/desserts" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="index_menu/dessert.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
