@@ -117,7 +117,7 @@
         </div>
     </nav>
 
-    <section id="italian-dish" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section id="italian-dish" class="pt-20 pb-16 bg-gradient-to-b from-gray-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 animate-fade-in">
             <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight">Italian Dish Menu</h1>
