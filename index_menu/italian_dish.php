@@ -106,10 +106,10 @@
                 <a href="/index.php#services" class="block font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300">What We Offer</a>
                 
                 <div class="pt-4 border-t border-[#3C2F2F]/10">
-                    <a href="login.php" class="block w-full text-left font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300 mb-3">
+                    <a href="../login.php" class="block w-full text-left font-baskerville text-[#3C2F2F] hover:text-[#8B5A2B] transition-colors duration-300 mb-3">
                         Login
                     </a>
-                    <a href="register.php" class="block w-full font-baskerville bg-[#3C2F2F] text-[#FFF8E7] px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
+                    <a href="../register.php" class="block w-full font-baskerville bg-[#3C2F2F] text-[#FFF8E7] px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
                         Register
                     </a>
                 </div>
