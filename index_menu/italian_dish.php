@@ -141,19 +141,6 @@
                     </div>
                 </div>
             </div>
-                   <!-- Menu Item 1 -->
-                   <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
             <!-- Menu Item 2 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
                 <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
@@ -169,9 +156,7 @@
             </div>
             <!-- Menu Item 3 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div
-
- class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
                     <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-56 object-cover">
                     <div class="p-6">
                         <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
@@ -208,7 +193,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Menu Item 6 (example for testing 2 cards in second row) -->
+            <!-- Menu Item 6 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
                 <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
                     <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-56 object-cover">
@@ -217,6 +202,19 @@
                         <div class="text-lg font-semibold text-amber-600 mb-3">$9.50</div>
                         <p class="text-sm text-gray-600 leading-relaxed">
                             Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 7 (added for testing 3 cards in a row) -->
+            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
+                    <img src="images/italian/pesto-pasta.jpg" alt="Pesto Pasta" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$13.99</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Fresh pasta tossed in a vibrant basil pesto sauce with pine nuts and Parmesan.
                         </p>
                     </div>
                 </div>
@@ -360,19 +358,31 @@
         for (let i = 0; i < cards.length; i += colsPerRow) {
             const rowCards = cards.slice(i, i + colsPerRow);
             if (rowCards.length < colsPerRow && rowCards.length > 0) {
-                const remainingCols = colsPerRow - rowCards.length;
-                const span = Math.floor(colsPerRow / rowCards.length); // Distribute columns evenly
-                rowCards.forEach(card => {
-                    if (colsPerRow === breakpoints.lg.cols) {
-                        card.classList.add(`lg:col-span-${span}`);
-                    } else if (colsPerRow === breakpoints.sm.cols) {
-                        card.classList.add(`sm:col-span-${span}`);
-                    }
-                });
+                if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
+                    // Special case: 3 cards in 4-column row
+                    rowCards.forEach((card, index) => {
+                        if (index < 2) {
+                            card.classList.add('lg:col-span-1'); // First two cards normal size
+                        } else {
+                            card.classList.add('lg:col-span-2'); // Last card spans 2 columns
+                        }
+                    });
+                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
+                    // Two cards in 4-column row: both span 2 columns
+                    rowCards.forEach(card => card.classList.add('lg:col-span-2'));
+                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
+                    // One card in 4-column row: spans 2 columns
+                    rowCards[0].classList.add('lg:col-span-2');
+                } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
+                    // One card in 2-column row: spans 2 columns
+                    rowCards[0].classList.add('sm:col-span-2');
+                } else {
+                    // Default: all cards normal size
+                    rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
+                }
             } else {
-                rowCards.forEach(card => {
-                    card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1');
-                });
+                // Full row: all cards normal size
+                rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
             }
         }
     }
