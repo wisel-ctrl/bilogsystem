@@ -49,7 +49,7 @@
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="/index.php#home" class="nav-link font-baskerville text-[#FFF8E7] hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="/index.php#home" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
