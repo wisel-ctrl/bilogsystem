@@ -128,19 +128,7 @@
         </div>
 
         <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
-            <!-- Menu Item 1 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
+    
             <!-- Menu Item 2 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
                 <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
