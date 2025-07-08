@@ -153,7 +153,7 @@
         </div>
     </nav>
 
-    <section id="italian-dish" class="pt-20 pb-16">
+    <section id="italianDish_section" class="pt-20 pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 animate-fade-in">
                 <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-deep-brown mb-4 tracking-tight">Italian Dish Menu</h1>

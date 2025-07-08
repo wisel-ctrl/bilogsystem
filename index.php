@@ -362,7 +362,7 @@
 
       
                 <!-- Pizza & Burgers -->
-                <a href="index_menu/pizza_burger.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/spanish-dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
