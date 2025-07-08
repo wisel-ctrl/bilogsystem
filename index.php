@@ -775,7 +775,7 @@
         }
     </style>
     
-    <!-- <script>
+    <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1500,7 +1500,7 @@
             // Load any saved conversation when page loads
             loadConversation();
         });
-    </script> -->
+    </script>
     
 </body>
 </html>
