@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Dish Menu - Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
@@ -34,17 +32,53 @@
             transform: translateY(0);
         }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in {
-        animation: fadeIn 0.6s ease-out forwards;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 90%;
+            width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #3C2F2F;
+        }
+        .modal.active {
+            display: flex;
+        }
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Navigation (Reused from index.php) -->
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -117,101 +151,126 @@
         </div>
     </nav>
 
-<section id="italian-dish" class="pt-20 pb-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 animate-fade-in">
-            <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-deep-brown mb-4 tracking-tight">Italian Dish Menu</h1>
-            <div class="w-32 h-1 bg-gradient-to-r from-amber-600 to-amber-800 mx-auto mb-6"></div>
-            <p class="font-baskerville text-lg sm:text-xl text-rich-brown/80 max-w-3xl mx-auto leading-relaxed">
-                Savor the essence of Italy with our authentic dishes, crafted with premium ingredients and time-honored recipes.
-            </p>
-        </div>
+    <section id="italian-dish" class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 animate-fade-in">
+                <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-deep-brown mb-4 tracking-tight">Italian Dish Menu</h1>
+                <div class="w-32 h-1 bg-gradient-to-r from-amber-600 to-amber-800 mx-auto mb-6"></div>
+                <p class="font-baskerville text-lg sm:text-xl text-rich-brown/80 max-w-3xl mx-auto leading-relaxed">
+                    Savor the essence of Italy with our authentic dishes, crafted with premium ingredients and time-honored recipes.
+                </p>
+            </div>
 
-        <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
-            <!-- Menu Item 1 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$12.99</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
+            <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
+                <!-- Menu Item 1 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$12.99</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Item 3 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Pasta, ground beef, pork, tomato sauce, béchamel sauce, mozzarella cheese, Parmesan cheese">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$16.75</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Item 4 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Arborio rice, wild mushrooms, Parmesan cheese, white wine, vegetable stock, butter">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$15.25</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Item 5 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Ladyfingers, mascarpone cheese, coffee, cocoa powder, sugar, eggs">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$8.99</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Item 6 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Baguette, tomatoes, basil, garlic, olive oil, balsamic vinegar">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$9.50</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Item 7 -->
+                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Pasta, basil, pine nuts, Parmesan cheese, olive oil, garlic">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
+                        <img src="/images/lasagna.jpg" alt="Pesto Pasta" class="w-full h-40 sm:h-56 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
+                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$13.99</div>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                                Fresh pasta tossed in a vibrant basil pesto sauce with pine nuts and Parmesan.
+                            </p>
+                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
+                                View Ingredients
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-     
-            <!-- Menu Item 3 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$16.75</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 4 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$15.25</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 5 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$8.99</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 6 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                    <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-40 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$9.50</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 7 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
-                <div class="p-4 sm:p-6">
-                        <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
-                        <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$13.99</div>
-                        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                            Fresh pasta tossed in a vibrant basil pesto sauce with pine nuts and Parmesan.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="menu-modal" class="modal">
+        <div class="modal-content font-baskerville">
+            <span class="modal-close">×</span>
+            <h3 id="modal-title" class="font-playfair text-xl sm:text-2xl font-bold text-gray-900 mb-4"></h3>
+            <h4 class="text-lg font-semibold text-amber-600 mb-3">Ingredients</h4>
+            <p id="modal-ingredients" class="text-sm text-gray-600 leading-relaxed"></p>
         </div>
     </div>
-</section>
-
-
 
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
@@ -284,7 +343,7 @@
             });
         });
 
-        // Navbar scroll effect (only background and shadow change)
+        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
 
         window.addEventListener('scroll', () => {
@@ -312,71 +371,94 @@
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
-    </script>
 
+        // Modal functionality
+        const modal = document.getElementById('menu-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalIngredients = document.getElementById('modal-ingredients');
+        const closeModal = document.querySelector('.modal-close');
 
-
-
-<script>
-    function adjustCardWidths() {
-        const grid = document.getElementById('menu-grid');
-        const cards = Array.from(grid.querySelectorAll('.menu-card'));
-        const breakpoints = {
-            sm: { cols: 2, minWidth: 640 },
-            lg: { cols: 4, minWidth: 1024 }
-        };
-
-        // Determine current breakpoint and columns
-        const windowWidth = window.innerWidth;
-        let colsPerRow = windowWidth < 640 ? 2 : 1; // Default to 2 cols for mobile
-        if (windowWidth >= breakpoints.lg.minWidth) {
-            colsPerRow = breakpoints.lg.cols;
-        } else if (windowWidth >= breakpoints.sm.minWidth) {
-            colsPerRow = breakpoints.sm.cols;
-        }
-
-        // Reset col-span classes
-        cards.forEach(card => {
-            card.classList.remove('col-span-1', 'col-span-2', 'sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
-            card.classList.add('col-span-1');
+        document.querySelectorAll('.view-ingredients').forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.closest('.menu-card');
+                const dishName = card.querySelector('h3').textContent;
+                const ingredients = card.getAttribute('data-ingredients');
+                modalTitle.textContent = dishName;
+                modalIngredients.textContent = ingredients;
+                modal.classList.add('active');
+            });
         });
 
-        // Group cards into rows and adjust col-span for incomplete rows
-        for (let i = 0; i < cards.length; i += colsPerRow) {
-            const rowCards = cards.slice(i, i + colsPerRow);
-            if (rowCards.length < colsPerRow && rowCards.length > 0) {
-                if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
-                    rowCards.forEach((card, index) => {
-                        if (index < 2) {
-                            card.classList.add('lg:col-span-1');
-                        } else {
-                            card.classList.add('lg:col-span-2');
-                        }
-                    });
-                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
-                    rowCards.forEach(card => card.classList.add('lg:col-span-2'));
-                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
-                    rowCards[0].classList.add('lg:col-span-2');
-                } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
-                    rowCards[0].classList.add('sm:col-span-2');
-                } else if (colsPerRow === 2 && rowCards.length === 1 && windowWidth < 640) {
-                    rowCards[0].classList.add('col-span-2');
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Adjust card widths
+        function adjustCardWidths() {
+            const grid = document.getElementById('menu-grid');
+            const cards = Array.from(grid.querySelectorAll('.menu-card'));
+            const breakpoints = {
+                sm: { cols: 2, minWidth: 640 },
+                lg: { cols: 4, minWidth: 1024 }
+            };
+
+            const windowWidth = window.innerWidth;
+            let colsPerRow = windowWidth < 640 ? 2 : 1;
+            if (windowWidth >= breakpoints.lg.minWidth) {
+                colsPerRow = breakpoints.lg.cols;
+            } else if (windowWidth >= breakpoints.sm.minWidth) {
+                colsPerRow = breakpoints.sm.cols;
+            }
+
+            cards.forEach(card => {
+                card.classList.remove('col-span-1', 'col-span-2', 'sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
+                card.classList.add('col-span-1');
+            });
+
+            for (let i = 0; i < cards.length; i += colsPerRow) {
+                const rowCards = cards.slice(i, i + colsPerRow);
+                if (rowCards.length < colsPerRow && rowCards.length > 0) {
+                    if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
+                        rowCards.forEach((card, index) => {
+                            if (index < 2) {
+                                card.classList.add('lg:col-span-1');
+                            } else {
+                                card.classList.add('lg:col-span-2');
+                            }
+                        });
+                    } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
+                        rowCards.forEach(card => card.classList.add('lg:col-span-2'));
+                    } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
+                        rowCards[0].classList.add('lg:col-span-2');
+                    } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
+                        rowCards[0].classList.add('sm:col-span-2');
+                    } else if (colsPerRow === 2 && rowCards.length === 1 && windowWidth < 640) {
+                        rowCards[0].classList.add('col-span-2');
+                    } else {
+                        rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
+                    }
                 } else {
                     rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
                 }
-            } else {
-                rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
             }
         }
-    }
 
-    // Run on load and resize
-    window.addEventListener('load', adjustCardWidths);
-    window.addEventListener('resize', adjustCardWidths);
-</script>
-
-
-
-
+        window.addEventListener('load', adjustCardWidths);
+        window.addEventListener('resize', adjustCardWidths);
+    </script>
 </body>
 </html>
