@@ -180,6 +180,54 @@
                             </button>
                         </div>
                     </div>
+                </div>       <!-- Margherita Pizza -->
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
+                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
+                        </div>
+                    </div>
+                </div>       <!-- Margherita Pizza -->
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
+                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
+                        </div>
+                    </div>
+                </div>       <!-- Margherita Pizza -->
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
+                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Repeat for other menu items with same structure -->
