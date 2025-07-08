@@ -141,57 +141,6 @@
                     </div>
                 </div>
             </div>
-   <!-- Menu Item 1 -->
-   <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-               <!-- Menu Item 1 -->
-               <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>   <!-- Menu Item 1 -->
-            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
-               <!-- Menu Item 1 -->
-               <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
-                    <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
-                        <div class="text-lg font-semibold text-amber-600 mb-3">$12.99</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
-                        </p>
-                    </div>
-                </div>
-            </div>
             <!-- Menu Item 2 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
                 <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
@@ -207,7 +156,9 @@
             </div>
             <!-- Menu Item 3 -->
             <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
+                <div
+
+ class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
                     <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-56 object-cover">
                     <div class="p-6">
                         <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
@@ -244,10 +195,22 @@
                     </div>
                 </div>
             </div>
+            <!-- Menu Item 6 (example for testing 2 cards in second row) -->
+            <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 h-full">
+                    <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
+                        <div class="text-lg font-semibold text-amber-600 mb-3">$9.50</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
 
 
 
@@ -376,22 +339,27 @@
 
         // Reset col-span classes
         cards.forEach(card => {
-            card.classList.remove('sm:col-span-2', 'lg:col-span-2', 'lg:col-span-1');
+            card.classList.remove('sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
             card.classList.add('col-span-1');
         });
 
-        // Group cards into rows based on current breakpoint
+        // Group cards into rows and adjust col-span for incomplete rows
         for (let i = 0; i < cards.length; i += colsPerRow) {
             const rowCards = cards.slice(i, i + colsPerRow);
             if (rowCards.length < colsPerRow && rowCards.length > 0) {
-                const lastCard = rowCards[rowCards.length - 1];
-                if (colsPerRow === breakpoints.lg.cols) {
-                    lastCard.classList.add('lg:col-span-2');
-                } else if (colsPerRow === breakpoints.sm.cols) {
-                    lastCard.classList.add('sm:col-span-2');
-                }
+                const remainingCols = colsPerRow - rowCards.length;
+                const span = Math.floor(colsPerRow / rowCards.length); // Distribute columns evenly
+                rowCards.forEach(card => {
+                    if (colsPerRow === breakpoints.lg.cols) {
+                        card.classList.add(`lg:col-span-${span}`);
+                    } else if (colsPerRow === breakpoints.sm.cols) {
+                        card.classList.add(`sm:col-span-${span}`);
+                    }
+                });
             } else {
-                rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
+                rowCards.forEach(card => {
+                    card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1');
+                });
             }
         }
     }
