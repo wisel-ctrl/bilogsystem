@@ -183,90 +183,72 @@
                         </div>
                     </div>
                 </div>
-                <!-- Menu Item 3 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Pasta, ground beef, pork, tomato sauce, béchamel sauce, mozzarella cheese, Parmesan cheese">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <div class="flex items-center justify-between mb-2 sm:mb-3">
-
-                                <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
-                                <button class="view-ingredients font-baskerville bg-amber-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
-                                        Details
-                                </button>
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
                             </div>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$16.75</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
+                            <p class="text-sm text-gray-600 mb-3 flex-grow">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                     
+                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
                         </div>
                     </div>
-                </div>
-                <!-- Menu Item 4 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Arborio rice, wild mushrooms, Parmesan cheese, white wine, vegetable stock, butter">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="images/italian/risotto-mushroom.jpg" alt="Mushroom Risotto" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Mushroom Risotto</h3>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$15.25</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Creamy Arborio rice with wild mushrooms, Parmesan, and a hint of white wine.
+                </div>             <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3 flex-grow">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
+                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
+                        </div>
+                    </div>
+                </div>             <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3 flex-grow">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
+                            </p>
+                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
+                        </div>
+                    </div>
+                </div>             <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3 flex-grow">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
+                            </p>
+                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
                             </button>
                         </div>
                     </div>
                 </div>
-                <!-- Menu Item 5 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Ladyfingers, mascarpone cheese, coffee, cocoa powder, sugar, eggs">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="images/italian/tiramisu.jpg" alt="Tiramisu" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Tiramisu</h3>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$8.99</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Traditional Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.
-                            </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Menu Item 6 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Baguette, tomatoes, basil, garlic, olive oil, balsamic vinegar">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="images/italian/bruschetta.jpg" alt="Bruschetta" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Bruschetta</h3>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$9.50</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil.
-                            </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Menu Item 7 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Pasta, basil, pine nuts, Parmesan cheese, olive oil, garlic">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="/images/lasagna.jpg" alt="Pesto Pasta" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Pesto Pasta</h3>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$13.99</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Fresh pasta tossed in a vibrant basil pesto sauce with pine nuts and Parmesan.
-                            </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
