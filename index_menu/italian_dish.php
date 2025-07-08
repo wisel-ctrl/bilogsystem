@@ -170,14 +170,16 @@
                     <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
                         <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-40 sm:h-56 object-cover">
                         <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Margherita Pizza</h3>
+                            <div class="flex items-center justify-between mb-2 sm:mb-3">
+                                <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900">Margherita Pizza</h3>
+                                <button class="view-ingredients font-baskerville bg-amber-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                                    Details
+                                </button>
+                            </div>
                             <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$12.99</div>
                             <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
                             </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -186,14 +188,18 @@
                     <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
                         <img src="/images/lasagna.jpg" alt="Lasagna" class="w-full h-40 sm:h-56 object-cover">
                         <div class="p-4 sm:p-6">
-                            <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
+                            <div class="flex items-center justify-between mb-2 sm:mb-3">
+
+                                <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900 mb-2">Lasagna</h3>
+                                <button class="view-ingredients font-baskerville bg-amber-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                                        Details
+                                </button>
+                            </div>
                             <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$16.75</div>
                             <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
                                 Layers of pasta, rich meat sauce, béchamel, and melted mozzarella cheese.
                             </p>
-                            <button class="view-ingredients font-baskerville bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-sm sm:text-base">
-                                View Ingredients
-                            </button>
+                     
                         </div>
                     </div>
                 </div>
