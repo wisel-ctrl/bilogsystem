@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Dish Menu - Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="../tailwind.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
         
@@ -189,8 +190,8 @@
         </div>
     </section>
 
-      <!-- Footer -->
-      <footer class="bg-deep-brown text-warm-cream py-12">
+    <!-- Footer (Reused from index.php) -->
+    <footer class="bg-[#3C2F2F] text-[#FFF8E7] py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <!-- Logo and Tagline -->
@@ -203,12 +204,12 @@
                 
                 <!-- Social Media Links -->
                 <div class="flex justify-center space-x-6 sm:space-x-8 mb-8">
-                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-[#FFF8E7] hover:text-[#8B5A2B] transition-colors duration-300 focus:outline-none">
                         <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
                         </svg>
                     </a>
-                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-[#FFF8E7] hover:text-[#8B5A2B] transition-colors duration-300 focus:outline-none">
                         <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465.66.255 1.216.567 1.772 1.123.556.556.868 1.112 1.123 1.772.247.636.416 1.363.465 2.427.048 1.024.06 1.379.06 3.808 0 2.43-.013 2.784-.06 3.808-.049 1.064-.218 1.791-.465 2.427-.255.66-.567 1.216-1.123 1.772-.556.556-1.112.868-1.772 1.123-.636.247-1.363.416-2.427.465-1.024.048-1.379.06-3.808.06-2.43 0-2.784-.013-3.808-.06-1.064-.049-1.791-.218-2.427-.465-.66-.255-1.216-.567-1.772-1.123-.556-.556-.868-1.112-1.123-1.772-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.379-.06-3.808 0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427.255-.66.567-1.216 1.123-1.772.556-.556 1.112-.868 1.772-1.123.636-.247 1.363-.416 2.427-.465 1.024-.048 1.379-.06 3.808-.06zm0-1.315c-2.486 0-2.847.013-3.846.06-1.07.05-1.791.222-2.423.475-.662.262-1.223.582-1.785 1.144-.562.562-.882 1.123-1.144 1.785-.253.632-.425 1.353-.475 2.423-.047.999-.06 1.36-.06 3.846s.013 2.847.06 3.846c.05 1.07.222 1.791.475 2.423.262.662.582 1.223 1.144 1.785.562.562 1.123.882 1.785 1.144.632.253 1.353.425 2.423.475.999.047 1.36.06 3.846.06s2.847-.013 3.846-.06c1.07-.05 1.791-.222 2.423-.475.662-.262 1.223-.582 1.785-1.144.562-.562.882-1.123 1.144-1.785.253-.632.425-1.353.475-2.423.047-.999.06-1.36.06-3.846s-.013-2.847-.06-3.846c-.05-1.07-.222-1.791-.475-2.423-.262-.662-.582-1.223-1.144-1.785-.562-.562-1.123-.882-1.785-1.144-.632-.253-1.353-.425-2.423-.475-1.024-.047-1.379-.06-3.846-.06zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" clip-rule="evenodd" />
                         </svg>
@@ -216,7 +217,7 @@
                 </div>
                 
                 <!-- Copyright and Tagline -->
-                <div class="border-t border-rich-brown pt-6 sm:pt-8">
+                <div class="border-t border-[#8B5A2B] pt-6 sm:pt-8">
                     <p class="font-baskerville text-sm sm:text-base opacity-75">
                         © 2025 Caffè Lilio Ristorante. All rights reserved. | 
                         <span class="italic">Authentically Italian and Spanish since 2021</span>
@@ -225,7 +226,6 @@
             </div>
         </div>
     </footer>
-
 
     <script>
     // Smooth scrolling for navigation links
@@ -261,7 +261,7 @@
         });
     });
 
-    // Navbar fixed background and text color (no scroll effect)
+    // Navbar scroll effect
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.nav-link');
     const navUnderlines = document.querySelectorAll('.nav-link span');
@@ -269,33 +269,52 @@
     const navSubtitle = document.querySelector('.nav-subtitle');
     const navButton = document.querySelector('.nav-button');
 
-    // Set fixed style immediately and remove scroll listener
-    navbar.classList.add('bg-[#FFF8E7]', 'shadow-lg');
-    navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 0) {
+            // Make navbar solid on scroll
+            // Commented out the transparent class and replaced with fixed color
+            navbar.classList.add('bg-[#FFF8E7]', 'shadow-lg'); // fixed solid color
+            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md'); // remove transparent background
 
-    navLinks.forEach(link => {
-        link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-        link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
+            navLinks.forEach(link => {
+                link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
+                link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
+            });
+            navUnderlines.forEach(underline => {
+                underline.classList.remove('bg-[#FFF8E7]');
+                underline.classList.add('bg-[#3C2F2F]');
+            });
+            navTitle.classList.remove('text-[#FFF8E7]');
+            navTitle.classList.add('text-[#3C2F2F]');
+            navSubtitle.classList.remove('text-[#FFF8E7]');
+            navSubtitle.classList.add('text-[#3C2F2F]');
+            if (navButton) {
+                navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
+                navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
+            }
+        } else {
+            // Keep solid color even at top — remove transparent style here too
+            navbar.classList.add('bg-[#FFF8E7]'); // fixed solid color
+            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md', 'shadow-lg');
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
+                link.classList.add('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
+            });
+            navUnderlines.forEach(underline => {
+                underline.classList.remove('bg-[#3C2F2F]');
+                underline.classList.add('bg-[#FFF8E7]');
+            });
+            navTitle.classList.remove('text-[#3C2F2F]');
+            navTitle.classList.add('text-[#FFF8E7]');
+            navSubtitle.classList.remove('text-[#3C2F2F]');
+            navSubtitle.classList.add('text-[#FFF8E7]');
+            if (navButton) {
+                navButton.classList.remove('bg-[#3C2F2F]', 'text-[#FFF8E7]');
+                navButton.classList.add('bg-[#FFF8E7]', 'text-[#3C2F2F]');
+            }
+        }
     });
-
-    navUnderlines.forEach(underline => {
-        underline.classList.remove('bg-[#FFF8E7]');
-        underline.classList.add('bg-[#3C2F2F]');
-    });
-
-    navTitle.classList.remove('text-[#FFF8E7]');
-    navTitle.classList.add('text-[#3C2F2F]');
-
-    navSubtitle.classList.remove('text-[#FFF8E7]');
-    navSubtitle.classList.add('text-[#3C2F2F]');
-
-    if (navButton) {
-        navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-        navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-    }
-
-    // Disable scroll listener since we don't want to change anything on scroll
-    // window.addEventListener('scroll', ...) — removed
 
     // Intersection Observer for fade-in animations
     const observerOptions = {
@@ -315,7 +334,6 @@
         observer.observe(el);
     });
 </script>
-
 
 </body>
 </html>
