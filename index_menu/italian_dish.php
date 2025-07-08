@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-b from-[#FFF8E7] to-[#FFE4B5] text-[#3C2F2F] font-baskerville">
+<body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Navigation (Reused from index.php) -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
