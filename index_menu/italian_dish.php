@@ -165,21 +165,21 @@
             </div>
 
             <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
-                <!-- Menu Item 1 -->
-                <div class="menu-card hover:scale-105 transition-transform duration-300 animate-fade-in col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 h-full">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-40 sm:h-56 object-cover">
-                        <div class="p-4 sm:p-6">
-                            <div class="flex items-center justify-between mb-2 sm:mb-3">
-                                <h3 class="font-playfair text-lg sm:text-xl font-bold text-gray-900">Margherita Pizza</h3>
-                                <button class="view-ingredients font-baskerville bg-amber-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full hover:bg-amber-700 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
-                                    Details
-                                </button>
+                    <!-- Margherita Pizza -->
+                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
+                                <span class="font-medium text-amber-600">$12.99</span>
                             </div>
-                            <div class="text-base sm:text-lg font-semibold text-amber-600 mb-2 sm:mb-3">$12.99</div>
-                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                                Classic Italian pizza with fresh tomatoes, mozzarella, basil, and a drizzle of olive oil.
+                            <p class="text-sm text-gray-600 mb-3 flex-grow">
+                                Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
+                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                View details
+                            </button>
                         </div>
                     </div>
                 </div>
