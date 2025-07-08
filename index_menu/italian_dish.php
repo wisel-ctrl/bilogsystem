@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Dish Menu - Caffè Lilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
@@ -42,7 +44,7 @@
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Navigation -->
+    <!-- Navigation (Reused from index.php) -->
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -221,6 +223,8 @@
     </div>
 </section>
 
+
+
     <!-- Footer -->
     <footer class="bg-deep-brown text-warm-cream py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -292,7 +296,7 @@
             });
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect (only background and shadow change)
         const navbar = document.getElementById('navbar');
 
         window.addEventListener('scroll', () => {
@@ -322,7 +326,10 @@
         });
     </script>
 
-    <script>
+
+
+
+<script>
     function adjustCardWidths() {
         const grid = document.getElementById('menu-grid');
         const cards = Array.from(grid.querySelectorAll('.menu-card'));
@@ -379,6 +386,9 @@
     window.addEventListener('load', adjustCardWidths);
     window.addEventListener('resize', adjustCardWidths);
 </script>
+
+
+
 
 </body>
 </html>
