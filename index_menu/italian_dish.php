@@ -177,7 +177,7 @@
                             <p class="text-sm text-gray-600 mb-3 flex-grow">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
@@ -194,7 +194,7 @@
                             <p class="text-sm text-gray-600 mb-3 flex-grow">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
@@ -210,7 +210,7 @@
                             <p class="text-sm text-gray-600 mb-3 flex-grow">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
@@ -226,7 +226,7 @@
                             <p class="text-sm text-gray-600 mb-3 flex-grow">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
@@ -242,7 +242,7 @@
                             <p class="text-sm text-gray-600 mb-3 flex-grow">
                                 Classic Italian pizza with fresh tomatoes, mozzarella, and basil.
                             </p>
-                            <button class="self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                            <button class="view-ingredients self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                 View details
                             </button>
                         </div>
