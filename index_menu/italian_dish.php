@@ -228,112 +228,104 @@
     </footer>
 
     <script>
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerOffset = 80;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navUnderlines = document.querySelectorAll('.nav-link span');
+        const navTitle = document.querySelector('.nav-title');
+        const navSubtitle = document.querySelector('.nav-subtitle');
+        const navButton = document.querySelector('.nav-button');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 0) {
+                navbar.classList.add('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
+                    link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
                 });
+                navUnderlines.forEach(underline => {
+                    underline.classList.remove('bg-[#FFF8E7]');
+                    underline.classList.add('bg-[#3C2F2F]');
+                });
+                navTitle.classList.remove('text-[#FFF8E7]');
+                navTitle.classList.add('text-[#3C2F2F]');
+                navSubtitle.classList.remove('text-[#FFF8E7]');
+                navSubtitle.classList.add('text-[#3C2F2F]');
+                if (navButton) {
+                    navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
+                    navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
+                }
+            } else {
+                navbar.classList.remove('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
+                    link.classList.add('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
+                });
+                navUnderlines.forEach(underline => {
+                    underline.classList.remove('bg-[#3C2F2F]');
+                    underline.classList.add('bg-[#FFF8E7]');
+                });
+                navTitle.classList.remove('text-[#3C2F2F]');
+                navTitle.classList.add('text-[#FFF8E7]');
+                navSubtitle.classList.remove('text-[#3C2F2F]');
+                navSubtitle.classList.add('text-[#FFF8E7]');
+                if (navButton) {
+                    navButton.classList.remove('bg-[#3C2F2F]', 'text-[#FFF8E7]');
+                    navButton.classList.add('bg-[#FFF8E7]', 'text-[#3C2F2F]');
+                }
             }
         });
-    });
 
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('#mobile-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
         });
-    });
-
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const navUnderlines = document.querySelectorAll('.nav-link span');
-    const navTitle = document.querySelector('.nav-title');
-    const navSubtitle = document.querySelector('.nav-subtitle');
-    const navButton = document.querySelector('.nav-button');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 0) {
-            // Make navbar solid on scroll
-            // Commented out the transparent class and replaced with fixed color
-            navbar.classList.add('bg-[#FFF8E7]', 'shadow-lg'); // fixed solid color
-            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md'); // remove transparent background
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-                link.classList.add('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-            });
-            navUnderlines.forEach(underline => {
-                underline.classList.remove('bg-[#FFF8E7]');
-                underline.classList.add('bg-[#3C2F2F]');
-            });
-            navTitle.classList.remove('text-[#FFF8E7]');
-            navTitle.classList.add('text-[#3C2F2F]');
-            navSubtitle.classList.remove('text-[#FFF8E7]');
-            navSubtitle.classList.add('text-[#3C2F2F]');
-            if (navButton) {
-                navButton.classList.remove('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-                navButton.classList.add('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-            }
-        } else {
-            // Keep solid color even at top — remove transparent style here too
-            navbar.classList.add('bg-[#FFF8E7]'); // fixed solid color
-            navbar.classList.remove('bg-[#FFF8E7]/90', 'backdrop-blur-md', 'shadow-lg');
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-[#3C2F2F]', 'hover:text-[#3C2F2F]/80');
-                link.classList.add('text-[#FFF8E7]', 'hover:text-[#FFF8E7]/80');
-            });
-            navUnderlines.forEach(underline => {
-                underline.classList.remove('bg-[#3C2F2F]');
-                underline.classList.add('bg-[#FFF8E7]');
-            });
-            navTitle.classList.remove('text-[#3C2F2F]');
-            navTitle.classList.add('text-[#FFF8E7]');
-            navSubtitle.classList.remove('text-[#3C2F2F]');
-            navSubtitle.classList.add('text-[#FFF8E7]');
-            if (navButton) {
-                navButton.classList.remove('bg-[#3C2F2F]', 'text-[#FFF8E7]');
-                navButton.classList.add('bg-[#FFF8E7]', 'text-[#3C2F2F]');
-            }
-        }
-    });
-
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
-    });
-</script>
-
+    </script>
 </body>
 </html>
