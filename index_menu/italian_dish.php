@@ -42,26 +42,26 @@
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
                     <div>
-                        <h1 class="nav-title font-playfair font-bold text-xl text-[#FFF8E7]">Caffè Lilio</h1>
-                        <p class="nav-subtitle text-xs text-[#FFF8E7] tracking-widest">RISTORANTE</p>
+                        <h1 class="nav-title font-playfair font-bold text-xl text-deep-brown">Caffè Lilio</h1>
+                        <p class="nav-subtitle text-xs text-rich-brown/80 tracking-widest">RISTORANTE</p>
                     </div>
                 </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="/index.php#home" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="/index.php#home" class="nav-link font-baskerville text-deep-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         Home
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="/index.php#about" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="/index.php#about" class="nav-link font-baskerville text-deep-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         About Us
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="/index.php#menu" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="/index.php#menu" class="nav-link font-baskerville text-deep-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         Menu & Packages
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a href="/index.php#services" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="/index.php#services" class="nav-link font-baskerville text-deep-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         What We Offer
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 text-deep-brown transition-all duration-300 group-hover:w-full"></span>
                     </a>
@@ -69,7 +69,7 @@
                 
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="login.php" class="nav-link font-baskerville text-rich-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
+                    <a href="login.php" class="nav-link font-baskerville text-deep-brown hover:text-[#FFF8E7]/80 transition-colors duration-300 relative group">
                         Login
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFF8E7] transition-all duration-300 group-hover:w-full"></span>
                     </a>
