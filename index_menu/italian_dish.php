@@ -35,7 +35,7 @@
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
     <!-- Navigation (Reused from index.php) -->
-    <nav class="bg-richj-brown fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+    <nav class="bg-rich-brown fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
