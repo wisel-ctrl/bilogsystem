@@ -449,15 +449,16 @@
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
                                     <select id="dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                                         <option value="">Select category</option>
-                                        <option value="italian-dish">Italian Dish</option>
-                                        <option value="spanish-dish">Spanish Dish</option>
-                                        <option value="house-salad">House Salad</option>
+                                        <option value="best_seller">Best-Seller</option>
+                                        <option value="italian_dish">Italian Dish</option>
+                                        <option value="spanish_dish">Spanish Dish</option>
+                                        <option value="house_salad">House Salad</option>
                                         <option value="burger_pizza">Burger & Pizza</option>
                                         <!-- <option value="burgers">Burgers</option> -->
                                         <option value="pasta">Pasta</option>
                                         <option value="pasta_caza">Pasta e Caza</option>
                                         <option value="desserts">Desserts</option>
-                                        <option value="main-course">Main Course</option>
+                                        <option value="main_course">Main Course</option>
                                         <option value="drinks">Drinks</option>
                                         <option value="coffee">Coffee</option>
                                     </select>
