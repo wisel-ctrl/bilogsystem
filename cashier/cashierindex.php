@@ -481,42 +481,41 @@ require_once 'cashier_auth.php';
                 Payment Details
             </h3>
             
-            <!-- Discount Options -->
-            <div class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                <!-- Reduced spacing and margins for smaller screens -->
-                <h4 class="font-semibold text-deep-brown text-sm sm:text-base font-baskerville">
-                    <!-- Adjusted font size for better readability on smaller screens -->
-                    Discount Type:
-                </h4>
-                <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                    <!-- Reduced gap for smaller screens -->
-                    <label class="relative">
-                        <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
-                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                            <!-- Reduced padding for smaller screens -->
-                            <i class="fas fa-times-circle mb-1 sm:mb-2 text-base sm:text-lg"></i>
-                            <!-- Adjusted icon size and margin -->
-                            <div class="text-xs sm:text-sm font-baskerville">None</div>
-                            <!-- Adjusted text size -->
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
-                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                            <i class="fas fa-user-tag mb-1 sm:mb-2 text-base sm:text-lg"></i>
-                            <div class="text-xs sm:text-sm font-baskerville">Senior (20%)</div>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
-                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                            <i class="fas fa-wheelchair mb-1 sm:mb-2 text-base sm:text-lg"></i>
-                            <div class="text-xs sm:text-sm font-baskerville">PWD (20%)</div>
-                        </div>
-                    </label>
-                </div>
+          <!-- Discount Options -->
+<div class="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
+    <!-- Reduced vertical spacing (space-y-2 from 3, mb-3 from 4) for compactness; restored for sm -->
+    <h4 class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville">
+        <!-- Reduced font size to text-xs (from text-sm) for smaller screens; restored to text-sm for sm -->
+        Discount Type:
+    </h4>
+    <div class="grid grid-cols-3 gap-1 sm:gap-2">
+        <!-- Reduced grid gap to 1 (from 2) for tighter layout; restored to 2 for sm -->
+        <label class="relative">
+            <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
+            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                <!-- Reduced padding to p-1 (from p-2) and rounded-md (from rounded-lg) for smaller, sharper look -->
+                <i class="fas fa-times-circle mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                <!-- Reduced icon size to text-sm (from text-base) and margin to mb-0.5; restored for sm -->
+                <div class="text-[0.65rem] sm:text-xs font-baskerville">None</div>
+                <!-- Reduced font size to 0.65rem (from text-xs) for compactness; restored to text-xs for sm -->
             </div>
-            
+        </label>
+        <label class="relative">
+            <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
+            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                <i class="fas fa-user-tag mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                <div class="text-[0.65rem] sm:text-xs font-baskerville">Senior (20%)</div>
+            </div>
+        </label>
+        <label class="relative">
+            <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
+            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                <i class="fas fa-wheelchair mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                <div class="text-[0.65rem] sm:text-xs font-baskerville">PWD (20%)</div>
+            </div>
+        </label>
+    </div>
+</div>
             <!-- Payment Amount Input -->
             <div class="mb-4 sm:mb-6">
                 <!-- Reduced margin for smaller screens -->
