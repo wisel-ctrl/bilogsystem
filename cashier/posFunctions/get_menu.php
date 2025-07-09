@@ -24,9 +24,9 @@ try {
             'house_salad' => 'house-salad',
             // 'pizza' => 'Pizza',
             'burger_pizza' => 'burger-pizza',
-            'pasta' => 'Pasta',
+            'pasta' => 'pasta',
             'pasta_caza' => 'pasta_caza',
-            'coffee' => 'Coffee'
+            'coffee' => 'coffee'
         ];
         
         // Default to 'main' if category not found in map
