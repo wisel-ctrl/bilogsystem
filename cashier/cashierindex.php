@@ -537,54 +537,47 @@ require_once 'cashier_auth.php';
 </div>
             
             <!-- Summary Display -->
-            <div class="bg-warm-cream/20 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
-                <!-- Reduced padding and margin -->
-                <h4 class="font-semibold text-deep-brown mb-2 sm:mb-3 text-sm sm:text-base font-baskerville">
-                    <!-- Adjusted text size and margin -->
-                    Payment Summary:
-                </h4>
-                <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                    <!-- Adjusted spacing and text size -->
-                    <div class="flex justify-between">
-                        <span class="text-rich-brown">Subtotal:</span>
-                        <span id="summary-subtotal" class="font-medium">₱0.00</span>
+            <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
+                    <h4 class="font-semibold text-deep-brown mb-3 font-baskerville">Payment Summary:</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Subtotal:</span>
+                            <span id="summary-subtotal" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Tax (10%):</span>
+                            <span id="summary-tax" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Discount:</span>
+                            <span id="summary-discount" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
+                            <span class="font-bold text-deep-brown">Total:</span>
+                            <span id="summary-total" class="font-bold text-deep-brown">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rich-brown">Amount Paid:</span>
+                            <span id="summary-paid" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
+                            <span class="font-bold text-deep-brown">Change:</span>
+                            <span id="summary-change" class="font-bold text-deep-brown">₱0.00</span>
+                        </div>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-rich-brown">Tax (10%):</span>
-                        <span id="summary-tax" class="font-medium">₱0.00</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-rich-brown">Discount:</span>
-                        <span id="summary-discount" class="font-medium">₱0.00</span>
-                    </div>
-                    <div class="flex justify-between pt-1 sm:pt-2 border-t border-rich-brown/20">
-                        <!-- Adjusted padding -->
-                        <span class="font-bold text-deep-brown">Total:</span>
-                        <span id="summary-total" class="font-bold text-deep-brown">₱0.00</span>
-                    </div>
-                    <div class="text-rich-brown">Amount Paid:</span>
-                    <span id="summary-paid" class="font-medium">₱0.00</span>
                 </div>
-                <div class="flex justify-between pt-1 sm:pt-2 border-t border-rich-brown/20">
-                    <span class="font-bold text-deep-brown">Change:</span>
-                    <span id="summary-change" class="font-bold text-deep-brown">₱0.00</span>
+                
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-discount" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors duration-300 font-baskerville">
+                        Cancel
+                    </button>
+                    <button id="apply-discount" class="px-6 py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 font-baskerville">
+                        Complete Payment
+                    </button>
                 </div>
-            </div>
-            
-            <div class="flex justify-end space-x-3 sm:space-x-2">
-                <!-- Reduced button spacing on smaller screens -->
-                <button id="cancel-discount" class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors duration-300 text-xs sm:text-sm font-baskerville">
-                    <!-- Adjusted button padding and text size -->
-                    Cancel
-                </button>
-                <button id="apply-discount" class="px-4 sm:px-6 py-2 sm:py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 text-xs sm:text-sm font-baskerville">
-                    <!-- Adjusted button padding and text size -->
-                    Complete Payment
-                </button>
             </div>
         </div>
     </div>
-</div>
 
     <script>
         // Sample menu data
