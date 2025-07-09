@@ -310,6 +310,16 @@
                     </div>
                 </a>
 
+                <!-- Main Course -->
+                <a href="index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="aspect-[3/4] relative">
+                        <img src="images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Main Course</h3>
+                        </div>
+                    </div>
+                </a>
+
                 <!-- Salad -->
                 <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
