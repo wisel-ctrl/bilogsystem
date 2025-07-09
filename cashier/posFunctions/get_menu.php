@@ -21,9 +21,9 @@ try {
             'appetizer' => 'appetizer', // Not present in buttons, kept from original
             'italian_dish' => 'italian-dish',
             'spanish_dish' => 'spanish-dish',
-            'house-salad' => 'house-salad',
-            'pizza' => 'Pizza',
-            'burgers' => 'Burgers',
+            'house_salad' => 'house-salad',
+            // 'pizza' => 'Pizza',
+            'burger_pizza' => 'Burgers & Pizza',
             'pasta' => 'Pasta',
             'pasta_caza' => 'pasta_caza',
             'coffee' => 'Coffee'

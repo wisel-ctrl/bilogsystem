@@ -328,15 +328,15 @@ require_once 'cashier_auth.php';
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pizza">
                             <i class="fas fa-circle-notch w-5"></i>
-                            <span class="sidebar-text font-baskerville">Pizza</span>
+                            <span class="sidebar-text font-baskerville">Burgers & Pizza</span>
                         </button>
                     </li>
-                    <li>
+                    <!-- <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="burgers">
                             <i class="fas fa-hamburger w-5"></i>
                             <span class="sidebar-text font-baskerville">Burgers</span>
                         </button>
-                    </li>
+                    </li> -->
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta">
                             <i class="fas fa-utensils w-5"></i>
