@@ -325,7 +325,7 @@
                     <div class="aspect-[3/4] relative">
                         <img src="images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Salad</h3>
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">House Salad</h3>
                         </div>
                     </div>
                 </a>
@@ -374,7 +374,7 @@
                 <!-- Pizza & Burgers -->
                 <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
-                        <img src="images/Pizza_Milano.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <img src="images/burgerpizza.png" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                             <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Burgers & Pizza</h3>
                         </div>
