@@ -197,7 +197,7 @@ try {
                             <div class="p-4 flex flex-col">
                                 <div class="flex justify-between items-center">
                                     <h3 class="font-medium text-gray-900"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
-                                    <span class="font-medium text-amber-600">$<?php echo number_format($dish['price'], 2); ?></span>
+                                    <span class="font-medium text-amber-600">₱<?php echo number_format($dish['price'], 2); ?></span>
                                 </div>
                                 <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
                                     View details
