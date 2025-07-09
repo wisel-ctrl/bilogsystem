@@ -288,176 +288,145 @@ require_once 'cashier_auth.php';
     </style>
 </head>
 <body class="bg-warm-cream/50 font-baskerville min-h-screen">
-<div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
-    <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 sm:w-56 md:w-64 flex-shrink-0 shadow-2xl fixed sm:static top-0 left-0 h-full z-50 sm:z-auto transform sm:transform-none -translate-x-full sm:translate-x-0">
-        <!-- Added sm:w-56 for smaller sidebar on tablets, fixed positioning for mobile, transform for collapse -->
-        <div class="sidebar-header p-4 sm:p-6 border-b border-warm-cream/20">
-            <!-- Reduced padding to p-4 for mobile -->
-            <div class="flex items-center justify-between">
-                <!-- Added flex and justify-between for mobile close button -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar" class="bg-gradient-to-b from-deep-brown via-rich-brown to-accent-brown text-warm-cream transition-all duration-300 ease-in-out w-64 flex-shrink-0 shadow-2xl">
+            <div class="sidebar-header p-6 border-b border-warm-cream/20">
                 <div>
-                    <h1 class="nav-title font-playfair font-bold text-lg sm:text-xl text-warm-cream">
-                        <!-- Reduced font size to text-lg for mobile -->
-                        Caffè Lilio
-                    </h1>
-                    <p class="nav-subtitle text-[0.65rem] sm:text-xs text-warm-cream tracking-widest">Ristorante</p>
-                    <!-- Reduced font size to 0.65rem for mobile -->
+                    <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
+                    <p class="nav-subtitle text-xs text-warm-cream tracking-widest">Ristorante</p>
                 </div>
-                <button id="sidebar-close" class="sm:hidden text-warm-cream hover:text-rich-brown">
-                    <!-- Added close button for mobile sidebar -->
-                    <i class="fas fa-times text-lg"></i>
-                </button>
             </div>
+            
+            <nav class="px-4">
+                <h2 class="text-xl font-bold text-warm-cream mb-4 font-playfair">Categories</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 bg-warm-cream/10 text-warm-cream rounded-lg hover:bg-warm-cream/20 transition-all duration-200 flex items-center space-x-3" data-category="all">
+                            <i class="fas fa-th-large w-5"></i>
+                            <span class="sidebar-text font-baskerville">All Items</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main-course">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Main Course</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="italian-dish">
+                            <i class="fas fa-pizza-slice w-5"></i>
+                            <span class="sidebar-text font-baskerville">Italian Dishes</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="spanish-dish">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Spanish Dishes</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="house-salad">
+                            <i class="fas fa-leaf w-5"></i>
+                            <span class="sidebar-text font-baskerville">House Salads</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="burger-pizza">
+                            <i class="fas fa-circle-notch w-5"></i>
+                            <span class="sidebar-text font-baskerville">Burgers & Pizza</span>
+                        </button>
+                    </li>
+           
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Pasta</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta_caza">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Pasta e Caza</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="desserts">
+                            <i class="fas fa-ice-cream w-5"></i>
+                            <span class="sidebar-text font-baskerville">Desserts</span>
+                        </button>
+                    </li>
+                    <!-- <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main">
+                            <i class="fas fa-drumstick-bite w-5"></i>
+                            <span class="sidebar-text font-baskerville">Main Courses</span>
+                        </button>
+                    </li> -->
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="drinks">
+                            <i class="fas fa-glass-martini-alt w-5"></i>
+                            <span class="sidebar-text font-baskerville">Drinks</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="coffee">
+                            <i class="fas fa-coffee w-5"></i>
+                            <span class="sidebar-text font-baskerville">Coffee</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        
-        <nav class="px-3 sm:px-4 overflow-y-auto h-[calc(100vh-96px)] sm:h-auto">
-            <!-- Reduced padding to px-3, added overflow-y-auto for scrollable sidebar on mobile -->
-            <h2 class="text-lg sm:text-xl font-bold text-warm-cream mb-3 sm:mb-4 font-playfair">
-                <!-- Reduced font size and margin for mobile -->
-                Categories
-            </h2>
-            <ul class="space-y-1 sm:space-y-2">
-                <!-- Reduced vertical spacing for compactness -->
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 bg-warm-cream/10 text-warm-cream rounded-lg hover:bg-warm-cream/20 transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="all">
-                        <!-- Reduced padding and spacing -->
-                        <i class="fas fa-th-large w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">All Items</span>
-                        <!-- Reduced text size to text-xs -->
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="main-course">
-                        <i class="fas fa-utensils w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Main Course</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="italian-dish">
-                        <i class="fas fa-pizza-slice w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Italian Dishes</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="spanish-dish">
-                        <i class="fas fa-utensils w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Spanish Dishes</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="house-salad">
-                        <i class="fas fa-leaf w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">House Salads</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="burger-pizza">
-                        <i class="fas fa-circle-notch w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Burgers & Pizza</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="pasta">
-                        <i class="fas fa-utensils w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Pasta</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="pasta_caza">
-                        <i class="fas fa-utensils w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Pasta e Caza</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="desserts">
-                        <i class="fas fa-ice-cream w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Desserts</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="drinks">
-                        <i class="fas fa-glass-martini-alt w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Drinks</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="category-btn w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-2 sm:space-x-3" data-category="coffee">
-                        <i class="fas fa-coffee w-4 sm:w-5"></i>
-                        <span class="sidebar-text font-baskerville text-xs sm:text-sm">Coffee</span>
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </div>
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Added overflow-hidden to prevent main content from overflowing -->
-        <!-- Header -->
-        <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-4 sm:px-6 py-3 sm:py-4">
-            <!-- Reduced padding for mobile -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3 sm:space-x-4">
-                    <!-- Reduced spacing for mobile -->
-                    <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
-                        <i class="fas fa-bars text-lg sm:text-xl"></i>
-                        <!-- Reduced icon size for mobile -->
-                    </button>
-                    <h2 class="text-xl sm:text-2xl font-bold text-deep-brown font-playfair">Point-of-Sale</h2>
-                    <!-- Reduced font size for mobile -->
-                </div>
-                <div class="text-xs sm:text-sm text-rich-brown font-baskerville flex-1 text-center mx-2 sm:mx-4">
-                    <!-- Reduced text size and margin for mobile -->
-                    <i class="fas fa-calendar-alt mr-1 sm:mr-2"></i>
-                    <span id="current-date"></span>
-                </div>
-                <div class="flex items-center space-x-3 sm:space-x-4">
-                    <!-- Reduced spacing for mobile -->
-                    <a href="../logout.php?usertype=cashier" class="flex items-center space-x-1 sm:space-x-2 hover:bg-warm-cream/10 p-1 sm:p-2 rounded-lg transition-all duration-200">
-                        <!-- Reduced padding and spacing -->
-                        <i class="fas fa-sign-out-alt text-deep-brown text-sm sm:text-base"></i>
-                        <span class="text-xs sm:text-sm font-medium text-deep-brown font-baskerville">Sign Out</span>
-                    </a>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto p-4 sm:p-6">
-            <!-- Reduced padding for mobile -->
-            <div class="flex flex-col lg:flex-row gap-4 sm:gap-6 h-full">
-                <!-- Reduced gap for mobile; added h-full for layout control -->
-                <!-- Menu Items Section -->
-                <div class="w-full lg:w-3/5 overflow-y-auto">
-                    <!-- Added overflow-y-auto for scrollable menu items -->
-                    <div class="pos-card rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
-                        <!-- Reduced padding and margin -->
-                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
-                            <!-- Made header flexible for mobile -->
-                            <h3 class="text-xl sm:text-2xl font-bold text-deep-brown font-playfair mb-4 sm:mb-0">
-                                <!-- Reduced font size and margin -->
-                                Menu Items
-                            </h3>
-                            <div class="relative w-full sm:w-1/2">
-                                <input type="text" id="menu-search" placeholder="Search menu items..." 
-                                    class="w-full p-2 sm:p-3 pl-8 sm:pl-10 pr-8 sm:pr-10 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown bg-white/50 backdrop-blur-sm text-xs sm:text-sm">
-                                <!-- Reduced padding and text size -->
-                                <i class="fas fa-search absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-xs sm:text-sm"></i>
-                                <button id="clear-search" class="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 hover:text-rich-brown hidden text-xs sm:text-sm">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" id="menu-items">
-                            <!-- Reduced gap for mobile; adjusted grid for sm -->
-                            <!-- Menu items will be dynamically inserted here -->
-                        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Point-of-Sale</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="../logout.php?usertype=cashier" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-sign-out-alt text-deep-brown"></i>
+                            <span class="text-sm font-medium text-deep-brown font-baskerville">Sign Out</span>
+                        </a>
                     </div>
                 </div>
+            </header>
 
-                <!-- Cart Section -->
-                <div class="w-full lg:w-2/5">
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Menu Items Section -->
+                    <div class="w-full lg:w-3/5">
+                        <div class="pos-card rounded-xl p-6 mb-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Items</h3>
+                                <div class="relative w-1/2">
+                                    <input type="text" id="menu-search" placeholder="Search menu items..." 
+                                        class="w-full p-3 pl-10 pr-10 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown bg-white/50 backdrop-blur-sm">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50"></i>
+                                    <button id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 hover:text-rich-brown hidden">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-items">
+                                <!-- Menu items will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+               <!-- Cart Section -->
+               <div class="w-full lg:w-2/5">
                     <div class="pos-card rounded-xl p-4 sm:p-6 sticky top-4 sm:top-6 max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] overflow-y-auto">
                         <!-- Reduced padding, adjusted max-h for mobile, added overflow-y-auto for scrollable cart -->
                         <h3 class="text-xl sm:text-2xl font-bold text-deep-brown mb-4 sm:mb-6 font-playfair">
@@ -510,23 +479,10 @@ require_once 'cashier_auth.php';
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
-
-<script>
-// Existing scripts remain unchanged, adding sidebar toggle for mobile
-document.getElementById('sidebar-toggle').addEventListener('click', () => {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('-translate-x-full');
-});
-
-document.getElementById('sidebar-close').addEventListener('click', () => {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.add('-translate-x-full');
-});
-</script>
 
 <!-- Discount Modal -->
 <div id="discount-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
