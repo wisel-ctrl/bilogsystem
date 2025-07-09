@@ -516,24 +516,25 @@ require_once 'cashier_auth.php';
         </label>
     </div>
 </div>
-            <!-- Payment Amount Input -->
-            <div class="mb-4 sm:mb-6">
-                <!-- Reduced margin for smaller screens -->
-                <label for="payment-amount" class="block font-semibold text-deep-brown mb-1 sm:mb-2 text-sm sm:text-base font-baskerville">
-                    <!-- Adjusted text size and margin -->
-                    Amount Paid:
-                </label>
-                <div class="relative">
-                    <span class="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-sm sm:text-base">
-                        <!-- Adjusted position and text size -->
-                        ₱
-                    </span>
-                    <input type="number" id="payment-amount" class="w-full p-2 sm:p-3 pl-6 sm:pl-8 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown text-sm sm:text-base" min="0" step="0.01">
-                    <!-- Adjusted padding, left padding, and text size -->
-                </div>
-                <p id="payment-error" class="text-red-500 text-xs sm:text-sm mt-1 sm:mt-2 hidden"></p>
-                <!-- Adjusted text size and margin -->
-            </div>
+<!-- Payment Amount Input -->
+<div class="mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+    <!-- Reduced margin to mb-3 (from mb-4); used flex and gap for inline layout -->
+    <label for="payment-amount" class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville whitespace-nowrap">
+        <!-- Reduced font size to text-xs (from text-sm); added whitespace-nowrap to prevent wrapping -->
+        Amount Paid:
+    </label>
+    <div class="relative flex-grow">
+        <!-- Added flex-grow to make input take remaining space -->
+        <span class="absolute left-2 sm:left-2 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-xs sm:text-sm">
+            <!-- Reduced text size to text-xs (from text-sm); kept left-2 for consistency -->
+            ₱
+        </span>
+        <input type="number" id="payment-amount" class="w-full p-1.5 sm:p-2 pl-5 sm:pl-6 border border-rich-brown/20 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown text-xs sm:text-sm" min="0" step="0.01">
+        <!-- Reduced padding to p-1.5 (from p-2), pl-5 (from pl-6), used rounded-md (from rounded-lg), and text-xs (from text-sm) -->
+    </div>
+    <p id="payment-error" class="text-red-500 text-[0.65rem] sm:text-xs mt-1 sm:mt-1 hidden"></p>
+    <!-- Reduced text size to 0.65rem (from text-xs) and margin to mt-1 -->
+</div>
             
             <!-- Summary Display -->
             <div class="bg-warm-cream/20 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
