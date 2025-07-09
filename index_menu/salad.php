@@ -9,7 +9,7 @@ try {
         FROM dishes_tb d
         LEFT JOIN dish_ingredients di ON d.dish_id = di.dish_id
         LEFT JOIN ingredients_tb i ON di.ingredient_id = i.ingredient_id
-        WHERE d.dish_category = 'salad_salad' AND d.status = 'active'
+        WHERE d.dish_category = 'house_salad' AND d.status = 'active'
         GROUP BY d.dish_id, d.dish_name, d.dish_description, d.price, d.dish_pic_url
     ");
     $stmt->execute();
