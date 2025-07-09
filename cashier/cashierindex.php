@@ -425,46 +425,47 @@ require_once 'cashier_auth.php';
                         </div>
                     </div>
 
-                    <!-- Cart Section -->
-                    <div class="w-full lg:w-2/5">
-                        <div class="pos-card rounded-xl p-6 sticky top-6">
-                            <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair">Order Summary</h3>
-                            <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
-                                <div id="cart-items" class="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
-                                    <!-- Cart items will be dynamically inserted here -->
-                                    <p class="text-center text-rich-brown/60 py-4">Your cart is empty</p>
-                                </div>
-                            </div>
-                            
-                            <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
-                                <div class="space-y-3">
-                                    <div class="flex justify-between py-2 border-b border-rich-brown/20">
-                                        <span class="font-bold text-deep-brown">Subtotal:</span>
-                                        <span id="subtotal" class="font-bold text-deep-brown">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between py-2 border-b border-rich-brown/20">
-                                        <span class="font-bold text-deep-brown">Tax (10%):</span>
-                                        <span id="tax" class="font-bold text-deep-brown">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between py-2 font-bold text-lg">
-                                        <span class="text-deep-brown">Total:</span>
-                                        <span id="total" class="text-deep-brown">₱0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex space-x-3">
-                                <button id="clear-cart" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-2">
-                                    <i class="fas fa-trash-alt"></i>
-                                    <span>Clear</span>
-                                </button>
-                                <button id="checkout" class="flex-1 bg-deep-brown hover:bg-rich-brown text-warm-cream py-3 px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-2">
-                                    <i class="fas fa-cash-register"></i>
-                                    <span>Checkout</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+<!-- Cart Section -->
+<div class="w-full lg:w-2/5">
+    <div class="pos-card rounded-xl p-4 md:p-6 sticky top-4 md:top-6">
+        <h3 class="text-xl md:text-2xl font-bold text-deep-brown mb-4 md:mb-6 font-playfair">Order Summary</h3>
+        
+        <div class="bg-warm-cream/20 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+            <div id="cart-items" class="space-y-3 md:space-y-4 max-h-[calc(100vh-350px)] md:max-h-[calc(100vh-400px)] overflow-y-auto">
+                <!-- Cart items will be dynamically inserted here -->
+                <p class="text-center text-rich-brown/60 py-3 md:py-4 text-sm md:text-base">Your cart is empty</p>
+            </div>
+        </div>
+        
+        <div class="bg-warm-cream/20 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+            <div class="space-y-2 md:space-y-3">
+                <div class="flex justify-between py-1 md:py-2 border-b border-rich-brown/20">
+                    <span class="font-medium md:font-bold text-deep-brown text-sm md:text-base">Subtotal:</span>
+                    <span id="subtotal" class="font-medium md:font-bold text-deep-brown text-sm md:text-base">₱0.00</span>
+                </div>
+                <div class="flex justify-between py-1 md:py-2 border-b border-rich-brown/20">
+                    <span class="font-medium md:font-bold text-deep-brown text-sm md:text-base">Tax (10%):</span>
+                    <span id="tax" class="font-medium md:font-bold text-deep-brown text-sm md:text-base">₱0.00</span>
+                </div>
+                <div class="flex justify-between py-1 md:py-2 font-bold text-base md:text-lg">
+                    <span class="text-deep-brown">Total:</span>
+                    <span id="total" class="text-deep-brown">₱0.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex space-x-2 md:space-x-3">
+            <button id="clear-cart" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 md:py-3 px-3 md:px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-1 md:space-x-2 text-sm md:text-base">
+                <i class="fas fa-trash-alt text-xs md:text-sm"></i>
+                <span>Clear</span>
+            </button>
+            <button id="checkout" class="flex-1 bg-deep-brown hover:bg-rich-brown text-warm-cream py-2 md:py-3 px-3 md:px-4 rounded-lg transition-colors duration-300 font-baskerville flex items-center justify-center space-x-1 md:space-x-2 text-sm md:text-base">
+                <i class="fas fa-cash-register text-xs md:text-sm"></i>
+                <span>Checkout</span>
+            </button>
+        </div>
+    </div>
+</div>
                 </div>
             </main>
         </div>
@@ -482,59 +483,59 @@ require_once 'cashier_auth.php';
             </h3>
             
           <!-- Discount Options -->
-<div class="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
-    <!-- Reduced vertical spacing (space-y-2 from 3, mb-3 from 4) for compactness; restored for sm -->
-    <h4 class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville">
-        <!-- Reduced font size to text-xs (from text-sm) for smaller screens; restored to text-sm for sm -->
-        Discount Type:
-    </h4>
-    <div class="grid grid-cols-3 gap-1 sm:gap-2">
-        <!-- Reduced grid gap to 1 (from 2) for tighter layout; restored to 2 for sm -->
-        <label class="relative">
-            <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
-            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                <!-- Reduced padding to p-1 (from p-2) and rounded-md (from rounded-lg) for smaller, sharper look -->
-                <i class="fas fa-times-circle mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
-                <!-- Reduced icon size to text-sm (from text-base) and margin to mb-0.5; restored for sm -->
-                <div class="text-[0.65rem] sm:text-xs font-baskerville">None</div>
-                <!-- Reduced font size to 0.65rem (from text-xs) for compactness; restored to text-xs for sm -->
+            <div class="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
+                <!-- Reduced vertical spacing (space-y-2 from 3, mb-3 from 4) for compactness; restored for sm -->
+                <h4 class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville">
+                    <!-- Reduced font size to text-xs (from text-sm) for smaller screens; restored to text-sm for sm -->
+                    Discount Type:
+                </h4>
+                <div class="grid grid-cols-3 gap-1 sm:gap-2">
+                    <!-- Reduced grid gap to 1 (from 2) for tighter layout; restored to 2 for sm -->
+                    <label class="relative">
+                        <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
+                        <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <!-- Reduced padding to p-1 (from p-2) and rounded-md (from rounded-lg) for smaller, sharper look -->
+                            <i class="fas fa-times-circle mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                            <!-- Reduced icon size to text-sm (from text-base) and margin to mb-0.5; restored for sm -->
+                            <div class="text-[0.65rem] sm:text-xs font-baskerville">None</div>
+                            <!-- Reduced font size to 0.65rem (from text-xs) for compactness; restored to text-xs for sm -->
+                        </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
+                        <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <i class="fas fa-user-tag mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                            <div class="text-[0.65rem] sm:text-xs font-baskerville">Senior (20%)</div>
+                        </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
+                        <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <i class="fas fa-wheelchair mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
+                            <div class="text-[0.65rem] sm:text-xs font-baskerville">PWD (20%)</div>
+                        </div>
+                    </label>
+                </div>
             </div>
-        </label>
-        <label class="relative">
-            <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
-            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                <i class="fas fa-user-tag mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
-                <div class="text-[0.65rem] sm:text-xs font-baskerville">Senior (20%)</div>
+            <!-- Payment Amount Input -->
+            <div class="mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+                <!-- Reduced margin to mb-3 (from mb-4); used flex and gap for inline layout -->
+                <label for="payment-amount" class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville whitespace-nowrap">
+                    <!-- Reduced font size to text-xs (from text-sm); added whitespace-nowrap to prevent wrapping -->
+                    Amount Paid:
+                </label>
+                <div class="relative flex-grow">
+                    <!-- Added flex-grow to make input take remaining space -->
+                    <span class="absolute left-2 sm:left-2 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-xs sm:text-sm">
+                        <!-- Reduced text size to text-xs (from text-sm); kept left-2 for consistency -->
+                        ₱
+                    </span>
+                    <input type="number" id="payment-amount" class="w-full p-1.5 sm:p-2 pl-5 sm:pl-6 border border-rich-brown/20 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown text-xs sm:text-sm" min="0" step="0.01">
+                    <!-- Reduced padding to p-1.5 (from p-2), pl-5 (from pl-6), used rounded-md (from rounded-lg), and text-xs (from text-sm) -->
+                </div>
+                <p id="payment-error" class="text-red-500 text-[0.65rem] sm:text-xs mt-1 sm:mt-1 hidden"></p>
+                <!-- Reduced text size to 0.65rem (from text-xs) and margin to mt-1 -->
             </div>
-        </label>
-        <label class="relative">
-            <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
-            <div class="p-1 sm:p-2 border border-rich-brown/20 rounded-md text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                <i class="fas fa-wheelchair mb-0.5 sm:mb-1 text-sm sm:text-base"></i>
-                <div class="text-[0.65rem] sm:text-xs font-baskerville">PWD (20%)</div>
-            </div>
-        </label>
-    </div>
-</div>
-<!-- Payment Amount Input -->
-<div class="mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
-    <!-- Reduced margin to mb-3 (from mb-4); used flex and gap for inline layout -->
-    <label for="payment-amount" class="font-semibold text-deep-brown text-xs sm:text-sm font-baskerville whitespace-nowrap">
-        <!-- Reduced font size to text-xs (from text-sm); added whitespace-nowrap to prevent wrapping -->
-        Amount Paid:
-    </label>
-    <div class="relative flex-grow">
-        <!-- Added flex-grow to make input take remaining space -->
-        <span class="absolute left-2 sm:left-2 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-xs sm:text-sm">
-            <!-- Reduced text size to text-xs (from text-sm); kept left-2 for consistency -->
-            ₱
-        </span>
-        <input type="number" id="payment-amount" class="w-full p-1.5 sm:p-2 pl-5 sm:pl-6 border border-rich-brown/20 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-brown text-xs sm:text-sm" min="0" step="0.01">
-        <!-- Reduced padding to p-1.5 (from p-2), pl-5 (from pl-6), used rounded-md (from rounded-lg), and text-xs (from text-sm) -->
-    </div>
-    <p id="payment-error" class="text-red-500 text-[0.65rem] sm:text-xs mt-1 sm:mt-1 hidden"></p>
-    <!-- Reduced text size to 0.65rem (from text-xs) and margin to mt-1 -->
-</div>
             
             <!-- Summary Display -->
             <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
