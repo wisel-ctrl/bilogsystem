@@ -1,10 +1,17 @@
-
 <?php
 require_once '../db_connect.php';
 
 try {
-    // Query to fetch dishes with dish_category = 'best_seller'
-    $stmt = $conn->prepare("SELECT dish_name, dish_description, price, dish_pic_url FROM dishes_tb WHERE dish_category = 'best_seller' AND status = 'active'");
+    // Query to fetch dishes with dish_category = 'best_seller' and their ingredients
+    $stmt = $conn->prepare("
+        SELECT d.dish_name, d.dish_description, d.price, d.dish_pic_url, 
+               GROUP_CONCAT(i.ingredient_name ORDER BY i.ingredient_name SEPARATOR ', ') AS ingredients
+        FROM dishes_tb d
+        LEFT JOIN dish_ingredients di ON d.dish_id = di.dish_id
+        LEFT JOIN ingredients_tb i ON di.ingredient_id = i.ingredient_id
+        WHERE d.dish_category = 'best_seller' AND d.status = 'active'
+        GROUP BY d.dish_id, d.dish_name, d.dish_description, d.price, d.dish_pic_url
+    ");
     $stmt->execute();
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
@@ -181,8 +188,8 @@ try {
             <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
                 <?php foreach ($dishes as $dish): ?>
                     <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                         data-ingredients="Placeholder ingredients" 
-                         data-description="<?php echo htmlspecialchars($dish['dish_description']); ?>">
+                        data-ingredients="<?php echo htmlspecialchars($dish['ingredients'] ?? 'No ingredients listed'); ?>" 
+                        data-description="<?php echo htmlspecialchars($dish['dish_description']); ?>">
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
                             <img src="<?php echo htmlspecialchars($dish['dish_pic_url']); ?>" alt="<?php echo htmlspecialchars($dish['dish_name']); ?>" class="w-full h-48 object-cover">
                             <div class="p-4 flex flex-col">
