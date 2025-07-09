@@ -23,7 +23,7 @@ try {
             'spanish_dish' => 'spanish-dish',
             'house_salad' => 'house-salad',
             // 'pizza' => 'Pizza',
-            'burger_pizza' => 'Burgers & Pizza',
+            'burger_pizza' => 'burger-pizza',
             'pasta' => 'Pasta',
             'pasta_caza' => 'pasta_caza',
             'coffee' => 'Coffee'
