@@ -523,15 +523,23 @@
             // Show loading state
             const modal = document.getElementById('booking-modal');
             modal.classList.remove('hidden');
+            
+            // Save the original modal content
+            const originalModalContent = modal.querySelector('.modal-body').innerHTML;
+            
+            // Show loading spinner
             modal.querySelector('.modal-body').innerHTML = '<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-deep-brown"></div></div>';
             
             // Fetch booking details
             fetch(`booking_handlers/get_booking_details.php?booking_id=${bookingId}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Booking Details: ',data);
+                    console.log('Booking Details: ', data);
                     if (data.success) {
                         const booking = data.data;
+                        
+                        // Restore original modal content
+                        modal.querySelector('.modal-body').innerHTML = originalModalContent;
                         
                         // Populate modal fields
                         document.getElementById('modal-booking-id').textContent = booking.booking_id;
@@ -544,7 +552,7 @@
                         document.getElementById('modal-pax').textContent = booking.pax;
                         document.getElementById('modal-price').textContent = `₱${booking.totalPrice}`;
                         document.getElementById('modal-datetime').textContent = booking.reservation_datetime;
-                        document.getElementById('modal-notes').textContent = booking.notes;
+                        document.getElementById('modal-notes').textContent = booking.notes || 'No notes provided';
                         
                         // Handle payment receipt
                         const receiptImg = document.getElementById('modal-receipt-image');
@@ -558,22 +566,6 @@
                             receiptImg.classList.add('hidden');
                             noReceipt.classList.remove('hidden');
                         }
-                        
-                        // Restore modal content
-                        modal.querySelector('.modal-body').innerHTML = `
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Booking ID</label>
-                                    <p id="modal-booking-id" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-2 rounded">${booking.booking_id}</p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Booking Age</label>
-                                    <p id="modal-booking-age" class="text-lg font-semibold text-rich-brown font-baskerville">${booking.booking_age}</p>
-                                </div>
-                            </div>
-                            <!-- Rest of your modal HTML with populated data -->
-                            <!-- ... -->
-                        `;
                     } else {
                         // Show error message
                         modal.querySelector('.modal-body').innerHTML = `
@@ -597,7 +589,7 @@
                             <p class="text-rich-brown">Failed to fetch booking details. Please try again.</p>
                             <button onclick="closeBookingModal()" class="mt-4 px-4 py-2 bg-deep-brown text-warm-cream rounded hover:bg-rich-brown transition-colors">
                                 Close
-                            </div>
+                            </button>
                         </div>
                     `;
                 });
