@@ -361,7 +361,7 @@
                 </a>
 
                    <!-- Drinks -->
-                <a href="index_menu/drink.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <a href="index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
                         <img src="images/drinks.png" alt="drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
