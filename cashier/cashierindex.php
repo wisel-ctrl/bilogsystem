@@ -356,12 +356,12 @@ require_once 'cashier_auth.php';
                             <span class="sidebar-text font-baskerville">Desserts</span>
                         </button>
                     </li>
-                    <li>
+                    <!-- <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main">
                             <i class="fas fa-drumstick-bite w-5"></i>
                             <span class="sidebar-text font-baskerville">Main Courses</span>
                         </button>
-                    </li>
+                    </li> -->
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="drinks">
                             <i class="fas fa-glass-martini-alt w-5"></i>
@@ -470,92 +470,121 @@ require_once 'cashier_auth.php';
         </div>
     </div>
 
-    <!-- Discount Modal -->
-    <div id="discount-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
-        <div class="modal-content bg-white rounded-xl shadow-2xl w-[480px] max-w-[95vw] mx-4">
-            <div class="p-6">
-                <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair">Payment Details</h3>
-                
-                <!-- Discount Options -->
-                <div class="space-y-4 mb-6">
-                    <h4 class="font-semibold text-deep-brown font-baskerville">Discount Type:</h4>
-                    <div class="grid grid-cols-3 gap-3">
-                        <label class="relative">
-                            <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
-                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                                <i class="fas fa-times-circle mb-2 text-lg"></i>
-                                <div class="text-sm font-baskerville">None</div>
-                            </div>
-                        </label>
-                        <label class="relative">
-                            <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
-                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                                <i class="fas fa-user-tag mb-2 text-lg"></i>
-                                <div class="text-sm font-baskerville">Senior (20%)</div>
-                            </div>
-                        </label>
-                        <label class="relative">
-                            <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
-                            <div class="p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
-                                <i class="fas fa-wheelchair mb-2 text-lg"></i>
-                                <div class="text-sm font-baskerville">PWD (20%)</div>
-                            </div>
-                        </label>
+<!-- Discount Modal -->
+<div id="discount-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="modal-content bg-white rounded-xl shadow-2xl w-[480px] max-w-[90vw] mx-4 sm:max-w-[85vw] md:max-w-[600px] lg:max-w-[480px]">
+        <!-- Added sm:max-w-[85vw] and md:max-w-[600px] for better width scaling on small laptops and tablets -->
+        <div class="p-4 sm:p-6">
+            <!-- Reduced padding on smaller screens with p-4 and restored p-6 for sm and up -->
+            <h3 class="text-xl sm:text-2xl font-bold text-deep-brown mb-4 sm:mb-6 font-playfair">
+                <!-- Adjusted text size to text-xl for smaller screens, text-2xl for sm and up; reduced margin -->
+                Payment Details
+            </h3>
+            
+            <!-- Discount Options -->
+            <div class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                <!-- Reduced spacing and margins for smaller screens -->
+                <h4 class="font-semibold text-deep-brown text-sm sm:text-base font-baskerville">
+                    <!-- Adjusted font size for better readability on smaller screens -->
+                    Discount Type:
+                </h4>
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <!-- Reduced gap for smaller screens -->
+                    <label class="relative">
+                        <input type="radio" id="none" name="discount" value="none" checked class="peer sr-only">
+                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <!-- Reduced padding for smaller screens -->
+                            <i class="fas fa-times-circle mb-1 sm:mb-2 text-base sm:text-lg"></i>
+                            <!-- Adjusted icon size and margin -->
+                            <div class="text-xs sm:text-sm font-baskerville">None</div>
+                            <!-- Adjusted text size -->
+                        </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" id="senior" name="discount" value="senior" class="peer sr-only">
+                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <i class="fas fa-user-tag mb-1 sm:mb-2 text-base sm:text-lg"></i>
+                            <div class="text-xs sm:text-sm font-baskerville">Senior (20%)</div>
+                        </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" id="pwd" name="discount" value="PWD" class="peer sr-only">
+                        <div class="p-2 sm:p-3 border border-rich-brown/20 rounded-lg text-center cursor-pointer peer-checked:bg-deep-brown peer-checked:text-warm-cream hover:bg-warm-cream/20 transition-all duration-200">
+                            <i class="fas fa-wheelchair mb-1 sm:mb-2 text-base sm:text-lg"></i>
+                            <div class="text-xs sm:text-sm font-baskerville">PWD (20%)</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Payment Amount Input -->
+            <div class="mb-4 sm:mb-6">
+                <!-- Reduced margin for smaller screens -->
+                <label for="payment-amount" class="block font-semibold text-deep-brown mb-1 sm:mb-2 text-sm sm:text-base font-baskerville">
+                    <!-- Adjusted text size and margin -->
+                    Amount Paid:
+                </label>
+                <div class="relative">
+                    <span class="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 text-sm sm:text-base">
+                        <!-- Adjusted position and text size -->
+                        ₱
+                    </span>
+                    <input type="number" id="payment-amount" class="w-full p-2 sm:p-3 pl-6 sm:pl-8 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown text-sm sm:text-base" min="0" step="0.01">
+                    <!-- Adjusted padding, left padding, and text size -->
+                </div>
+                <p id="payment-error" class="text-red-500 text-xs sm:text-sm mt-1 sm:mt-2 hidden"></p>
+                <!-- Adjusted text size and margin -->
+            </div>
+            
+            <!-- Summary Display -->
+            <div class="bg-warm-cream/20 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                <!-- Reduced padding and margin -->
+                <h4 class="font-semibold text-deep-brown mb-2 sm:mb-3 text-sm sm:text-base font-baskerville">
+                    <!-- Adjusted text size and margin -->
+                    Payment Summary:
+                </h4>
+                <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                    <!-- Adjusted spacing and text size -->
+                    <div class="flex justify-between">
+                        <span class="text-rich-brown">Subtotal:</span>
+                        <span id="summary-subtotal" class="font-medium">₱0.00</span>
                     </div>
-                </div>
-                
-                <!-- Payment Amount Input -->
-                <div class="mb-6">
-                    <label for="payment-amount" class="block font-semibold text-deep-brown mb-2 font-baskerville">Amount Paid:</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50">₱</span>
-                        <input type="number" id="payment-amount" class="w-full p-3 pl-8 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown" min="0" step="0.01">
+                    <div class="flex justify-between">
+                        <span class="text-rich-brown">Tax (10%):</span>
+                        <span id="summary-tax" class="font-medium">₱0.00</span>
                     </div>
-                    <p id="payment-error" class="text-red-500 text-sm mt-2 hidden"></p>
-                </div>
-                
-                <!-- Summary Display -->
-                <div class="bg-warm-cream/20 rounded-lg p-4 mb-6">
-                    <h4 class="font-semibold text-deep-brown mb-3 font-baskerville">Payment Summary:</h4>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-rich-brown">Subtotal:</span>
-                            <span id="summary-subtotal" class="font-medium">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-rich-brown">Tax (10%):</span>
-                            <span id="summary-tax" class="font-medium">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-rich-brown">Discount:</span>
-                            <span id="summary-discount" class="font-medium">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
-                            <span class="font-bold text-deep-brown">Total:</span>
-                            <span id="summary-total" class="font-bold text-deep-brown">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-rich-brown">Amount Paid:</span>
-                            <span id="summary-paid" class="font-medium">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between pt-2 border-t border-rich-brown/20">
-                            <span class="font-bold text-deep-brown">Change:</span>
-                            <span id="summary-change" class="font-bold text-deep-brown">₱0.00</span>
-                        </div>
+                    <div class="flex justify-between">
+                        <span class="text-rich-brown">Discount:</span>
+                        <span id="summary-discount" class="font-medium">₱0.00</span>
                     </div>
+                    <div class="flex justify-between pt-1 sm:pt-2 border-t border-rich-brown/20">
+                        <!-- Adjusted padding -->
+                        <span class="font-bold text-deep-brown">Total:</span>
+                        <span id="summary-total" class="font-bold text-deep-brown">₱0.00</span>
+                    </div>
+                    <div class="text-rich-brown">Amount Paid:</span>
+                    <span id="summary-paid" class="font-medium">₱0.00</span>
                 </div>
-                
-                <div class="flex justify-end space-x-3">
-                    <button id="cancel-discount" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors duration-300 font-baskerville">
-                        Cancel
-                    </button>
-                    <button id="apply-discount" class="px-6 py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 font-baskerville">
-                        Complete Payment
-                    </button>
+                <div class="flex justify-between pt-1 sm:pt-2 border-t border-rich-brown/20">
+                    <span class="font-bold text-deep-brown">Change:</span>
+                    <span id="summary-change" class="font-bold text-deep-brown">₱0.00</span>
                 </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3 sm:space-x-2">
+                <!-- Reduced button spacing on smaller screens -->
+                <button id="cancel-discount" class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors duration-300 text-xs sm:text-sm font-baskerville">
+                    <!-- Adjusted button padding and text size -->
+                    Cancel
+                </button>
+                <button id="apply-discount" class="px-4 sm:px-6 py-2 sm:py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 text-xs sm:text-sm font-baskerville">
+                    <!-- Adjusted button padding and text size -->
+                    Complete Payment
+                </button>
             </div>
         </div>
     </div>
+</div>
 
     <script>
         // Sample menu data
