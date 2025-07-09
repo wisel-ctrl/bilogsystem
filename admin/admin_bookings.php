@@ -529,6 +529,7 @@
             fetch(`booking_handlers/get_booking_details.php?booking_id=${bookingId}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Booking Details: ',data);
                     if (data.success) {
                         const booking = data.data;
                         
