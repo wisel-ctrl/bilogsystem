@@ -595,27 +595,10 @@ require_once 'cashier_auth.php';
         </div>
         
 
-<!-- Success Modal -->
-<div id="success-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
-    <div class="modal-content bg-white rounded-xl shadow-2xl w-[320px] max-w-[90vw] mx-4 p-4 sm:p-6">
-        <!-- Compact modal size, responsive padding -->
-        <div class="text-center">
-            <img src="https://via.placeholder.com/150?text=Success" alt="Success" class="w-24 sm:w-32 mx-auto mb-4 sm:mb-6">
-            <!-- Success image with responsive sizing -->
-            <h3 class="text-lg sm:text-xl font-bold text-deep-brown mb-4 font-playfair">Order Successful!</h3>
-            <!-- Reduced font size for mobile -->
-            <p class="text-xs sm:text-sm text-rich-brown/70 font-baskerville mb-4 sm:mb-6">Your order has been placed successfully.</p>
-            <!-- Reduced text size and margin -->
-            <button id="close-success" class="px-4 sm:px-6 py-2 sm:py-3 bg-deep-brown hover:bg-rich-brown text-warm-cream rounded-lg transition-colors duration-300 font-baskerville text-xs sm:text-sm">
-                <!-- Responsive button sizing -->
-                Close
-            </button>
-        </div>
-    </div>
-</div>
 
 
 
+        
 
     <script>
         // Sample menu data
@@ -974,15 +957,7 @@ require_once 'cashier_auth.php';
                 
                 const result = await response.json();
                 if (result.success) {
-                    // Show success modal instead of alert
-                    const successModal = document.getElementById('success-modal');
-                    successModal.classList.remove('hidden');
-                    // Add event listener for close button
-                    const closeSuccessBtn = document.getElementById('close-success');
-                    closeSuccessBtn.replaceWith(closeSuccessBtn.cloneNode(true)); // Prevent duplicate listeners
-                    document.getElementById('close-success').addEventListener('click', () => {
-                        successModal.classList.add('hidden');
-                    });
+                    alert(`Order #${result.sales_id} placed successfully!\nTotal: ₱${paymentData.finalTotal.toFixed(2)}\nChange: ₱${paymentData.change.toFixed(2)}`);
                     clearCart();
                     document.getElementById('none').checked = true;
                 } else {
