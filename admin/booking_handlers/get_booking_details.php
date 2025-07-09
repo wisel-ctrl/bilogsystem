@@ -5,7 +5,6 @@ if (isset($_GET['booking_id'])) {
     $bookingId = $_GET['booking_id'];
     
     try {
-        $conn = connectDatabase($dsn, $pdoOptions);
         
         $sql = "SELECT 
                     b.booking_id,
