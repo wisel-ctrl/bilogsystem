@@ -600,8 +600,8 @@ require_once 'cashier_auth.php';
     <div class="modal-content bg-white rounded-xl shadow-2xl w-[320px] max-w-[90vw] mx-4 p-4 sm:p-6">
         <!-- Compact modal size, responsive padding -->
         <div class="text-center">
-            <img src="https://via.placeholder.com/150?text=Success" alt="Success" class="w-24 sm:w-32 mx-auto mb-4 sm:mb-6">
-            <!-- Success image with responsive sizing -->
+        <i class="fas fa-check-circle text-5xl sm:text-6xl text-amber-600 mb-4 sm:mb-6"></i>
+        <!-- Success image with responsive sizing -->
             <h3 class="text-lg sm:text-xl font-bold text-deep-brown mb-4 font-playfair">Order Successful!</h3>
             <!-- Reduced font size for mobile -->
             <p class="text-xs sm:text-sm text-rich-brown/70 font-baskerville mb-4 sm:mb-6">Your order has been placed successfully.</p>
