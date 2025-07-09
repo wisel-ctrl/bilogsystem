@@ -298,20 +298,43 @@
                                     <p id="modal-booking-id" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-2 rounded"></p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Name</label>
-                                    <p id="modal-client-name" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Booking Age</label>
+                                    <p id="modal-booking-age" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Name</label>
+                                    <p id="modal-client-name" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                                <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Phone Number</label>
                                     <p id="modal-phone" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Selected Hall(s)</label>
+                                    <p id="modal-halls" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Event Type</label>
+                                    <p id="modal-event" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Menu Name</label>
                                     <p id="modal-menu" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Number of Pax</label>
+                                    <p id="modal-pax" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
                             </div>
+                            
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
@@ -322,10 +345,15 @@
                                     <p id="modal-datetime" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
+                            
                             <div>
-                                <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Number of Pax</label>
-                                <p id="modal-pax" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Payment Receipt</label>
+                                <div id="modal-receipt-container" class="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center">
+                                    <img id="modal-receipt-image" src="" alt="Payment Receipt" class="max-h-64 object-contain hidden">
+                                    <p id="modal-no-receipt" class="text-gray-500 italic">No receipt uploaded</p>
+                                </div>
                             </div>
+                            
                             <div>
                                 <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Notes</label>
                                 <p id="modal-notes" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-3 rounded"></p>
@@ -487,25 +515,101 @@
         });
 
         // Update modal functions with improved transitions
-        function openBookingDetails(bookingId, clientName, phone, menu, price, datetime, pax, notes) {
+        function openBookingDetails(bookingId) {
             // Add blur to main content
             document.querySelector('.flex-1').classList.add('blur-effect');
             document.querySelector('#sidebar').classList.add('blur-effect');
             
-            // Set modal fields
-            document.getElementById('modal-booking-id').textContent = bookingId;
-            document.getElementById('modal-client-name').textContent = clientName;
-            document.getElementById('modal-phone').textContent = phone;
-            document.getElementById('modal-menu').textContent = menu;
-            document.getElementById('modal-price').textContent = price;
-            document.getElementById('modal-datetime').textContent = datetime;
-            document.getElementById('modal-pax').textContent = pax;
-            document.getElementById('modal-notes').textContent = notes;
-            
-            // Show modal with fade effect
+            // Show loading state
             const modal = document.getElementById('booking-modal');
             modal.classList.remove('hidden');
-            modal.querySelector('.bg-white\\/95').classList.add('modal-content');
+            
+            // Save the original modal content
+            const originalModalContent = modal.querySelector('.modal-body').innerHTML;
+            
+            // Show loading spinner
+            modal.querySelector('.modal-body').innerHTML = '<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-deep-brown"></div></div>';
+            
+            // Fetch booking details
+            fetch(`booking_handlers/get_booking_details.php?booking_id=${bookingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Booking Details: ', data);
+                    if (data.success) {
+                        const booking = data.data;
+                        
+                        // Restore original modal content
+                        modal.querySelector('.modal-body').innerHTML = originalModalContent;
+                        
+                        // Populate modal fields
+                        document.getElementById('modal-booking-id').textContent = booking.booking_id;
+                        document.getElementById('modal-booking-age').textContent = booking.booking_age;
+                        document.getElementById('modal-client-name').textContent = booking.customer_name;
+                        document.getElementById('modal-phone').textContent = booking.contact_number;
+                         // Format event_hall as bullet points
+                        const hallsElement = document.getElementById('modal-halls');
+                        if (Array.isArray(booking.event_hall)) {
+                            // Create bullet list for array
+                            hallsElement.innerHTML = booking.event_hall.map(hall => `- ${hall}`).join('<br>');
+                        } else if (typeof booking.event_hall === 'string') {
+                            // Handle case where it might already be a string
+                            try {
+                                // Try to parse if it's a JSON string
+                                const hallsArray = JSON.parse(booking.event_hall);
+                                hallsElement.innerHTML = hallsArray.map(hall => `- ${hall}`).join('<br>');
+                            } catch (e) {
+                                // If not JSON, display as is
+                                hallsElement.textContent = booking.event_hall;
+                            }
+                        } else {
+                            hallsElement.textContent = 'No hall specified';
+                        }
+                        document.getElementById('modal-event').textContent = booking.event;
+                        document.getElementById('modal-menu').textContent = booking.package_name;
+                        document.getElementById('modal-pax').textContent = booking.pax;
+                        document.getElementById('modal-price').textContent = `₱${booking.totalPrice}`;
+                        document.getElementById('modal-datetime').textContent = booking.reservation_datetime;
+                        document.getElementById('modal-notes').textContent = booking.notes || 'No notes provided';
+                        
+                        // Handle payment receipt
+                        const receiptImg = document.getElementById('modal-receipt-image');
+                        const noReceipt = document.getElementById('modal-no-receipt');
+                        
+                        if (booking.downpayment_img) {
+                            receiptImg.src = `../images/payment_proofs/${booking.downpayment_img}`;
+                            receiptImg.classList.remove('hidden');
+                            noReceipt.classList.add('hidden');
+                        } else {
+                            receiptImg.classList.add('hidden');
+                            noReceipt.classList.remove('hidden');
+                        }
+                    } else {
+                        // Show error message
+                        modal.querySelector('.modal-body').innerHTML = `
+                            <div class="text-center py-8">
+                                <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                                <h3 class="text-xl font-bold text-deep-brown mb-2">Error loading booking details</h3>
+                                <p class="text-rich-brown">${data.message}</p>
+                                <button onclick="closeBookingModal()" class="mt-4 px-4 py-2 bg-deep-brown text-warm-cream rounded hover:bg-rich-brown transition-colors">
+                                    Close
+                                </button>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modal.querySelector('.modal-body').innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                            <h3 class="text-xl font-bold text-deep-brown mb-2">Network Error</h3>
+                            <p class="text-rich-brown">Failed to fetch booking details. Please try again.</p>
+                            <button onclick="closeBookingModal()" class="mt-4 px-4 py-2 bg-deep-brown text-warm-cream rounded hover:bg-rich-brown transition-colors">
+                                Close
+                            </button>
+                        </div>
+                    `;
+                });
         }
 
         function openDeclineModal() {
@@ -823,16 +927,7 @@
                     searchable: false,
                     render: function(data, type, row) {
                         return `
-                            <button onclick="openBookingDetails(
-                                '${row.booking_id}',
-                                '${escapeSingleQuote(row.customer_name)}',
-                                '${row.contact_number}',
-                                '${escapeSingleQuote(row.package_name)}',
-                                '₱${parseFloat(row.totalPrice).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}',
-                                '${formatDateTime(row.reservation_datetime)}',
-                                '${row.pax}',
-                                '${escapeSingleQuote(row.notes || 'No notes')}'
-                            )" class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
+                            <button onclick="openBookingDetails('${row.booking_id}')" class="flex items-center justify-center space-x-2 px-3 py-1.5 bg-accent-brown/10 text-accent-brown hover:bg-accent-brown/20 hover:scale-105 hover:text-deep-brown rounded-lg transition-all duration-200 ease-in-out">
                                 <i class="fas fa-eye text-sm"></i>
                                 <span>Details</span>
                             </button>
