@@ -327,18 +327,19 @@ try {
         // Modal functionality
         const modal = document.getElementById('menu-modal');
         const modalTitle = document.getElementById('modal-title');
-        const modalPrice = document.getElementById('modal-price');
-        const modalDescription = document.getElementById('modal-description');
         const modalIngredients = document.getElementById('modal-ingredients');
+        const modalDescription = document.getElementById('modal-description');
         const closeModal = document.querySelector('.modal-close');
 
         document.querySelectorAll('.view-ingredients').forEach(button => {
             button.addEventListener('click', () => {
                 const card = button.closest('.menu-card');
-                modalTitle.textContent = card.querySelector('h3').textContent;
-                modalPrice.textContent = card.querySelector('span').textContent.replace('$', '');
-                modalDescription.textContent = card.getAttribute('data-description');
-                modalIngredients.textContent = card.getAttribute('data-ingredients');
+                const dishName = card.querySelector('h3').textContent;
+                const ingredients = card.getAttribute('data-ingredients');
+                const description = card.getAttribute('data-description');
+                modalTitle.textContent = dishName;
+                modalIngredients.textContent = ingredients;
+                modalDescription.textContent = description;
                 modal.classList.add('active');
             });
         });

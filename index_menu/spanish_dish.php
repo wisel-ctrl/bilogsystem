@@ -1,3 +1,29 @@
+
+<?php
+require_once '../db_connect.php';
+
+try {
+    // Query to fetch dishes with dish_category = 'best_seller' and their ingredients
+    $stmt = $conn->prepare("
+        SELECT d.dish_name, d.dish_description, d.price, d.dish_pic_url, 
+               GROUP_CONCAT(i.ingredient_name ORDER BY i.ingredient_name SEPARATOR ', ') AS ingredients
+        FROM dishes_tb d
+        LEFT JOIN dish_ingredients di ON d.dish_id = di.dish_id
+        LEFT JOIN ingredients_tb i ON di.ingredient_id = i.ingredient_id
+        WHERE d.dish_category = 'spanish_dish' AND d.status = 'active'
+        GROUP BY d.dish_id, d.dish_name, d.dish_description, d.price, d.dish_pic_url
+    ");
+    $stmt->execute();
+    $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    exit;
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,101 +190,34 @@
             </div>
 
             <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
-                <!-- Margherita Pizza -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
-                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex flex-col">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
+                <?php foreach ($dishes as $dish): ?>
+                    <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
+                        data-ingredients="<?php echo htmlspecialchars($dish['ingredients'] ?? 'No ingredients listed'); ?>" 
+                        data-description="<?php echo htmlspecialchars($dish['dish_description']); ?>">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
+                            <img src="<?php echo htmlspecialchars($dish['dish_pic_url']); ?>" alt="<?php echo htmlspecialchars($dish['dish_name']); ?>" class="w-full h-48 object-cover">
+                            <div class="p-4 flex flex-col">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="font-medium text-gray-900"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
+                                    <span class="font-medium text-amber-600">₱<?php echo number_format($dish['price'], 2); ?></span>
+                                </div>
+                                <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
+                                    View details
+                                </button>
                             </div>
-                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
-                                View details
-                            </button>
                         </div>
                     </div>
-                </div>       <!-- Margherita Pizza -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
-                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex flex-col">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>       <!-- Margherita Pizza -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
-                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex flex-col">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>       <!-- Margherita Pizza -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
-                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex flex-col">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Repeat for other menu items with same structure -->
-                <div class="menu-card hover:scale-[1.02] transition-transform duration-200 col-span-1" 
-                     data-ingredients="Fresh tomatoes, mozzarella cheese, basil, olive oil, pizza dough"
-                     data-description="Classic Italian pizza with fresh tomatoes, mozzarella, and basil.">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 h-full flex flex-col">
-                        <img src="images/italian/margherita-pizza.jpg" alt="Margherita Pizza" class="w-full h-48 object-cover">
-                        <div class="p-4 flex flex-col">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-900">Margherita Pizza</h3>
-                                <span class="font-medium text-amber-600">$12.99</span>
-                            </div>
-                            <button class="view-ingredients mt-3 self-start text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors underline underline-offset-4">
-                                View details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Add more menu items following the same pattern -->
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
 
-    <!-- Modal -->
-    <div id="menu-modal" class="modal">
+  <!-- Modal -->
+  <div id="menu-modal" class="modal">
         <div class="modal-content font-baskerville">
             <span class="modal-close">×</span>
             <h3 id="modal-title" class="font-playfair text-xl sm:text-2xl font-bold text-gray-900 mb-4"></h3>
-            <div class="text-lg font-semibold text-amber-600 mb-2">$<span id="modal-price"></span></div>
+            <h4 class="text-lg font-semibold text-amber-600 mb-2">Description</h4>
             <p id="modal-description" class="text-sm text-gray-600 leading-relaxed mb-4"></p>
             <h4 class="text-lg font-semibold text-amber-600 mb-2">Ingredients</h4>
             <p id="modal-ingredients" class="text-sm text-gray-600 leading-relaxed"></p>
@@ -368,18 +327,19 @@
         // Modal functionality
         const modal = document.getElementById('menu-modal');
         const modalTitle = document.getElementById('modal-title');
-        const modalPrice = document.getElementById('modal-price');
-        const modalDescription = document.getElementById('modal-description');
         const modalIngredients = document.getElementById('modal-ingredients');
+        const modalDescription = document.getElementById('modal-description');
         const closeModal = document.querySelector('.modal-close');
 
         document.querySelectorAll('.view-ingredients').forEach(button => {
             button.addEventListener('click', () => {
                 const card = button.closest('.menu-card');
-                modalTitle.textContent = card.querySelector('h3').textContent;
-                modalPrice.textContent = card.querySelector('span').textContent.replace('$', '');
-                modalDescription.textContent = card.getAttribute('data-description');
-                modalIngredients.textContent = card.getAttribute('data-ingredients');
+                const dishName = card.querySelector('h3').textContent;
+                const ingredients = card.getAttribute('data-ingredients');
+                const description = card.getAttribute('data-description');
+                modalTitle.textContent = dishName;
+                modalIngredients.textContent = ingredients;
+                modalDescription.textContent = description;
                 modal.classList.add('active');
             });
         });
