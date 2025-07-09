@@ -15,8 +15,8 @@ try {
     $menuItems = array_map(function($dish) {
         // Map database categories to the categories used in your frontend
         $categoryMap = [
-            'main' => 'Main Courses',
-            'desserts' => 'Desserts',
+            'main_course' => 'main-course',
+            'desserts' => 'desserts',
             'drinks' => 'Drinks',
             'appetizer' => 'appetizer', // Not present in buttons, kept from original
             'italian_dish' => 'italian-dish',

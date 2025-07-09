@@ -308,6 +308,12 @@ require_once 'cashier_auth.php';
                         </button>
                     </li>
                     <li>
+                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main-course">
+                            <i class="fas fa-utensils w-5"></i>
+                            <span class="sidebar-text font-baskerville">Main Course</span>
+                        </button>
+                    </li>
+                    <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="italian-dish">
                             <i class="fas fa-pizza-slice w-5"></i>
                             <span class="sidebar-text font-baskerville">Italian Dishes</span>
