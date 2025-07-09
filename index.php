@@ -412,11 +412,11 @@
                 </a>
             </div>
 
-            <div class="text-center mt-12 fade-in">
+            <!-- <div class="text-center mt-12 fade-in">
                 <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
                     Download Full Menu
                 </button>
-            </div>
+            </div> -->
         </div>
     </section>
 
