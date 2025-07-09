@@ -177,13 +177,13 @@ try {
         </div>
     </nav>
 
-    <section id="best-sellers" class="pt-20 pb-16">
+    <section id="maincourse_section" class="pt-20 pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 animate-fade-in">
-                <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-deep-brown mb-4 tracking-tight">Best Sellers</h1>
+                <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-deep-brown mb-4 tracking-tight">Main Course</h1>
                 <div class="w-32 h-1 bg-gradient-to-r from-amber-600 to-amber-800 mx-auto mb-6"></div>
                 <p class="font-baskerville text-lg sm:text-xl text-rich-brown/80 max-w-3xl mx-auto leading-relaxed">
-                    Discover our most popular dishes, loved by our guests for their authentic flavors and quality ingredients.
+                    Indulge in our hearty main course selections—crafted to satisfy your cravings with rich flavors, generous portions, and unforgettable taste.
                 </p>
             </div>
 
