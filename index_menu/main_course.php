@@ -1,10 +1,17 @@
-
 <?php
 require_once '../db_connect.php';
 
 try {
-    // Query to fetch dishes with dish_category = 'best_seller'
-    $stmt = $conn->prepare("SELECT dish_name, dish_description, price, dish_pic_url FROM dishes_tb WHERE dish_category = 'main_course' AND status = 'active'");
+    // Query to fetch dishes with dish_category = 'best_seller' and their ingredients
+    $stmt = $conn->prepare("
+        SELECT d.dish_name, d.dish_description, d.price, d.dish_pic_url, 
+               GROUP_CONCAT(i.ingredient_name ORDER BY i.ingredient_name SEPARATOR ', ') AS ingredients
+        FROM dishes_tb d
+        LEFT JOIN dish_ingredients di ON d.dish_id = di.dish_id
+        LEFT JOIN ingredients_tb i ON di.ingredient_id = i.ingredient_id
+        WHERE d.dish_category = 'main_course' AND d.status = 'active'
+        GROUP BY d.dish_id, d.dish_name, d.dish_description, d.price, d.dish_pic_url
+    ");
     $stmt->execute();
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
@@ -12,7 +19,6 @@ try {
     exit;
 }
 ?>
-
 
 
 
