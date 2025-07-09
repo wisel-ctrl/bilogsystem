@@ -559,7 +559,7 @@
                         const noReceipt = document.getElementById('modal-no-receipt');
                         
                         if (booking.downpayment_img) {
-                            receiptImg.src = `../uploads/receipts/${booking.downpayment_img}`;
+                            receiptImg.src = `../images/payment_proofs/${booking.downpayment_img}`;
                             receiptImg.classList.remove('hidden');
                             noReceipt.classList.add('hidden');
                         } else {
