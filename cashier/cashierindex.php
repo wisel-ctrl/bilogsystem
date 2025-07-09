@@ -709,89 +709,51 @@ require_once 'cashier_auth.php';
             });
         }
 
+        // Render cart items
         function renderCart() {
-    cartItemsContainer.innerHTML = '';
-    
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `
-            <div class="text-center py-8">
-                <i class="fas fa-shopping-cart text-4xl text-rich-brown/30 mb-4"></i>
-                <p class="text-rich-brown/60 font-baskerville">Your cart is empty</p>
-            </div>`;
-        updateTotals();
-        return;
-    }
-    
-    cart.forEach(item => {
-        const cartItemElement = document.createElement('div');
-        cartItemElement.className = 'cart-item fade-in bg-white/50 rounded-lg p-4 mb-3 last:mb-0';
-        cartItemElement.innerHTML = `
-            <div class="flex justify-between items-start">
-                <div class="flex-1">
-                    <h4 class="font-bold text-deep-brown font-playfair">${item.name}</h4>
-                    <p class="text-sm text-rich-brown/70 font-baskerville mt-1">₱${item.price.toFixed(2)} each</p>
-                    <div class="flex items-center mt-3 space-x-2">
-                        <button class="quantity-btn decrease px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <input type="number" 
-                               class="quantity-input w-16 text-center font-medium text-deep-brown border border-warm-cream/50 rounded py-1 focus:outline-none focus:ring-1 focus:ring-amber-500" 
-                               value="${item.quantity}" 
-                               min="1"
-                               data-id="${item.id}">
-                        <button class="quantity-btn increase px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
-                            <i class="fas fa-plus"></i>
-                        </button>
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-shopping-cart text-4xl text-rich-brown/30 mb-4"></i>
+                        <p class="text-rich-brown/60 font-baskerville">Your cart is empty</p>
+                    </div>`;
+                updateTotals();
+                return;
+            }
+            
+            cart.forEach(item => {
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item fade-in bg-white/50 rounded-lg p-4';
+                cartItemElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-deep-brown font-playfair">${item.name}</h4>
+                            <p class="text-sm text-rich-brown/70 font-baskerville mt-1">₱${item.price.toFixed(2)} each</p>
+                            <div class="flex items-center mt-3 space-x-2">
+                                <button class="quantity-btn decrease px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="font-medium text-deep-brown">${item.quantity}</span>
+                                <button class="quantity-btn increase px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-deep-brown font-baskerville">₱${(item.price * item.quantity).toFixed(2)}</div>
+                            <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition-colors duration-200" data-id="${item.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="text-right">
-                    <div class="font-bold text-deep-brown font-baskerville">₱${(item.price * item.quantity).toFixed(2)}</div>
-                    <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition-colors duration-200" data-id="${item.id}">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-        cartItemsContainer.appendChild(cartItemElement);
-        
-        // Add event listeners for the input field
-        const quantityInput = cartItemElement.querySelector('.quantity-input');
-        
-        quantityInput.addEventListener('change', function() {
-            const newQuantity = parseInt(this.value);
-            if (!isNaN(newQuantity) && newQuantity >= 1) {
-                updateCartItemQuantity(item.id, newQuantity);
-            } else {
-                this.value = item.quantity; // Revert if invalid
-            }
-        });
-        
-        quantityInput.addEventListener('blur', function() {
-            if (this.value === "" || parseInt(this.value) < 1) {
-                this.value = 1;
-                updateCartItemQuantity(item.id, 1);
-            }
-        });
-        
-        // Prevent non-numeric input
-        quantityInput.addEventListener('keydown', function(e) {
-            if (['e', 'E', '+', '-'].includes(e.key)) {
-                e.preventDefault();
-            }
-        });
-    });
-    
-    updateTotals();
-}
-
-function updateCartItemQuantity(itemId, newQuantity) {
-    const itemIndex = cart.findIndex(item => item.id === itemId);
-    if (itemIndex !== -1) {
-        cart[itemIndex].quantity = newQuantity;
-        saveCartToLocalStorage();
-        renderCart(); // Re-render to update all values
-    }
-}
+                `;
+                cartItemsContainer.appendChild(cartItemElement);
+            });
+            
+            updateTotals();
+        }
 
         // Update totals in cart
         function updateTotals() {
