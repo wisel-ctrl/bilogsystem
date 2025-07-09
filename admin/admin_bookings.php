@@ -546,7 +546,24 @@
                         document.getElementById('modal-booking-age').textContent = booking.booking_age;
                         document.getElementById('modal-client-name').textContent = booking.customer_name;
                         document.getElementById('modal-phone').textContent = booking.contact_number;
-                        document.getElementById('modal-halls').textContent = booking.event_hall;
+                         // Format event_hall as bullet points
+                        const hallsElement = document.getElementById('modal-halls');
+                        if (Array.isArray(booking.event_hall)) {
+                            // Create bullet list for array
+                            hallsElement.innerHTML = booking.event_hall.map(hall => `- ${hall}`).join('<br>');
+                        } else if (typeof booking.event_hall === 'string') {
+                            // Handle case where it might already be a string
+                            try {
+                                // Try to parse if it's a JSON string
+                                const hallsArray = JSON.parse(booking.event_hall);
+                                hallsElement.innerHTML = hallsArray.map(hall => `- ${hall}`).join('<br>');
+                            } catch (e) {
+                                // If not JSON, display as is
+                                hallsElement.textContent = booking.event_hall;
+                            }
+                        } else {
+                            hallsElement.textContent = 'No hall specified';
+                        }
                         document.getElementById('modal-event').textContent = booking.event;
                         document.getElementById('modal-menu').textContent = booking.package_name;
                         document.getElementById('modal-pax').textContent = booking.pax;
