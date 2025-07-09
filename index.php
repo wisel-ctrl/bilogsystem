@@ -310,12 +310,12 @@
                     </div>
                 </a>
 
-                <!-- Cake & Pastries -->
-                <a href="index_menu/cake_pastries.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <!-- Salad -->
+                <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                     <div class="aspect-[3/4] relative">
-                        <img src="images/cake-pastries.jpg" alt="Cake & Pastries" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <img src="images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Cake & Pastries</h3>
+                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Salad</h3>
                         </div>
                     </div>
                 </a>
