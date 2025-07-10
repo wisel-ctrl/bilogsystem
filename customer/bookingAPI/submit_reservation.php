@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once ('../customer_auth.php');
 header('Content-Type: application/json');
 
 // Include database connection
