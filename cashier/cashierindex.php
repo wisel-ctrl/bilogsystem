@@ -412,19 +412,23 @@ require_once 'cashier_auth.php';
                 <div class="flex flex-col lg:flex-row gap-6">
                     <!-- Menu Items Section -->
                     <div class="w-full lg:w-3/5">
-                        <div class="pos-card rounded-xl p-6 mb-6">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Menu Items</h3>
-                                <div class="relative w-1/2">
+                        <div class="bg-white/80 backdrop-blur-md rounded-xl p-4 sm:p-6 mb-6 shadow-md">
+                            <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                                <h3 class="text-xl sm:text-2xl font-bold text-amber-900 font-serif">Menu Items</h3>
+                                <div class="relative w-full sm:w-1/2">
                                     <input type="text" id="menu-search" placeholder="Search menu items..." 
-                                        class="w-full p-3 pl-10 pr-10 border border-rich-brown/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-brown bg-white/50 backdrop-blur-sm">
-                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50"></i>
-                                    <button id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-rich-brown/50 hover:text-rich-brown hidden">
-                                        <i class="fas fa-times"></i>
+                                        class="w-full p-3 pl-10 pr-10 border border-amber-800/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 bg-white/50 backdrop-blur-sm text-amber-800 placeholder-amber-800/50">
+                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-800/50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    <button id="clear-search" class="absolute right-3 top-1/2 -translate-y-1/2 text-amber-800/50 hover:text-amber-800 hidden">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-items">
+                            <div class="grid grid-cols-2 gap-4" id="menu-items">
                                 <!-- Menu items will be dynamically inserted here -->
                             </div>
                         </div>
