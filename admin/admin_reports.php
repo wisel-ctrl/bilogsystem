@@ -249,10 +249,6 @@ try {
                 Daily Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -269,24 +265,14 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>₱2,450</td>
-                        <td>124</td>
-                        <td>₱19.76</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>₱2,200</td>
-                        <td>110</td>
-                        <td>₱20.00</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>₱2,300</td>
-                        <td>115</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php while ($row = $daily_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -300,10 +286,6 @@ try {
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -320,24 +302,14 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>₱84,320</td>
-                        <td>3,847</td>
-                        <td>₱21.92</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>₱78,500</td>
-                        <td>3,600</td>
-                        <td>₱21.81</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>₱82,000</td>
-                        <td>3,750</td>
-                        <td>₱21.87</td>
-                    </tr>
+                    <?php while ($row = $monthly_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F Y', strtotime($row['month'] . '-01')); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -351,10 +323,6 @@ try {
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -371,28 +339,24 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>₱950,680</td>
-                        <td>45,320</td>
-                        <td>₱20.98</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>₱780,000</td>
-                        <td>38,000</td>
-                        <td>₱20.53</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>₱700,000</td>
-                        <td>35,000</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php while ($row = $yearly_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo $row['year']; ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
     </div>
+
+
+
+
+
+
 
     <!-- Daily Orders Table -->
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
