@@ -320,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Remember me
                             </label>
                         </div>
-                        <a href="#" class="font-baskerville text-rich-brown hover:text-accent-brown underline transition-colors duration-300">
+                        <a href="forgot_password.php" class="font-baskerville text-rich-brown hover:text-accent-brown underline transition-colors duration-300">
                             Forgot password?
                         </a>
                     </div>
@@ -451,5 +451,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
     </script>
+    
 </body>
 </html>
