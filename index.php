@@ -289,136 +289,129 @@
     </div>
 </section>
 
-<section id="menu" class="py-20 bg-gradient-to-b from-warm-cream to-amber-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Our Menu</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-xl text-rich-brown max-w-4xl mx-auto leading-relaxed">
-                    Discover our carefully curated menu featuring the finest Italian and Spanish dishes. From classic favorites to unique specialties.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Best-Sellers -->
-                <a href="index_menu/best_sellers.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/Calamari.jpg" alt="Best Sellers" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Best-Sellers</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Main Course -->
-                <a href="index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Main Course</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Salad -->
-                <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">House Salad</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Italian Dish -->
-                <a href="index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/italian_dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Italian Dish</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Spanish Dish -->
-                <a href="index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/spanish_dish.jpg" alt="All Day Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Spanish Dish</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Coffee -->
-                <a href="index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/coffee.png" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Coffee</h3>
-                        </div>
-                    </div>
-                </a>
-
-                   <!-- Drinks -->
-                <a href="index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/drinks.png" alt="drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Drinks</h3>
-                        </div>
-                    </div>
-                </a>
-
-      
-                <!-- Pizza & Burgers -->
-                <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/burgerpizza.png" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Burgers & Pizza</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Pasta -->
-                <a href="index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/Carbonara.jpg" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Pasta e Caza -->
-                <a href="index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/pastaEcaza.png" alt="Pasta & Salads" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Pasta e Caza</h3>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Desserts -->
-                <a href="index_menu/desserts.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-                    <div class="aspect-[3/4] relative">
-                        <img src="images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                            <h3 class="font-playfair text-2xl font-bold text-warm-cream text-center px-4">Desserts</h3>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- <div class="text-center mt-12 fade-in">
-                <button class="bg-deep-brown text-warm-cream px-8 py-4 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    Download Full Menu
-                </button>
-            </div> -->
+<section id="menu" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-fade-in">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-brown-900 mb-6">Our Menu</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-amber-800 to-amber-600 mx-auto mb-8"></div>
+            <p class="font-serif text-lg text-brown-800 max-w-4xl mx-auto leading-relaxed">
+                Discover our carefully curated menu featuring the finest Italian and Spanish dishes. From classic favorites to unique specialties.
+            </p>
         </div>
-    </section>
+
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Best-Sellers -->
+            <a href="index_menu/best_sellers.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/Calamari.jpg" alt="Best Sellers" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Best-Sellers</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Main Course -->
+            <a href="index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Main Course</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Salad -->
+            <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">House Salad</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Italian Dish -->
+            <a href="index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/italian_dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Italian Dish</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Spanish Dish -->
+            <a href="index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/spanish_dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Spanish Dish</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Coffee -->
+            <a href="index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/coffee.png" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Coffee</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Drinks -->
+            <a href="index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/drinks.png" alt="Drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Drinks</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Pizza & Burgers -->
+            <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/burgerpizza.png" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Burgers & Pizza</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Pasta -->
+            <a href="index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/Carbonara.jpg" alt="Pasta" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Pasta</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Pasta e Caza -->
+            <a href="index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/pastaEcaza.png" alt="Pasta e Caza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Pasta e Caza</h3>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Desserts -->
+            <a href="index_menu/desserts.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+                <div class="aspect-[3/4] relative">
+                    <img src="images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                        <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Desserts</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
 
     <!-- Packages Section -->
     <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-warm-cream to-amber-50">
