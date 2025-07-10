@@ -380,32 +380,27 @@ require_once 'cashier_auth.php';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
-        <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-amber-100/20 px-4 sm:px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <button id="sidebar-toggle" class="text-amber-900 hover:text-amber-800 transition-colors duration-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                    <h2 class="hidden sm:block text-xl sm:text-2xl font-bold text-amber-900 font-serif">Point-of-Sale</h2>
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur-md shadow-md border-b border-warm-cream/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-deep-brown hover:text-rich-brown transition-colors duration-200">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-deep-brown font-playfair">Point-of-Sale</h2>
+                    </div>
+                    <div class="text-sm text-rich-brown font-baskerville flex-1 text-center mx-4">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="../logout.php?usertype=cashier" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-sign-out-alt text-deep-brown"></i>
+                            <span class="text-sm font-medium text-deep-brown font-baskerville">Sign Out</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="text-sm text-amber-800 font-serif flex-1 text-center mx-4 hidden sm:flex items-center justify-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <span id="current-date"></span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="../logout.php?usertype=cashier" class="flex items-center space-x-2 hover:bg-amber-100/10 p-2 rounded-lg transition-all duration-200">
-                        <svg class="w-5 h-5 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                        </svg>
-                        <span class="text-sm font-medium text-amber-900 font-serif">Sign Out</span>
-                    </a>
-                </div>
-            </div>
-        </header>
+            </header>
 
             <!-- Main Content Area -->
             <main class="flex-1 overflow-y-auto p-6">
