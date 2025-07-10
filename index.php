@@ -424,138 +424,123 @@
 
     <!-- Packages Carousel Section -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Previous Button -->
-        <button id="prevBtnPackages" class="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-10 bg-amber-800 text-amber-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-900 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-
         <!-- Carousel Container -->
-        <div class="overflow-hidden px-8 sm:px-12 lg:px-16">
-            <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out">
-                <!-- Slide 1 -->
-                <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 7</h3>
-                                        <p class="font-serif text-sm">₱1,300 +10% Service Charge</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 1</h3>
-                                        <p class="font-serif text-sm">₱2,200 +10% Service Charge</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto hidden lg:block">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 2</h3>
-                                        <p class="font-serif text-sm">₱1,950 +10% Service Charge</p>
-                                    </div>
+        <div class="overflow-hidden">
+            <div id="packageCarousel" class="flex transition-transform duration-500 ease-in-out touch-pan-x" style="touch-action: pan-x;">
+                <!-- Slide 1: Buffet 7 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Buffet 7')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/07_buffet.jpg" alt="Buffet 7" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 7</h3>
+                                    <p class="font-serif text-sm">₱1,300 +10% Service Charge</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Slide 2 -->
-                <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto lg:hidden">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 2</h3>
-                                        <p class="font-serif text-sm">₱1,950 +10% Service Charge</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 3</h3>
-                                        <p class="font-serif text-sm">₱1,500 +10% Service Charge</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 4</h3>
-                                        <p class="font-serif text-sm">₱1,300 +10% Service Charge</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto hidden lg:block">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 5</h3>
-                                        <p class="font-serif text-sm">₱1,200 +10% Service Charge</p>
-                                    </div>
+                <!-- Slide 2: Buffet 1 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/01_buffet.jpg', 'Buffet 1')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/01_buffet.jpg" alt="Buffet 1" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 1</h3>
+                                    <p class="font-serif text-sm">₱2,200 +10% Service Charge</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Slide 3 -->
-                <div class="w-full flex-shrink-0 px-2 sm:px-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 justify-center max-w-4xl mx-auto">
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto lg:hidden">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 5</h3>
-                                        <p class="font-serif text-sm">₱1,200 +10% Service Charge</p>
-                                    </div>
+                <!-- Slide 3: Buffet 2 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/02_buffet.jpg', 'Buffet 2')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/02_buffet.jpg" alt="Buffet 2" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 2</h3>
+                                    <p class="font-serif text-sm">₱1,950 +10% Service Charge</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 6</h3>
-                                        <p class="font-serif text-sm">₱900 +10% Service Charge</p>
-                                    </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Buffet 3 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/03_buffet.jpg', 'Buffet 3')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/03_buffet.jpg" alt="Buffet 3" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 3</h3>
+                                    <p class="font-serif text-sm">₱1,500 +10% Service Charge</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs sm:max-w-sm mx-auto">
-                            <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
-                                <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
-                                    <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
-                                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
-                                        <h3 class="font-serif text-base sm:text-lg font-bold">Sit-down Plated</h3>
-                                        <p class="font-serif text-sm">₱900 +10% Service Charge</p>
-                                    </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Buffet 4 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/04_buffet.jpg', 'Buffet 4')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/04_buffet.jpg" alt="Buffet 4" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 4</h3>
+                                    <p class="font-serif text-sm">₱1,300 +10% Service Charge</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6: Buffet 5 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/05_buffet.jpg', 'Buffet 5')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/05_buffet.jpg" alt="Buffet 5" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 5</h3>
+                                    <p class="font-serif text-sm">₱1,200 +10% Service Charge</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 7: Buffet 6 -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/06_buffet.jpg', 'Buffet 6')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/06_buffet.jpg" alt="Buffet 6" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Buffet 6</h3>
+                                    <p class="font-serif text-sm">₱900 +10% Service Charge</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 8: Sit-down Plated -->
+                <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-4">
+                    <div class="w-full max-w-xs sm:max-w-sm mx-auto">
+                        <div class="shadow-lg hover:shadow-xl cursor-pointer transform hover:scale-[1.02] transition-all duration-300" onclick="openModal('images/07_buffet.jpg', 'Sit-down Plated')">
+                            <div class="relative overflow-hidden rounded-lg aspect-[3/4]">
+                                <img src="images/07_buffet.jpg" alt="Sit-down Plated" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-amber-50 p-3 sm:p-4">
+                                    <h3 class="font-serif text-base sm:text-lg font-bold">Sit-down Plated</h3>
+                                    <p class="font-serif text-sm">₱900 +10% Service Charge</p>
                                 </div>
                             </div>
                         </div>
@@ -564,20 +549,72 @@
             </div>
         </div>
 
-        <!-- Next Button -->
-        <button id="nextBtnPackages" class="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-10 bg-amber-800 text-amber-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-900 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
-
         <!-- Carousel Indicators -->
         <div class="flex justify-center mt-6 sm:mt-8 space-x-2">
             <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="0"></button>
             <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="1"></button>
             <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="2"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="3"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="4"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="5"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="6"></button>
+            <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="7"></button>
         </div>
     </div>
+
+    <!-- JavaScript for Swipeable Carousel -->
+    <script>
+        const carousel = document.getElementById('packageCarousel');
+        const indicators = document.querySelectorAll('.package-indicator');
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+
+        function updateCarousel() {
+            const slideWidth = window.innerWidth < 640 ? 100 : window.innerWidth < 1024 ? 50 : 33.33;
+            carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('opacity-100', index === currentIndex);
+                indicator.classList.toggle('opacity-50', index !== currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = Math.max(0, Math.min(index, indicators.length - 1));
+            updateCarousel();
+        }
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diffX = startX - currentX;
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0 && currentIndex < indicators.length - 1) {
+                    currentIndex++;
+                } else if (diffX < 0 && currentIndex > 0) {
+                    currentIndex--;
+                }
+                updateCarousel();
+                isDragging = false;
+            }
+        });
+
+        carousel.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Initialize carousel
+        updateCarousel();
+    </script>
 </div>
     <!-- What We Offer Section -->
     <section id="services" class="py-20 bg-warm-cream">
