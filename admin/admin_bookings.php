@@ -522,6 +522,7 @@
             
             // Show loading state
             const modal = document.getElementById('booking-modal');
+            modal.dataset.bookingId = bookingId;
             modal.classList.remove('hidden');
             
             // Save the original modal content
@@ -615,7 +616,10 @@
         function openDeclineModal() {
             // Hide booking modal, show decline modal with transition
             const bookingModal = document.getElementById('booking-modal');
+            const bookingId = bookingModal.dataset.bookingId;
             const declineModal = document.getElementById('decline-modal');
+
+            declineModal.dataset.bookingId = bookingId;
             
             bookingModal.classList.add('hidden');
             declineModal.classList.remove('hidden');
@@ -623,8 +627,13 @@
         }
 
         function acceptBooking() {
+            const modal = document.getElementById('booking-modal');
+            const bookingId = modal.dataset.bookingId;
+
+            console.log('Accepting booking:', bookingId);
+
             // Hide booking modal
-            document.getElementById('booking-modal').classList.add('hidden');
+            modal.classList.add('hidden');
             // Show success modal with message and animation
             const successModal = document.getElementById('success-modal');
             document.getElementById('success-message').textContent = 'Booking has been accepted!';
