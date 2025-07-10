@@ -733,64 +733,66 @@ require_once 'cashier_auth.php';
     }
     
     cart.forEach(item => {
-            const cartItemElement = document.createElement('div');
-            cartItemElement.className = 'cart-item fade-in bg-white/50 rounded-lg p-4 mb-3 last:mb-0';
-            cartItemElement.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-amber-900 font-serif">${item.name}</h4>
-                        <p class="text-sm text-amber-800/70 font-serif mt-1">₱${item.price.toFixed(2)} each</p>
-                        <div class="flex items-center mt-3 space-x-2">
-                            <button class="quantity-btn decrease px-3 py-1 bg-amber-100/50 rounded hover:bg-amber-100/70 transition-colors duration-200" data-id="${item.id}">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" 
-                                   class="quantity-input w-16 text-center font-medium text-amber-900 border border-amber-100/50 rounded py-1 focus:outline-none focus:ring-1 focus:ring-amber-500" 
-                                   value="${item.quantity}" 
-                                   min="1" 
-                                   data-id="${item.id}">
-                            <button class="quantity-btn increase px-3 py-1 bg-amber-100/50 rounded hover:bg-amber-100/70 transition-colors duration-200" data-id="${item.id}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-amber-900 font-serif">₱${(item.price * item.quantity).toFixed(2)}</div>
-                        <!-- Modification: Wrapped remove-item icon in a button with increased padding (px-3 py-2) for larger clickable area -->
-                        <!-- Removed transform: scale on hover to prevent visual glitches -->
-                        <button class="remove-item px-3 py-2 text-red-500 hover:text-red-700 transition-colors duration-200" data-id="${item.id}">
-                            <i class="fas fa-trash-alt text-sm"></i>
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item fade-in bg-white/50 rounded-lg p-4 mb-3 last:mb-0';
+        cartItemElement.innerHTML = `
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h4 class="font-bold text-deep-brown font-playfair">${item.name}</h4>
+                    <p class="text-sm text-rich-brown/70 font-baskerville mt-1">₱${item.price.toFixed(2)} each</p>
+                    <div class="flex items-center mt-3 space-x-2">
+                        <button class="quantity-btn decrease px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" 
+                               class="quantity-input w-16 text-center font-medium text-deep-brown border border-warm-cream/50 rounded py-1 focus:outline-none focus:ring-1 focus:ring-amber-500" 
+                               value="${item.quantity}" 
+                               min="1" 
+                               data-id="${item.id}">
+                        <button class="quantity-btn increase px-3 py-1 bg-warm-cream/50 rounded hover:bg-warm-cream/70 transition-colors duration-200" data-id="${item.id}">
+                            <i class="fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
-            `;
-            cartItemsContainer.appendChild(cartItemElement);
-            
-            const quantityInput = cartItemElement.querySelector('.quantity-input');
-            quantityInput.addEventListener('change', function() {
-                const newQuantity = parseInt(this.value);
-                if (!isNaN(newQuantity) && newQuantity >= 1) {
-                    updateCartItemQuantity(item.id, newQuantity);
-                } else {
-                    this.value = item.quantity;
-                }
-            });
-            
-            quantityInput.addEventListener('blur', function() {
-                if (this.value === "" || parseInt(this.value) < 1) {
-                    this.value = 1;
-                    updateCartItemQuantity(item.id, 1);
-                }
-            });
-            
-            quantityInput.addEventListener('keydown', function(e) {
-                if (['e', 'E', '+', '-'].includes(e.key)) {
-                    e.preventDefault();
-                }
-            });
+                <div class="text-right">
+                    <div class="font-bold text-deep-brown font-baskerville">₱${(item.price * item.quantity).toFixed(2)}</div>
+                    <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition duration-200 transform hover:scale-110" data-id="${item.id}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+
+                </div>
+            </div>
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
+        
+        // Add event listeners for the input field
+        const quantityInput = cartItemElement.querySelector('.quantity-input');
+        
+        quantityInput.addEventListener('change', function() {
+            const newQuantity = parseInt(this.value);
+            if (!isNaN(newQuantity) && newQuantity >= 1) {
+                updateCartItemQuantity(item.id, newQuantity);
+            } else {
+                this.value = item.quantity; // Revert if invalid
+            }
         });
         
-        updateTotals();
+        quantityInput.addEventListener('blur', function() {
+            if (this.value === "" || parseInt(this.value) < 1) {
+                this.value = 1;
+                updateCartItemQuantity(item.id, 1);
+            }
+        });
+        
+        // Prevent non-numeric input
+        quantityInput.addEventListener('keydown', function(e) {
+            if (['e', 'E', '+', '-'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+    });
+    
+    updateTotals();
 }
 
 function updateCartItemQuantity(itemId, newQuantity) {
@@ -1131,26 +1133,17 @@ function updateCartItemQuantity(itemId, newQuantity) {
             
             // Cart quantity buttons (delegated)
             cartItemsContainer.addEventListener('click', (e) => {
-            // Modification: Use closest('.remove-item') to ensure clicks on button or icon are captured
-            const removeButton = e.target.closest('.remove-item');
-            const quantityButton = e.target.closest('.quantity-btn');
-            
-            if (removeButton) {
-                const itemId = parseInt(removeButton.dataset.id);
-                removeFromCart(itemId);
-                // Modification: Added visual feedback for remove button click
-                removeButton.classList.add('bg-red-100/50');
-                setTimeout(() => {
-                    removeButton.classList.remove('bg-red-100/50');
-                }, 200);
-            }
-            
-            if (quantityButton) {
-                const itemId = parseInt(quantityButton.dataset.id);
-                const isIncrease = quantityButton.classList.contains('increase');
-                updateQuantity(itemId, isIncrease ? 1 : -1);
-            }
-        });
+                if (e.target.classList.contains('quantity-btn')) {
+                    const itemId = parseInt(e.target.dataset.id);
+                    const isIncrease = e.target.classList.contains('increase');
+                    updateQuantity(itemId, isIncrease ? 1 : -1);
+                }
+                
+                if (e.target.classList.contains('remove-item')) {
+                    const itemId = parseInt(e.target.dataset.id);
+                    removeFromCart(itemId);
+                }
+            });
             
             // Clear cart button
             clearCartBtn.addEventListener('click', clearCart);
