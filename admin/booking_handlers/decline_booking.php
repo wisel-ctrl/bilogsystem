@@ -31,7 +31,7 @@ try {
 
     $currentDateTime = date('Y-m-d H:i:s');
     // Prepare the update query using PDO
-    $stmt = $pdo->prepare("UPDATE booking_tb 
+    $stmt = $conn->prepare("UPDATE booking_tb 
                           SET booking_status = 'declined', 
                               decline_reason = :reason,
                               response_id = :user_id,
