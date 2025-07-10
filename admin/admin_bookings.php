@@ -630,18 +630,69 @@
             const modal = document.getElementById('booking-modal');
             const bookingId = modal.dataset.bookingId;
 
-            console.log('Accepting booking:', bookingId);
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to accept this booking!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, accept it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('Accepting booking:', bookingId);
 
-            // Hide booking modal
-            modal.classList.add('hidden');
-            // Show success modal with message and animation
-            const successModal = document.getElementById('success-modal');
-            document.getElementById('success-message').textContent = 'Booking has been accepted!';
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.querySelector('.dashboard-card').style.opacity = '1';
-                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
+                    // Send AJAX request to accept the booking
+                    fetch('booking_handlers/accept_booking.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `booking_id=${encodeURIComponent(bookingId)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Hide booking modal
+                            modal.classList.add('hidden');
+                            
+                            // Show success message with SweetAlert
+                            // Swal.fire(
+                            //     'Accepted!',
+                            //     data.message,
+                            //     'success'
+                            // );
+                            
+                            // Alternatively, you can keep your existing success modal if preferred
+                            
+                            const successModal = document.getElementById('success-modal');
+                            document.getElementById('success-message').textContent = data.message;
+                            successModal.classList.remove('hidden');
+                            setTimeout(() => {
+                                successModal.querySelector('.dashboard-card').style.opacity = '1';
+                                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                            }, 50);
+                            
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                data.message,
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while accepting the booking',
+                            'error'
+                        );
+                    });
+                }
+            });
         }
 
         function closeBookingModal() {
