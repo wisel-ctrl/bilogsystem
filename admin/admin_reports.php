@@ -269,24 +269,14 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>₱2,450</td>
-                        <td>124</td>
-                        <td>₱19.76</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>₱2,200</td>
-                        <td>110</td>
-                        <td>₱20.00</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>₱2,300</td>
-                        <td>115</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php while ($row = $daily_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
