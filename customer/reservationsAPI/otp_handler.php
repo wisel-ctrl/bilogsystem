@@ -1,7 +1,28 @@
 <?php
+// Set secure session cookie parameters before starting session
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+
+// Use the same session name as customer_auth.php
+session_name('CUSTOMER_SESSION');
 session_start();
-require_once '../customer_auth.php';
-require_once '../../db_connect.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+error_log("Session ID: " . session_id());
+error_log("User ID in session: " . ($_SESSION['user_id'] ?? 'not set'));
+error_log("User type in session: " . ($_SESSION['usertype'] ?? 'not set'));
+
+// Include required files with proper paths
+require_once __DIR__ . '/../customer_auth.php';
+require_once __DIR__ . '/../../db_connect.php';
 
 $api_key = '487b60aae3df89ca35dc3b4dd69e2518';
 $sender_name = 'CaffeLilio';
@@ -18,6 +39,8 @@ try {
             if (!$user_id) {
                 throw new Exception('User not logged in');
             }
+            
+            error_log("User phone number: " . ($user['contact_number'] ?? 'not found'));
 
             $stmt = $conn->prepare("SELECT contact_number FROM users_tb WHERE id = :user_id");
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -69,6 +92,10 @@ try {
                 throw new Exception('Failed to send OTP via SMS: Invalid API response');
             }
             
+            error_log("SMS API Request: " . print_r($sms_data, true));
+            error_log("SMS API Response Code: $http_code");
+            error_log("SMS API Full Response: " . print_r($response_data, true));
+
             // Check for success in response
             if ($http_code === 200) {
                 // Semaphore API v4 returns an array of message objects
@@ -108,7 +135,7 @@ try {
             }
 
             // OTP is valid, proceed with cancellation
-            $stmt = $conn->prepare("UPDATE booking_tb SET booking_status = 'declined' WHERE booking_id = :booking_id AND customer_id = :user_id");
+            $stmt = $conn->prepare("UPDATE booking_tb SET booking_status = 'cancel' WHERE booking_id = :booking_id AND customer_id = :user_id");
             $stmt->bindValue(':booking_id', $booking_id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $result = $stmt->execute();

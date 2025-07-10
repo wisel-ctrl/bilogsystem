@@ -478,19 +478,40 @@
 
                                 <!-- Dish Image Upload -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">
+                                        Dish Image
+                                    </label>
+
                                     <div class="flex items-center space-x-4">
+                                        <!-- wrapper must be relative for absolute positioning to work -->
                                         <div class="relative flex-1">
-                                            <input type="file" id="dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
-                                                <i class="fas fa-upload mr-2"></i>
-                                                <span id="file-name">Choose an image file</span>
-                                            </div>
+                                        <!-- ① the real file input -->
+                                        <input
+                                            id="dish-image"
+                                            type="file"
+                                            accept="image/*"
+                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        />
+
+                                        <!-- ② the pretty part -->
+                                        <label                         
+                                            for="dish-image"
+                                            class="block px-4 py-2 border border-warm-cream/50 rounded-lg
+                                                bg-white/50 backdrop-blur-sm text-center cursor-pointer
+                                                hover:bg-warm-cream/10 transition-colors duration-200
+                                                font-baskerville"
+                                        >
+                                            <i class="fas fa-upload mr-2"></i>
+                                            <span id="file-name">Choose an image file</span>
+                                        </label>
                                         </div>
                                     </div>
+
+                                    <!-- preview -->
                                     <div id="image-preview-container" class="mt-4 hidden">
                                         <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
-                                        <img id="image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                        <img id="image-preview" src="#" alt="Preview"
+                                            class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
                                     </div>
                                 </div>
 
@@ -697,19 +718,42 @@
 
                                 <!-- Dish Image Upload -->
                                 <div>
-                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Image</label>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">
+                                        Dish Image
+                                    </label>
+
                                     <div class="flex items-center space-x-4">
                                         <div class="relative flex-1">
-                                            <input type="file" id="edit-dish-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                            <div class="px-4 py-2 border border-warm-cream/50 rounded-lg bg-white/50 backdrop-blur-sm text-center cursor-pointer hover:bg-warm-cream/10 transition-colors duration-200 font-baskerville">
-                                                <i class="fas fa-upload mr-2"></i>
-                                                <span id="edit-file-name">Choose an image file</span>
-                                            </div>
+                                        <!-- hidden input -->
+                                        <input
+                                            type="file"
+                                            id="edit-dish-image"
+                                            accept="image/*"
+                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        />
+
+                                        <!-- pretty button wrapped in label -->
+                                        <label
+                                            for="edit-dish-image"
+                                            class="block px-4 py-2 border border-warm-cream/50 rounded-lg
+                                                bg-white/50 backdrop-blur-sm text-center cursor-pointer
+                                                hover:bg-warm-cream/10 transition-colors duration-200
+                                                font-baskerville"
+                                        >
+                                            <i class="fas fa-upload mr-2"></i>
+                                            <span id="edit-file-name">Choose an image file</span>
+                                        </label>
                                         </div>
                                     </div>
+
                                     <div id="edit-image-preview-container" class="mt-4">
                                         <p class="text-sm text-gray-500 mb-2 font-baskerville">Current Image:</p>
-                                        <img id="edit-image-preview" src="#" alt="Preview" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                        <img
+                                        id="edit-image-preview"
+                                        src="#"
+                                        alt="Preview"
+                                        class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50"
+                                        >
                                     </div>
                                 </div>
 

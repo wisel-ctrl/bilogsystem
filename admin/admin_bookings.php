@@ -386,6 +386,22 @@
                         <div class="modal-body flex-1 overflow-y-auto p-6">
                             <div class="space-y-6">
                                 <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Common reasons:</label>
+                                    <div class="grid grid-cols-2 gap-3 mb-4">
+                                        <button onclick="selectDeclineReason('The selected dates are not available.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Dates not available
+                                        </button>
+                                        <button onclick="selectDeclineReason('The property is undergoing maintenance during the requested period.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Property maintenance
+                                        </button>
+                                        <button onclick="selectDeclineReason('The property is not suitable for the number of guests or purpose of stay.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Not suitable for needs
+                                        </button>
+                                        <button onclick="selectDeclineReason('We are unable to accommodate the booking at this time.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Unable to accommodate
+                                        </button>
+                                    </div>
+                                    
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Reason for declining:</label>
                                     <textarea id="decline-reason" rows="4" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Please provide a reason for declining this booking..." oninput="validateDeclineReason(this)"></textarea>
                                     <p id="decline-reason-error" class="text-red-500 text-sm mt-1 hidden"></p>
@@ -522,6 +538,7 @@
             
             // Show loading state
             const modal = document.getElementById('booking-modal');
+            modal.dataset.bookingId = bookingId;
             modal.classList.remove('hidden');
             
             // Save the original modal content
@@ -615,7 +632,10 @@
         function openDeclineModal() {
             // Hide booking modal, show decline modal with transition
             const bookingModal = document.getElementById('booking-modal');
+            const bookingId = bookingModal.dataset.bookingId;
             const declineModal = document.getElementById('decline-modal');
+
+            declineModal.dataset.bookingId = bookingId;
             
             bookingModal.classList.add('hidden');
             declineModal.classList.remove('hidden');
@@ -623,16 +643,74 @@
         }
 
         function acceptBooking() {
-            // Hide booking modal
-            document.getElementById('booking-modal').classList.add('hidden');
-            // Show success modal with message and animation
-            const successModal = document.getElementById('success-modal');
-            document.getElementById('success-message').textContent = 'Booking has been accepted!';
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.querySelector('.dashboard-card').style.opacity = '1';
-                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
+            const modal = document.getElementById('booking-modal');
+            const bookingId = modal.dataset.bookingId;
+
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to accept this booking!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, accept it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('Accepting booking:', bookingId);
+
+                    // Send AJAX request to accept the booking
+                    fetch('booking_handlers/accept_booking.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `booking_id=${encodeURIComponent(bookingId)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Hide booking modal
+                            modal.classList.add('hidden');
+                            
+                            // Show success message with SweetAlert
+                            // Swal.fire(
+                            //     'Accepted!',
+                            //     data.message,
+                            //     'success'
+                            // );
+                            
+                            // Alternatively, you can keep your existing success modal if preferred
+                            
+                            const successModal = document.getElementById('success-modal');
+                            document.getElementById('success-message').textContent = data.message;
+                            successModal.classList.remove('hidden');
+                            setTimeout(() => {
+                                successModal.querySelector('.dashboard-card').style.opacity = '1';
+                                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                            }, 50);
+
+                             $('#restaurant-bookings-table').DataTable().ajax.reload(null, false);
+                            
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                data.message,
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while accepting the booking',
+                            'error'
+                        );
+                    });
+                }
+            });
         }
 
         function closeBookingModal() {
@@ -690,6 +768,13 @@
             }, 300);
         }
 
+        function selectDeclineReason(reason) {
+            const textarea = document.getElementById('decline-reason');
+            textarea.value = reason;
+            // Optional: Trigger validation if needed
+            validateDeclineReason(textarea);
+        }
+
         // Add this new function for decline reason validation
         function validateDeclineReason(textarea) {
             const errorElement = document.getElementById('decline-reason-error');
@@ -725,6 +810,8 @@
         function confirmDecline() {
             const reason = document.getElementById('decline-reason').value.trim();
             const errorElement = document.getElementById('decline-reason-error');
+            const declineModal = document.getElementById('decline-modal');
+            const bookingId = declineModal.dataset.bookingId;
             
             if (reason.length < 10) {
                 errorElement.textContent = 'Please provide a reason with at least 10 characters';
@@ -732,15 +819,36 @@
                 return;
             }
             
-            // If validation passes, proceed with decline
-            closeDeclineModal();
-            const successModal = document.getElementById('success-modal');
-            document.getElementById('success-message').textContent = 'Booking has been declined!';
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.querySelector('.dashboard-card').style.opacity = '1';
-                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
+            // If validation passes, send the decline request
+            fetch('booking_handlers/decline_booking.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `booking_id=${encodeURIComponent(bookingId)}&reason=${encodeURIComponent(reason)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeDeclineModal();
+                    const successModal = document.getElementById('success-modal');
+                    document.getElementById('success-message').textContent = 'Booking has been declined!';
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.querySelector('.dashboard-card').style.opacity = '1';
+                        successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    // Optional: Refresh the bookings list or update the UI
+                     $('#restaurant-bookings-table').DataTable().ajax.reload(null, false);
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while declining the booking');
+            });
         }
 
         // Add pagination state management
