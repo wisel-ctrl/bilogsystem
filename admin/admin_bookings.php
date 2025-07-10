@@ -386,6 +386,22 @@
                         <div class="modal-body flex-1 overflow-y-auto p-6">
                             <div class="space-y-6">
                                 <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Common reasons:</label>
+                                    <div class="grid grid-cols-2 gap-3 mb-4">
+                                        <button onclick="selectDeclineReason('The selected dates are not available.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Dates not available
+                                        </button>
+                                        <button onclick="selectDeclineReason('The property is undergoing maintenance during the requested period.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Property maintenance
+                                        </button>
+                                        <button onclick="selectDeclineReason('The property is not suitable for the number of guests or purpose of stay.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Not suitable for needs
+                                        </button>
+                                        <button onclick="selectDeclineReason('We are unable to accommodate the booking at this time.')" class="px-4 py-2 border border-warm-cream/50 rounded-lg hover:bg-warm-cream/20 transition-colors duration-200 text-left font-baskerville text-rich-brown">
+                                            Unable to accommodate
+                                        </button>
+                                    </div>
+                                    
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Reason for declining:</label>
                                     <textarea id="decline-reason" rows="4" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Please provide a reason for declining this booking..." oninput="validateDeclineReason(this)"></textarea>
                                     <p id="decline-reason-error" class="text-red-500 text-sm mt-1 hidden"></p>
@@ -750,6 +766,13 @@
                 statusCell.style.opacity = '1';
                 actionCell.style.opacity = '1';
             }, 300);
+        }
+
+        function selectDeclineReason(reason) {
+            const textarea = document.getElementById('decline-reason');
+            textarea.value = reason;
+            // Optional: Trigger validation if needed
+            validateDeclineReason(textarea);
         }
 
         // Add this new function for decline reason validation
