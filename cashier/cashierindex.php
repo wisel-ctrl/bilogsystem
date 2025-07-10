@@ -756,9 +756,10 @@ require_once 'cashier_auth.php';
                 </div>
                 <div class="text-right">
                     <div class="font-bold text-deep-brown font-baskerville">₱${(item.price * item.quantity).toFixed(2)}</div>
-                    <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition-colors duration-200" data-id="${item.id}">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+               <button class="remove-item text-sm text-red-500 hover:text-red-700 mt-2 transition duration-200 transform hover:scale-110" data-id="${item.id}">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+
                 </div>
             </div>
         `;
