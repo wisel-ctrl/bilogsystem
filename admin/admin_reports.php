@@ -52,11 +52,7 @@ try {
     echo "Error: " . $e->getMessage();
 }
 
-// Define page title
-$page_title = "Reports";
 
-// Capture page content
-ob_start();
 ?>
 
 <style>
@@ -549,7 +545,12 @@ ob_start();
     </div>
 </div>
 
+<?php
+$page_content = ob_get_clean();
 
+// Capture page-specific scripts
+ob_start();
+?>
 
 <script>
     // Initialize sidebar state
