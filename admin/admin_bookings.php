@@ -674,6 +674,8 @@
                                 successModal.querySelector('.dashboard-card').style.opacity = '1';
                                 successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
                             }, 50);
+
+                             $('#restaurant-bookings-table').DataTable().ajax.reload(null, false);
                             
                         } else {
                             Swal.fire(
@@ -815,7 +817,7 @@
                     }, 50);
                     
                     // Optional: Refresh the bookings list or update the UI
-                    // refreshBookings();
+                     $('#restaurant-bookings-table').DataTable().ajax.reload(null, false);
                 } else {
                     alert('Error: ' + data.message);
                 }
