@@ -546,7 +546,7 @@ try {
 </div>
 
 <?php
-$page_content = ob_get_clean();
+$page_scripts = ob_get_clean();
 
 // Capture page-specific scripts
 ob_start();
@@ -736,7 +736,7 @@ ob_start();
 </script>
 
 <?php
-$page_scripts = ob_get_clean();
+$page_content = ob_get_clean();
 
 // Include the layout
 include 'layout.php';
