@@ -1,15 +1,62 @@
 <?php
-    require_once 'admin_auth.php';
-    require_once '../db_connect.php';
-    
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
+require_once 'admin_auth.php';
+require_once '../db_connect.php';
 
-    // Define page title
-    $page_title = "Reports";
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
 
-    // Capture page content
-    ob_start();
+
+
+try {
+    // Fetch Daily Revenue
+    $daily_query = "SELECT DATE(s.created_at) as date, 
+                           SUM(o.price * o.quantity) as total_revenue,
+                           COUNT(DISTINCT o.sales_id) as transactions,
+                           IF(COUNT(DISTINCT o.sales_id) > 0, 
+                              SUM(o.price * o.quantity) / COUNT(DISTINCT o.sales_id), 
+                              0) as avg_transaction
+                    FROM order_tb o
+                    JOIN sales_tb s ON o.sales_id = s.sales_id
+                    WHERE DATE(s.created_at) >= CURDATE() - INTERVAL 7 DAY
+                    GROUP BY DATE(s.created_at)
+                    ORDER BY DATE(s.created_at) DESC";
+    $daily_result = $conn->query($daily_query);
+
+    // Fetch Monthly Revenue
+    $monthly_query = "SELECT DATE_FORMAT(s.created_at, '%Y-%m') as month, 
+                            SUM(o.price * o.quantity) as total_revenue,
+                            COUNT(DISTINCT o.sales_id) as transactions,
+                            IF(COUNT(DISTINCT o.sales_id) > 0, 
+                               SUM(o.price * o.quantity) / COUNT(DISTINCT o.sales_id), 
+                               0) as avg_transaction
+                     FROM order_tb o
+                     JOIN sales_tb s ON o.sales_id = s.sales_id
+                     WHERE YEAR(s.created_at) = YEAR(CURDATE())
+                     GROUP BY DATE_FORMAT(s.created_at, '%Y-%m')
+                     ORDER BY DATE_FORMAT(s.created_at, '%Y-%m') DESC";
+    $monthly_result = $conn->query($monthly_query);
+
+    // Fetch Yearly Revenue
+    $yearly_query = "SELECT YEAR(s.created_at) as year, 
+                           SUM(o.price * o.quantity) as total_revenue,
+                           COUNT(DISTINCT o.sales_id) as transactions,
+                           IF(COUNT(DISTINCT o.sales_id) > 0, 
+                              SUM(o.price * o.quantity) / COUNT(DISTINCT o.sales_id), 
+                              0) as avg_transaction
+                    FROM order_tb o
+                    JOIN sales_tb s ON o.sales_id = s.sales_id
+                    GROUP BY YEAR(s.created_at)
+                    ORDER BY YEAR(s.created_at) DESC";
+    $yearly_result = $conn->query($yearly_query);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+// Define page title
+$page_title = "Reports";
+
+// Capture page content
+ob_start();
 ?>
 
 <style>
@@ -165,7 +212,6 @@
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -178,10 +224,9 @@
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
                 <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <option value="">Customer Satisfaction</option>
+                    <option value="customer_satisfaction">Customer Satisfaction</option>
                     <option value="revenue">Revenue</option>
                     <option value="orders">Orders</option>
-                    <option value="customer_satisfaction">Customer Satisfaction</option>
                 </select>
             </div>
             <div class="flex items-end space-x-2">
@@ -204,10 +249,6 @@
                 Daily Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -224,24 +265,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>₱2,450</td>
-                        <td>124</td>
-                        <td>₱19.76</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>₱2,200</td>
-                        <td>110</td>
-                        <td>₱20.00</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>₱2,300</td>
-                        <td>115</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php while ($row = $daily_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -255,10 +286,6 @@
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -275,24 +302,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>₱84,320</td>
-                        <td>3,847</td>
-                        <td>₱21.92</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>₱78,500</td>
-                        <td>3,600</td>
-                        <td>₱21.81</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>₱82,000</td>
-                        <td>3,750</td>
-                        <td>₱21.87</td>
-                    </tr>
+                    <?php while ($row = $monthly_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F Y', strtotime($row['month'] . '-01')); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -306,10 +323,6 @@
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -326,24 +339,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>₱950,680</td>
-                        <td>45,320</td>
-                        <td>₱20.98</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>₱780,000</td>
-                        <td>38,000</td>
-                        <td>₱20.53</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>₱700,000</td>
-                        <td>35,000</td>
-                        <td>₱20.00</td>
-                    </tr>
+                    <?php while ($row = $yearly_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo $row['year']; ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transactions']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -353,14 +356,10 @@
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -408,10 +407,6 @@
                 Monthly Orders
             </h3>
             <div class="space-x-2">
- 
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -459,10 +454,6 @@
                 Yearly Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -510,10 +501,6 @@
                 Customer Satisfaction
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -562,12 +549,7 @@
     </div>
 </div>
 
-<?php
-$page_content = ob_get_clean();
 
-// Capture page-specific scripts
-ob_start();
-?>
 
 <script>
     // Initialize sidebar state
@@ -630,7 +612,7 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Daily Revenue
+                // If both filters are "All", show only Customer Satisfaction
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
@@ -665,10 +647,8 @@ ob_start();
 
         // Reset filters function
         function resetFilters() {
-            document.getElementById('categoryFilter').value = '';
+            document.getElementById('categoryFilter').value = 'customer_satisfaction';
             document.getElementById('periodFilter').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
             const sections = [
                 'dailyRevenueSection',
                 'monthlyRevenueSection',
@@ -678,7 +658,7 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Daily Revenue
+            // Hide all sections except Customer Satisfaction
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
@@ -724,6 +704,29 @@ ob_start();
                 </tbody>
             </table>
         `;
+        
+        // Add total row for revenue tables
+        if (tableId.includes('Revenue')) {
+            let totalRevenue = 0;
+            let totalTransactions = 0;
+            rows.forEach(row => {
+                const revenue = parseFloat(row.cells[1].textContent.replace(/[₱,]/g, '')) || 0;
+                const transactions = parseInt(row.cells[2].textContent.replace(/,/g, '')) || 0;
+                totalRevenue += revenue;
+                totalTransactions += transactions;
+            });
+            const avgTransaction = totalTransactions > 0 ? (totalRevenue / totalTransactions).toFixed(2) : '0.00';
+            tableHtml += `
+                <tfoot>
+                    <tr style="font-weight: bold; background-color: #f5f5f5;">
+                        <td>Total</td>
+                        <td>₱${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>${totalTransactions.toLocaleString()}</td>
+                        <td>₱${avgTransaction}</td>
+                    </tr>
+                </tfoot>
+            `;
+        }
         
         // Set content and print
         printSection.innerHTML = tableHtml;
