@@ -57,8 +57,8 @@
             </li>
             <li>
                 <a href="admin_reports.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200 <?php echo basename($_SERVER['PHP_SELF']) === 'admin_reports.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-user-plus w-5"></i>
-                    <span class="sidebar-text font-baskerville">Reports</span>
+                <i class="fas fa-file-alt w-5"></i>
+                <span class="sidebar-text font-baskerville">Reports</span>
                     <span class="tooltip">Reports</span>
                 </a>
             </li>
