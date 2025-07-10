@@ -40,6 +40,7 @@ try {
     $query = "SELECT booking_id, reservation_datetime, event, pax, booking_status, decline_reason 
           FROM booking_tb 
           WHERE customer_id = :user_id 
+          AND booking_status != 'cancel'
           ORDER BY reservation_datetime ASC";
     $stmt = $conn->prepare($query);
     if (!$stmt) {
