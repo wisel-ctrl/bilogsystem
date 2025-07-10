@@ -1,8 +1,7 @@
 <?php
 require_once '../../db_connect.php'; // Make sure this file contains your PDO connection
+require_once '../admin_auth.php';
 
-// Start the session to access session variables
-session_start();
 
 // Set the default timezone to Asia/Manila
 date_default_timezone_set('Asia/Manila');
