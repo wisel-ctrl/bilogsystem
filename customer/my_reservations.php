@@ -37,10 +37,9 @@ try {
         throw new Exception('Invalid PDO database connection');
     }
 
-    $query = "SELECT booking_id, reservation_datetime, event, pax, booking_status 
+    $query = "SELECT booking_id, reservation_datetime, event, pax, booking_status, decline_reason 
           FROM booking_tb 
           WHERE customer_id = :user_id 
-          AND booking_status IN ('pending', 'accepted') 
           ORDER BY reservation_datetime ASC";
     $stmt = $conn->prepare($query);
     if (!$stmt) {
@@ -280,12 +279,35 @@ ob_start();
                                         </td>
                                         <td class="py-4 px-4">
                                             <span class="px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10
-                                                <?php echo $booking['booking_status'] === 'accepted' ? 'bg-warm-cream/50 text-deep-brown' : 'bg-yellow-100/50 text-yellow-800'; ?>">
+                                                <?php 
+                                                if ($booking['booking_status'] === 'accepted') {
+                                                    echo 'bg-warm-cream/50 text-deep-brown';
+                                                } elseif ($booking['booking_status'] === 'declined') {
+                                                    echo 'bg-red-100/50 text-red-800';
+                                                } else {
+                                                    echo 'bg-yellow-100/50 text-yellow-800';
+                                                }
+                                                ?>">
                                                 <span class="w-2 h-2 rounded-full mr-2 
-                                                    <?php echo $booking['booking_status'] === 'accepted' ? 'bg-green-500' : 'bg-yellow-500'; ?>">
+                                                    <?php 
+                                                    if ($booking['booking_status'] === 'accepted') {
+                                                        echo 'bg-green-500';
+                                                    } elseif ($booking['booking_status'] === 'declined') {
+                                                        echo 'bg-red-500';
+                                                    } else {
+                                                        echo 'bg-yellow-500';
+                                                    }
+                                                    ?>">
                                                 </span>
                                                 <?php echo ucfirst($booking['booking_status']); ?>
                                             </span>
+                                            <?php if ($booking['booking_status'] === 'declined' && !empty($booking['decline_reason'])): ?>
+                                                <button class="ml-2 text-red-600 hover:text-red-700 transition-colors duration-300 p-1 rounded-full hover:bg-red-50 view-reason"
+                                                        data-reason="<?php echo htmlspecialchars($booking['decline_reason']); ?>"
+                                                        data-tippy-content="View decline reason">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </button>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="py-4 px-4">
                                             <div class="flex space-x-2">
@@ -306,6 +328,37 @@ ob_start();
         </section>
 
     <script>
+        document.querySelectorAll('.view-reason').forEach(button => {
+            button.addEventListener('click', function() {
+                const reason = this.getAttribute('data-reason');
+                
+                // Create and show modal with decline reason
+                const reasonDialog = document.createElement('div');
+                reasonDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                reasonDialog.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+                        <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Decline Reason</h3>
+                        <div class="bg-red-50/50 border border-red-100 rounded-lg p-4 mb-4">
+                            <p class="text-red-800 font-baskerville">${reason}</p>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition-colors duration-300" id="close-reason">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(reasonDialog);
+                document.body.classList.add('overflow-hidden');
+        
+                document.getElementById('close-reason').addEventListener('click', () => {
+                    reasonDialog.remove();
+                    document.body.classList.remove('overflow-hidden');
+                });
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips
             tippy('[data-tippy-content]', {
