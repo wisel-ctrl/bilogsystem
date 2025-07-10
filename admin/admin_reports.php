@@ -352,6 +352,11 @@ try {
         </div>
     </div>
 
+
+
+
+
+    
     <!-- Daily Orders Table -->
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
