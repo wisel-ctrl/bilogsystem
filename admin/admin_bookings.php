@@ -785,6 +785,8 @@
         function confirmDecline() {
             const reason = document.getElementById('decline-reason').value.trim();
             const errorElement = document.getElementById('decline-reason-error');
+            const declineModal = document.getElementById('decline-modal');
+            const bookingId = declineModal.dataset.bookingId;
             
             if (reason.length < 10) {
                 errorElement.textContent = 'Please provide a reason with at least 10 characters';
@@ -792,15 +794,36 @@
                 return;
             }
             
-            // If validation passes, proceed with decline
-            closeDeclineModal();
-            const successModal = document.getElementById('success-modal');
-            document.getElementById('success-message').textContent = 'Booking has been declined!';
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.querySelector('.dashboard-card').style.opacity = '1';
-                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
+            // If validation passes, send the decline request
+            fetch('booking_handlers/decline_booking.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `booking_id=${encodeURIComponent(bookingId)}&reason=${encodeURIComponent(reason)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeDeclineModal();
+                    const successModal = document.getElementById('success-modal');
+                    document.getElementById('success-message').textContent = 'Booking has been declined!';
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.querySelector('.dashboard-card').style.opacity = '1';
+                        successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    // Optional: Refresh the bookings list or update the UI
+                    // refreshBookings();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while declining the booking');
+            });
         }
 
         // Add pagination state management
