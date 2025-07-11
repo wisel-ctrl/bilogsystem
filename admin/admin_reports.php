@@ -269,14 +269,24 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $daily_result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
-                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                            <td><?php echo number_format($row['transactions']); ?></td>
-                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
+                    <tr>
+                        <td>2025-07-04</td>
+                        <td>₱2,450</td>
+                        <td>124</td>
+                        <td>₱19.76</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-03</td>
+                        <td>₱2,200</td>
+                        <td>110</td>
+                        <td>₱20.00</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-02</td>
+                        <td>₱2,300</td>
+                        <td>115</td>
+                        <td>₱20.00</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -386,8 +396,6 @@ try {
 
 
 
-
-
     
     <!-- Daily Orders Table -->
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
@@ -417,24 +425,12 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>124</td>
-                        <td>100</td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>110</td>
-                        <td>90</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>115</td>
-                        <td>95</td>
-                        <td>20</td>
-                    </tr>
+                    <?php while ($row = $daily_result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                            <td>₱<?php echo number_format($row['total'], 2); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
