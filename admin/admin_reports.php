@@ -1,48 +1,16 @@
 <?php
-require_once 'admin_auth.php';
-require_once '../db_connect.php';
+    require_once 'admin_auth.php';
+    require_once '../db_connect.php';
+    
+    // Set the timezone to Philippine Time
+    date_default_timezone_set('Asia/Manila');
 
-// Set the timezone to Philippine Time
-date_default_timezone_set('Asia/Manila');
+    // Define page title
+    $page_title = "Reports";
 
-// Define page title
-$page_title = "Reports";
-
-// Capture page content
-ob_start();
-
-try {
-    // Ensure database connection
-    if (!$conn) {
-        throw new Exception("Database connection failed: " . mysqli_connect_error());
-    }
-    // Set MySQL time zone to match PHP
-    $conn->query("SET time_zone = '+08:00';");
-
-    // Debug: Display current database
-    $result = $conn->query("SELECT DATABASE()");
-    $db = $result->fetch_row()[0];
-    echo "<div class='text-center text-rich-brown p-2'>Connected to database: $db</div>";
-
-    // Fetch Daily Orders (last 30 days)
-    $daily_orders_query = "SELECT DATE(created_at) as date,
-                                 COUNT(sales_id) as total_orders,
-                                 SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
-                                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders
-                          FROM sales_tb
-                          WHERE DATE(created_at) >= CURDATE() - INTERVAL 30 DAY
-                          GROUP BY DATE(created_at)
-                          ORDER BY DATE(created_at) DESC";
-    $daily_orders_result = $conn->query($daily_orders_query);
-    if (!$daily_orders_result) {
-        throw new Exception("Daily Orders query failed: " . $conn->error);
-    }
-    echo "<div class='text-center text-rich-brown p-2'>Daily Orders rows returned: {$daily_orders_result->num_rows}</div>";
-} catch (Exception $e) {
-    echo "<div class='text-red-500 text-center p-4'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
-}
+    // Capture page content
+    ob_start();
 ?>
-
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
@@ -409,20 +377,24 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($daily_orders_result->num_rows > 0): ?>
-                        <?php while ($row = $daily_orders_result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="4" class="text-center text-rich-brown">No data available</td>
-                        </tr>
-                    <?php endif; ?>
+                    <tr>
+                        <td>2025-07-04</td>
+                        <td>124</td>
+                        <td>100</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-03</td>
+                        <td>110</td>
+                        <td>90</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-02</td>
+                        <td>115</td>
+                        <td>95</td>
+                        <td>20</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
