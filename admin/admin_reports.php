@@ -43,6 +43,7 @@ try {
 }
 ?>
 
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
@@ -196,6 +197,7 @@ try {
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -234,6 +236,10 @@ try {
                 Daily Revenue
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -281,6 +287,10 @@ try {
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -328,6 +338,10 @@ try {
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -371,10 +385,14 @@ try {
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -418,6 +436,10 @@ try {
                 Monthly Orders
             </h3>
             <div class="space-x-2">
+ 
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -465,6 +487,10 @@ try {
                 Yearly Orders
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -512,6 +538,10 @@ try {
                 Customer Satisfaction
             </h3>
             <div class="space-x-2">
+
+                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                </button> -->
                 <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -628,7 +658,7 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Customer Satisfaction
+                // If both filters are "All", show only Daily Revenue
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
@@ -665,6 +695,8 @@ ob_start();
         function resetFilters() {
             document.getElementById('categoryFilter').value = '';
             document.getElementById('periodFilter').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
             const sections = [
                 'dailyRevenueSection',
                 'monthlyRevenueSection',
@@ -674,7 +706,7 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Customer Satisfaction
+            // Hide all sections except Daily Revenue
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
