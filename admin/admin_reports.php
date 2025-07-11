@@ -12,7 +12,14 @@ $page_title = "Reports";
 ob_start();
 
 try {
-    // Fetch Daily Revenue
+    // Ensure database connection
+    if (!$conn) {
+        throw new Exception("Database connection failed: " . mysqli_connect_error());
+    }
+    // Set MySQL time zone to match PHP
+    $conn->query("SET time_zone = '+08:00';");
+
+    // Fetch Daily Revenue (broadened to last 30 days for testing)
     $daily_query = "SELECT DATE(s.created_at) as date, 
                            SUM(o.price * o.quantity) as total_revenue,
                            COUNT(DISTINCT o.sales_id) as transactions,
@@ -21,10 +28,13 @@ try {
                               0) as avg_transaction
                     FROM order_tb o
                     JOIN sales_tb s ON o.sales_id = s.sales_id
-                    WHERE DATE(s.created_at) >= CURDATE() - INTERVAL 7 DAY
+                    WHERE DATE(s.created_at) >= CURDATE() - INTERVAL 30 DAY
                     GROUP BY DATE(s.created_at)
                     ORDER BY DATE(s.created_at) DESC";
     $daily_result = $conn->query($daily_query);
+    if (!$daily_result) {
+        throw new Exception("Daily query failed: " . $conn->error);
+    }
 
     // Fetch Monthly Revenue
     $monthly_query = "SELECT DATE_FORMAT(s.created_at, '%Y-%m') as month, 
@@ -35,10 +45,12 @@ try {
                                0) as avg_transaction
                      FROM order_tb o
                      JOIN sales_tb s ON o.sales_id = s.sales_id
-                     WHERE YEAR(s.created_at) = YEAR(CURDATE())
                      GROUP BY DATE_FORMAT(s.created_at, '%Y-%m')
                      ORDER BY DATE_FORMAT(s.created_at, '%Y-%m') DESC";
     $monthly_result = $conn->query($monthly_query);
+    if (!$monthly_result) {
+        throw new Exception("Monthly query failed: " . $conn->error);
+    }
 
     // Fetch Yearly Revenue
     $yearly_query = "SELECT YEAR(s.created_at) as year, 
@@ -52,11 +64,13 @@ try {
                     GROUP BY YEAR(s.created_at)
                     ORDER BY YEAR(s.created_at) DESC";
     $yearly_result = $conn->query($yearly_query);
+    if (!$yearly_result) {
+        throw new Exception("Yearly query failed: " . $conn->error);
+    }
 } catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
+    echo "<div class='text-red-500 text-center p-4'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
 }
 ?>
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
