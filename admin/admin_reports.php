@@ -1,15 +1,46 @@
 <?php
-    require_once 'admin_auth.php';
-    require_once '../db_connect.php';
-    
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
+require_once 'admin_auth.php';
+require_once '../db_connect.php';
 
-    // Define page title
-    $page_title = "Reports";
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
 
-    // Capture page content
-    ob_start();
+// Define page title
+$page_title = "Reports";
+
+// Capture page content
+ob_start();
+
+try {
+    // Ensure database connection
+    if (!$conn) {
+        throw new Exception("Database connection failed: " . mysqli_connect_error());
+    }
+    // Set MySQL time zone to match PHP
+    $conn->query("SET time_zone = '+08:00';");
+
+    // Debug: Display current database
+    $result = $conn->query("SELECT DATABASE()");
+    $db = $result->fetch_row()[0];
+    echo "<div class='text-center text-rich-brown p-2'>Connected to database: $db</div>";
+
+    // Fetch Daily Orders (last 30 days)
+    $daily_orders_query = "SELECT DATE(created_at) as date,
+                                 COUNT(sales_id) as total_orders,
+                                 SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
+                                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders
+                          FROM sales_tb
+                          WHERE DATE(created_at) >= CURDATE() - INTERVAL 30 DAY
+                          GROUP BY DATE(created_at)
+                          ORDER BY DATE(created_at) DESC";
+    $daily_orders_result = $conn->query($daily_orders_query);
+    if (!$daily_orders_result) {
+        throw new Exception("Daily Orders query failed: " . $conn->error);
+    }
+    echo "<div class='text-center text-rich-brown p-2'>Daily Orders rows returned: {$daily_orders_result->num_rows}</div>";
+} catch (Exception $e) {
+    echo "<div class='text-red-500 text-center p-4'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+}
 ?>
 
 <style>
@@ -165,7 +196,6 @@
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -204,10 +234,6 @@
                 Daily Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -255,10 +281,6 @@
                 Monthly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -306,10 +328,6 @@
                 Yearly Revenue
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -353,14 +371,10 @@
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -377,24 +391,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>124</td>
-                        <td>100</td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>110</td>
-                        <td>90</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>115</td>
-                        <td>95</td>
-                        <td>20</td>
-                    </tr>
+                    <?php if ($daily_orders_result->num_rows > 0): ?>
+                        <?php while ($row = $daily_orders_result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                                <td><?php echo number_format($row['total_orders']); ?></td>
+                                <td><?php echo number_format($row['completed_orders']); ?></td>
+                                <td><?php echo number_format($row['pending_orders']); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center text-rich-brown">No data available</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -408,10 +418,6 @@
                 Monthly Orders
             </h3>
             <div class="space-x-2">
- 
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -459,10 +465,6 @@
                 Yearly Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -510,10 +512,6 @@
                 Customer Satisfaction
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -630,7 +628,7 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Daily Revenue
+                // If both filters are "All", show only Customer Satisfaction
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
@@ -667,8 +665,6 @@ ob_start();
         function resetFilters() {
             document.getElementById('categoryFilter').value = '';
             document.getElementById('periodFilter').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
             const sections = [
                 'dailyRevenueSection',
                 'monthlyRevenueSection',
@@ -678,7 +674,7 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Daily Revenue
+            // Hide all sections except Customer Satisfaction
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
