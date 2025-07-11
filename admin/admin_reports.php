@@ -71,6 +71,8 @@ try {
     echo "<div class='text-red-500 text-center p-4'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
 }
 ?>
+
+<!-- Keep all styles unchanged -->
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
@@ -772,7 +774,7 @@ ob_start();
 </script>
 
 <?php
-$page_scripts = ob_get_clean();
+$page_content = ob_get_clean();
 
 // Include the layout
 include 'layout.php';
