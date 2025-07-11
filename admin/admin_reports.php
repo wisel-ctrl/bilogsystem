@@ -210,6 +210,7 @@ try {
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
                 <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -222,9 +223,10 @@ try {
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
                 <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <option value="customer_satisfaction">Customer Satisfaction</option>
+                    <option value="">Customer Satisfaction</option>
                     <option value="revenue">Revenue</option>
                     <option value="orders">Orders</option>
+                    <option value="customer_satisfaction">Customer Satisfaction</option>
                 </select>
             </div>
             <div class="flex items-end space-x-2">
@@ -263,14 +265,20 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $daily_result->fetch_assoc()): ?>
+                    <?php if ($daily_result->num_rows > 0): ?>
+                        <?php while ($row = $daily_result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                                <td><?php echo number_format($row['transactions']); ?></td>
+                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
-                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                            <td><?php echo number_format($row['transactions']); ?></td>
-                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            <td colspan="4" class="text-center text-rich-brown">No data available</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -300,14 +308,20 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $monthly_result->fetch_assoc()): ?>
+                    <?php if ($monthly_result->num_rows > 0): ?>
+                        <?php while ($row = $monthly_result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo date('F Y', strtotime($row['month'] . '-01')); ?></td>
+                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                                <td><?php echo number_format($row['transactions']); ?></td>
+                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?php echo date('F Y', strtotime($row['month'] . '-01')); ?></td>
-                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                            <td><?php echo number_format($row['transactions']); ?></td>
-                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            <td colspan="4" class="text-center text-rich-brown">No data available</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -337,14 +351,20 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $yearly_result->fetch_assoc()): ?>
+                    <?php if ($yearly_result->num_rows > 0): ?>
+                        <?php while ($row = $yearly_result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo $row['year']; ?></td>
+                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                                <td><?php echo number_format($row['transactions']); ?></td>
+                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?php echo $row['year']; ?></td>
-                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                            <td><?php echo number_format($row['transactions']); ?></td>
-                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                            <td colspan="4" class="text-center text-rich-brown">No data available</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -615,7 +635,7 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Customer Satisfaction
+                // If both filters are "All", show only Daily Revenue
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
@@ -650,7 +670,7 @@ ob_start();
 
         // Reset filters function
         function resetFilters() {
-            document.getElementById('categoryFilter').value = 'customer_satisfaction';
+            document.getElementById('categoryFilter').value = '';
             document.getElementById('periodFilter').value = '';
             const sections = [
                 'dailyRevenueSection',
@@ -661,7 +681,7 @@ ob_start();
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Customer Satisfaction
+            // Hide all sections except Daily Revenue
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
