@@ -1094,9 +1094,9 @@ $(document).ready(function() {
         pageLength: 10,
         dom: '<"top">rt<"bottom"ip><"clear">',
         language: {
-            info: "_START_ to _END_ of _TOTAL_ entries",
-            infoEmpty: "0 to 0 of 0 entries",
-            infoFiltered: "(filtered from _MAX_ total entries)"
+            info: "Showing _START_ to _END_ of _TOTAL_ reservations",
+            infoEmpty: "0 to 0 of 0 reservations",
+            infoFiltered: "(filtered from _MAX_ total reservations)"
         }
     });
     
