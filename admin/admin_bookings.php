@@ -1092,7 +1092,7 @@ $(document).ready(function() {
             }
         ],
         pageLength: 10,
-        dom: '<"top"f>rt<"bottom"ip><"clear">',
+        dom: '<"top"i>rt<"bottom"ip><"clear">', 
     });
     
     // Connect the search box with debounce for better performance
