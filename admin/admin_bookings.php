@@ -446,7 +446,7 @@
                                 <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Payment Receipt</label>
                                 <div id="modal-reservation-receipt-container" class="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center">
                                     <img id="modal-reservation-receipt-image" src="" alt="Payment Receipt" class="max-h-64 object-contain hidden">
-                                    <p id="modal-no-receipt" class="text-gray-500 italic">No receipt uploaded</p>
+                                    <p id="modal-reservation-no-receipt" class="text-gray-500 italic">No receipt uploaded</p>
                                 </div>
                             </div>
                             
@@ -1310,7 +1310,7 @@ function openReservationDetails(reservationId) {
                 
                 // Handle payment receipt
                 const receiptImg = document.getElementById('modal-reservation-receipt-image');
-                const noReceipt = document.getElementById('modal-no-receipt');
+                const noReceipt = document.getElementById('modal-reservation-no-receipt');
                 
                 if (reservation.downpayment_img) {
                     receiptImg.src = `../images/payment_proofs/${reservation.downpayment_img}`;
