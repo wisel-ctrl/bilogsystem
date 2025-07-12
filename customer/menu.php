@@ -31,7 +31,7 @@ ob_start();
             <!-- Main Course -->
             <a href="index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Main Course</h3>
                     </div>
@@ -41,7 +41,7 @@ ob_start();
             <!-- Salad -->
             <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">House Salad</h3>
                     </div>
@@ -51,7 +51,7 @@ ob_start();
             <!-- Italian Dish -->
             <a href="index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/italian_dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/italian_dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Italian Dish</h3>
                     </div>
@@ -61,7 +61,7 @@ ob_start();
             <!-- Spanish Dish -->
             <a href="index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/spanish_dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/spanish_dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Spanish Dish</h3>
                     </div>
@@ -71,7 +71,7 @@ ob_start();
             <!-- Coffee -->
             <a href="index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/coffee.png" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/coffee.png" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Coffee</h3>
                     </div>
@@ -81,7 +81,7 @@ ob_start();
             <!-- Drinks -->
             <a href="index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/drinks.png" alt="Drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/drinks.png" alt="Drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Drinks</h3>
                     </div>
@@ -91,7 +91,7 @@ ob_start();
             <!-- Pizza & Burgers -->
             <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/burgerpizza.png" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/burgerpizza.png" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Burgers & Pizza</h3>
                     </div>
@@ -101,7 +101,7 @@ ob_start();
             <!-- Pasta -->
             <a href="index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/Carbonara.jpg" alt="Pasta" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/Carbonara.jpg" alt="Pasta" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Pasta</h3>
                     </div>
@@ -111,7 +111,7 @@ ob_start();
             <!-- Pasta e Caza -->
             <a href="index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/pastaEcaza.png" alt="Pasta e Caza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/pastaEcaza.png" alt="Pasta e Caza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Pasta e Caza</h3>
                     </div>
@@ -121,7 +121,7 @@ ob_start();
             <!-- Desserts -->
             <a href="index_menu/desserts.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
-                    <img src="images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="../images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                         <h3 class="font-serif text-xl font-bold text-amber-50 text-center px-4">Desserts</h3>
                     </div>
