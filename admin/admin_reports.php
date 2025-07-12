@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once 'admin_auth.php';
 require_once '../db_connect.php';
 
@@ -10,101 +14,177 @@ $page_title = "Reports";
 
 // Function to fetch daily orders
 function getDailyOrders($conn) {
-    $query = "
-        SELECT 
-            DATE(s.created_at) as order_date,
-            COUNT(DISTINCT o.order_id) as total_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
-        FROM order_tb o
-        JOIN sales_tb s ON o.sales_id = s.sales_id
-        WHERE DATE(s.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-        GROUP BY DATE(s.created_at)
-        ORDER BY order_date DESC
-        LIMIT 7
-    ";
-    $result = $conn->query($query);
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    try {
+        $query = "
+            SELECT 
+                DATE(s.created_at) as order_date,
+                COUNT(DISTINCT o.order_id) as total_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+            FROM order_tb o
+            JOIN sales_tb s ON o.sales_id = s.sales_id
+            WHERE DATE(s.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            GROUP BY DATE(s.created_at)
+            ORDER BY order_date DESC
+            LIMIT 7
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Daily Orders Query Failed: " . $e->getMessage());
+        return [];
     }
-    return $data;
 }
 
 // Function to fetch weekly orders
 function getWeeklyOrders($conn) {
-    $query = "
-        SELECT 
-            CONCAT(YEAR(s.created_at), '-W', LPAD(WEEK(s.created_at, 1), 2, '0')) as order_week,
-            COUNT(DISTINCT o.order_id) as total_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
-        FROM order_tb o
-        JOIN sales_tb s ON o.sales_id = s.sales_id
-        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
-        GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1)
-        ORDER BY s.created_at DESC
-        LIMIT 12
-    ";
-    $result = $conn->query($query);
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    try {
+        $query = "
+            SELECT 
+                CONCAT(YEAR(s.created_at), '-W', LPAD(WEEK(s.created_at, 1), 2, '0')) as order_week,
+                COUNT(DISTINCT o.order_id) as total_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+            FROM order_tb o
+            JOIN sales_tb s ON o.sales_id = s.sales_id
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
+            GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1)
+            ORDER BY s.created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Weekly Orders Query Failed: " . $e->getMessage());
+        return [];
     }
-    return $data;
 }
 
 // Function to fetch monthly orders
 function getMonthlyOrders($conn) {
-    $query = "
-        SELECT 
-            DATE_FORMAT(s.created_at, '%Y-%m') as order_month,
-            COUNT(DISTINCT o.order_id) as total_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
-        FROM order_tb o
-        JOIN sales_tb s ON o.sales_id = s.sales_id
-        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
-        GROUP BY YEAR(s.created_at), MONTH(s.created_at)
-        ORDER BY s.created_at DESC
-        LIMIT 12
-    ";
-    $result = $conn->query($query);
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    try {
+        $query = "
+            SELECT 
+                DATE_FORMAT(s.created_at, '%Y-%m') as order_month,
+                COUNT(DISTINCT o.order_id) as total_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+            FROM order_tb o
+            JOIN sales_tb s ON o.sales_id = s.sales_id
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+            GROUP BY YEAR(s.created_at), MONTH(s.created_at)
+            ORDER BY s.created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Monthly Orders Query Failed: " . $e->getMessage());
+        return [];
     }
-    return $data;
 }
 
 // Function to fetch yearly orders
 function getYearlyOrders($conn) {
-    $query = "
-        SELECT 
-            YEAR(s.created_at) as order_year,
-            COUNT(DISTINCT o.order_id) as total_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
-        FROM order_tb o
-        JOIN sales_tb s ON o.sales_id = s.sales_id
-        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
-        GROUP BY YEAR(s.created_at)
-        ORDER BY order_year DESC
-        LIMIT 5
-    ";
-    $result = $conn->query($query);
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    try {
+        $query = "
+            SELECT 
+                YEAR(s.created_at) as order_year,
+                COUNT(DISTINCT o.order_id) as total_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+            FROM order_tb o
+            JOIN sales_tb s ON o.sales_id = s.sales_id
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
+            GROUP BY YEAR(s.created_at)
+            ORDER BY order_year DESC
+            LIMIT 5
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Yearly Orders Query Failed: " . $e->getMessage());
+        return [];
     }
-    return $data;
 }
 
-// Fetch order data
+// Function to fetch daily revenue
+function getDailyRevenue($conn) {
+    try {
+        $query = "
+            SELECT 
+                DATE(s.created_at) as revenue_date,
+                SUM(s.total_price - s.discount_price) as total_revenue,
+                COUNT(DISTINCT s.sales_id) as transaction_count,
+                IF(COUNT(DISTINCT s.sales_id) > 0, SUM(s.total_price - s.discount_price) / COUNT(DISTINCT s.sales_id), 0) as avg_transaction
+            FROM sales_tb s
+            WHERE DATE(s.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            GROUP BY DATE(s.created_at)
+            ORDER BY revenue_date DESC
+            LIMIT 7
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Daily Revenue Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Function to fetch monthly revenue
+function getMonthlyRevenue($conn) {
+    try {
+        $query = "
+            SELECT 
+                DATE_FORMAT(s.created_at, '%Y-%m') as revenue_month,
+                SUM(s.total_price - s.discount_price) as total_revenue,
+                COUNT(DISTINCT s.sales_id) as transaction_count,
+                IF(COUNT(DISTINCT s.sales_id) > 0, SUM(s.total_price - s.discount_price) / COUNT(DISTINCT s.sales_id), 0) as avg_transaction
+            FROM sales_tb s
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+            GROUP BY YEAR(s.created_at), MONTH(s.created_at)
+            ORDER BY s.created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Monthly Revenue Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Function to fetch yearly revenue
+function getYearlyRevenue($conn) {
+    try {
+        $query = "
+            SELECT 
+                YEAR(s.created_at) as revenue_year,
+                SUM(s.total_price - s.discount_price) as total_revenue,
+                COUNT(DISTINCT s.sales_id) as transaction_count,
+                IF(COUNT(DISTINCT s.sales_id) > 0, SUM(s.total_price - s.discount_price) / COUNT(DISTINCT s.sales_id), 0) as avg_transaction
+            FROM sales_tb s
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
+            GROUP BY YEAR(s.created_at)
+            ORDER BY revenue_year DESC
+            LIMIT 5
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Yearly Revenue Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Fetch data
 $daily_orders = getDailyOrders($conn);
 $weekly_orders = getWeeklyOrders($conn);
 $monthly_orders = getMonthlyOrders($conn);
 $yearly_orders = getYearlyOrders($conn);
+$daily_revenue = getDailyRevenue($conn);
+$monthly_revenue = getMonthlyRevenue($conn);
+$yearly_revenue = getYearlyRevenue($conn);
 
 // Capture page content
 ob_start();
