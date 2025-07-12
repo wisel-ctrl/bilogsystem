@@ -1,11 +1,7 @@
 <?php
 require_once '../db_connect.php';
 
-// Set page title
-$page_title = "Best-Seller Menu - Caffè Lilio";
 
-// Capture content
-ob_start();
 
 try {
     // Query to fetch dishes with dish_category = 'best_seller' and their ingredients
@@ -29,6 +25,11 @@ try {
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+// Set page title
+$page_title = "Best-Seller - Caffè Lilio";
+
+// Capture content
+ob_start();
 ?>
 
 
