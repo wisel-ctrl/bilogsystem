@@ -1,18 +1,236 @@
 <?php
-    require_once 'admin_auth.php';
-    require_once '../db_connect.php';
-    // require_once 'admin_auth.php'; 
+require_once 'admin_auth.php';
+require_once '../db_connect.php';
 
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
 
-    // Define page title
-    $page_title = "Admin Dashboards";
+// Check if this is an AJAX request
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-    // Capture page content
-    ob_start();
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle photo upload (must come first since it exits early)
+    if (isset($_FILES['profile_photo'])) {
+        try {
+            $targetDir = "../images/profile_pictures/";
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0755, true);
+            }
+            
+            $fileName = uniqid() . '_' . basename($_FILES['profile_photo']['name']);
+            $targetFile = $targetDir . $fileName;
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            
+            // Check if image file is a actual image
+            $check = getimagesize($_FILES['profile_photo']['tmp_name']);
+            if ($check === false) {
+                throw new Exception("File is not an image.");
+            }
+            
+            // Check file size (max 2MB)
+            if ($_FILES['profile_photo']['size'] > 2000000) {
+                throw new Exception("Sorry, your file is too large. Max 2MB allowed.");
+            }
+            
+            // Allow certain file formats
+            if (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+                throw new Exception("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+            }
+            
+            // Upload file
+            if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $targetFile)) {
+                // Update database
+                $stmt = $conn->prepare("UPDATE users_tb SET profile_picture = :photo WHERE id = :user_id");
+                $stmt->execute([
+                    ':photo' => $fileName,
+                    ':user_id' => $_SESSION['user_id']
+                ]);
+                
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'message' => "Profile photo updated successfully!"]);
+                    exit();
+                } else {
+                    $_SESSION['success_message'] = "Profile photo updated successfully!";
+                    header("Location: ".$_SERVER['PHP_SELF']);
+                    exit();
+                }
+            } else {
+                throw new Exception("Sorry, there was an error uploading your file.");
+            }
+        } catch (Exception $e) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                exit();
+            } else {
+                $_SESSION['error_message'] = $e->getMessage();
+                header("Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
+    }
+    
+    // Handle profile update
+    // Handle profile update
+    if (isset($_POST['first_name'])) {
+        try {
+            $stmt = $conn->prepare("UPDATE users_tb SET 
+                first_name = :first_name,
+                middle_name = :middle_name,
+                last_name = :last_name,
+                suffix = :suffix,
+                username = :username,
+                contact_number = :contact_number
+                WHERE id = :user_id");
+            
+            $stmt->execute([
+                ':first_name' => $_POST['first_name'],
+                ':middle_name' => $_POST['middle_name'],
+                ':last_name' => $_POST['last_name'],
+                ':suffix' => $_POST['suffix'],
+                ':username' => $_POST['username'],
+                ':contact_number' => $_POST['contact_number'],
+                ':user_id' => $_SESSION['user_id']
+            ]);
+            
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => "Profile updated successfully!"]);
+                exit();
+            } else {
+                $_SESSION['success_message'] = "Profile updated successfully!";
+            }
+        } catch (PDOException $e) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => "Error updating profile: " . $e->getMessage()]);
+                exit();
+            } else {
+                $_SESSION['error_message'] = "Error updating profile: " . $e->getMessage();
+            }
+        }
+    }
+        
+    // Handle password change
+    if (isset($_POST['current_password'])) {
+        try {
+            // First verify current password
+            $stmt = $conn->prepare("SELECT password FROM users_tb WHERE id = :user_id");
+            $stmt->execute([':user_id' => $_SESSION['user_id']]);
+            $user = $stmt->fetch();
+            
+            if ($user && password_verify($_POST['current_password'], $user['password'])) {
+                // Update password
+                $newPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+                $stmt = $conn->prepare("UPDATE users_tb SET password = :password WHERE id = :user_id");
+                $stmt->execute([
+                    ':password' => $newPassword,
+                    ':user_id' => $_SESSION['user_id']
+                ]);
+                
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'message' => "Password updated successfully!"]);
+                    exit();
+                } else {
+                    $_SESSION['success_message'] = "Password updated successfully!";
+                }
+            } else {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => "Current password is incorrect"]);
+                    exit();
+                } else {
+                    $_SESSION['error_message'] = "Current password is incorrect";
+                }
+            }
+        } catch (PDOException $e) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => "Error updating password: " . $e->getMessage()]);
+                exit();
+            } else {
+                $_SESSION['error_message'] = "Error updating password: " . $e->getMessage();
+            }
+        }
+    }
+
+    
+    // Redirect to prevent form resubmission (for non-AJAX requests)
+    if (!$isAjax) {
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    }
+}
+
+
+// Get current user data
+try {
+    $stmt = $conn->prepare("SELECT * FROM users_tb WHERE id = :user_id");
+    $stmt->execute([':user_id' => $_SESSION['user_id']]);
+    $user = $stmt->fetch();
+    
+    if (!$user) {
+        throw new Exception("User not found");
+    }
+} catch (Exception $e) {
+    die("Error fetching user data: " . $e->getMessage());
+}
+
+// Handle photo upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_photo'])) {
+    try {
+        $targetDir = "../images/profile_pictures/"; // Changed to correct directory
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        }
+        
+        $fileName = uniqid() . '_' . basename($_FILES['profile_photo']['name']);
+        $targetFile = $targetDir . $fileName;
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        
+        // Check if image file is a actual image
+        $check = getimagesize($_FILES['profile_photo']['tmp_name']);
+        if ($check === false) {
+            throw new Exception("File is not an image.");
+        }
+        
+        // Check file size (max 2MB)
+        if ($_FILES['profile_photo']['size'] > 2000000) {
+            throw new Exception("Sorry, your file is too large. Max 2MB allowed.");
+        }
+        
+        // Allow certain file formats
+        if (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+            throw new Exception("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+        }
+        
+        // Upload file
+        if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $targetFile)) {
+            // Update database - changed to profile_picture to match your DB
+            $stmt = $conn->prepare("UPDATE users_tb SET profile_picture = :photo WHERE id = :user_id");
+            $stmt->execute([
+                ':photo' => $fileName,
+                ':user_id' => $_SESSION['user_id']
+            ]);
+            
+            // Return JSON response
+            echo json_encode(['success' => true, 'message' => "Profile photo updated successfully!"]);
+            exit();
+        } else {
+            throw new Exception("Sorry, there was an error uploading your file.");
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        exit();
+    }
+}
+
+// Capture page content
+ob_start();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +241,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -95,9 +315,90 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        
+        /* Toast notification styles - bottom right */
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        max-width: 350px;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        animation: slideInUp 0.3s ease-out forwards;
+    }
+
+    .custom-alert.success {
+        background-color: #22C55E;
+        color: white;
+    }
+
+    .custom-alert.error {
+        background-color: #EF4444;
+        color: white;
+    }
+
+    .custom-alert i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    @keyframes slideInUp {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    
+    
+    .toggle-password {
+        transition: all 0.2s ease;
+    }
+    .toggle-password:hover {
+        transform: scale(1.1);
+    }
+
     </style>
 </head>
 <body class="gradient-bg">
+    
+    <?php if (isset($_SESSION['success_message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            showAlert('<?php echo addslashes($_SESSION['success_message']); ?>', 'success');
+        });
+    </script>
+    <?php unset($_SESSION['success_message']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error_message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            showAlert('<?php echo addslashes($_SESSION['error_message']); ?>', 'error');
+        });
+    </script>
+    <?php unset($_SESSION['error_message']); ?>
+<?php endif; ?>
+
     <div class="container mx-auto px-4 py-8 max-w-6xl">
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -108,7 +409,12 @@
                     
                     <div class="flex flex-col items-center space-y-4">
                         <div class="photo-container relative">
-                            <img id="profile-photo" src="https://via.placeholder.com/120x120/D2B48C/FFFFFF?text=Admin" 
+                            <?php 
+                            $photoPath = !empty($user['profile_picture']) 
+                                ? '../images/profile_pictures/' . htmlspecialchars($user['profile_picture'])
+                                : 'https://via.placeholder.com/120x120/D2B48C/FFFFFF?text=Admin';
+                            ?>
+                            <img id="profile-photo" src="<?php echo $photoPath; ?>" 
                                   class="profile-photo border-4 border-accent-brown shadow-lg">
                             <div class="photo-upload-overlay">
                                 <i class="fas fa-camera text-white text-2xl"></i>
@@ -131,82 +437,82 @@
             <!-- Settings Forms -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Personal Information Card -->
-                <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-playfair text-2xl font-bold text-deep-brown">Personal Information</h3>
-                        <button type="button" id="edit-profile-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
-                            <i class="fas fa-edit mr-2"></i>
-                            <span class="font-baskerville">Edit Profile</span>
-                        </button>
-                    </div>
+<div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="font-playfair text-2xl font-bold text-deep-brown">Personal Information</h3>
+        <button type="button" id="edit-profile-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
+            <i class="fas fa-edit mr-2"></i>
+            <span class="font-baskerville">Edit Profile</span>
+        </button>
+    </div>
 
-                    <form id="profile-update-form" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-deep-brown/80">First Name</label>
-                                <div class="relative">
-                                    <input type="text" id="first-name" name="first_name" value="John"
-                                           class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
-                                           disabled required>
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <i class="fas fa-user text-deep-brown/30"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-deep-brown/80">Middle Name</label>
-                                <input type="text" id="middle-name" name="middle_name" value="Michael"
-                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
-                                       disabled>
-                            </div>
-                            
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-deep-brown/80">Last Name</label>
-                                <input type="text" id="last-name" name="last_name" value="Anderson"
-                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
-                                       disabled required>
-                            </div>
-                            
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-deep-brown/80">Suffix</label>
-                                <input type="text" id="suffix" name="suffix" value="Jr."
-                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-1">
-                            <label class="block text-sm font-medium text-deep-brown/80">Username</label>
-                            <div class="relative">
-                                <input type="text" id="username" name="username" value="admin_john"
-                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <i class="fas fa-at text-deep-brown/30"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-1">
-                            <label class="block text-sm font-medium text-deep-brown/80">Phone Number</label>
-                            <div class="relative">
-                                <input type="tel" id="phone" name="contact_number" value="+1 (555) 123-4567"
-                                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <i class="fas fa-phone text-deep-brown/30"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="pt-4 border-t border-warm-cream flex justify-end space-x-3">
-                            <button type="button" id="cancel-edit-btn" class="hidden px-5 py-2.5 rounded-lg font-baskerville text-deep-brown hover:bg-warm-cream/50 transition-all fade-in">
-                                Cancel
-                            </button>
-                            <button type="submit" id="save-profile-btn" class="hidden bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] fade-in">
-                                Save Changes
-                            </button>
-                        </div>
-                    </form>
+    <form id="profile-update-form" class="space-y-6" method="POST">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-deep-brown/80">First Name</label>
+                <div class="relative">
+                    <input type="text" id="first-name" name="first_name" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>"
+                           class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                           disabled required>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <i class="fas fa-user text-deep-brown/30"></i>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-deep-brown/80">Middle Name</label>
+                <input type="text" id="middle-name" name="middle_name" value="<?php echo htmlspecialchars($user['middle_name'] ?? ''); ?>"
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                       disabled>
+            </div>
+            
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-deep-brown/80">Last Name</label>
+                <input type="text" id="last-name" name="last_name" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>"
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                       disabled required>
+            </div>
+            
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-deep-brown/80">Suffix</label>
+                <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($user['suffix'] ?? ''); ?>"
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled>
+            </div>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Username</label>
+            <div class="relative">
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>"
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <i class="fas fa-at text-deep-brown/30"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Phone Number</label>
+            <div class="relative">
+                <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number'] ?? ''); ?>"
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <i class="fas fa-phone text-deep-brown/30"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pt-4 border-t border-warm-cream flex justify-end space-x-3">
+            <button type="button" id="cancel-edit-btn" class="hidden px-5 py-2.5 rounded-lg font-baskerville text-deep-brown hover:bg-warm-cream/50 transition-all fade-in">
+                Cancel
+            </button>
+            <button type="submit" id="save-profile-btn" class="hidden bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] fade-in">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
 
                 <!-- Security Settings Card -->
                 <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
@@ -291,17 +597,96 @@
             });
 
             // Handle photo upload
-            photoUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profilePhoto.src = e.target.result;
-                        profilePhoto.classList.add('fade-in');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+            photoUpload.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        // Check file size (max 2MB)
+        if (file.size > 2000000) {
+            showAlert('File is too large. Max 2MB allowed.', 'error');
+            return;
+        }
+        
+        // Check file type
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            showAlert('Only JPG, PNG, and GIF files are allowed.', 'error');
+            return;
+        }
+        
+        // Show confirmation dialog
+        const { isConfirmed } = await Swal.fire({
+            title: 'Update Profile Photo',
+            text: 'Are you sure you want to change your profile picture?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#A0522D',
+            cancelButtonColor: '#6B3410',
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'No, cancel'
+        });
+        
+        if (!isConfirmed) {
+            return;
+        }
+        
+        // Show loading state
+        profilePhoto.classList.add('opacity-50');
+        const loadingIcon = document.createElement('div');
+        loadingIcon.className = 'absolute inset-0 flex items-center justify-center';
+        loadingIcon.innerHTML = '<i class="fas fa-spinner fa-spin text-2xl text-deep-brown"></i>';
+        photoContainer.appendChild(loadingIcon);
+        
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('profile_photo', file);
+        
+        // Upload via AJAX
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new TypeError("Oops, we didn't get JSON!");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePhoto.src = e.target.result;
+                    profilePhoto.classList.add('fade-in');
+                    
+                    // Also update the header profile picture
+                    document.getElementById('header-profile-pic').src = e.target.result;
+                    
+                    showAlert(data.message, 'success');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showAlert(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            showAlert('An error occurred. Please try again.', 'error');
+        })
+        .finally(() => {
+            profilePhoto.classList.remove('opacity-50');
+            if (loadingIcon.parentNode === photoContainer) {
+                photoContainer.removeChild(loadingIcon);
+            }
+        });
+    }
+});
 
             // Profile Edit Functionality
             const editProfileBtn = document.getElementById('edit-profile-btn');
@@ -329,21 +714,67 @@
                 saveProfileBtn.classList.add('hidden');
             });
 
-            profileForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                // Add save animation
-                saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
-                saveProfileBtn.disabled = true;
-                
-                setTimeout(() => {
-                    saveProfileBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Saved!';
-                    setTimeout(() => {
-                        saveProfileBtn.innerHTML = 'Save Changes';
-                        saveProfileBtn.disabled = false;
-                        cancelEditBtn.click(); // Reset form
-                    }, 1500);
-                }, 1000);
-            });
+            profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Show confirmation dialog
+    const { isConfirmed } = await Swal.fire({
+        title: 'Confirm Changes',
+        text: 'Are you sure you want to update your profile information?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#A0522D',
+        cancelButtonColor: '#6B3410',
+        confirmButtonText: 'Yes, update it!',
+        cancelButtonText: 'No, cancel'
+    });
+    
+    if (!isConfirmed) {
+        return;
+    }
+    
+    // Add save animation
+    saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+    saveProfileBtn.disabled = true;
+    
+    // Submit form via AJAX
+    fetch('', {
+        method: 'POST',
+        body: new FormData(profileForm),
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            saveProfileBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Saved!';
+            setTimeout(() => {
+                saveProfileBtn.innerHTML = 'Save Changes';
+                saveProfileBtn.disabled = false;
+                cancelEditBtn.click(); // Reset form
+                showAlert(data.message || 'Profile updated successfully!', 'success');
+            }, 1500);
+        } else {
+            saveProfileBtn.innerHTML = 'Save Changes';
+            saveProfileBtn.disabled = false;
+            showAlert(data.message || 'Error updating profile', 'error');
+        }
+    })
+    .catch(error => {
+        saveProfileBtn.innerHTML = 'Save Changes';
+        saveProfileBtn.disabled = false;
+        showAlert('An error occurred. Please try again.', 'error');
+        console.error('Error:', error);
+    });
+});
+
 
             // Password Update Functionality
             const passwordForm = document.getElementById('password-update-form');
@@ -392,40 +823,121 @@
             confirmPassword.addEventListener('input', validatePassword);
 
             // Form submission
-            passwordForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const password = newPassword.value;
-                if (!minLength.test(password) || !hasUppercase.test(password) || !hasNumber.test(password)) {
-                    alert('Password must meet all requirements.');
-                    return;
+            passwordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = newPassword.value;
+    if (!minLength.test(password) || !hasUppercase.test(password) || !hasNumber.test(password)) {
+        showAlert('Password must meet all requirements.', 'error');
+        return;
+    }
+    if (newPassword.value !== confirmPassword.value) {
+        showAlert('Passwords do not match.', 'error');
+        return;
+    }
+    
+    // Show confirmation dialog
+    const { isConfirmed } = await Swal.fire({
+        title: 'Change Password',
+        text: 'Are you sure you want to change your password?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#A0522D',
+        cancelButtonColor: '#6B3410',
+        confirmButtonText: 'Yes, change it!',
+        cancelButtonText: 'No, cancel'
+    });
+    
+    if (!isConfirmed) {
+        return;
+    }
+    
+    // Add update animation
+    submitPasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Updating...';
+    submitPasswordBtn.disabled = true;
+    
+    // Submit form via AJAX
+    fetch('', {
+        method: 'POST',
+        body: new FormData(passwordForm),
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            submitPasswordBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Updated!';
+            setTimeout(() => {
+                submitPasswordBtn.innerHTML = 'Update Password';
+                passwordForm.reset();
+                validatePassword();
+                showAlert(data.message || 'Password updated successfully!', 'success');
+            }, 1500);
+        } else {
+            submitPasswordBtn.innerHTML = 'Update Password';
+            submitPasswordBtn.disabled = false;
+            showAlert(data.message || 'Error updating password', 'error');
+        }
+    })
+    .catch(error => {
+        submitPasswordBtn.innerHTML = 'Update Password';
+        submitPasswordBtn.disabled = false;
+        showAlert('An error occurred. Please try again.', 'error');
+        console.error('Error:', error);
+    });
+});
+            
+            
+            // Helper function to show alerts
+            function showAlert(message, type) {
+                // Remove any existing alerts
+                const existingAlert = document.querySelector('.custom-alert');
+                if (existingAlert) {
+                    existingAlert.style.animation = 'fadeOut 0.3s ease forwards';
+                    setTimeout(() => existingAlert.remove(), 300);
                 }
-                if (newPassword.value !== confirmPassword.value) {
-                    alert('Passwords do not match.');
-                    return;
-                }
-
-                // Add update animation
-                submitPasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Updating...';
-                submitPasswordBtn.disabled = true;
                 
+                const alert = document.createElement('div');
+                alert.className = `custom-alert ${type === 'success' ? 'success' : 'error'}`;
+                alert.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(alert);
+                
+                // Auto-remove after 5 seconds with fade out animation
                 setTimeout(() => {
-                    submitPasswordBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Updated!';
-                    setTimeout(() => {
-                        submitPasswordBtn.innerHTML = 'Update Password';
-                        passwordForm.reset();
-                        validatePassword();
-                    }, 1500);
-                }, 1000);
-            });
+                    alert.style.animation = 'fadeOut 0.3s ease forwards';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            }
 
-            // Toggle password visibility
+            // Toggle password visibility for all password fields
             document.querySelectorAll('.toggle-password').forEach(icon => {
-                icon.addEventListener('click', () => {
-                    const input = icon.closest('.relative').querySelector('input');
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const input = this.closest('.relative').querySelector('input');
                     const isPassword = input.type === 'password';
+                    
+                    // Toggle input type
                     input.type = isPassword ? 'text' : 'password';
-                    icon.classList.toggle('fa-eye', isPassword);
-                    icon.classList.toggle('fa-eye-slash', !isPassword);
+                    
+                    // Toggle icon classes
+                    this.classList.toggle('fa-eye-slash', !isPassword);
+                    this.classList.toggle('fa-eye', isPassword);
+                    
+                    // Change icon color for better visibility
+                    this.classList.toggle('text-deep-brown/30', isPassword);
+                    this.classList.toggle('text-deep-brown', !isPassword);
                 });
             });
 
