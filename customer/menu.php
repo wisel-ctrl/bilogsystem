@@ -7,7 +7,7 @@ $page_title = "Menu - Caffè Lilio";
 ob_start();
 ?>
 
-<section id="menu" class="py-20">
+<section id="menu">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in">
             <h2 class="font-serif text-4xl md:text-5xl font-bold text-brown-900 mb-6">Our Menu</h2>
