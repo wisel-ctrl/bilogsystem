@@ -201,7 +201,7 @@
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-deep-brown flex items-center">
                             <i class="fas fa-check-circle mr-2 text-green-600"></i>
-                            Accepted Bookings
+                            Accepted Reservations
                         </h3>
                     </div>
                     <div class="overflow-x-auto p-4">
