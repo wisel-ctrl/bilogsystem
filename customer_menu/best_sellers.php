@@ -1,24 +1,5 @@
 <?php
 require_once '../db_connect.php';
-// Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
-$user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT first_name, last_name, profile_picture FROM users_tb WHERE id = :id");
-$stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Get unread notifications count
-$notificationStmt = $conn->prepare("SELECT COUNT(*) as unread_count FROM notifications_tb WHERE user_id = :user_id AND is_read = FALSE");
-$notificationStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$notificationStmt->execute();
-$notificationCount = $notificationStmt->fetch(PDO::FETCH_ASSOC)['unread_count'];
-
-// Construct full name for fallback avatar
-$fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
-
-// Set profile picture with a fallback
-$profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htmlspecialchars($user['profile_picture']) : 
-    'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=E8E0D5&color=5D2F0F&bold=true&size=128';
 
 try {
     // Query to fetch dishes with dish_category = 'best_seller' and their ingredients
@@ -42,6 +23,27 @@ try {
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+
+// Fetch user details for the nav (assuming $conn and $user_id are available from the including file)
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT first_name, last_name, profile_picture FROM users_tb WHERE id = :id");
+$stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Get unread notifications count
+$notificationStmt = $conn->prepare("SELECT COUNT(*) as unread_count FROM notifications_tb WHERE user_id = :user_id AND is_read = FALSE");
+$notificationStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$notificationStmt->execute();
+$notificationCount = $notificationStmt->fetch(PDO::FETCH_ASSOC)['unread_count'];
+
+// Construct full name for fallback avatar
+$fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
+
+// Set profile picture with a fallback
+$profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htmlspecialchars($user['profile_picture']) : 
+    'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=E8E0D5&color=5D2F0F&bold=true&size=128';
+
 ?>
 
 <!DOCTYPE html>
