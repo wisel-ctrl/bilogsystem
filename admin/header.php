@@ -10,9 +10,19 @@
             <span id="current-date"></span>
         </div>
         <div class="flex items-center space-x-4">
-            <button id="notifications" class="text-deep-brown hover:text-rich-brown transition-colors duration-200 p-2 rounded-lg hover:bg-warm-cream/10">
-                <i class="fas fa-bell text-xl"></i>
-            </button>
+            <div class="relative">
+                <button id="notifications" class="text-deep-brown hover:text-rich-brown transition-colors duration-200 p-2 rounded-lg hover:bg-warm-cream/10">
+                    <i class="fas fa-bell text-xl"></i>
+                </button>
+                <div id="notificationMenu" class="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
+                    <div class="px-4 py-2 text-sm text-deep-brown">
+                        <p class="font-medium">Notifications</p>
+                        <ul class="mt-2 space-y-2">
+                            <li class="text-sm">No new notifications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="relative">
                 <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
                     <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
@@ -35,3 +45,41 @@
         </div>
     </div>
 </header>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const notificationButton = document.getElementById('notifications');
+    const notificationMenu = document.getElementById('notificationMenu');
+    const profileButton = document.getElementById('profileDropdown');
+    const profileMenu = document.getElementById('profileMenu');
+
+    // Toggle notification menu
+    notificationButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isHidden = notificationMenu.classList.contains('hidden');
+        notificationMenu.classList.toggle('hidden', !isHidden);
+        notificationMenu.classList.toggle('opacity-0', !isHidden);
+        // Close profile menu if open
+        profileMenu.classList.add('hidden', 'opacity-0');
+    });
+
+    // Toggle profile menu
+    profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isHidden = profileMenu.classList.contains('hidden');
+        profileMenu.classList.toggle('hidden', !isHidden);
+        profileMenu.classList.toggle('opacity-0', !isHidden);
+        // Close notification menu if open
+        notificationMenu.classList.add('hidden', 'opacity-0');
+    });
+
+    // Close menus when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!notificationButton.contains(e.target) && !notificationMenu.contains(e.target)) {
+            notificationMenu.classList.add('hidden', 'opacity-0');
+        }
+        if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
+            profileMenu.classList.add('hidden', 'opacity-0');
+        }
+    });
+});
+</script>
