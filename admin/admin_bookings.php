@@ -244,7 +244,7 @@
                         
                         <div class="flex flex-col md:flex-row justify-between items-center mt-4 text-sm text-gray-700">
                             <div id="accepted-bookings-info" class="mb-2 md:mb-0">
-                                Showing 0 to 0 of 0 entries
+                                
                             </div>
                             <div id="accepted-bookings-pagination" class="inline-flex rounded-md shadow-sm">
                                 <!-- DataTables will generate pagination here -->
