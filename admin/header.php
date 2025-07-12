@@ -10,6 +10,9 @@
             <span id="current-date"></span>
         </div>
         <div class="flex items-center space-x-4">
+            <button id="notifications" class="text-deep-brown hover:text-rich-brown transition-colors duration-200 p-2 rounded-lg hover:bg-warm-cream/10">
+                <i class="fas fa-bell text-xl"></i>
+            </button>
             <div class="relative">
                 <button id="profileDropdown" class="flex items-center space-x-2 hover:bg-warm-cream/10 p-2 rounded-lg transition-all duration-200">
                     <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
