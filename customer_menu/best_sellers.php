@@ -1,6 +1,5 @@
 <?php
 require_once '../db_connect.php';
-require_once 'customer_auth.php';
 
 // Set page title
 $page_title = "Best-Seller Menu - Caffè Lilio";
