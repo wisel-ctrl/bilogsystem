@@ -176,141 +176,141 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
     <script>
         
         // Load notifications when dropdown is opened
-document.getElementById('notifications-button').addEventListener('click', function() {
-    loadNotifications();
-});
-
-function loadNotifications() {
-    const notificationsContainer = document.getElementById('notifications-list');
-    
-    // Show loading state
-    notificationsContainer.innerHTML = `
-        <div class="animate-pulse p-4">
-            <div class="skeleton-text w-3/4"></div>
-            <div class="skeleton-text w-1/2"></div>
-        </div>
-    `;
-    
-    // Fetch notifications via AJAX
-    fetch('get_notifications.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                let html = '';
-                data.forEach(notification => {
-                    html += `
-                        <div class="p-4 border-b border-deep-brown/10 ${notification.is_read ? '' : 'bg-warm-cream/50'}">
-                            <p class="font-baskerville text-deep-brown">${notification.message}</p>
-                            <p class="text-sm text-deep-brown/60">${notification.time_ago}</p>
-                        </div>
-                    `;
-                });
-                notificationsContainer.innerHTML = html;
-                
-                // Mark notifications as read
-                markNotificationsAsRead();
-            } else {
-                notificationsContainer.innerHTML = '<div class="p-4 text-center text-deep-brown/60">No new notifications</div>';
-            }
-        })
-        .catch(error => {
-            notificationsContainer.innerHTML = '<div class="p-4 text-center text-red-500">Error loading notifications</div>';
-            console.error('Error:', error);
-        });
-}
-
-function markNotificationsAsRead() {
-    fetch('mark_notifications_read.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Remove notification badge
-            const badge = document.querySelector('.notification-badge');
-            if (badge) {
-                badge.remove();
-            }
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-        
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        document.getElementById('close-mobile-menu').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.add('hidden');
-            // Reset mobile user dropdown when closing menu
-            document.getElementById('mobile-user-dropdown').classList.add('hidden');
-            document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
-        });
-
-        // User dropdown toggle (desktop)
-        document.getElementById('user-menu-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            const dropdown = document.getElementById('user-dropdown');
-            const chevron = document.getElementById('chevron-icon');
-            const isHidden = dropdown.classList.contains('hidden');
-            
-            // Close notifications dropdown if open
-            document.getElementById('notifications-dropdown').classList.add('hidden');
-            
-            dropdown.classList.toggle('hidden', !isHidden);
-            chevron.classList.toggle('rotate-180', isHidden);
-        });
-
-        // User dropdown toggle (mobile)
-        document.getElementById('mobile-user-menu-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            const dropdown = document.getElementById('mobile-user-dropdown');
-            const chevron = document.getElementById('mobile-chevron-icon');
-            const isHidden = dropdown.classList.contains('hidden');
-            
-            dropdown.classList.toggle('hidden', !isHidden);
-            chevron.classList.toggle('rotate-180', isHidden);
-        });
-
-        // Notifications dropdown toggle
         document.getElementById('notifications-button').addEventListener('click', function() {
-            const dropdown = document.getElementById('notifications-dropdown');
-            const isHidden = dropdown.classList.contains('hidden');
-            
-            // Close user dropdown if open
-            document.getElementById('user-dropdown').classList.add('hidden');
-            document.getElementById('chevron-icon').classList.remove('rotate-180');
-            
-            dropdown.classList.toggle('hidden', !isHidden);
+            loadNotifications();
         });
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            const userButton = document.getElementById('user-menu-button');
-            const mobileUserButton = document.getElementById('mobile-user-menu-button');
-            const notificationsButton = document.getElementById('notifications-button');
-            const userDropdown = document.getElementById('user-dropdown');
-            const mobileUserDropdown = document.getElementById('mobile-user-dropdown');
-            const notificationsDropdown = document.getElementById('notifications-dropdown');
+        function loadNotifications() {
+            const notificationsContainer = document.getElementById('notifications-list');
+            
+            // Show loading state
+            notificationsContainer.innerHTML = `
+                <div class="animate-pulse p-4">
+                    <div class="skeleton-text w-3/4"></div>
+                    <div class="skeleton-text w-1/2"></div>
+                </div>
+            `;
+            
+            // Fetch notifications via AJAX
+            fetch('get_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let html = '';
+                        data.forEach(notification => {
+                            html += `
+                                <div class="p-4 border-b border-deep-brown/10 ${notification.is_read ? '' : 'bg-warm-cream/50'}">
+                                    <p class="font-baskerville text-deep-brown">${notification.message}</p>
+                                    <p class="text-sm text-deep-brown/60">${notification.time_ago}</p>
+                                </div>
+                            `;
+                        });
+                        notificationsContainer.innerHTML = html;
+                        
+                        // Mark notifications as read
+                        markNotificationsAsRead();
+                    } else {
+                        notificationsContainer.innerHTML = '<div class="p-4 text-center text-deep-brown/60">No new notifications</div>';
+                    }
+                })
+                .catch(error => {
+                    notificationsContainer.innerHTML = '<div class="p-4 text-center text-red-500">Error loading notifications</div>';
+                    console.error('Error:', error);
+                });
+        }
 
-            if (!userButton.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
-                document.getElementById('chevron-icon').classList.remove('rotate-180');
-            }
+        function markNotificationsAsRead() {
+            fetch('mark_notifications_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove notification badge
+                    const badge = document.querySelector('.notification-badge');
+                    if (badge) {
+                        badge.remove();
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
-            if (!mobileUserButton.contains(event.target) && !mobileUserDropdown.contains(event.target)) {
-                mobileUserDropdown.classList.add('hidden');
-                document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
-            }
+                
+                // Mobile menu toggle
+                document.getElementById('mobile-menu-button').addEventListener('click', function() {
+                    document.getElementById('mobile-menu').classList.toggle('hidden');
+                });
 
-            if (!notificationsButton.contains(event.target) && !notificationsDropdown.contains(event.target)) {
-                notificationsDropdown.classList.add('hidden');
-            }
-        });
+                document.getElementById('close-mobile-menu').addEventListener('click', function() {
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                    // Reset mobile user dropdown when closing menu
+                    document.getElementById('mobile-user-dropdown').classList.add('hidden');
+                    document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
+                });
+
+                // User dropdown toggle (desktop)
+                document.getElementById('user-menu-button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = document.getElementById('user-dropdown');
+                    const chevron = document.getElementById('chevron-icon');
+                    const isHidden = dropdown.classList.contains('hidden');
+                    
+                    // Close notifications dropdown if open
+                    document.getElementById('notifications-dropdown').classList.add('hidden');
+                    
+                    dropdown.classList.toggle('hidden', !isHidden);
+                    chevron.classList.toggle('rotate-180', isHidden);
+                });
+
+                // User dropdown toggle (mobile)
+                document.getElementById('mobile-user-menu-button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = document.getElementById('mobile-user-dropdown');
+                    const chevron = document.getElementById('mobile-chevron-icon');
+                    const isHidden = dropdown.classList.contains('hidden');
+                    
+                    dropdown.classList.toggle('hidden', !isHidden);
+                    chevron.classList.toggle('rotate-180', isHidden);
+                });
+
+                // Notifications dropdown toggle
+                document.getElementById('notifications-button').addEventListener('click', function() {
+                    const dropdown = document.getElementById('notifications-dropdown');
+                    const isHidden = dropdown.classList.contains('hidden');
+                    
+                    // Close user dropdown if open
+                    document.getElementById('user-dropdown').classList.add('hidden');
+                    document.getElementById('chevron-icon').classList.remove('rotate-180');
+                    
+                    dropdown.classList.toggle('hidden', !isHidden);
+                });
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    const userButton = document.getElementById('user-menu-button');
+                    const mobileUserButton = document.getElementById('mobile-user-menu-button');
+                    const notificationsButton = document.getElementById('notifications-button');
+                    const userDropdown = document.getElementById('user-dropdown');
+                    const mobileUserDropdown = document.getElementById('mobile-user-dropdown');
+                    const notificationsDropdown = document.getElementById('notifications-dropdown');
+
+                    if (!userButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                        userDropdown.classList.add('hidden');
+                        document.getElementById('chevron-icon').classList.remove('rotate-180');
+                    }
+
+                    if (!mobileUserButton.contains(event.target) && !mobileUserDropdown.contains(event.target)) {
+                        mobileUserDropdown.classList.add('hidden');
+                        document.getElementById('mobile-chevron-icon').classList.remove('rotate-180');
+                    }
+
+                    if (!notificationsButton.contains(event.target) && !notificationsDropdown.contains(event.target)) {
+                        notificationsDropdown.classList.add('hidden');
+                    }
+                });
     </script>
 </nav>
