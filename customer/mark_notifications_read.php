@@ -1,26 +1,29 @@
 <?php
+require_once 'customer_auth.php';
 require_once '../db_connect.php';
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('HTTP/1.1 401 Unauthorized');
-    exit;
-}
-
-$user_id = $_SESSION['user_id'];
+header('Content-Type: application/json');
 
 try {
-    $stmt = $conn->prepare("
-        UPDATE notifications_tb 
-        SET is_read = TRUE 
-        WHERE user_id = :user_id AND is_read = FALSE
-    ");
+    // Get the current user ID from session
+    $user_id = $_SESSION['user_id'];
+    
+    // Update all unread notifications for this user
+    $stmt = $conn->prepare("UPDATE notifications_tb SET is_read = 1 WHERE user_id = :user_id AND is_read = 0");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    header('Content-Type: application/json');
-    echo json_encode(['success' => true]);
-} catch (PDOException $e) {
-    header('HTTP/1.1 500 Internal Server Error');
-    echo json_encode(['error' => $e->getMessage()]);
+    // Get the number of affected rows
+    $affectedRows = $stmt->rowCount();
+    
+    echo json_encode([
+        'success' => true,
+        'affected_rows' => $affectedRows
+    ]);
+} catch (Exception $e) {
+    error_log("Error marking notifications as read: " . $e->getMessage());
+    echo json_encode([
+        'success' => false,
+        'error' => $e->getMessage()
+    ]);
 }
