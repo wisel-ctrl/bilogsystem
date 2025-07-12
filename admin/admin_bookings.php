@@ -377,6 +377,87 @@
                     </div>
                 </div>
 
+                <div id="reservation-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-8">
+                    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+                        <div class="modal-header p-6 border-b border-warm-cream/20">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-2xl font-bold text-deep-brown font-playfair">Reservation Details</h3>
+                                <button onclick="closeReservationModal()" class="text-rich-brown hover:text-deep-brown transition-colors duration-200">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body flex-1 overflow-y-auto p-6 space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Reservation ID</label>
+                                    <p id="modal-reservation-id" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-2 rounded"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Reservation Age</label>
+                                    <p id="modal-reservation-age" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Name</label>
+                                    <p id="modal-client-name" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Phone Number</label>
+                                    <p id="modal-phone" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Selected Hall(s)</label>
+                                    <p id="modal-halls" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Event Type</label>
+                                    <p id="modal-event" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Menu Name</label>
+                                    <p id="modal-menu" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Number of Pax</label>
+                                    <p id="modal-pax" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
+                                    <p id="modal-price" class="text-lg font-semibold text-accent-brown font-baskerville"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Requested DateTime</label>
+                                    <p id="modal-datetime" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Payment Receipt</label>
+                                <div id="modal-receipt-container" class="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center">
+                                    <img id="modal-receipt-image" src="" alt="Payment Receipt" class="max-h-64 object-contain hidden">
+                                    <p id="modal-no-receipt" class="text-gray-500 italic">No receipt uploaded</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Notes</label>
+                                <p id="modal-notes" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-3 rounded"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Success Modal -->
                 <div id="success-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden flex items-center justify-center p-8">
                     <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-sm w-full flex flex-col">
@@ -392,6 +473,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
 
 
@@ -1136,7 +1219,7 @@ $(document).ready(function() {
                 render: function(data, type, row) {
                     return `
                         <div class="flex space-x-2">
-                            <button onclick="openBookingDetails('${data}')" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-150">
+                            <button onclick="openReservationDetails('${data}')" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-150">
                                 <i class="fas fa-eye mr-1.5"></i> View Details
                             </button>
                             <button onclick="markAsDone('${data}')" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors duration-150">
@@ -1165,6 +1248,112 @@ $(document).ready(function() {
         }.bind(this), 500);
     });
 });
+
+function openReservationDetails(reservationId) {
+    // Add blur to main content
+    document.querySelector('.flex-1').classList.add('blur-effect');
+    document.querySelector('#sidebar').classList.add('blur-effect');
+    
+    // Show loading state
+    const modal = document.getElementById('reservation-modal');
+    modal.dataset.reservationId = reservationId;
+    modal.classList.remove('hidden');
+    
+    // Save the original modal content
+    const originalModalContent = modal.querySelector('.modal-body').innerHTML;
+    
+    // Show loading spinner
+    modal.querySelector('.modal-body').innerHTML = '<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-deep-brown"></div></div>';
+    
+    // Fetch reservation details
+    fetch(`reservation_handlers/get_reservation_details.php?reservation_id=${reservationId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Reservation Details: ', data);
+            if (data.success) {
+                const reservation = data.data;
+                
+                // Restore original modal content
+                modal.querySelector('.modal-body').innerHTML = originalModalContent;
+                
+                // Populate modal fields
+                document.getElementById('modal-reservation-id').textContent = reservation.reservation_id;
+                document.getElementById('modal-reservation-age').textContent = reservation.reservation_age;
+                document.getElementById('modal-client-name').textContent = reservation.customer_name;
+                document.getElementById('modal-phone').textContent = reservation.contact_number;
+                
+                // Format event_hall as bullet points
+                const hallsElement = document.getElementById('modal-halls');
+                if (Array.isArray(reservation.event_hall)) {
+                    // Create bullet list for array
+                    hallsElement.innerHTML = reservation.event_hall.map(hall => `- ${hall}`).join('<br>');
+                } else if (typeof reservation.event_hall === 'string') {
+                    // Handle case where it might already be a string
+                    try {
+                        // Try to parse if it's a JSON string
+                        const hallsArray = JSON.parse(reservation.event_hall);
+                        hallsElement.innerHTML = hallsArray.map(hall => `- ${hall}`).join('<br>');
+                    } catch (e) {
+                        // If not JSON, display as is
+                        hallsElement.textContent = reservation.event_hall;
+                    }
+                } else {
+                    hallsElement.textContent = 'No hall specified';
+                }
+                
+                document.getElementById('modal-event').textContent = reservation.event;
+                document.getElementById('modal-menu').textContent = reservation.package_name;
+                document.getElementById('modal-pax').textContent = reservation.pax;
+                document.getElementById('modal-price').textContent = `₱${reservation.totalPrice}`;
+                document.getElementById('modal-datetime').textContent = reservation.reservation_datetime;
+                document.getElementById('modal-notes').textContent = reservation.notes || 'No notes provided';
+                
+                // Handle payment receipt
+                const receiptImg = document.getElementById('modal-receipt-image');
+                const noReceipt = document.getElementById('modal-no-receipt');
+                
+                if (reservation.downpayment_img) {
+                    receiptImg.src = `../images/payment_proofs/${reservation.downpayment_img}`;
+                    receiptImg.classList.remove('hidden');
+                    noReceipt.classList.add('hidden');
+                } else {
+                    receiptImg.classList.add('hidden');
+                    noReceipt.classList.remove('hidden');
+                }
+            } else {
+                // Show error message
+                modal.querySelector('.modal-body').innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                        <h3 class="text-xl font-bold text-deep-brown mb-2">Error loading reservation details</h3>
+                        <p class="text-rich-brown">${data.message}</p>
+                        <button onclick="closeReservationModal()" class="mt-4 px-4 py-2 bg-deep-brown text-warm-cream rounded hover:bg-rich-brown transition-colors">
+                            Close
+                        </button>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            modal.querySelector('.modal-body').innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                    <h3 class="text-xl font-bold text-deep-brown mb-2">Network Error</h3>
+                    <p class="text-rich-brown">Failed to fetch reservation details. Please try again.</p>
+                    <button onclick="closeReservationModal()" class="mt-4 px-4 py-2 bg-deep-brown text-warm-cream rounded hover:bg-rich-brown transition-colors">
+                        Close
+                    </button>
+                </div>
+            `;
+        });
+}
+
+function closeReservationModal() {
+    document.getElementById('reservation-modal').classList.add('hidden');
+    document.querySelector('.flex-1').classList.remove('blur-effect');
+    document.querySelector('#sidebar').classList.remove('blur-effect');
+}
 </script>
 <?php
 $page_scripts = ob_get_clean();
