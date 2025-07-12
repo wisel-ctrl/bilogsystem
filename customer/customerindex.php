@@ -209,10 +209,10 @@ ob_start();
             <span class="text-2xl transform transition-transform group-hover:rotate-12">💬</span>
         </div>
         <p class="font-baskerville mb-4 text-warm-cream">Need help? Our team is here to assist you.</p>
-        <button class="btn-primary bg-warm-cream text-deep-brown px-6 py-3 rounded-lg font-baskerville hover:bg-warm-cream/50 transition-all duration-300 w-full flex items-center justify-center space-x-2">
+        <a href="contact.php" class="btn-primary bg-warm-cream text-deep-brown px-6 py-3 rounded-lg font-baskerville hover:bg-warm-cream/50 transition-all duration-300 w-full flex items-center justify-center space-x-2">
             <span>Get Help</span>
             <i class="fas fa-headset ml-2"></i>
-        </button>
+    </a>
     </div>
 </section>
 
