@@ -130,6 +130,28 @@ function getDailyRevenue($conn) {
         return [];
     }
 }
+function getWeeklyRevenue($conn) {
+    try {
+        $query = "
+            SELECT 
+                CONCAT(YEAR(s.created_at), '-W', LPAD(WEEK(s.created_at, 1), 2, '0')) as revenue_week,
+                SUM(s.total_price - s.discount_price) as total_revenue,
+                COUNT(DISTINCT s.sales_id) as transaction_count,
+                IF(COUNT(DISTINCT s.sales_id) > 0, SUM(s.total_price - s.discount_price) / COUNT(DISTINCT s.sales_id), 0) as avg_transaction
+            FROM sales_tb s
+            WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
+            GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1)
+            ORDER BY s.created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Weekly Revenue Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
 
 // Function to fetch monthly revenue
 function getMonthlyRevenue($conn) {
@@ -183,6 +205,7 @@ $weekly_orders = getWeeklyOrders($conn);
 $monthly_orders = getMonthlyOrders($conn);
 $yearly_orders = getYearlyOrders($conn);
 $daily_revenue = getDailyRevenue($conn);
+$weekly_revenue = getWeeklyRevenue($conn);
 $monthly_revenue = getMonthlyRevenue($conn);
 $yearly_revenue = getYearlyRevenue($conn);
 
@@ -406,6 +429,49 @@ ob_start();
                     <?php foreach ($daily_revenue as $row): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($row['revenue_date']); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Weekly Revenue Table -->
+<div id="weeklyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+            Weekly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('weeklyRevenueTable', 'Weekly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="weeklyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($weekly_revenue)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($weekly_revenue as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['revenue_week']); ?></td>
                             <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
                             <td><?php echo number_format($row['transaction_count']); ?></td>
                             <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
@@ -784,6 +850,7 @@ ob_start();
             const period = document.getElementById('periodFilter').value;
             const sections = [
                 'dailyRevenueSection',
+                'weeklyRevenueSection',
                 'monthlyRevenueSection',
                 'yearlyRevenueSection',
                 'dailyOrdersSection',
@@ -806,6 +873,7 @@ ob_start();
                 let targetSection = '';
                 if (category === 'revenue') {
                     if (period === 'daily') targetSection = 'dailyRevenueSection';
+                    else if (period === 'weekly') targetSection = 'weeklyRevenueSection';
                     else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
                     else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
                 } else if (category === 'orders') {
@@ -821,6 +889,7 @@ ob_start();
                         document.getElementById('dailyRevenueSection').classList.remove('hidden');
                         document.getElementById('dailyOrdersSection').classList.remove('hidden');
                     } else if (period === 'weekly') {
+                        document.getElementById('weeklyRevenueSection').classList.remove('hidden'); // Added
                         document.getElementById('weeklyOrdersSection').classList.remove('hidden');
                     } else if (period === 'monthly') {
                         document.getElementById('monthlyRevenueSection').classList.remove('hidden');
