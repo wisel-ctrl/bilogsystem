@@ -6,6 +6,12 @@ $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Get unread notifications count
+$notificationStmt = $conn->prepare("SELECT COUNT(*) as unread_count FROM notifications_tb WHERE user_id = :user_id AND is_read = FALSE");
+$notificationStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$notificationStmt->execute();
+$notificationCount = $notificationStmt->fetch(PDO::FETCH_ASSOC)['unread_count'];
+
 // Construct full name for fallback avatar
 $fullName = ucwords(trim($user['first_name'] . ' ' . $user['last_name']));
 
@@ -59,13 +65,15 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
                                 aria-label="Notifications"
                                 id="notifications-button">
                             <i class="fas fa-bell text-deep-brown"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            <?php if ($notificationCount > 0): ?>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full notification-badge"></span>
+                            <?php endif; ?>
                         </button>
                         <div class="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg py-2 hidden border border-deep-brown/10 z-50" id="notifications-dropdown">
                             <div class="px-4 py-2 border-b border-deep-brown/10">
                                 <h3 class="font-playfair font-bold text-deep-brown">Notifications</h3>
                             </div>
-                            <div class="max-h-96 overflow-y-auto">
+                            <div class="max-h-96 overflow-y-auto" id="notifications-list">
                                 <div class="animate-pulse p-4">
                                     <div class="skeleton-text w-3/4"></div>
                                     <div class="skeleton-text w-1/2"></div>
@@ -166,6 +174,72 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
         </div>
     </div>
     <script>
+        
+        // Load notifications when dropdown is opened
+document.getElementById('notifications-button').addEventListener('click', function() {
+    loadNotifications();
+});
+
+function loadNotifications() {
+    const notificationsContainer = document.getElementById('notifications-list');
+    
+    // Show loading state
+    notificationsContainer.innerHTML = `
+        <div class="animate-pulse p-4">
+            <div class="skeleton-text w-3/4"></div>
+            <div class="skeleton-text w-1/2"></div>
+        </div>
+    `;
+    
+    // Fetch notifications via AJAX
+    fetch('get_notifications.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                let html = '';
+                data.forEach(notification => {
+                    html += `
+                        <div class="p-4 border-b border-deep-brown/10 ${notification.is_read ? '' : 'bg-warm-cream/50'}">
+                            <p class="font-baskerville text-deep-brown">${notification.message}</p>
+                            <p class="text-sm text-deep-brown/60">${notification.time_ago}</p>
+                        </div>
+                    `;
+                });
+                notificationsContainer.innerHTML = html;
+                
+                // Mark notifications as read
+                markNotificationsAsRead();
+            } else {
+                notificationsContainer.innerHTML = '<div class="p-4 text-center text-deep-brown/60">No new notifications</div>';
+            }
+        })
+        .catch(error => {
+            notificationsContainer.innerHTML = '<div class="p-4 text-center text-red-500">Error loading notifications</div>';
+            console.error('Error:', error);
+        });
+}
+
+function markNotificationsAsRead() {
+    fetch('mark_notifications_read.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Remove notification badge
+            const badge = document.querySelector('.notification-badge');
+            if (badge) {
+                badge.remove();
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+        
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');

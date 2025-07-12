@@ -188,6 +188,35 @@ try {
             'message' => 'Reservation submitted successfully!',
             'booking_id' => $booking_id
         ];
+        
+        // Create notification for the customer
+        $message = "Your booking #$booking_id has been received and is pending approval. We'll notify you once it's processed.";
+        $notificationStmt = $conn->prepare("
+            INSERT INTO notifications_tb (user_id, booking_id, message)
+            VALUES (:user_id, :booking_id, :message)
+        ");
+        $notificationStmt->bindParam(':user_id', $customer_id, PDO::PARAM_INT);
+        $notificationStmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+        $notificationStmt->bindParam(':message', $message, PDO::PARAM_STR);
+        $notificationStmt->execute();
+
+        // Create notifications for admins (optional)
+        $adminMessage = "New booking #$booking_id received from customer ID: $customer_id";
+        $adminStmt = $conn->prepare("
+            INSERT INTO notifications_tb (user_id, booking_id, message)
+            SELECT id, :booking_id, :message 
+            FROM users_tb 
+            WHERE usertype = 1
+        ");
+        $adminStmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+        $adminStmt->bindParam(':message', $adminMessage, PDO::PARAM_STR);
+        $adminStmt->execute();
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Reservation submitted successfully!',
+            'booking_id' => $booking_id
+        ];
     } else {
         throw new Exception('Failed to save reservation to database');
     }
