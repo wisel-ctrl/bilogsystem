@@ -697,31 +697,60 @@
         }
 
         function markAsDone(bookingId) {
-            // Show success modal with message and animation
-            const successModal = document.getElementById('success-modal');
-            document.getElementById('success-message').textContent = 'Booking has been marked as completed!';
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.querySelector('.dashboard-card').style.opacity = '1';
-                successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
-            }, 50);
-            
-            // Update the status in the table with transition
-            const row = document.querySelector(`button[onclick="markAsDone('${bookingId}')"]`).closest('tr');
-            const statusCell = row.querySelector('td:nth-child(5)');
-            const actionCell = row.querySelector('td:nth-child(6)');
-            
-            statusCell.style.transition = 'opacity 0.3s ease';
-            actionCell.style.transition = 'opacity 0.3s ease';
-            statusCell.style.opacity = '0';
-            actionCell.style.opacity = '0';
-            
-            setTimeout(() => {
-                statusCell.innerHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>';
-                actionCell.innerHTML = '<button disabled class="text-gray-400 cursor-not-allowed"><i class="fas fa-check-circle mr-1"></i>Completed</button>';
-                statusCell.style.opacity = '1';
-                actionCell.style.opacity = '1';
-            }, 300);
+            // Show loading state
+            const button = document.querySelector(`button[onclick="markAsDone('${bookingId}')"]`);
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            // Send AJAX request
+            fetch('booking_handlers/mark_as_done.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `booking_id=${bookingId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success modal with message and animation
+                    const successModal = document.getElementById('success-modal');
+                    document.getElementById('success-message').textContent = 'Booking has been marked as completed!';
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.querySelector('.dashboard-card').style.opacity = '1';
+                        successModal.querySelector('.dashboard-card').style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    // Update the status in the table with transition
+                    const row = button.closest('tr');
+                    const statusCell = row.querySelector('td:nth-child(5)');
+                    const actionCell = row.querySelector('td:nth-child(6)');
+                    
+                    statusCell.style.transition = 'opacity 0.3s ease';
+                    actionCell.style.transition = 'opacity 0.3s ease';
+                    statusCell.style.opacity = '0';
+                    actionCell.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        statusCell.innerHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>';
+                        actionCell.innerHTML = '<button disabled class="text-gray-400 cursor-not-allowed"><i class="fas fa-check-circle mr-1"></i>Completed</button>';
+                        statusCell.style.opacity = '1';
+                        actionCell.style.opacity = '1';
+                    }, 300);
+                } else {
+                    // Show error message
+                    alert('Error: ' + data.message);
+                    button.disabled = false;
+                    button.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Mark as Done';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Mark as Done';
+            });
         }
 
         function selectDeclineReason(reason) {
