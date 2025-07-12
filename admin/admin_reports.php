@@ -12,6 +12,20 @@ date_default_timezone_set('Asia/Manila');
 // Define page title
 $page_title = "Reports";
 
+function formatWeekPeriod($weekString) {
+    // Extract year and week number from "YYYY-WNN" format
+    list($year, $week) = explode('-W', $weekString);
+    $week = (int)$week;
+    // Calculate the start date of the week (Monday)
+    $date = new DateTime();
+    $date->setISODate($year, $week);
+    $startDate = $date->format('F j');
+    // Calculate the end date of the week (Sunday)
+    $date->modify('+6 days');
+    $endDate = $date->format('j, Y');
+    return "$startDate - $endDate";
+}
+
 // Function to fetch daily orders
 function getDailyOrders($conn) {
     try {
@@ -428,7 +442,7 @@ ob_start();
                 <?php else: ?>
                     <?php foreach ($daily_revenue as $row): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['revenue_date']); ?></td>
+                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['revenue_date']))); ?></td>
                             <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
                             <td><?php echo number_format($row['transaction_count']); ?></td>
                             <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
@@ -471,7 +485,7 @@ ob_start();
                 <?php else: ?>
                     <?php foreach ($weekly_revenue as $row): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['revenue_week']); ?></td>
+                            <td><?php echo htmlspecialchars(formatWeekPeriod($row['revenue_week'])); ?></td>
                             <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
                             <td><?php echo number_format($row['transaction_count']); ?></td>
                             <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
@@ -565,6 +579,7 @@ ob_start();
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
+
         </table>
     </div>
 </div>
@@ -600,7 +615,7 @@ ob_start();
                 <?php else: ?>
                     <?php foreach ($daily_orders as $row): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['order_date']); ?></td>
+                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['order_date']))); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
                             <td><?php echo number_format($row['pending_orders']); ?></td>
@@ -608,6 +623,7 @@ ob_start();
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
+
         </table>
     </div>
 </div>
@@ -643,7 +659,7 @@ ob_start();
                 <?php else: ?>
                     <?php foreach ($weekly_orders as $row): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['order_week']); ?></td>
+                            <td><?php echo htmlspecialchars(formatWeekPeriod($row['order_week'])); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
                             <td><?php echo number_format($row['pending_orders']); ?></td>
@@ -767,31 +783,31 @@ ob_start();
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>July 2025</td>
-                    <td>65%</td>
-                    <td>25%</td>
-                    <td>8%</td>
-                    <td>2%</td>
-                    <td>1,000</td>
-                </tr>
-                <tr>
-                    <td>June 2025</td>
-                    <td>60%</td>
-                    <td>28%</td>
-                    <td>10%</td>
-                    <td>2%</td>
-                    <td>950</td>
-                </tr>
-                <tr>
-                    <td>2025</td>
-                    <td>62%</td>
-                    <td>26%</td>
-                    <td>9%</td>
-                    <td>3%</td>
-                    <td>12,000</td>
-                </tr>
-            </tbody>
+    <tr>
+        <td>July 2025</td>
+        <td>65%</td>
+        <td>25%</td>
+        <td>8%</td>
+        <td>2%</td>
+        <td>1,000</td>
+    </tr>
+    <tr>
+        <td>June 2025</td>
+        <td>60%</td>
+        <td>28%</td>
+        <td>10%</td>
+        <td>2%</td>
+        <td>950</td>
+    </tr>
+    <tr>
+        <td>2025</td>
+        <td>62%</td>
+        <td>26%</td>
+        <td>9%</td>
+        <td>3%</td>
+        <td>12,000</td>
+    </tr>
+</tbody>
         </table>
     </div>
 </div>
