@@ -1092,7 +1092,12 @@ $(document).ready(function() {
             }
         ],
         pageLength: 10,
-        dom: '<"top"i>rt<"bottom"ip><"clear">', 
+        dom: '<"top">rt<"bottom"lip><"clear">',
+        language: {
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "0 to 0 of 0 entries",
+            infoFiltered: "(filtered from _MAX_ total entries)"
+        }
     });
     
     // Connect the search box with debounce for better performance
