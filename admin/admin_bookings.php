@@ -1266,7 +1266,7 @@ function openReservationDetails(reservationId) {
     modal.querySelector('.modal-body').innerHTML = '<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-deep-brown"></div></div>';
     
     // Fetch reservation details
-    fetch(`reservation_handlers/get_reservation_details.php?reservation_id=${reservationId}`)
+    fetch(`booking_handlers/get_booking_details.php?booking_id=${reservationId}`)
         .then(response => response.json())
         .then(data => {
             console.log('Reservation Details: ', data);
