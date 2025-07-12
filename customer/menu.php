@@ -19,7 +19,7 @@ ob_start();
 
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- Best-Sellers -->
-            <a href="index_menu/best_sellers.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/best_sellers.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/Calamari.jpg" alt="Best Sellers" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -29,7 +29,7 @@ ob_start();
             </a>
 
             <!-- Main Course -->
-            <a href="index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/main_course.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/maincourse.jpg" alt="Main Course" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -39,7 +39,7 @@ ob_start();
             </a>
 
             <!-- Salad -->
-            <a href="index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/salad.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/Salad.jpg" alt="Salad" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -49,7 +49,7 @@ ob_start();
             </a>
 
             <!-- Italian Dish -->
-            <a href="index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/italian_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/italian_dish.jpg" alt="Italian Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -59,7 +59,7 @@ ob_start();
             </a>
 
             <!-- Spanish Dish -->
-            <a href="index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/spanish_dish.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/spanish_dish.jpg" alt="Spanish Dish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -69,7 +69,7 @@ ob_start();
             </a>
 
             <!-- Coffee -->
-            <a href="index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/coffee.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/coffee.png" alt="Coffee" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -79,7 +79,7 @@ ob_start();
             </a>
 
             <!-- Drinks -->
-            <a href="index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/drinks.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/drinks.png" alt="Drinks" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -89,7 +89,7 @@ ob_start();
             </a>
 
             <!-- Pizza & Burgers -->
-            <a href="index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/burger_pizza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/burgerpizza.png" alt="Burgers & Pizza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -99,7 +99,7 @@ ob_start();
             </a>
 
             <!-- Pasta -->
-            <a href="index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/pasta.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/Carbonara.jpg" alt="Pasta" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -109,7 +109,7 @@ ob_start();
             </a>
 
             <!-- Pasta e Caza -->
-            <a href="index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/pasta_ecaza.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/pastaEcaza.png" alt="Pasta e Caza" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
@@ -119,7 +119,7 @@ ob_start();
             </a>
 
             <!-- Desserts -->
-            <a href="index_menu/desserts.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+            <a href="../index_menu/desserts.php" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                 <div class="aspect-[3/4] relative">
                     <img src="../images/desserts.jpg" alt="Desserts" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
