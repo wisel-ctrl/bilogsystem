@@ -49,8 +49,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const notificationButton = document.getElementById('notifications');
     const notificationMenu = document.getElementById('notificationMenu');
-    const profileButton = document.getElementById('profileDropdown');
-    const profileMenu = document.getElementById('profileMenu');
+    // const profileButton = document.getElementById('profileDropdown');
+    // const profileMenu = document.getElementById('profileMenu');
 
     // Toggle notification menu
     notificationButton.addEventListener('click', function(e) {
@@ -63,23 +63,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Toggle profile menu
-    profileButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isHidden = profileMenu.classList.contains('hidden');
-        profileMenu.classList.toggle('hidden', !isHidden);
-        profileMenu.classList.toggle('opacity-0', !isHidden);
-        // Close notification menu if open
-        notificationMenu.classList.add('hidden', 'opacity-0');
-    });
+    // profileButton.addEventListener('click', function(e) {
+    //     e.stopPropagation();
+    //     const isHidden = profileMenu.classList.contains('hidden');
+    //     profileMenu.classList.toggle('hidden', !isHidden);
+    //     profileMenu.classList.toggle('opacity-0', !isHidden);
+    //     // Close notification menu if open
+    //     notificationMenu.classList.add('hidden', 'opacity-0');
+    // });
 
     // Close menus when clicking outside
     document.addEventListener('click', function(e) {
         if (!notificationButton.contains(e.target) && !notificationMenu.contains(e.target)) {
             notificationMenu.classList.add('hidden', 'opacity-0');
         }
-        if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.classList.add('hidden', 'opacity-0');
-        }
+        // if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
+        //     profileMenu.classList.add('hidden', 'opacity-0');
+        // }
     });
 });
 </script>
