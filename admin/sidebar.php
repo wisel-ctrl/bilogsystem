@@ -62,13 +62,7 @@
                     <span class="tooltip">Reports</span>
                 </a>
             </li>
-            <!-- <li>
-                <a href="admin_setting.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream transition-all duration-200 <?php echo basename($_SERVER['PHP_SELF']) === 'admin_setting.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-cog w-5"></i>
-                    <span class="sidebar-text font-baskerville">Settings</span>
-                    <span class="tooltip">Settings</span>
-                </a>
-            </li> -->
+ 
         </ul>
     </nav>
 </div>
