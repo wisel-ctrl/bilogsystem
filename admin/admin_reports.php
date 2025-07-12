@@ -343,17 +343,16 @@ ob_start();
 
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          
-        <div>
-            <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
-            <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                <option value="">--</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-            </select>
-        </div>
+            <div>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
+                <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <option value="">--</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
                 <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -375,389 +374,361 @@ ob_start();
     </div>
 </div>
 
-    <!-- Daily Revenue Table -->
-    <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-coins mr-2 text-accent-brown"></i>
-                Daily Revenue
-            </h3>
-            <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
-                <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="dailyRevenueTable" class="report-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-07-04</td>
-                        <td>₱2,450</td>
-                        <td>124</td>
-                        <td>₱19.76</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>₱2,200</td>
-                        <td>110</td>
-                        <td>₱20.00</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>₱2,300</td>
-                        <td>115</td>
-                        <td>₱20.00</td>
-                    </tr>
-                </tbody>
-            </table>
+<!-- Daily Revenue Table -->
+<div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-coins mr-2 text-accent-brown"></i>
+            Daily Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Monthly Revenue Table -->
-    <div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
-                Monthly Revenue
-            </h3>
-            <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
-                <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="monthlyRevenueTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="dailyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($daily_revenue)): ?>
                     <tr>
-                        <th>Month</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>₱84,320</td>
-                        <td>3,847</td>
-                        <td>₱21.92</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>₱78,500</td>
-                        <td>3,600</td>
-                        <td>₱21.81</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>₱82,000</td>
-                        <td>3,750</td>
-                        <td>₱21.87</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Yearly Revenue Table -->
-    <div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-trophy mr-2 text-accent-brown"></i>
-                Yearly Revenue
-            </h3>
-            <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
-                <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="yearlyRevenueTable" class="report-table">
-                <thead>
-                    <tr>
-                        <th>Year</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>₱950,680</td>
-                        <td>45,320</td>
-                        <td>₱20.98</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>₱780,000</td>
-                        <td>38,000</td>
-                        <td>₱20.53</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>₱700,000</td>
-                        <td>35,000</td>
-                        <td>₱20.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Daily Orders Table -->
-    <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
-                Daily Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="dailyOrdersTable" class="report-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($daily_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($daily_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars($row['revenue_date']); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($daily_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['order_date']); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Monthly Revenue Table -->
+<div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
+            Monthly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-        <!-- Weekly Orders Table -->
-    <div id="weeklyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
-                Weekly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('weeklyOrdersTable', 'Weekly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="weeklyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="monthlyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($monthly_revenue)): ?>
                     <tr>
-                        <th>Week</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($weekly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($monthly_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(date('F Y', strtotime($row['revenue_month'] . '-01'))); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($weekly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['order_week']); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Yearly Revenue Table -->
+<div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-trophy mr-2 text-accent-brown"></i>
+            Yearly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Monthly Orders Table -->
-    <div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
-                Monthly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="monthlyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="yearlyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($yearly_revenue)): ?>
                     <tr>
-                        <th>Month</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($monthly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($yearly_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars($row['revenue_year']); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($monthly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Daily Orders Table -->
+<div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
+            Daily Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Yearly Orders Table -->
-    <div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-award mr-2 text-accent-brown"></i>
-                Yearly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="yearlyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="dailyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($daily_orders)): ?>
                     <tr>
-                        <th>Year</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($yearly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($daily_orders as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars($row['order_date']); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($yearly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['order_year']); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Weekly Orders Table -->
+<div id="weeklyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+            Weekly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('weeklyOrdersTable', 'Weekly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
+    <div class="overflow-x-auto">
+        <table id="weeklyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($weekly_orders)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($weekly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['order_week']); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <!-- Customer Satisfaction Table -->
-    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-smile mr-2 text-accent-brown"></i>
-                Customer Satisfaction
-            </h3>
-            <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
-                <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="customerSatisfactionTable" class="report-table">
-                <thead>
-                    <tr>
-                        <th>Period</th>
-                        <th>Excellent</th>
-                        <th>Good</th>
-                        <th>Average</th>
-                        <th>Poor</th>
-                        <th>Total Responses</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>65%</td>
-                        <td>25%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>1,000</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>60%</td>
-                        <td>28%</td>
-                        <td>10%</td>
-                        <td>2%</td>
-                        <td>950</td>
-                    </tr>
-                    <tr>
-                        <td>2025</td>
-                        <td>62%</td>
-                        <td>26%</td>
-                        <td>9%</td>
-                        <td>3%</td>
-                        <td>12,000</td>
-                    </tr>
-                </tbody>
-            </table>
+<!-- Monthly Orders Table -->
+<div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
+            Monthly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
+    <div class="overflow-x-auto">
+        <table id="monthlyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($monthly_orders)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($monthly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Yearly Orders Table -->
+<div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-award mr-2 text-accent-brown"></i>
+            Yearly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="yearlyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($yearly_orders)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($yearly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['order_year']); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Customer Satisfaction Table -->
+<div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-smile mr-2 text-accent-brown"></i>
+            Customer Satisfaction
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="customerSatisfactionTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Excellent</th>
+                    <th>Good</th>
+                    <th>Average</th>
+                    <th>Poor</th>
+                    <th>Total Responses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>July 2025</td>
+                    <td>65%</td>
+                    <td>25%</td>
+                    <td>8%</td>
+                    <td>2%</td>
+                    <td>1,000</td>
+                </tr>
+                <tr>
+                    <td>June 2025</td>
+                    <td>60%</td>
+                    <td>28%</td>
+                    <td>10%</td>
+                    <td>2%</td>
+                    <td>950</td>
+                </tr>
+                <tr>
+                    <td>2025</td>
+                    <td>62%</td>
+                    <td>26%</td>
+                    <td>9%</td>
+                    <td>3%</td>
+                    <td>12,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 
 <?php
