@@ -107,7 +107,7 @@ try {
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    
+
     <div class="fixed top-4 left-4 z-50">
         <button onclick="history.back()" class="flex items-center space-x-2 bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
             <i class="fas fa-arrow-left"></i>
@@ -199,159 +199,115 @@ try {
         </div>
     </footer>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const headerOffset = 80;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+<script>
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 0) {
-                navbar.classList.add('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
-            } else {
-                navbar.classList.remove('backdrop-blur-md', 'bg-[#FFF8E7]/90', 'shadow-lg');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
             }
         });
+    }, observerOptions);
 
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('menu-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalIngredients = document.getElementById('modal-ingredients');
+    const modalDescription = document.getElementById('modal-description');
+    const closeModal = document.querySelector('.modal-close');
+
+    document.querySelectorAll('.view-ingredients').forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.closest('.menu-card');
+            const dishName = card.querySelector('h3').textContent;
+            const ingredients = card.getAttribute('data-ingredients');
+            const description = card.getAttribute('data-description');
+            modalTitle.textContent = dishName;
+            modalIngredients.textContent = ingredients;
+            modalDescription.textContent = description;
+            modal.classList.add('active');
+        });
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Adjust card widths
+    function adjustCardWidths() {
+        const grid = document.getElementById('menu-grid');
+        const cards = Array.from(grid.querySelectorAll('.menu-card'));
+        const breakpoints = {
+            sm: { cols: 2, minWidth: 640 },
+            lg: { cols: 4, minWidth: 1024 }
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+        const windowWidth = window.innerWidth;
+        let colsPerRow = windowWidth < 640 ? 2 : 1;
+        if (windowWidth >= breakpoints.lg.minWidth) {
+            colsPerRow = breakpoints.lg.cols;
+        } else if (windowWidth >= breakpoints.sm.minWidth) {
+            colsPerRow = breakpoints.sm.cols;
+        }
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
+        cards.forEach(card => {
+            card.classList.remove('col-span-1', 'col-span-2', 'sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
+            card.classList.add('col-span-1');
         });
 
-        // Modal functionality
-        const modal = document.getElementById('menu-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalIngredients = document.getElementById('modal-ingredients');
-        const modalDescription = document.getElementById('modal-description');
-        const closeModal = document.querySelector('.modal-close');
-
-        document.querySelectorAll('.view-ingredients').forEach(button => {
-            button.addEventListener('click', () => {
-                const card = button.closest('.menu-card');
-                const dishName = card.querySelector('h3').textContent;
-                const ingredients = card.getAttribute('data-ingredients');
-                const description = card.getAttribute('data-description');
-                modalTitle.textContent = dishName;
-                modalIngredients.textContent = ingredients;
-                modalDescription.textContent = description;
-                modal.classList.add('active');
-            });
-        });
-
-        closeModal.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                modal.classList.remove('active');
-            }
-        });
-
-        // Adjust card widths
-        function adjustCardWidths() {
-            const grid = document.getElementById('menu-grid');
-            const cards = Array.from(grid.querySelectorAll('.menu-card'));
-            const breakpoints = {
-                sm: { cols: 2, minWidth: 640 },
-                lg: { cols: 4, minWidth: 1024 }
-            };
-
-            const windowWidth = window.innerWidth;
-            let colsPerRow = windowWidth < 640 ? 2 : 1;
-            if (windowWidth >= breakpoints.lg.minWidth) {
-                colsPerRow = breakpoints.lg.cols;
-            } else if (windowWidth >= breakpoints.sm.minWidth) {
-                colsPerRow = breakpoints.sm.cols;
-            }
-
-            cards.forEach(card => {
-                card.classList.remove('col-span-1', 'col-span-2', 'sm:col-span-1', 'sm:col-span-2', 'lg:col-span-1', 'lg:col-span-2');
-                card.classList.add('col-span-1');
-            });
-
-            for (let i = 0; i < cards.length; i += colsPerRow) {
-                const rowCards = cards.slice(i, i + colsPerRow);
-                if (rowCards.length < colsPerRow && rowCards.length > 0) {
-                    if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
-                        rowCards.forEach((card, index) => {
-                            if (index < 2) {
-                                card.classList.add('lg:col-span-1');
-                            } else {
-                                card.classList.add('lg:col-span-2');
-                            }
-                        });
-                    } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
-                        rowCards.forEach(card => card.classList.add('lg:col-span-2'));
-                    } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
-                        rowCards[0].classList.add('lg:col-span-2');
-                    } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
-                        rowCards[0].classList.add('sm:col-span-2');
-                    } else if (colsPerRow === 2 && rowCards.length === 1 && windowWidth < 640) {
-                        rowCards[0].classList.add('col-span-2');
-                    } else {
-                        rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
-                    }
+        for (let i = 0; i < cards.length; i += colsPerRow) {
+            const rowCards = cards.slice(i, i + colsPerRow);
+            if (rowCards.length < colsPerRow && rowCards.length > 0) {
+                if (colsPerRow === breakpoints.lg.cols && rowCards.length === 3) {
+                    rowCards.forEach((card, index) => {
+                        if (index < 2) {
+                            card.classList.add('lg:col-span-1');
+                        } else {
+                            card.classList.add('lg:col-span-2');
+                        }
+                    });
+                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 2) {
+                    rowCards.forEach(card => card.classList.add('lg:col-span-2'));
+                } else if (colsPerRow === breakpoints.lg.cols && rowCards.length === 1) {
+                    rowCards[0].classList.add('lg:col-span-2');
+                } else if (colsPerRow === breakpoints.sm.cols && rowCards.length === 1) {
+                    rowCards[0].classList.add('sm:col-span-2');
+                } else if (colsPerRow === 2 && rowCards.length === 1 && windowWidth < 640) {
+                    rowCards[0].classList.add('col-span-2');
                 } else {
                     rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
                 }
+            } else {
+                rowCards.forEach(card => card.classList.add(colsPerRow === breakpoints.lg.cols ? 'lg:col-span-1' : 'col-span-1'));
             }
         }
+    }
 
-        window.addEventListener('load', adjustCardWidths);
-        window.addEventListener('resize', adjustCardWidths);
-    </script>
+    window.addEventListener('load', adjustCardWidths);
+    window.addEventListener('resize', adjustCardWidths);
+</script>
 </body>
 </html>
