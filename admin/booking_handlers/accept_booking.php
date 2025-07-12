@@ -66,12 +66,17 @@ try {
     // Send SMS notification
     $message = "Hello $customerName, your booking for $reservationDate has been accepted. Thank you for choosing Caffe Lilio!";
     sendSMS($phoneNumber, $message);
+    
+            // Create notification for the customer
+    createNotification($conn, $userId, $bookingId, 'accepted');
 
     // Return success response
     echo json_encode([
         'success' => true,
         'message' => 'Booking has been accepted!'
     ]);
+    
+
 
 } catch (Exception $e) {
     // Return error response
@@ -114,5 +119,43 @@ function sendSMS($number, $message) {
     
     $context = stream_context_create($options);
     @file_get_contents($url, false, $context);
+}
+
+function createNotification($conn, $user_id, $booking_id, $status, $reason = null) {
+    // Get booking details for the notification message
+    $stmt = $conn->prepare("
+        SELECT b.customer_id, b.reservation_datetime, u.first_name, u.last_name
+        FROM booking_tb b
+        JOIN users_tb u ON b.customer_id = u.id
+        WHERE b.booking_id = :booking_id
+    ");
+    $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $booking = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$booking) return false;
+
+    $customer_id = $booking['customer_id'];
+    $reservationDate = date('F j, Y h:i A', strtotime($booking['reservation_datetime']));
+    $customerName = $booking['first_name'] . ' ' . $booking['last_name'];
+
+    // Create appropriate message based on status
+    if ($status === 'accepted') {
+        $message = "Your booking #$booking_id for $reservationDate has been accepted. Thank you, $customerName!";
+    } else {
+        $reasonText = $reason ? " Reason: $reason" : "";
+        $message = "Your booking #$booking_id for $reservationDate has been declined.$reasonText";
+    }
+
+    // Insert notification
+    $stmt = $conn->prepare("
+        INSERT INTO notifications_tb (user_id, booking_id, message)
+        VALUES (:user_id, :booking_id, :message)
+    ");
+    $stmt->bindParam(':user_id', $customer_id, PDO::PARAM_INT);
+    $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+    $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+    
+    return $stmt->execute();
 }
 ?>
