@@ -73,9 +73,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Handle profile update
-    // Handle profile update
     if (isset($_POST['first_name'])) {
         try {
+            // Get current user data for comparison
+            $currentUser = $conn->prepare("SELECT first_name, middle_name, last_name, suffix, username, contact_number FROM users_tb WHERE id = :user_id");
+            $currentUser->execute([':user_id' => $_SESSION['user_id']]);
+            $currentData = $currentUser->fetch();
+            
+            // Check if any field actually changed
+            $hasChanges = false;
+            $fieldsToCheck = ['first_name', 'middle_name', 'last_name', 'suffix', 'username', 'contact_number'];
+            foreach ($fieldsToCheck as $field) {
+                if ($_POST[$field] != $currentData[$field]) {
+                    $hasChanges = true;
+                    break;
+                }
+            }
+            
+            if (!$hasChanges) {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => "No changes detected. Profile information remains the same."]);
+                    exit();
+                } else {
+                    $_SESSION['error_message'] = "No changes detected. Profile information remains the same.";
+                    header("Location: ".$_SERVER['PHP_SELF']);
+                    exit();
+                }
+            }
+            
+            // Validate inputs
+            $errors = [];
+            
+            // Function to check if string contains only spaces or special characters
+            function isInvalidString($str) {
+                return preg_match('/^[\s\W]+$/', $str) || trim($str) === '';
+            }
+            
+            // Validate required fields
+            if (isInvalidString($_POST['first_name'])) {
+                $errors[] = "First name cannot be empty or contain only spaces/special characters.";
+            }
+            
+            if (isInvalidString($_POST['last_name'])) {
+                $errors[] = "Last name cannot be empty or contain only spaces/special characters.";
+            }
+            
+            if (isInvalidString($_POST['username'])) {
+                $errors[] = "Username cannot be empty or contain only spaces/special characters.";
+            }
+            
+            if (isInvalidString($_POST['contact_number'])) {
+                $errors[] = "Phone number cannot be empty or contain only spaces/special characters.";
+            }
+            
+            // Validate phone number format (basic validation)
+            if (!preg_match('/^[0-9+\- ]+$/', $_POST['contact_number'])) {
+                $errors[] = "Phone number can only contain numbers, plus sign, hyphens, and spaces.";
+            }
+            
+            if (!preg_match('/^09[0-9]{9}$/', $_POST['contact_number'])) {
+        $errors[] = "Phone number must be a valid Philippine number (11 digits starting with 09).";
+    }
+            
+            if (!empty($errors)) {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => implode("\n", $errors)]);
+                    exit();
+                } else {
+                    $_SESSION['error_message'] = implode("<br>", $errors);
+                    header("Location: ".$_SERVER['PHP_SELF']);
+                    exit();
+                }
+            }
+            
             $stmt = $conn->prepare("UPDATE users_tb SET 
                 first_name = :first_name,
                 middle_name = :middle_name,
@@ -458,6 +530,7 @@ ob_start();
                         <i class="fas fa-user text-deep-brown/30"></i>
                     </div>
                 </div>
+                <p class="text-xs text-deep-brown/50 mt-1 hidden" id="first-name-error">First name cannot be empty or contain only spaces/special characters.</p>
             </div>
             
             <div class="space-y-1">
@@ -472,6 +545,7 @@ ob_start();
                 <input type="text" id="last-name" name="last_name" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>"
                        class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
                        disabled required>
+                <p class="text-xs text-deep-brown/50 mt-1 hidden" id="last-name-error">Last name cannot be empty or contain only spaces/special characters.</p>
             </div>
             
             <div class="space-y-1">
@@ -490,18 +564,24 @@ ob_start();
                     <i class="fas fa-at text-deep-brown/30"></i>
                 </div>
             </div>
+            <p class="text-xs text-deep-brown/50 mt-1 hidden" id="username-error">Username cannot be empty or contain only spaces/special characters.</p>
         </div>
         
         <div class="space-y-1">
             <label class="block text-sm font-medium text-deep-brown/80">Phone Number</label>
             <div class="relative">
                 <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number'] ?? ''); ?>"
-                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" 
+                       disabled required
+                       pattern="[0-9]*"
+                       inputmode="numeric"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <i class="fas fa-phone text-deep-brown/30"></i>
                 </div>
             </div>
-        </div>
+            <p class="text-xs text-deep-brown/50 mt-1 hidden" id="phone-error">Phone number must be 11 digits starting with 09 (e.g., 09123456789).</p>
+        </div>   
         
         <div class="pt-4 border-t border-warm-cream flex justify-end space-x-3">
             <button type="button" id="cancel-edit-btn" class="hidden px-5 py-2.5 rounded-lg font-baskerville text-deep-brown hover:bg-warm-cream/50 transition-all fade-in">
@@ -695,10 +775,46 @@ ob_start();
             const profileForm = document.getElementById('profile-update-form');
             const profileInputs = profileForm.querySelectorAll('input');
 
+            function validateProfileField(field, errorId) {
+                const value = field.value;
+                const errorElement = document.getElementById(errorId);
+                
+                if (/^[\s\W]+$/.test(value) || value.trim() === '') {
+                    field.classList.add('border-red-500');
+                    errorElement.classList.remove('hidden');
+                    return false;
+                } else {
+                    field.classList.remove('border-red-500');
+                    errorElement.classList.add('hidden');
+                    return true;
+                }
+            }
+            
+            // Add event listeners for real-time validation
             editProfileBtn.addEventListener('click', () => {
                 profileInputs.forEach(input => {
                     input.disabled = false;
                     input.classList.add('fade-in');
+                    
+                    // Add input event listeners for validation
+                    if (input.id === 'first-name') {
+                        input.addEventListener('input', () => validateProfileField(input, 'first-name-error'));
+                    } else if (input.id === 'last-name') {
+                        input.addEventListener('input', () => validateProfileField(input, 'last-name-error'));
+                    } else if (input.id === 'username') {
+                        input.addEventListener('input', () => validateProfileField(input, 'username-error'));
+                    } else if (input.id === 'phone') {
+                        input.addEventListener('input', function() {
+                            const isValid = validateProfileField(this, 'phone-error');
+                            if (!/^[0-9+\- ]*$/.test(this.value)) {
+                                this.classList.add('border-red-500');
+                                document.getElementById('phone-error').textContent = 'Phone number can only contain numbers, plus sign, hyphens, and spaces.';
+                                document.getElementById('phone-error').classList.remove('hidden');
+                                isValid = false;
+                            }
+                            return isValid;
+                        });
+                    }
                 });
                 editProfileBtn.style.display = 'none';
                 cancelEditBtn.classList.remove('hidden');
@@ -714,66 +830,106 @@ ob_start();
                 saveProfileBtn.classList.add('hidden');
             });
 
+            // Update the profile form submission handler
             profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Show confirmation dialog
-    const { isConfirmed } = await Swal.fire({
-        title: 'Confirm Changes',
-        text: 'Are you sure you want to update your profile information?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#A0522D',
-        cancelButtonColor: '#6B3410',
-        confirmButtonText: 'Yes, update it!',
-        cancelButtonText: 'No, cancel'
-    });
-    
-    if (!isConfirmed) {
-        return;
-    }
-    
-    // Add save animation
-    saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
-    saveProfileBtn.disabled = true;
-    
-    // Submit form via AJAX
-    fetch('', {
-        method: 'POST',
-        body: new FormData(profileForm),
-        headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            saveProfileBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Saved!';
-            setTimeout(() => {
-                saveProfileBtn.innerHTML = 'Save Changes';
-                saveProfileBtn.disabled = false;
-                cancelEditBtn.click(); // Reset form
-                showAlert(data.message || 'Profile updated successfully!', 'success');
-            }, 1500);
-        } else {
-            saveProfileBtn.innerHTML = 'Save Changes';
-            saveProfileBtn.disabled = false;
-            showAlert(data.message || 'Error updating profile', 'error');
-        }
-    })
-    .catch(error => {
-        saveProfileBtn.innerHTML = 'Save Changes';
-        saveProfileBtn.disabled = false;
-        showAlert('An error occurred. Please try again.', 'error');
-        console.error('Error:', error);
-    });
-});
+                e.preventDefault();
+                
+                // Client-side validation
+                const firstName = document.getElementById('first-name').value;
+                const lastName = document.getElementById('last-name').value;
+                const username = document.getElementById('username').value;
+                const phone = document.getElementById('phone').value;
+                
+                // Function to check if string contains only spaces or special characters
+                function isInvalidString(str) {
+                    return /^[\s\W]+$/.test(str) || str.trim() === '';
+                }
+                
+                // Validate required fields
+                const errors = [];
+                if (isInvalidString(firstName)) {
+                    errors.push("First name cannot be empty or contain only spaces/special characters.");
+                }
+                
+                if (isInvalidString(lastName)) {
+                    errors.push("Last name cannot be empty or contain only spaces/special characters.");
+                }
+                
+                if (isInvalidString(username)) {
+                    errors.push("Username cannot be empty or contain only spaces/special characters.");
+                }
+                
+                if (isInvalidString(phone)) {
+                    errors.push("Phone number cannot be empty or contain only spaces/special characters.");
+                }
+                
+                // Validate phone number format (basic validation)
+                if (!/^[0-9+\- ]+$/.test(phone)) {
+                    errors.push("Phone number can only contain numbers, plus sign, hyphens, and spaces.");
+                }
+                
+                if (errors.length > 0) {
+                    showAlert(errors.join("\n"), 'error');
+                    return;
+                }
+                
+                // Show confirmation dialog
+                const { isConfirmed } = await Swal.fire({
+                    title: 'Confirm Changes',
+                    text: 'Are you sure you want to update your profile information?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A0522D',
+                    cancelButtonColor: '#6B3410',
+                    confirmButtonText: 'Yes, update it!',
+                    cancelButtonText: 'No, cancel'
+                });
+                
+                if (!isConfirmed) {
+                    return;
+                }
+                
+                // Add save animation
+                saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+                saveProfileBtn.disabled = true;
+                
+                // Submit form via AJAX
+                fetch('', {
+                    method: 'POST',
+                    body: new FormData(profileForm),
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        saveProfileBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Saved!';
+                        setTimeout(() => {
+                            saveProfileBtn.innerHTML = 'Save Changes';
+                            saveProfileBtn.disabled = false;
+                            cancelEditBtn.click(); // Reset form
+                            showAlert(data.message || 'Profile updated successfully!', 'success');
+                        }, 1500);
+                    } else {
+                        saveProfileBtn.innerHTML = 'Save Changes';
+                        saveProfileBtn.disabled = false;
+                        showAlert(data.message || 'Error updating profile', 'error');
+                    }
+                })
+                .catch(error => {
+                    saveProfileBtn.innerHTML = 'Save Changes';
+                    saveProfileBtn.disabled = false;
+                    showAlert('An error occurred. Please try again.', 'error');
+                    console.error('Error:', error);
+                });
+            });
 
 
             // Password Update Functionality
