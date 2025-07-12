@@ -1277,8 +1277,8 @@ function openReservationDetails(reservationId) {
                 modal.querySelector('.modal-body').innerHTML = originalModalContent;
                 
                 // Populate modal fields
-                document.getElementById('modal-reservation-id').textContent = reservation.reservation_id;
-                document.getElementById('modal-reservation-age').textContent = reservation.reservation_age;
+                document.getElementById('modal-reservation-id').textContent = reservation.booking_id;
+                document.getElementById('modal-reservation-age').textContent = reservation.booking_age;
                 document.getElementById('modal-client-name').textContent = reservation.customer_name;
                 document.getElementById('modal-phone').textContent = reservation.contact_number;
                 
