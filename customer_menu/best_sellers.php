@@ -107,13 +107,14 @@ try {
     </style>
 </head>
 <body class="smooth-scroll bg-warm-cream text-deep-brown">
-    <!-- Back Button -->
+    
     <div class="fixed top-4 left-4 z-50">
-        <a href="/index.php" class="flex items-center space-x-2 bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
+        <button onclick="history.back()" class="flex items-center space-x-2 bg-deep-brown text-warm-cream px-4 py-2 rounded-full hover:bg-[#8B5A2B] transition-all duration-300">
             <i class="fas fa-arrow-left"></i>
             <span class="font-baskerville">Back</span>
-        </a>
+        </button>
     </div>
+
 
 
     <section id="best-sellers" class="pt-20 pb-16">
