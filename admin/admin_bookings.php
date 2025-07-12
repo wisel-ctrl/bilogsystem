@@ -197,7 +197,7 @@
                 </div>
 
                 <!-- Accepted Bookings Section -->
-                <div class="dashboard-card animate-on-scroll mt-8 rounded-lg shadow-sm">
+                <div class="dashboard-card animate-on-scroll mt-8 rounded-lg shadow-sm bg-white">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-deep-brown flex items-center">
                             <i class="fas fa-check-circle mr-2 text-green-600"></i>
