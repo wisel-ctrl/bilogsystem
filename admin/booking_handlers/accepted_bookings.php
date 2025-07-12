@@ -12,17 +12,15 @@ try {
     $orderColumnIndex = $_GET['order'][0]['column'] ?? 0;
     $orderDirection = $_GET['order'][0]['dir'] ?? 'asc';
 
-    // Column mapping - must match the DataTables columns definition
+    // Column mapping
     $columns = [
         0 => 'full_name',
         1 => 'contact_number',
         2 => 'package_name',
         3 => 'pax',
         4 => 'reservation_datetime',
-        // 5 is actions column (not searchable/sortable)
     ];
 
-    // Get the column to order by
     $orderColumn = $columns[$orderColumnIndex] ?? 'reservation_datetime';
 
     // Base query
@@ -45,45 +43,36 @@ try {
         WHERE b.booking_status = 'accepted'
     ";
 
-    // Search conditions
-    $searchConditions = [];
+    // Search condition
+    $whereClause = '';
     $params = [];
     $types = [];
 
     if (!empty($searchValue)) {
-        $searchConditions[] = "(
-            full_name LIKE :search OR
-            contact_number LIKE :search OR
-            package_name LIKE :search OR
-            pax LIKE :search OR
-            reservation_datetime LIKE :search
+        $whereClause = " AND (
+            CONCAT_WS(' ', 
+                COALESCE(u.first_name, ''),
+                COALESCE(u.middle_name, ''),
+                COALESCE(u.last_name, ''),
+                COALESCE(u.suffix, '')
+            ) LIKE :search OR
+            u.contact_number LIKE :search OR
+            mp.package_name LIKE :search OR
+            b.pax LIKE :search OR
+            b.reservation_datetime LIKE :search
         )";
         $params[':search'] = '%' . $searchValue . '%';
         $types[':search'] = PDO::PARAM_STR;
     }
 
-    // Check for date filter (if you implement the date filter input)
-    if (!empty($_GET['columns'][4]['search']['value'])) {
-        $searchDate = $_GET['columns'][4]['search']['value'];
-        $searchConditions[] = "DATE(reservation_datetime) = :search_date";
-        $params[':search_date'] = $searchDate;
-        $types[':search_date'] = PDO::PARAM_STR;
-    }
-
-    // Combine conditions
-    $whereClause = '';
-    if (!empty($searchConditions)) {
-        $whereClause = ' AND ' . implode(' AND ', $searchConditions);
-    }
-
     // Count total records
-    $countQuery = "SELECT COUNT(*) AS total FROM ($baseQuery) AS derived_table";
+    $countQuery = "SELECT COUNT(*) AS total FROM booking_tb WHERE booking_status = 'accepted'";
     $stmt = $conn->prepare($countQuery);
     $stmt->execute();
     $totalRecords = $stmt->fetchColumn();
 
     // Count filtered records
-    $countFilteredQuery = "SELECT COUNT(*) AS filtered FROM ($baseQuery $whereClause) AS derived_table";
+    $countFilteredQuery = "SELECT COUNT(*) FROM ($baseQuery $whereClause) AS derived_table";
     $stmt = $conn->prepare($countFilteredQuery);
     foreach ($params as $key => $value) {
         $stmt->bindValue($key, $value, $types[$key] ?? PDO::PARAM_STR);
@@ -101,19 +90,16 @@ try {
 
     $stmt = $conn->prepare($dataQuery);
     
-    // Bind parameters
     foreach ($params as $key => $value) {
         $stmt->bindValue($key, $value, $types[$key] ?? PDO::PARAM_STR);
     }
     
-    // Bind limit parameters
     $stmt->bindValue(':start', (int)$start, PDO::PARAM_INT);
     $stmt->bindValue(':length', (int)$length, PDO::PARAM_INT);
     
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Prepare response
     $response = [
         "draw" => intval($draw),
         "recordsTotal" => $totalRecords,
@@ -124,10 +110,7 @@ try {
     echo json_encode($response);
 
 } catch (PDOException $e) {
-    // Log error (in a real application, you'd want to log this properly)
     error_log("Database error: " . $e->getMessage());
-    
-    // Return error response
     http_response_code(500);
     echo json_encode([
         "error" => "Database error",

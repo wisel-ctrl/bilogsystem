@@ -205,24 +205,10 @@
                         </h3>
                     </div>
                     <div class="overflow-x-auto p-4">
-                        <div class="flex flex-wrap justify-between items-center mb-4">
-                            <div class="mb-2 md:mb-0">
-                                <label for="accepted-bookings-length" class="text-sm text-gray-700 mr-2">Show:</label>
-                                <select id="accepted-bookings-length" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                                <span class="text-sm text-gray-700 ml-2">entries</span>
-                            </div>
-                            <div class="mb-2 md:mb-0">
-                                <label for="accepted-bookings-filter-date" class="text-sm text-gray-700 mr-2">Filter by Date:</label>
-                                <input type="date" id="accepted-bookings-filter-date" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                            </div>
-                            <div class="w-full md:w-auto">
-                                <label for="accepted-bookings-search" class="text-sm text-gray-700 mr-2">Search:</label>
-                                <input type="search" id="accepted-bookings-search" class="border border-gray-300 rounded px-2 py-1 text-sm" placeholder="">
+                        <div class="flex justify-end mb-4">
+                            <div class="w-full md:w-64">
+                                <label for="accepted-bookings-search" class="sr-only">Search</label>
+                                <input type="search" id="accepted-bookings-search" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Search bookings...">
                             </div>
                         </div>
                         
@@ -243,12 +229,8 @@
                         </table>
                         
                         <div class="flex flex-col md:flex-row justify-between items-center mt-4 text-sm text-gray-700">
-                            <div id="accepted-bookings-info" class="mb-2 md:mb-0">
-                                
-                            </div>
-                            <div id="accepted-bookings-pagination" class="inline-flex rounded-md shadow-sm">
-                                <!-- DataTables will generate pagination here -->
-                            </div>
+                            <div id="accepted-bookings-info" class="mb-2 md:mb-0"></div>
+                            <div id="accepted-bookings-pagination" class="inline-flex rounded-md shadow-sm"></div>
                         </div>
                     </div>
                 </div>
@@ -1109,32 +1091,19 @@ $(document).ready(function() {
                 }
             }
         ],
-        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
         pageLength: 10,
-        dom: '<"top"f>rt<"bottom"lip><"clear">',
-        initComplete: function() {
-            // Add custom filtering by date
-            $('#accepted-bookings-filter-date').on('change', function() {
-                if (this.value) {
-                    table.column('reservation_datetime:name').search(this.value).draw();
-                } else {
-                    table.column('reservation_datetime:name').search('').draw();
-                }
-            });
-        }
+        dom: '<"top"f>rt<"bottom"ip><"clear">',
     });
     
-    // Connect the search box
-    $('#accepted-bookings-search').keyup(function(){
-        table.search($(this).val()).draw();
-    });
-    
-    // Connect the length menu
-    $('#accepted-bookings-length').change(function(){
-        table.page.len($(this).val()).draw();
+    // Connect the search box with debounce for better performance
+    var searchTimeout;
+    $('#accepted-bookings-search').on('keyup', function(){
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function(){
+            table.search($(this).val()).draw();
+        }.bind(this), 500);
     });
 });
-
 </script>
 <?php
 $page_scripts = ob_get_clean();
