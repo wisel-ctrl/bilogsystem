@@ -1,15 +1,113 @@
 <?php
-    require_once 'admin_auth.php';
-    require_once '../db_connect.php';
-    
-    // Set the timezone to Philippine Time
-    date_default_timezone_set('Asia/Manila');
+require_once 'admin_auth.php';
+require_once '../db_connect.php';
 
-    // Define page title
-    $page_title = "Reports";
+// Set the timezone to Philippine Time
+date_default_timezone_set('Asia/Manila');
 
-    // Capture page content
-    ob_start();
+// Define page title
+$page_title = "Reports";
+
+// Function to fetch daily orders
+function getDailyOrders($conn) {
+    $query = "
+        SELECT 
+            DATE(s.created_at) as order_date,
+            COUNT(DISTINCT o.order_id) as total_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+        FROM order_tb o
+        JOIN sales_tb s ON o.sales_id = s.sales_id
+        WHERE DATE(s.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        GROUP BY DATE(s.created_at)
+        ORDER BY order_date DESC
+        LIMIT 7
+    ";
+    $result = $conn->query($query);
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// Function to fetch weekly orders
+function getWeeklyOrders($conn) {
+    $query = "
+        SELECT 
+            CONCAT(YEAR(s.created_at), '-W', LPAD(WEEK(s.created_at, 1), 2, '0')) as order_week,
+            COUNT(DISTINCT o.order_id) as total_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+        FROM order_tb o
+        JOIN sales_tb s ON o.sales_id = s.sales_id
+        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
+        GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1)
+        ORDER BY s.created_at DESC
+        LIMIT 12
+    ";
+    $result = $conn->query($query);
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// Function to fetch monthly orders
+function getMonthlyOrders($conn) {
+    $query = "
+        SELECT 
+            DATE_FORMAT(s.created_at, '%Y-%m') as order_month,
+            COUNT(DISTINCT o.order_id) as total_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+        FROM order_tb o
+        JOIN sales_tb s ON o.sales_id = s.sales_id
+        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+        GROUP BY YEAR(s.created_at), MONTH(s.created_at)
+        ORDER BY s.created_at DESC
+        LIMIT 12
+    ";
+    $result = $conn->query($query);
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// Function to fetch yearly orders
+function getYearlyOrders($conn) {
+    $query = "
+        SELECT 
+            YEAR(s.created_at) as order_year,
+            COUNT(DISTINCT o.order_id) as total_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
+            COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+        FROM order_tb o
+        JOIN sales_tb s ON o.sales_id = s.sales_id
+        WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
+        GROUP BY YEAR(s.created_at)
+        ORDER BY order_year DESC
+        LIMIT 5
+    ";
+    $result = $conn->query($query);
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// Fetch order data
+$daily_orders = getDailyOrders($conn);
+$weekly_orders = getWeeklyOrders($conn);
+$monthly_orders = getMonthlyOrders($conn);
+$yearly_orders = getYearlyOrders($conn);
+
+// Capture page content
+ob_start();
 ?>
 
 <style>
@@ -166,15 +264,16 @@
     <div class="border-t border-warm-cream/30 pt-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           
-            <div>
-                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
-                <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                    <option value="">--</option>
-                    <option value="daily">Daily</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                </select>
-            </div>
+        <div>
+            <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
+            <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                <option value="">--</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+            </select>
+        </div>
             <div>
                 <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
                 <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
@@ -353,14 +452,10 @@
     <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fasuserinfo fa-shopping-bag mr-2 text-accent-brown"></i>
+                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
                 Daily Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -377,24 +472,63 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php if (empty($daily_orders)): ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No data available</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($daily_orders as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['order_date']); ?></td>
+                                <td><?php echo number_format($row['total_orders']); ?></td>
+                                <td><?php echo number_format($row['completed_orders']); ?></td>
+                                <td><?php echo number_format($row['pending_orders']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        <!-- Weekly Orders Table -->
+    <div id="weeklyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+                Weekly Orders
+            </h3>
+            <div class="space-x-2">
+                <button onclick="printTable('weeklyOrdersTable', 'Weekly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="weeklyOrdersTable" class="report-table">
+                <thead>
                     <tr>
-                        <td>2025-07-04</td>
-                        <td>124</td>
-                        <td>100</td>
-                        <td>24</td>
+                        <th>Week</th>
+                        <th>Total Orders</th>
+                        <th>Completed Orders</th>
+                        <th>Pending Orders</th>
                     </tr>
-                    <tr>
-                        <td>2025-07-03</td>
-                        <td>110</td>
-                        <td>90</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>2025-07-02</td>
-                        <td>115</td>
-                        <td>95</td>
-                        <td>20</td>
-                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($weekly_orders)): ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No data available</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($weekly_orders as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['order_week']); ?></td>
+                                <td><?php echo number_format($row['total_orders']); ?></td>
+                                <td><?php echo number_format($row['completed_orders']); ?></td>
+                                <td><?php echo number_format($row['pending_orders']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -408,10 +542,6 @@
                 Monthly Orders
             </h3>
             <div class="space-x-2">
- 
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -428,24 +558,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>July 2025</td>
-                        <td>3,847</td>
-                        <td>3,500</td>
-                        <td>347</td>
-                    </tr>
-                    <tr>
-                        <td>June 2025</td>
-                        <td>3,600</td>
-                        <td>3,300</td>
-                        <td>300</td>
-                    </tr>
-                    <tr>
-                        <td>May 2025</td>
-                        <td>3,750</td>
-                        <td>3,400</td>
-                        <td>350</td>
-                    </tr>
+                    <?php if (empty($monthly_orders)): ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No data available</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($monthly_orders as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
+                                <td><?php echo number_format($row['total_orders']); ?></td>
+                                <td><?php echo number_format($row['completed_orders']); ?></td>
+                                <td><?php echo number_format($row['pending_orders']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -459,10 +585,6 @@
                 Yearly Orders
             </h3>
             <div class="space-x-2">
-
-                <!-- <button class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-file-pdf mr-2"></i> Export PDF
-                </button> -->
                 <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                     <i class="fas fa-print mr-2"></i> Print
                 </button>
@@ -479,24 +601,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025</td>
-                        <td>45,320</td>
-                        <td>42,000</td>
-                        <td>3,320</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>38,000</td>
-                        <td>35,000</td>
-                        <td>3,000</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td>35,000</td>
-                        <td>32,000</td>
-                        <td>3,000</td>
-                    </tr>
+                    <?php if (empty($yearly_orders)): ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No data available</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($yearly_orders as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['order_year']); ?></td>
+                                <td><?php echo number_format($row['total_orders']); ?></td>
+                                <td><?php echo number_format($row['completed_orders']); ?></td>
+                                <td><?php echo number_format($row['pending_orders']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -618,6 +736,7 @@ ob_start();
                 'monthlyRevenueSection',
                 'yearlyRevenueSection',
                 'dailyOrdersSection',
+                'weeklyOrdersSection',
                 'monthlyOrdersSection',
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
@@ -630,7 +749,7 @@ ob_start();
 
             // Show relevant section based on filters
             if (!category && !period) {
-                // If both filters are "All", show only Daily Revenue
+                // If both filters are "All", show only Customer Satisfaction
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
                 let targetSection = '';
@@ -640,6 +759,7 @@ ob_start();
                     else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
                 } else if (category === 'orders') {
                     if (period === 'daily') targetSection = 'dailyOrdersSection';
+                    else if (period === 'weekly') targetSection = 'weeklyOrdersSection';
                     else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
                     else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
                 } else if (category === 'customer_satisfaction') {
@@ -649,6 +769,8 @@ ob_start();
                     if (period === 'daily') {
                         document.getElementById('dailyRevenueSection').classList.remove('hidden');
                         document.getElementById('dailyOrdersSection').classList.remove('hidden');
+                    } else if (period === 'weekly') {
+                        document.getElementById('weeklyOrdersSection').classList.remove('hidden');
                     } else if (period === 'monthly') {
                         document.getElementById('monthlyRevenueSection').classList.remove('hidden');
                         document.getElementById('monthlyOrdersSection').classList.remove('hidden');
@@ -667,18 +789,17 @@ ob_start();
         function resetFilters() {
             document.getElementById('categoryFilter').value = '';
             document.getElementById('periodFilter').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
             const sections = [
                 'dailyRevenueSection',
                 'monthlyRevenueSection',
                 'yearlyRevenueSection',
                 'dailyOrdersSection',
+                'weeklyOrdersSection',
                 'monthlyOrdersSection',
                 'yearlyOrdersSection',
                 'customerSatisfactionSection'
             ];
-            // Hide all sections except Daily Revenue
+            // Hide all sections except Customer Satisfaction
             sections.forEach(section => {
                 document.getElementById(section).classList.add('hidden');
             });
