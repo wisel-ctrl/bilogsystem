@@ -204,76 +204,50 @@
                             Accepted Bookings
                         </h3>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden">
+                    <div class="overflow-x-auto p-4">
+                        <div class="flex flex-wrap justify-between items-center mb-4">
+                            <div class="mb-2 md:mb-0">
+                                <label for="accepted-bookings-length" class="text-sm text-gray-700 mr-2">Show:</label>
+                                <select id="accepted-bookings-length" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <span class="text-sm text-gray-700 ml-2">entries</span>
+                            </div>
+                            <div class="mb-2 md:mb-0">
+                                <label for="accepted-bookings-filter-date" class="text-sm text-gray-700 mr-2">Filter by Date:</label>
+                                <input type="date" id="accepted-bookings-filter-date" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                            </div>
+                            <div class="w-full md:w-auto">
+                                <label for="accepted-bookings-search" class="text-sm text-gray-700 mr-2">Search:</label>
+                                <input type="search" id="accepted-bookings-search" class="border border-gray-300 rounded px-2 py-1 text-sm" placeholder="">
+                            </div>
+                        </div>
+                        
+                        <table id="accepted-bookings-table" class="w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Name</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Phone</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Menu</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Pax</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Date & Time</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Status</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200" id="accepted-bookings-table">
-                                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="px-4 py-3 text-sm font-medium text-gray-900">John Smith</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">+63 912 345 6789</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">Corporate Lunch Package</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">Dec 10, 2024 - 12:00 PM</td>
-                                    <td class="px-4 py-3">
-                                        <span class="px-3 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                            Pending
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        <button onclick="markAsDone('BOOK004')" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors duration-150">
-                                            <i class="fas fa-check-circle mr-1.5"></i> Mark as Done
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="px-4 py-3 text-sm font-medium text-gray-900">Sarah Johnson</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">+63 918 765 4321</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">Birthday Party Package</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">Dec 8, 2024 - 3:00 PM</td>
-                                    <td class="px-4 py-3">
-                                        <span class="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                            Completed
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        <button disabled class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-400 bg-gray-100 rounded-md cursor-not-allowed">
-                                            <i class="fas fa-check-circle mr-1.5"></i> Completed
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody class="divide-y divide-gray-200">
+                                <!-- DataTables will populate this automatically -->
                             </tbody>
                         </table>
                         
-
-                        <!-- Add pagination controls for Accepted Bookings -->
-                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
-                                Showing <span id="accepted-bookings-start">1</span> to <span id="accepted-bookings-end">5</span> of <span id="accepted-bookings-total">0</span> entries
+                        <div class="flex flex-col md:flex-row justify-between items-center mt-4 text-sm text-gray-700">
+                            <div id="accepted-bookings-info" class="mb-2 md:mb-0">
+                                Showing 0 to 0 of 0 entries
                             </div>
-                            <div class="flex space-x-2">
-                                <button onclick="changePage('accepted', 'first')" id="accepted-first-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;&lt;
-                                </button>
-                                <button onclick="changePage('accepted', 'prev')" id="accepted-prev-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &lt;
-                                </button>
-                                <div id="accepted-pagination-numbers" class="flex space-x-1">
-                                    <!-- Pagination numbers will be inserted here -->
-                                </div>
-                                <button onclick="changePage('accepted', 'next')" id="accepted-next-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;
-                                </button>
-                                <button onclick="changePage('accepted', 'last')" id="accepted-last-btn" class="px-3 py-1 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    &gt;&gt;
-                                </button>
+                            <div id="accepted-bookings-pagination" class="inline-flex rounded-md shadow-sm">
+                                <!-- DataTables will generate pagination here -->
                             </div>
                         </div>
                     </div>
@@ -1090,6 +1064,78 @@
         return str.replace(/'/g, "\\'");
     }
     </script>
+
+<script>
+$(document).ready(function() {
+    // Initialize DataTable
+    var table = $('#accepted-bookings-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: 'booking_handlers/accepted_bookings.php', // Your backend endpoint
+            type: 'GET',
+            data: function(d) {
+                // You can add additional parameters if needed
+                d.booking_status = 'accepted';
+            }
+        },
+        columns: [
+            { data: 'full_name', name: 'full_name' },
+            { data: 'contact_number', name: 'contact_number' },
+            { data: 'package_name', name: 'package_name' },
+            { data: 'pax', name: 'pax' },
+            { 
+                data: 'reservation_datetime', 
+                name: 'reservation_datetime',
+                render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                        // Format the date for display
+                        return formatDateTime(data);
+                    }
+                    return data;
+                }
+            },
+            {
+                data: 'booking_id',
+                name: 'actions',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `
+                        <button onclick="markAsDone('${data}')" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors duration-150">
+                            <i class="fas fa-check-circle mr-1.5"></i> Mark as Done
+                        </button>
+                    `;
+                }
+            }
+        ],
+        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+        pageLength: 10,
+        dom: '<"top"f>rt<"bottom"lip><"clear">',
+        initComplete: function() {
+            // Add custom filtering by date
+            $('#accepted-bookings-filter-date').on('change', function() {
+                if (this.value) {
+                    table.column('reservation_datetime:name').search(this.value).draw();
+                } else {
+                    table.column('reservation_datetime:name').search('').draw();
+                }
+            });
+        }
+    });
+    
+    // Connect the search box
+    $('#accepted-bookings-search').keyup(function(){
+        table.search($(this).val()).draw();
+    });
+    
+    // Connect the length menu
+    $('#accepted-bookings-length').change(function(){
+        table.page.len($(this).val()).draw();
+    });
+});
+
+</script>
 <?php
 $page_scripts = ob_get_clean();
 
