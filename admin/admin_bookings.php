@@ -401,58 +401,58 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Name</label>
-                                    <p id="modal-client-name" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-client-name" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Phone Number</label>
-                                    <p id="modal-phone" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-phone" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Selected Hall(s)</label>
-                                    <p id="modal-halls" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-halls" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Event Type</label>
-                                    <p id="modal-event" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-event" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Menu Name</label>
-                                    <p id="modal-menu" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-menu" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Number of Pax</label>
-                                    <p id="modal-pax" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-pax" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Price</label>
-                                    <p id="modal-price" class="text-lg font-semibold text-accent-brown font-baskerville"></p>
+                                    <p id="modal-reservation-price" class="text-lg font-semibold text-accent-brown font-baskerville"></p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Requested DateTime</label>
-                                    <p id="modal-datetime" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
+                                    <p id="modal-reservation-datetime" class="text-lg font-semibold text-rich-brown font-baskerville"></p>
                                 </div>
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Payment Receipt</label>
-                                <div id="modal-receipt-container" class="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center">
-                                    <img id="modal-receipt-image" src="" alt="Payment Receipt" class="max-h-64 object-contain hidden">
+                                <div id="modal-reservation-receipt-container" class="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center">
+                                    <img id="modal-reservation-receipt-image" src="" alt="Payment Receipt" class="max-h-64 object-contain hidden">
                                     <p id="modal-no-receipt" class="text-gray-500 italic">No receipt uploaded</p>
                                 </div>
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Client Notes</label>
-                                <p id="modal-notes" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-3 rounded"></p>
+                                <p id="modal-reservation-notes" class="text-lg font-semibold text-rich-brown font-baskerville bg-gray-50 p-3 rounded"></p>
                             </div>
                         </div>
                     </div>
@@ -1279,11 +1279,11 @@ function openReservationDetails(reservationId) {
                 // Populate modal fields
                 document.getElementById('modal-reservation-id').textContent = reservation.booking_id;
                 document.getElementById('modal-reservation-age').textContent = reservation.booking_age;
-                document.getElementById('modal-client-name').textContent = reservation.customer_name;
-                document.getElementById('modal-phone').textContent = reservation.contact_number;
+                document.getElementById('modal-reservation-client-name').textContent = reservation.customer_name;
+                document.getElementById('modal-reservation-phone').textContent = reservation.contact_number;
                 
                 // Format event_hall as bullet points
-                const hallsElement = document.getElementById('modal-halls');
+                const hallsElement = document.getElementById('modal-reservation-halls');
                 if (Array.isArray(reservation.event_hall)) {
                     // Create bullet list for array
                     hallsElement.innerHTML = reservation.event_hall.map(hall => `- ${hall}`).join('<br>');
@@ -1301,15 +1301,15 @@ function openReservationDetails(reservationId) {
                     hallsElement.textContent = 'No hall specified';
                 }
                 
-                document.getElementById('modal-event').textContent = reservation.event;
-                document.getElementById('modal-menu').textContent = reservation.package_name;
-                document.getElementById('modal-pax').textContent = reservation.pax;
-                document.getElementById('modal-price').textContent = `₱${reservation.totalPrice}`;
-                document.getElementById('modal-datetime').textContent = reservation.reservation_datetime;
-                document.getElementById('modal-notes').textContent = reservation.notes || 'No notes provided';
+                document.getElementById('modal-reservation-event').textContent = reservation.event;
+                document.getElementById('modal-reservation-menu').textContent = reservation.package_name;
+                document.getElementById('modal-reservation-pax').textContent = reservation.pax;
+                document.getElementById('modal-reservation-price').textContent = `₱${reservation.totalPrice}`;
+                document.getElementById('modal-reservation-datetime').textContent = reservation.reservation_datetime;
+                document.getElementById('modal-reservation-notes').textContent = reservation.notes || 'No notes provided';
                 
                 // Handle payment receipt
-                const receiptImg = document.getElementById('modal-receipt-image');
+                const receiptImg = document.getElementById('modal-reservation-receipt-image');
                 const noReceipt = document.getElementById('modal-no-receipt');
                 
                 if (reservation.downpayment_img) {
