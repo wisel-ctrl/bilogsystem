@@ -270,7 +270,7 @@ ob_start();
 <div class="container mx-auto px-4 py-8 max-w-6xl">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Profile Photo Section -->
-<div class="lg:col-span-1">
+        <div class="lg:col-span-1">
             <div class="bg-white/95 rounded-3xl p-10 shadow-xl transition-all duration-500 hover:shadow-2xl slide-in">
                 <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-8 text-center tracking-tight">Profile Photo</h3>
                 
@@ -283,9 +283,11 @@ ob_start();
                         ?>
                         <img id="profile-photo" src="<?php echo $photoPath; ?>" 
                              class="w-32 h-32 rounded-full object-cover border-4 border-accent-brown shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-                        <div class="photo-upload-overlay absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                            <i class="fas fa-camera text-white text-2xl transform group-hover:scale-110 transition-transform duration-200"></i>
-                        </div>
+                             <div class="photo-upload-overlay absolute inset-0 rounded-full bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                                <i class="fas fa-camera text-white text-2xl transform group-hover:scale-110 transition-transform duration-200"></i>
+                                <span class="text-white text-sm mt-1">Change Profile</span>
+                            </div>
+
                         <input type="file" id="photo-upload" accept="image/*" class="hidden">
                     </div>
                     
@@ -294,9 +296,9 @@ ob_start();
                         <p class="text-accent-brown text-sm font-medium">Member since June 2025</p>
                     </div>
                     
-                    <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
+                    <!-- <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
                         Change Photo
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -450,13 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Profile Photo Upload
     const photoUpload = document.getElementById('photo-upload');
     const profilePhoto = document.getElementById('profile-photo');
-    const changePhotoBtn = document.getElementById('change-photo-btn');
+    // const changePhotoBtn = document.getElementById('change-photo-btn');
     const photoContainer = document.querySelector('.photo-container');
 
     // Trigger file input when clicking change photo button or overlay
-    changePhotoBtn.addEventListener('click', () => {
-        photoUpload.click();
-    });
+    // changePhotoBtn.addEventListener('click', () => {
+    //     photoUpload.click();
+    // });
 
     photoContainer.addEventListener('click', () => {
         photoUpload.click();
