@@ -103,7 +103,7 @@ try {
                     <div class="w-10 h-10 rounded-full border-2 border-accent-brown overflow-hidden">
                         <img id="header-profile-pic" src="<?php echo $profilePhotoPath; ?>" alt="Profile" class="w-full h-full object-cover">
                     </div>
-                    <span class="text-sm font-medium text-deep-brown font-baskerville">Admin</span>
+                    <span class="text-sm font-medium text-deep-brown font-baskerville"><?php echo htmlspecialchars(ucfirst($user['first_name'])); ?></span>
                     <i class="fas fa-chevron-down text-deep-brown text-sm transition-transform duration-200"></i>
                 </button>
                 <div id="profileMenu" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden transform opacity-0 transition-all duration-200">
