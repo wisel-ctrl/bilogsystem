@@ -271,30 +271,30 @@ ob_start();
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Profile Photo Section -->
         <div class="lg:col-span-1">
-            <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
-                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6 text-center">Profile Photo</h3>
+            <div class="bg-white/95 rounded-3xl p-10 shadow-xl transition-all duration-500 hover:shadow-2xl slide-in">
+                <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-8 text-center tracking-tight">Profile Photo</h3>
                 
-                <div class="flex flex-col items-center space-y-4">
-                    <div class="photo-container relative">
+                <div class="flex flex-col items-center space-y-6">
+                    <div class="photo-container relative group">
                         <?php 
                         $photoPath = !empty($user['profile_picture']) 
                             ? '../images/profile_pictures/' . htmlspecialchars($user['profile_picture'])
                             : 'https://via.placeholder.com/120x120/D2B48C/FFFFFF?text=Admin';
                         ?>
                         <img id="profile-photo" src="<?php echo $photoPath; ?>" 
-                             class="profile-photo border-4 border-accent-brown shadow-lg">
-                        <div class="photo-upload-overlay">
-                            <i class="fas fa-camera text-white text-2xl"></i>
+                             class="w-32 h-32 rounded-full object-cover border-4 border-accent-brown shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                        <div class="photo-upload-overlay absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                            <i class="fas fa-camera text-white text-2xl transform group-hover:scale-110 transition-transform duration-200"></i>
                         </div>
                         <input type="file" id="photo-upload" accept="image/*" class="hidden">
                     </div>
                     
-                    <div class="text-center">
-                        <h4 class="font-baskerville text-xl font-bold text-deep-brown">Administrator</h4>
-                        <p class="text-accent-brown text-sm">Member since June 2025</p>
+                    <div class="text-center space-y-2">
+                        <h4 class="font-baskerville text-2xl font-semibold text-deep-brown tracking-wide">Administrator</h4>
+                        <p class="text-accent-brown text-sm font-medium">Member since June 2025</p>
                     </div>
                     
-                    <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-4 py-2 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
+                    <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
                         Change Photo
                     </button>
                 </div>
