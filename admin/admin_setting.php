@@ -304,8 +304,154 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_photo'])) {
 ob_start();
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'baskerville': ['Libre Baskerville', 'serif'],
+                    },
+                    colors: {
+                        'deep-brown': '#8B4513',
+                        'accent-brown': '#A0522D',
+                        'rich-brown': '#6B3410',
+                        'warm-cream': '#F5F5DC',
+                        'light-brown': '#D2B48C',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f5f5dc 0%, #e6d3a3 100%);
+            min-height: 100vh;
+        }
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+        .photo-upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        .photo-container:hover .photo-upload-overlay {
+            opacity: 1;
+        }
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Toast notification styles - bottom right */
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        max-width: 350px;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        animation: slideInUp 0.3s ease-out forwards;
+    }
 
-   
+    .custom-alert.success {
+        background-color: #22C55E;
+        color: white;
+    }
+
+    .custom-alert.error {
+        background-color: #EF4444;
+        color: white;
+    }
+
+    .custom-alert i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    @keyframes slideInUp {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    
+    
+    .toggle-password {
+        transition: all 0.2s ease;
+    }
+    .toggle-password:hover {
+        transform: scale(1.1);
+    }
+
+    </style>
+</head>
+<body class="gradient-bg">
     
     <?php if (isset($_SESSION['success_message'])): ?>
     <script>
@@ -1315,3 +1461,5 @@ ob_start();
     // Include the layout
     include 'layout.php';
     ?>
+</body>
+</html>
