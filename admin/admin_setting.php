@@ -296,9 +296,9 @@ ob_start();
                         <p class="text-accent-brown text-sm font-medium">Member since June 2025</p>
                     </div>
                     
-                    <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
+                    <!-- <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
                         Change Photo
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -452,13 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Profile Photo Upload
     const photoUpload = document.getElementById('photo-upload');
     const profilePhoto = document.getElementById('profile-photo');
-    const changePhotoBtn = document.getElementById('change-photo-btn');
+    // const changePhotoBtn = document.getElementById('change-photo-btn');
     const photoContainer = document.querySelector('.photo-container');
 
     // Trigger file input when clicking change photo button or overlay
-    changePhotoBtn.addEventListener('click', () => {
-        photoUpload.click();
-    });
+    // changePhotoBtn.addEventListener('click', () => {
+    //     photoUpload.click();
+    // });
 
     photoContainer.addEventListener('click', () => {
         photoUpload.click();
