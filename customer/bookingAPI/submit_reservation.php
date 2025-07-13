@@ -190,26 +190,30 @@ try {
         ];
         
         // Create notification for the customer
+        date_default_timezone_set('Asia/Manila'); // Ensure PHP timezone is set
+        $created_at = date('Y-m-d H:i:s'); // Get current timestamp in PH time
         $message = "Your booking #$booking_id has been received and is pending approval. We'll notify you once it's processed.";
         $notificationStmt = $conn->prepare("
-            INSERT INTO notifications_tb (user_id, booking_id, message)
-            VALUES (:user_id, :booking_id, :message)
+            INSERT INTO notifications_tb (user_id, booking_id, message, created_at)
+            VALUES (:user_id, :booking_id, :message, :created_at)
         ");
         $notificationStmt->bindParam(':user_id', $customer_id, PDO::PARAM_INT);
         $notificationStmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
         $notificationStmt->bindParam(':message', $message, PDO::PARAM_STR);
+        $notificationStmt->bindParam(':created_at', $created_at, PDO::PARAM_STR);
         $notificationStmt->execute();
-
-        // Create notifications for admins (optional)
+        
+        // Create notifications for admins
         $adminMessage = "New booking #$booking_id received from customer ID: $customer_id";
         $adminStmt = $conn->prepare("
-            INSERT INTO notifications_tb (user_id, booking_id, message)
-            SELECT id, :booking_id, :message 
+            INSERT INTO notifications_tb (user_id, booking_id, message, created_at)
+            SELECT id, :booking_id, :message, :created_at 
             FROM users_tb 
             WHERE usertype = 1
         ");
         $adminStmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
         $adminStmt->bindParam(':message', $adminMessage, PDO::PARAM_STR);
+        $adminStmt->bindParam(':created_at', $created_at, PDO::PARAM_STR);
         $adminStmt->execute();
 
         $response = [
