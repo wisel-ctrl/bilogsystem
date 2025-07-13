@@ -389,58 +389,58 @@ ob_start();
                 </form>
             </div>
 
-            <!-- Security Settings Card -->
-            <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
-                <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
-                
-                <form id="password-update-form" class="space-y-6">
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">Current Password</label>
-                        <div class="relative">
-                            <input type="password" id="current-password" name="current_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 toggle-password">
-                                <i class="fas fa-eye-slash text-deep-brown/30 hover:text-deep-brown transition-colors"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">New Password</label>
-                        <div class="relative">
-                            <input type="password" id="new-password" name="new_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 toggle-password">
-                                <i class="fas fa-eye-slash text-deep-brown/30 hover:text-deep-brown transition-colors"></i>
-                            </button>
-                        </div>
-                        <p class="text-xs text-deep-brown/50 mt-1">Minimum 8 characters, one uppercase letter, and one number</p>
-                        <ul id="password-requirements" class="text-xs text-deep-brown/70 mt-2 space-y-1">
-                            <li id="length-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least 8 characters</li>
-                            <li id="uppercase-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least one uppercase letter</li>
-                            <li id="number-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least one number</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="space-y-1">
-                        <label class="block text-sm font-medium text-deep-brown/80">Confirm New Password</label>
-                        <div class="relative">
-                            <input type="password" id="confirm-password" name="confirm_password" 
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
-                            <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 toggle-password">
-                                <i class="fas fa-eye-slash text-deep-brown/30 hover:text-deep-brown transition-colors"></i>
-                            </button>
-                        </div>
-                        <p id="confirm-match" class="text-xs text-deep-brown/50 mt-1 hidden transition-all duration-200">Passwords must match</p>
-                    </div>
-                    
-                    <div class="pt-4 border-t border-warm-cream text-right">
-                        <button type="submit" id="submit-password-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" disabled>
-                            Update Password
-                        </button>
-                    </div>
-                </form>
+       <!-- Security Settings Card -->
+<div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
+    <h3 class="font-playfair text-2xl font-bold text-deep-brown mb-6">Security Settings</h3>
+    
+    <form id="password-update-form" class="space-y-6">
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Current Password</label>
+            <div class="relative">
+                <input type="password" id="current-password" name="current_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <button type="button" class="toggle-password absolute inset-y-0 right-0 flex items-center pr-4 focus:outline-none" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye-slash text-deep-brown/50 hover:text-deep-brown transition-colors duration-200"></i>
+                </button>
             </div>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">New Password</label>
+            <div class="relative">
+                <input type="password" id="new-password" name="new_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <button type="button" class="toggle-password absolute inset-y-0 right-0 flex items-center pr-4 focus:outline-none" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye-slash text-deep-brown/50 hover:text-deep-brown transition-colors duration-200"></i>
+                </button>
+            </div>
+            <p class="text-xs text-deep-brown/50 mt-1">Minimum 8 characters, one uppercase letter, and one number</p>
+            <ul id="password-requirements" class="text-xs text-deep-brown/70 mt-2 space-y-1">
+                <li id="length-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least 8 characters</li>
+                <li id="uppercase-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least one uppercase letter</li>
+                <li id="number-check" class="flex items-center transition-colors duration-200"><span class="mr-2">•</span> At least one number</li>
+            </ul>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-sm font-medium text-deep-brown/80">Confirm New Password</label>
+            <div class="relative">
+                <input type="password" id="confirm-password" name="confirm_password" 
+                       class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" required>
+                <button type="button" class="toggle-password absolute inset-y-0 right-0 flex items-center pr-4 focus:outline-none" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye-slash text-deep-brown/50 hover:text-deep-brown transition-colors duration-200"></i>
+                </button>
+            </div>
+            <p id="confirm-match" class="text-xs text-deep-brown/50 mt-1 hidden transition-all duration-200">Passwords must match</p>
+        </div>
+        
+        <div class="pt-4 border-t border-warm-cream text-right">
+            <button type="submit" id="submit-password-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" disabled>
+                Update Password
+            </button>
+        </div>
+    </form>
+</div>
         </div>
     </div>
 </div>
@@ -848,27 +848,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Improved Password Toggle Functionality
     document.querySelectorAll('.toggle-password').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const input = button.closest('.relative').querySelector('input');
-            const icon = button.querySelector('i');
-            const isPassword = input.type === 'password';
-            
-            // Toggle input type
-            input.type = isPassword ? 'text' : 'password';
-            
-            // Toggle icon classes
-            icon.classList.toggle('fa-eye-slash', !isPassword);
-            icon.classList.toggle('fa-eye', isPassword);
-            
-            // Change icon color for better visibility
-            icon.classList.toggle('text-deep-brown/30', isPassword);
-            icon.classList.toggle('text-deep-brown', !isPassword);
-            
-            // Ensure focus remains on input
-            input.focus();
-        });
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const input = button.closest('.relative').querySelector('input');
+        const icon = button.querySelector('i');
+        const isPassword = input.type === 'password';
+        
+        // Toggle input type
+        input.type = isPassword ? 'text' : 'password';
+        
+        // Toggle icon classes with smooth transition
+        icon.classList.toggle('fa-eye-slash', !isPassword);
+        icon.classList.toggle('fa-eye', isPassword);
+        
+        // Update ARIA attributes for accessibility
+        button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        
+        // Visual feedback with Tailwind classes
+        icon.classList.toggle('text-deep-brown/50', isPassword);
+        icon.classList.toggle('text-accent-brown', !isPassword);
+        
+        // Ensure focus remains on input
+        input.focus();
     });
+});
 
     // Helper function to show alerts
     function showAlert(message, type) {
