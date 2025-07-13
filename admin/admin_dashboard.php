@@ -403,7 +403,7 @@
                                 <i class="fas fa-arrow-up text-2xl text-green-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Revenue</h4>
-                            <p class="text-xl font-bold text-green-600 font-baskerville mt-2">₱84,320</p>
+                            <p class="text-xl font-bold text-green-600 font-baskerville mt-2" id="revenue-display">₱84,320</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                         
@@ -412,7 +412,7 @@
                                 <i class="fas fa-arrow-down text-2xl text-red-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Expenses</h4>
-                            <p class="text-xl font-bold text-red-600 font-baskerville mt-2">₱45,680</p>
+                            <p class="text-xl font-bold text-red-600 font-baskerville mt-2" id="expenses-display">₱45,680</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                         
@@ -421,7 +421,7 @@
                                 <i class="fas fa-chart-pie text-2xl text-blue-600"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-deep-brown font-playfair">Profit</h4>
-                            <p class="text-xl font-bold text-blue-600 font-baskerville mt-2">₱38,640</p>
+                            <p class="text-xl font-bold text-blue-600 font-baskerville mt-2" id="profit-display">₱38,640</p>
                             <p class="text-sm text-rich-brown font-baskerville mt-1">This Month</p>
                         </div>
                     </div>
@@ -734,6 +734,34 @@
             `;
         }
 
+
+        async function loadFinancialOverview() {
+            try {
+                const response = await fetch('dashboard_handlers/overview_data.php');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    console.error('Error loading financial data:', data.message);
+                    return;
+                }
+
+                // Format numbers with commas and peso sign
+                const formatCurrency = (amount) => {
+                    return '₱' + parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                };
+
+                // Update DOM elements
+                document.getElementById('revenue-display').textContent = formatCurrency(data.data.revenue);
+                document.getElementById('expenses-display').textContent = formatCurrency(data.data.expenses);
+                document.getElementById('profit-display').textContent = formatCurrency(data.data.profit);
+
+            } catch (error) {
+                console.error('Error fetching financial overview:', error);
+            }
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', loadFinancialOverview);
 
         // Revenue Analysis Chart
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
