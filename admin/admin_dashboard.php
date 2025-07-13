@@ -548,7 +548,7 @@
         };
 
         function updateDashboard() {
-            fetch('dashboard_data.php')
+            fetch('dashboard_handlers/dashboard_data.php')
                 .then(response => response.json())
                 .then(data => {
                     // Update Revenue Cards
