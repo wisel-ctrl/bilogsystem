@@ -242,12 +242,156 @@
             <!-- Main Content Area -->
                 <!-- Revenue Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="revenueCards">
-                <!-- Revenue cards will be populated here by JavaScript -->
+                    <!-- Today's Revenue Card -->
+                    <div class="dashboard-card hover-lift rounded-xl overflow-hidden">
+                        <div class="bg-gradient-to-br from-deep-brown to-rich-brown p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-warm-cream/80 text-sm font-baskerville">Today's Revenue</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville" id="todayRevenue">₱0</p>
+                                    <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center" id="todayRevenueChange">
+                                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                                        0% from yesterday
+                                    </p>
+                                </div>
+                                <div class="bg-warm-cream/10 p-3 rounded-full">
+                                    <i class="fas fa-coins text-3xl text-warm-cream"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Revenue Card -->
+                    <div class="dashboard-card hover-lift rounded-xl overflow-hidden">
+                        <div class="bg-gradient-to-br from-accent-brown to-rich-brown p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-warm-cream/80 text-sm font-baskerville">Weekly Revenue</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville" id="weekRevenue">₱0</p>
+                                    <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center" id="weekRevenueChange">
+                                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                                        0% from last week
+                                    </p>
+                                </div>
+                                <div class="bg-warm-cream/10 p-3 rounded-full">
+                                    <i class="fas fa-chart-line text-3xl text-warm-cream"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Revenue Card -->
+                    <div class="dashboard-card hover-lift rounded-xl overflow-hidden">
+                        <div class="bg-gradient-to-br from-deep-brown to-accent-brown p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-warm-cream/80 text-sm font-baskerville">Monthly Revenue</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville" id="monthRevenue">₱0</p>
+                                    <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center" id="monthRevenueChange">
+                                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                                        0% from last month
+                                    </p>
+                                </div>
+                                <div class="bg-warm-cream/10 p-3 rounded-full">
+                                    <i class="fas fa-calendar-alt text-3xl text-warm-cream"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yearly Revenue Card -->
+                    <div class="dashboard-card hover-lift rounded-xl overflow-hidden">
+                        <div class="bg-gradient-to-br from-rich-brown to-accent-brown p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-warm-cream/80 text-sm font-baskerville">Yearly Revenue</p>
+                                    <p class="text-xl font-bold text-warm-cream font-baskerville" id="yearRevenue">₱0</p>
+                                    <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center" id="yearRevenueChange">
+                                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                                        0% from last year
+                                    </p>
+                                </div>
+                                <div class="bg-warm-cream/10 p-3 rounded-full">
+                                    <i class="fas fa-trophy text-3xl text-warm-cream"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Orders Served -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="ordersCards">
-                    <!-- Orders cards will be populated here by JavaScript -->
+                    <!-- Today's Orders Card -->
+                    <div class="dashboard-card p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-deep-brown text-sm font-baskerville">Today's Orders</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1" id="todayOrders">0</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="w-full bg-warm-cream/50 h-2 rounded-full">
+                                        <div class="bg-deep-brown h-2 rounded-full" id="todayOrdersProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-deep-brown/10 p-3 rounded-full">
+                                <i class="fas fa-shopping-bag text-3xl text-deep-brown"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Orders Card -->
+                    <div class="dashboard-card p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-deep-brown text-sm font-baskerville">Weekly Orders</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1" id="weekOrders">0</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="w-full bg-warm-cream/50 h-2 rounded-full">
+                                        <div class="bg-deep-brown h-2 rounded-full" id="weekOrdersProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-deep-brown/10 p-3 rounded-full">
+                                <i class="fas fa-clipboard-list text-3xl text-deep-brown"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Orders Card -->
+                    <div class="dashboard-card p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-deep-brown text-sm font-baskerville">Monthly Orders</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1" id="monthOrders">0</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="w-full bg-warm-cream/50 h-2 rounded-full">
+                                        <div class="bg-deep-brown h-2 rounded-full" id="monthOrdersProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-deep-brown/10 p-3 rounded-full">
+                                <i class="fas fa-chart-bar text-3xl text-deep-brown"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yearly Orders Card -->
+                    <div class="dashboard-card p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-deep-brown text-sm font-baskerville">Yearly Orders</p>
+                                <p class="text-xl font-bold text-rich-brown font-baskerville mt-1" id="yearOrders">0</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="w-full bg-warm-cream/50 h-2 rounded-full">
+                                        <div class="bg-deep-brown h-2 rounded-full" id="yearOrdersProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-deep-brown/10 p-3 rounded-full">
+                                <i class="fas fa-award text-3xl text-deep-brown"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Financial Overview -->
@@ -552,160 +696,42 @@
                 .then(response => response.json())
                 .then(data => {
                     // Update Revenue Cards
-                    document.getElementById('revenueCards').innerHTML = `
-                        <div class="dashboard-card fade-in hover-lift rounded-xl overflow-hidden">
-                            <div class="bg-gradient-to-br from-deep-brown to-rich-brown p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-warm-cream/80 text-sm font-baskerville">Today's Revenue</p>
-                                        <p class="text-xl font-bold text-warm-cream font-baskerville">₱${data.today_revenue ? data.today_revenue.toLocaleString() : '0'}</p>
-                                        <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
-                                            <i class="fas ${data.pct_today_vs_yesterday >= 0 ? 'fa-arrow-up text-green-400' : 'fa-arrow-down text-red-400'} mr-1"></i>
-                                            ${Math.abs(data.pct_today_vs_yesterday || 0)}% from yesterday
-                                        </p>
-                                    </div>
-                                    <div class="bg-warm-cream/10 p-3 rounded-full">
-                                        <i class="fas fa-coins text-3xl text-warm-cream"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in hover-lift rounded-xl overflow-hidden">
-                            <div class="bg-gradient-to-br from-accent-brown to-rich-brown p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-warm-cream/80 text-sm font-baskerville">Weekly Revenue</p>
-                                        <p class="text-xl font-bold text-warm-cream font-baskerville">₱${data.this_week_revenue ? data.this_week_revenue.toLocaleString() : '0'}</p>
-                                        <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
-                                            <i class="fas ${data.pct_this_week_vs_last_week >= 0 ? 'fa-arrow-up text-green-400' : 'fa-arrow-down text-red-400'} mr-1"></i>
-                                            ${Math.abs(data.pct_this_week_vs_last_week || 0)}% from last week
-                                        </p>
-                                    </div>
-                                    <div class="bg-warm-cream/10 p-3 rounded-full">
-                                        <i class="fas fa-chart-line text-3xl text-warm-cream"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in hover-lift rounded-xl overflow-hidden">
-                            <div class="bg-gradient-to-br from-deep-brown to-accent-brown p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-warm-cream/80 text-sm font-baskerville">Monthly Revenue</p>
-                                        <p class="text-xl font-bold text-warm-cream font-baskerville">₱${data.this_month_revenue ? data.this_month_revenue.toLocaleString() : '0'}</p>
-                                        <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
-                                            <i class="fas ${data.pct_this_month_vs_last_month >= 0 ? 'fa-arrow-up text-green-400' : 'fa-arrow-down text-red-400'} mr-1"></i>
-                                            ${Math.abs(data.pct_this_month_vs_last_month || 0)}% from last month
-                                        </p>
-                                    </div>
-                                    <div class="bg-warm-cream/10 p-3 rounded-full">
-                                        <i class="fas fa-calendar-alt text-3xl text-warm-cream"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in hover-lift rounded-xl overflow-hidden">
-                            <div class="bg-gradient-to-br from-rich-brown to-accent-brown p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-warm-cream/80 text-sm font-baskerville">Yearly Revenue</p>
-                                        <p class="text-xl font-bold text-warm-cream font-baskerville">₱${data.this_year_revenue ? data.this_year_revenue.toLocaleString() : '0'}</p>
-                                        <p class="text-warm-cream/70 text-xs mt-1 font-baskerville flex items-center">
-                                            <i class="fas ${data.pct_this_year_vs_last_year >= 0 ? 'fa-arrow-up text-green-400' : 'fa-arrow-down text-red-400'} mr-1"></i>
-                                            ${Math.abs(data.pct_this_year_vs_last_year || 0)}% from last year
-                                        </p>
-                                    </div>
-                                    <div class="bg-warm-cream/10 p-3 rounded-full">
-                                        <i class="fas fa-trophy text-3xl text-warm-cream"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    document.getElementById('todayRevenue').textContent = `₱${data.today_revenue ? data.today_revenue.toLocaleString() : '0'}`;
+                    updateChangeIndicator('todayRevenueChange', data.pct_today_vs_yesterday, 'yesterday');
+                    
+                    document.getElementById('weekRevenue').textContent = `₱${data.this_week_revenue ? data.this_week_revenue.toLocaleString() : '0'}`;
+                    updateChangeIndicator('weekRevenueChange', data.pct_this_week_vs_last_week, 'last week');
+                    
+                    document.getElementById('monthRevenue').textContent = `₱${data.this_month_revenue ? data.this_month_revenue.toLocaleString() : '0'}`;
+                    updateChangeIndicator('monthRevenueChange', data.pct_this_month_vs_last_month, 'last month');
+                    
+                    document.getElementById('yearRevenue').textContent = `₱${data.this_year_revenue ? data.this_year_revenue.toLocaleString() : '0'}`;
+                    updateChangeIndicator('yearRevenueChange', data.pct_this_year_vs_last_year, 'last year');
 
                     // Update Orders Cards
-                    document.getElementById('ordersCards').innerHTML = `
-                        <div class="dashboard-card fade-in p-6 rounded-xl">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-deep-brown text-sm font-baskerville">Today's Orders</p>
-                                    <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">${data.today_count || '0'}</p>
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-full bg-warm-cream/50 h-2 rounded-full">
-                                            <div class="bg-deep-brown h-2 rounded-full" style="width: ${Math.min(100, (data.today_count || 0) / 200 * 100)}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-deep-brown/10 p-3 rounded-full">
-                                    <i class="fas fa-shopping-bag text-3xl text-deep-brown"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in p-6 rounded-xl">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-deep-brown text-sm font-baskerville">Weekly Orders</p>
-                                    <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">${data.this_week_count || '0'}</p>
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-full bg-warm-cream/50 h-2 rounded-full">
-                                            <div class="bg-deep-brown h-2 rounded-full" style="width: ${Math.min(100, (data.this_week_count || 0) / 1200 * 100)}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-deep-brown/10 p-3 rounded-full">
-                                    <i class="fas fa-clipboard-list text-3xl text-deep-brown"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in p-6 rounded-xl">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-deep-brown text-sm font-baskerville">Monthly Orders</p>
-                                    <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">${data.this_month_count || '0'}</p>
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-full bg-warm-cream/50 h-2 rounded-full">
-                                            <div class="bg-deep-brown h-2 rounded-full" style="width: ${Math.min(100, (data.this_month_count || 0) / 5000 * 100)}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-deep-brown/10 p-3 rounded-full">
-                                    <i class="fas fa-chart-bar text-3xl text-deep-brown"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card fade-in p-6 rounded-xl">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-deep-brown text-sm font-baskerville">Yearly Orders</p>
-                                    <p class="text-xl font-bold text-rich-brown font-baskerville mt-1">${data.this_year_count || '0'}</p>
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-full bg-warm-cream/50 h-2 rounded-full">
-                                            <div class="bg-deep-brown h-2 rounded-full" style="width: ${Math.min(100, (data.this_year_count || 0) / 60000 * 100)}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-deep-brown/10 p-3 rounded-full">
-                                    <i class="fas fa-award text-3xl text-deep-brown"></i>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    document.getElementById('todayOrders').textContent = data.today_count || '0';
+                    document.getElementById('todayOrdersProgress').style.width = `${Math.min(100, (data.today_count || 0) / 200 * 100)}%`;
                     
-                    // Add fade-in animation
-                    document.querySelectorAll('.fade-in').forEach(el => {
-                        el.style.animation = 'fadeIn 0.5s ease-in-out';
-                        setTimeout(() => {
-                            el.style.animation = '';
-                        }, 500);
-                    });
+                    document.getElementById('weekOrders').textContent = data.this_week_count || '0';
+                    document.getElementById('weekOrdersProgress').style.width = `${Math.min(100, (data.this_week_count || 0) / 1200 * 100)}%`;
+                    
+                    document.getElementById('monthOrders').textContent = data.this_month_count || '0';
+                    document.getElementById('monthOrdersProgress').style.width = `${Math.min(100, (data.this_month_count || 0) / 5000 * 100)}%`;
+                    
+                    document.getElementById('yearOrders').textContent = data.this_year_count || '0';
+                    document.getElementById('yearOrdersProgress').style.width = `${Math.min(100, (data.this_year_count || 0) / 60000 * 100)}%`;
                 })
                 .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Helper function to update the change indicators
+        function updateChangeIndicator(elementId, percentage, comparisonText) {
+            const element = document.getElementById(elementId);
+            const iconClass = percentage >= 0 ? 'fa-arrow-up text-green-400' : 'fa-arrow-down text-red-400';
+            element.innerHTML = `
+                <i class="fas ${iconClass} mr-1"></i>
+                ${Math.abs(percentage || 0)}% from ${comparisonText}
+            `;
         }
 
 
