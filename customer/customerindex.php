@@ -18,25 +18,36 @@ try {
 }
 
 
-// Fetch recent notifications
 try {
     $stmt = $conn->prepare("
         SELECT 
-            notification_id,
-            message,
-            is_read,
-            created_at,
-            TIMESTAMPDIFF(SECOND, created_at, NOW()) as seconds_ago
-        FROM notifications_tb 
-        WHERE user_id = :user_id
-        ORDER BY created_at DESC
+            n.notification_id,
+            n.message,
+            n.is_read,
+            COALESCE(
+                CASE 
+                    WHEN b.booking_status IN ('accepted', 'declined') THEN b.acceptdecline_datetime
+                    ELSE n.created_at
+                END
+            ) as display_datetime,
+            TIMESTAMPDIFF(SECOND, 
+                COALESCE(
+                    CASE 
+                        WHEN b.booking_status IN ('accepted', 'declined') THEN b.acceptdecline_datetime
+                        ELSE n.created_at
+                    END
+                ), NOW()) as seconds_ago
+        FROM notifications_tb n
+        LEFT JOIN booking_tb b ON n.booking_id = b.booking_id
+        WHERE n.user_id = :user_id
+        ORDER BY display_datetime DESC
         LIMIT 3
     ");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Format the time ago
+    // Format the time ago and date
     foreach ($notifications as &$notification) {
         $seconds = $notification['seconds_ago'];
         if ($seconds < 60) {
@@ -51,12 +62,14 @@ try {
             $days = floor($seconds / 86400);
             $notification['time_ago'] = $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
         }
+        // Format the exact date and time
+        $display_datetime = new DateTime($notification['display_datetime']);
+        $notification['formatted_date'] = $display_datetime->format('F j, Y, g:i A');
     }
 } catch (PDOException $e) {
     $notifications = [];
     error_log("Error fetching notifications: " . $e->getMessage());
 }
-
 
 
 // Set page title
@@ -432,7 +445,10 @@ ob_start();
                         <div class="flex-grow">
                             <div class="flex items-center justify-between">
                                 <p class="font-baskerville font-bold text-deep-brown"><?php echo htmlspecialchars($notification['message']); ?></p>
-                                <span class="text-sm text-deep-brown/60"><?php echo htmlspecialchars($notification['time_ago']); ?></span>
+                                <div class="text-sm text-deep-brown/60 text-right">
+                                    <div><?php echo htmlspecialchars($notification['formatted_date']); ?></div>
+                                    <div>(<?php echo htmlspecialchars($notification['time_ago']); ?>)</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -445,6 +461,7 @@ ob_start();
         </div>
     </div>
 </section>
+
 
 <?php
 $content = ob_get_clean();
