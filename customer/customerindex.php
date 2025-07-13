@@ -17,7 +17,6 @@ try {
     die("Error fetching user data: " . $e->getMessage());
 }
 
-
 try {
     $stmt = $conn->prepare("
         SELECT 
@@ -70,6 +69,7 @@ try {
     $notifications = [];
     error_log("Error fetching notifications: " . $e->getMessage());
 }
+
 
 
 // Set page title
@@ -447,7 +447,6 @@ ob_start();
                                 <p class="font-baskerville font-bold text-deep-brown"><?php echo htmlspecialchars($notification['message']); ?></p>
                                 <div class="text-sm text-deep-brown/60 text-right">
                                     <div><?php echo htmlspecialchars($notification['formatted_date']); ?></div>
-                                    <div>(<?php echo htmlspecialchars($notification['time_ago']); ?>)</div>
                                 </div>
                             </div>
                         </div>
