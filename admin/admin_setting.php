@@ -283,9 +283,11 @@ ob_start();
                         ?>
                         <img id="profile-photo" src="<?php echo $photoPath; ?>" 
                              class="w-32 h-32 rounded-full object-cover border-4 border-accent-brown shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-                        <div class="photo-upload-overlay absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                            <i class="fas fa-camera text-white text-2xl transform group-hover:scale-110 transition-transform duration-200"></i>
-                        </div>
+                             <div class="photo-upload-overlay absolute inset-0 rounded-full bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+    <i class="fas fa-camera text-white text-2xl transform group-hover:scale-110 transition-transform duration-200"></i>
+    <span class="text-white text-sm mt-1">Change Profile</span>
+</div>
+
                         <input type="file" id="photo-upload" accept="image/*" class="hidden">
                     </div>
                     
