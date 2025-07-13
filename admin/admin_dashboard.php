@@ -646,6 +646,10 @@
             // Update every 10 seconds
             setInterval(updateDashboard, 10000);
 
+            loadFinancialOverview()
+
+            setInterval(loadFinancialOverview, 10000);
+
         });
 
         // Set current date with improved formatting
@@ -760,8 +764,7 @@
             }
         }
 
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', loadFinancialOverview);
+        
 
         // Revenue Analysis Chart
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
