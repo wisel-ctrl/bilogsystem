@@ -8,6 +8,20 @@
 
     // Define page title
     $page_title = "Admin Dashboards";
+    
+    try {
+        $notificationStmt = $conn->prepare("
+            SELECT * FROM notifications_tb 
+            WHERE user_id = :user_id 
+            ORDER BY created_at DESC
+            LIMIT 3
+        ");
+        $notificationStmt->execute([':user_id' => $_SESSION['user_id']]);
+        $notifications = $notificationStmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Error fetching notifications: " . $e->getMessage());
+        $notifications = [];
+    }
 
     // Capture page content
     ob_start();
@@ -543,46 +557,41 @@
                 </div>
 
                 <!-- Recent Activity -->
-                <div class="dashboard-card fade-in bg-white rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-deep-brown mb-6 font-playfair flex items-center">
-                        <i class="fas fa-clock mr-2 text-accent-brown"></i>
-                        Recent Activity
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-shopping-cart text-green-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">New order #1234 received</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">2 Cappuccino, 1 Croissant - ₱385</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">5 min ago</span>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-user-plus text-blue-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">New employee added</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">Maria Santos - Barista</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">1 hour ago</span>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-orange-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">Low inventory warning</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">Coffee beans running low (5 kg remaining)</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">3 hours ago</span>
-                        </div>
+                <div class="dashboard-card fade-in bg-white rounded-xl p-8 shadow-lg">
+    <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair flex items-center">
+        <i class="fas fa-clock mr-3 text-accent-brown text-xl"></i>
+        Recent Activity
+    </h3>
+    <div class="space-y-6">
+        <?php if (count($notifications) > 0): ?>
+            <?php foreach ($notifications as $notification): ?>
+                <div class="flex items-start space-x-5 p-5 bg-warm-cream/10 rounded-lg hover:bg-warm-cream/20 transition-all duration-300 border border-warm-cream/20">
+                    <div class="rounded-full w-14 h-14 flex items-center justify-center flex-shrink-0 <?php 
+                        echo strpos($notification['message'], 'booking') !== false ? 'bg-green-100' : 
+                             (strpos($notification['message'], 'payment') !== false ? 'bg-blue-100' : 'bg-orange-100');
+                    ?>">
+                        <i class="fas fa-<?php 
+                            echo strpos($notification['message'], 'booking') !== false ? 'calendar-check text-green-600' : 
+                                 (strpos($notification['message'], 'payment') !== false ? 'money-bill-wave text-blue-600' : 'bell text-orange-600');
+                        ?> text-2xl"></i>
                     </div>
+                    <div class="flex-1">
+                        <p class="text-base font-medium text-deep-brown font-playfair"><?php echo htmlspecialchars($notification['message']); ?></p>
+                        <p class="text-sm text-rich-brown font-baskerville mt-2"><?php 
+                            $date = new DateTime($notification['created_at']);
+                            echo $date->format('M j, Y g:i A');
+                        ?></p>
+                    </div>
+                    <?php if (!$notification['is_read']): ?>
+                        <span class="inline-block h-3 w-3 rounded-full bg-accent-brown mt-2"></span>
+                    <?php endif; ?>
                 </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="p-5 text-base text-center text-rich-brown font-baskerville bg-warm-cream/10 rounded-lg">No recent activity</div>
+        <?php endif; ?>
+    </div>
+</div>
 
 <?php
     $page_content = ob_get_clean();
