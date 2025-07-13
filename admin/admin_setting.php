@@ -8,6 +8,11 @@ date_default_timezone_set('Asia/Manila');
 // Check if this is an AJAX request
 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
+// Function to format "Member since" date
+function formatMemberSince($timestamp) {
+    return date('F Y', strtotime($timestamp));
+}
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle photo upload (must come first since it exits early)
@@ -293,7 +298,7 @@ ob_start();
                     
                     <div class="text-center space-y-2">
                         <h4 class="font-baskerville text-2xl font-semibold text-deep-brown tracking-wide">Administrator</h4>
-                        <p class="text-accent-brown text-sm font-medium">Member since June 2025</p>
+                        <p class="text-accent-brown text-sm font-medium">Member since <?php echo formatMemberSince($user['created_at']); ?></p>
                     </div>
                     
                     <!-- <button id="change-photo-btn" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-3 rounded-full font-baskerville text-base font-medium hover:shadow-xl hover:bg-gradient-to-r hover:from-rich-brown hover:to-accent-brown transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-accent-brown focus:ring-offset-2">
