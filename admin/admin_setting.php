@@ -847,32 +847,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Improved Password Toggle Functionality
-    document.querySelectorAll('.toggle-password').forEach(button => {
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        const input = button.closest('.relative').querySelector('input');
-        const icon = button.querySelector('i');
-        const isPassword = input.type === 'password';
-        
-        // Toggle input type
-        input.type = isPassword ? 'text' : 'password';
-        
-        // Toggle icon classes with smooth transition
-        icon.classList.toggle('fa-eye-slash', !isPassword);
-        icon.classList.toggle('fa-eye', isPassword);
-        
-        // Update ARIA attributes for accessibility
-        button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-        
-        // Visual feedback with Tailwind classes
-        icon.classList.toggle('text-deep-brown/50', isPassword);
-        icon.classList.toggle('text-accent-brown', !isPassword);
-        
-        // Ensure focus remains on input
-        input.focus();
+    document.addEventListener('DOMContentLoaded', () => {
+    // Check if Font Awesome is loaded
+    if (!window.FontAwesome) {
+        console.error('Font Awesome not detected. Please include Font Awesome library.');
+        showAlert('Font Awesome library is missing. Password toggle icons may not display correctly.', 'error');
+        return;
+    }
+
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    if (toggleButtons.length === 0) {
+        console.error('No toggle-password buttons found.');
+        showAlert('Password toggle buttons not found in the form.', 'error');
+        return;
+    }
+
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const container = button.closest('.relative');
+            if (!container) {
+                console.error('Parent .relative container not found for toggle button.');
+                return;
+            }
+
+            const input = container.querySelector('input');
+            const icon = button.querySelector('i');
+            if (!input || !icon) {
+                console.error('Input or icon element not found for toggle button.');
+                return;
+            }
+
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('fa-eye-slash', !isPassword);
+            icon.classList.toggle('fa-eye', isPassword);
+            button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+            icon.classList.toggle('text-deep-brown/50', isPassword);
+            icon.classList.toggle('text-accent-brown', !isPassword);
+            input.focus();
+        });
     });
 });
-
     // Helper function to show alerts
     function showAlert(message, type) {
         // Remove any existing alerts
