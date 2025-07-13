@@ -436,9 +436,21 @@
                                 <i class="fas fa-chart-line mr-2 text-accent-brown"></i>
                                 Revenue Analysis
                             </h3>
-                            <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-download mr-2"></i> Export Data
-                            </button>
+                            <div class="flex items-center">
+                                <div class="relative mr-3">
+                                    <select id="timePeriodSelect" class="bg-warm-cream border border-deep-brown text-deep-brown rounded-lg px-3 py-2 appearance-none focus:outline-none focus:ring-2 focus:ring-accent-brown cursor-pointer font-baskerville">
+                                        <option value="daily">Daily (Weekdays)</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-deep-brown">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                    <i class="fas fa-download mr-2"></i> Export Data
+                                </button>
+                            </div>
                         </div>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
@@ -766,27 +778,39 @@
 
         
 
-        // Revenue Analysis Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [65000, 72000, 68000, 78000, 82000, 84000],
-                    borderColor: '#8B4513',
-                    backgroundColor: 'rgba(139, 69, 19, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#8B4513',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
+        let revenueChart;
+
+        // Initialize the chart
+        function initRevenueChart() {
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [],
+                        borderColor: '#8B4513',
+                        backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#8B4513',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: getChartOptions()
+            });
+            
+            // Load initial data
+            loadRevenueData('daily');
+        }
+
+        // Function to get chart options (reusable)
+        function getChartOptions() {
+            return {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -803,8 +827,7 @@
                 },
                 scales: {
                     y: {
-                        beginAtZero: false,
-                        min: 60000,
+                        beginAtZero: true,
                         grid: {
                             color: 'rgba(232, 224, 213, 0.3)',
                             drawBorder: false
@@ -829,7 +852,42 @@
                     intersect: false,
                     mode: 'index'
                 }
+            };
+        }
+
+        // Function to load data from server
+        async function loadRevenueData(timePeriod) {
+            try {
+                const response = await fetch(`dashboard_handlers/revenue_chart.php?period=${timePeriod}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Update chart data
+                revenueChart.data.labels = data.labels;
+                revenueChart.data.datasets[0].data = data.revenues;
+                
+                // Adjust y-axis minimum based on data
+                const minValue = Math.min(...data.revenues);
+                revenueChart.options.scales.y.min = Math.max(0, minValue * 0.8);
+                
+                revenueChart.update();
+            } catch (error) {
+                console.error('Error loading revenue data:', error);
+                alert('Failed to load revenue data. Please try again.');
             }
+        }
+
+        // Event listener for the dropdown
+        document.getElementById('timePeriodSelect').addEventListener('change', function() {
+            loadRevenueData(this.value);
+        });
+
+        // Initialize the chart when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initRevenueChart();
         });
 
         // Menu Sales Chart
