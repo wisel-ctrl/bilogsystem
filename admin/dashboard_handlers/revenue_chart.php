@@ -8,13 +8,14 @@ try {
     
     switch ($timePeriod) {
         case 'yearly':
+            $currentYear = date('Y');
             $query = "
                 WITH years AS (
-                    SELECT 2021 AS year_val UNION ALL
-                    SELECT 2022 UNION ALL
-                    SELECT 2023 UNION ALL
-                    SELECT 2024 UNION ALL
-                    SELECT 2025
+                    SELECT ".($currentYear-4)." AS year_val UNION ALL
+                    SELECT ".($currentYear-3)." UNION ALL
+                    SELECT ".($currentYear-2)." UNION ALL
+                    SELECT ".($currentYear-1)." UNION ALL
+                    SELECT ".$currentYear."
                 )
                 SELECT 
                     y.year_val AS year,
