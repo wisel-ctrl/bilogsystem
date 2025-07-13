@@ -17,6 +17,48 @@ try {
     die("Error fetching user data: " . $e->getMessage());
 }
 
+
+// Fetch recent notifications
+try {
+    $stmt = $conn->prepare("
+        SELECT 
+            notification_id,
+            message,
+            is_read,
+            created_at,
+            TIMESTAMPDIFF(SECOND, created_at, NOW()) as seconds_ago
+        FROM notifications_tb 
+        WHERE user_id = :user_id
+        ORDER BY created_at DESC
+        LIMIT 3
+    ");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Format the time ago
+    foreach ($notifications as &$notification) {
+        $seconds = $notification['seconds_ago'];
+        if ($seconds < 60) {
+            $notification['time_ago'] = 'Just now';
+        } elseif ($seconds < 3600) {
+            $minutes = floor($seconds / 60);
+            $notification['time_ago'] = $minutes . ' min' . ($minutes > 1 ? 's' : '') . ' ago';
+        } elseif ($seconds < 86400) {
+            $hours = floor($seconds / 3600);
+            $notification['time_ago'] = $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
+        } else {
+            $days = floor($seconds / 86400);
+            $notification['time_ago'] = $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
+        }
+    }
+} catch (PDOException $e) {
+    $notifications = [];
+    error_log("Error fetching notifications: " . $e->getMessage());
+}
+
+
+
 // Set page title
 $page_title = "Customer Dashboard - Caffè Lilio";
 
@@ -374,67 +416,32 @@ ob_start();
 </section>
 
 <!-- Recent Activity -->
-<section>
+<section class="mb-12">
     <div class="flex items-center justify-between mb-6">
         <h3 class="font-playfair text-2xl font-bold text-deep-brown">Recent Activity</h3>
-        <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
-                data-tippy-content="View all activity">
-            <span class="font-baskerville text-sm">View All</span>
-            <i class="fas fa-chevron-right"></i>
-        </button>
     </div>
-    <div class="bg-white/80 rounded-xl p-6 shadow-md">
+    
+    <div class="bg-white/90 rounded-xl p-6 shadow-lg">
         <div class="space-y-4">
-            <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                    <i class="fas fa-calendar-check text-deep-brown text-lg"></i>
-                </div>
-                <div class="flex-grow">
-                    <div class="flex items-center justify-between">
-                        <p class="font-baskerville font-bold text-deep-brown">Reservation Confirmed</p>
-                        <span class="text-sm text-deep-brown/60">2 hours ago</span>
+            <?php if (count($notifications) > 0): ?>
+                <?php foreach ($notifications as $index => $notification): ?>
+                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300 <?php echo $notification['is_read'] ? '' : 'bg-warm-cream/50'; ?>">
+                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
+                            <i class="fas fa-bell text-deep-brown text-lg"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between">
+                                <p class="font-baskerville font-bold text-deep-brown"><?php echo htmlspecialchars($notification['message']); ?></p>
+                                <span class="text-sm text-deep-brown/60"><?php echo htmlspecialchars($notification['time_ago']); ?></span>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-sm text-deep-brown/60 mt-1">Your reservation for March 15 has been confirmed.</p>
-                    <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                        <span>View Details</span>
-                        <i class="fas fa-chevron-right text-xs"></i>
-                    </button>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="p-4 text-center text-deep-brown/60 font-baskerville">
+                    No recent activity found.
                 </div>
-            </div>
-
-            <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                    <i class="fas fa-receipt text-deep-brown text-lg"></i>
-                </div>
-                <div class="flex-grow">
-                    <div class="flex items-center justify-between">
-                        <p class="font-baskerville font-bold text-deep-brown">Payment Processed</p>
-                        <span class="text-sm text-deep-brown/60">1 day ago</span>
-                    </div>
-                    <p class="text-sm text-deep-brown/60 mt-1">Payment for Birthday Celebration deposit received.</p>
-                    <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                        <span>View Receipt</span>
-                        <i class="fas fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300">
-                <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                    <i class="fas fa-star text-deep-brown text-lg"></i>
-                </div>
-                <div class="flex-grow">
-                    <div class="flex items-center justify-between">
-                        <p class="font-baskerville font-bold text-deep-brown">Review Posted</p>
-                        <span class="text-sm text-deep-brown/60">3 days ago</span>
-                    </div>
-                    <p class="text-sm text-deep-brown/60 mt-1">Thank you for reviewing your last visit!</p>
-                    <button class="mt-2 text-deep-brown hover:text-rich-brown transition-colors duration-300 text-sm flex items-center space-x-1">
-                        <span>View Review</span>
-                        <i class="fas fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
