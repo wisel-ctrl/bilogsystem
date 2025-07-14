@@ -224,133 +224,141 @@ ob_start();
             }
 
             function showPackageDetails(packageId) {
-                // Fetch package details
-                fetch('bookingAPI/get_package_dishes.php?package_id=' + packageId)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success' && data.data && data.data.length > 0) {
-                            const package = data.data[0];
-                            
-                            // Group dishes by category in the order we want
-                            // const categoriesOrder = ['house-salad', 'spanish-dish', 'italian-dish', 'burgers', 'pizza', 'Pasta', 'pasta_caza', 'main-course', 'drinks', 'coffee', 'desserts'];
-                            const categoriesOrder = ['house_salad', 'spanish_dish', 'italian_dish', 'burgers', 'pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'];
-                            const dishesByCategory = {};
-                            
-                            // Initialize categories
-                            categoriesOrder.forEach(category => {
-                                dishesByCategory[category] = [];
-                            });
-                            
-                            // Group dishes
-                            data.data.forEach(dish => {
-                                if (!dishesByCategory[dish.dish_category]) {
-                                    dishesByCategory[dish.dish_category] = [];
-                                }
-                                dishesByCategory[dish.dish_category].push(dish);
-                            });
-                            
-                            // Create modal content
-                            let modalContent = `
-                                <div class="package-details-modal">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div>
-                                            <h3 class="text-2xl font-playfair font-bold text-rich-brown">${package.package_name}</h3>
-                                            <div class="flex items-center mt-1 text-amber-600">
-                                                <i class="fas fa-tag mr-2"></i>
-                                                <span class="font-semibold">$${package.price}</span>
-                                            </div>
-                                        </div>
-                                      
-                                    </div>
-                                    
-                                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6">
-                                        <div class="flex">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-info-circle text-amber-500"></i>
-                                            </div>
-                                            <div class="ml-3">
-                                                <p class="text-sm text-amber-700">${package.package_description}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="dishes-list">
-                            `;
-                            
-                            // Add dishes by category
-                            categoriesOrder.forEach(category => {
-                                if (dishesByCategory[category] && dishesByCategory[category].length > 0) {
-                                    modalContent += `
-                                        <div class="dish-category mb-6">
-                                            <h4 class="text-xl font-playfair font-semibold mb-3 capitalize text-rich-brown flex items-center">
-                                                <i class="fas ${getCategoryIcon(category)} mr-2"></i>
-                                                ${category.replace(/-/g, ' ')}
-                                            </h4>
-                                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    `;
-                                    
-                                    dishesByCategory[category].forEach(dish => {
-                                        modalContent += `
-                                            <li class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
-                                                <span class="font-medium text-gray-800">${dish.dish_name}</span>
-                                                <span class="text-sm bg-amber-100 text-amber-800 px-2 py-1 rounded-full">x${dish.quantity}</span>
-                                            </li>
-                                        `;
-                                    });
-                                    
-                                    modalContent += `
-                                            </ul>
-                                        </div>
-                                    `;
-                                }
-                            });
-                            
-                            modalContent += `
-                                    </div>
-                                    
-                                    <div class="modal-actions flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
-                                        <button onclick="closeModal()" class="btn-cancel px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition flex items-center">
-                                            <i class="fas fa-times mr-2"></i>
-                                            Cancel
-                                        </button>
-                                        <button onclick="showReservationForm('${packageId}', ${package.price})" class="btn-reserve px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition flex items-center">
-                                            <i class="fas fa-calendar-check mr-2"></i>
-                                            Reserve Now
-                                        </button>
-                                    </div>
+    // Fetch package details
+    fetch('bookingAPI/get_package_dishes.php?package_id=' + packageId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success' && data.data && data.data.length > 0) {
+                const package = data.data[0];
+                
+                // Group dishes by category in the order we want
+                const categoriesOrder = ['house_salad', 'spanish_dish', 'italian_dish', 'burgers_pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'];
+                const dishesByCategory = {};
+                
+                // Initialize categories
+                categoriesOrder.forEach(category => {
+                    dishesByCategory[category] = [];
+                });
+                
+                // Group dishes
+                data.data.forEach(dish => {
+                    if (!dishesByCategory[dish.dish_category]) {
+                        dishesByCategory[dish.dish_category] = [];
+                    }
+                    dishesByCategory[dish.dish_category].push(dish);
+                });
+                
+                // Create modal content
+                let modalContent = `
+                    <div class="package-details-modal text-gray-700">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-2xl sm:text-3xl font-semibold text-gray-800 tracking-tight">${package.package_name}</h3>
+                                <div class="flex items-center mt-2 text-amber-600">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h10"/>
+                                    </svg>
+                                    <span class="font-semibold text-lg">$${package.price}</span>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-amber-50/80 backdrop-blur-sm border-l-4 border-amber-400 p-4 sm:p-5 mb-6 rounded-lg">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm sm:text-base text-amber-700 leading-relaxed">${package.package_description}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dishes-list">
+                `;
+                
+                // Add dishes by category
+                categoriesOrder.forEach(category => {
+                    if (dishesByCategory[category] && dishesByCategory[category].length > 0) {
+                        modalContent += `
+                            <div class="dish-category mb-6">
+                                <h4 class="text-lg sm:text-xl font-semibold mb-3 capitalize text-gray-800 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 ${getCategoryIcon(category)}" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+                                    ${category.replace(/_/g, ' ')}
+                                </h4>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        `;
+                        
+                        dishesByCategory[category].forEach(dish => {
+                            modalContent += `
+                                <li class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg transition hover:bg-gray-100">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">${dish.dish_name}</span>
+                                        ${dish.is_best_seller ? '<svg class="w-4 h-4 ml-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.286-3.97a1 1 0 00-.364-1.118L2.36 9.397c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.97z"/></svg>' : ''}
+                                    </div>
+                                    <span class="text-sm bg-amber-100 text-amber-800 px-2 py-1 rounded-full">x${dish.quantity}</span>
+                                </li>
                             `;
-                            
-                            // Show modal
-                            showModal('Package Details', modalContent);
-                        } else {
-                            showToast('Error loading package details.', 'error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching package details:', error);
-                        showToast('Error loading package details.', 'error');
-                    });
+                        });
+                        
+                        modalContent += `
+                                </ul>
+                            </div>
+                        `;
+                    }
+                });
+                
+                modalContent += `
+                        </div>
+                        
+                        <div class="modal-actions flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                            <button onclick="closeModal()" class="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition flex items-center text-sm font-medium">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Cancel
+                            </button>
+                            <button onclick="showReservationForm('${packageId}', ${package.price})" class="px-4 py-2 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition flex items-center text-sm font-medium">
+                                <svg class="ims-center w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Reserve Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Show modal
+                showModal('Package Details', modalContent);
+            } else {
+                showToast('Error loading package details.', 'error');
             }
+        })
+        .catch(error => {
+            console.error('Error fetching package details:', error);
+            showToast('Error loading package details.', 'error');
+        });
+}
 
-            window.showPackageDetails = showPackageDetails; 
+window.showPackageDetails = showPackageDetails;
 
-            function getCategoryIcon(category) {
-                const icons = {
-                    'house_salad': 'fa-leaf',
-                    'spanish_dish': 'fa-pepper-hot',
-                    'italian_dish': 'fa-pizza-slice',
-                    'burgers_pizza': 'fa-hamburger',
-                    // 'pizza': 'fa-pizza-slice',
-                    'pasta': 'fa-utensils',
-                    'pasta_caza': 'fa-utensils',
-                    'main_course': 'fa-drumstick-bite',
-                    'drinks': 'fa-glass-martini-alt',
-                    'coffee': 'fa-coffee',
-                    'desserts': 'fa-ice-cream'
-                };
-                return icons[category] || 'fa-utensils';
-            }
+function getCategoryIcon(category) {
+    const icons = {
+        'house_salad': 'M12 4.5v15m7.5-7.5h-15',
+        'spanish_dish': 'M15 15l-2 5L9 9l11 4-5 2zm0 0l5 2',
+        'italian_dish': 'M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7z',
+        'burgers_pizza': 'M19.5 8H17V6h-2v2h-3.5C9.57 8 8 9.57 8 11.5v3c0 1.93 1.57 3.5 3.5 3.5h8c1.93 0 3.5-1.57 3.5-3.5v-3C23 9.57 21.43 8 19.5 8zM13 6h2v2h-2V6z',
+        'pasta': 'M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5v1.5H7V7h4v4H9.5v1.5H11v7H9v-7H7v7H5v-7H3V7zm10 0h1.5v1.5H17V7h4v4h-1.5v1.5H21v7h-2v-7h-2v7h-2v-7h-1.5V11H15V7z',
+        'pasta_caza': 'M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5v1.5H7V7h4v4H9.5v1.5H11v7H9v-7H7v7H5v-7H3V7zm10 0h1.5v1.5H17V7h4v4h-1.5v1.5H21v7h-2v-7h-2v7h-2v-7h-1.5V11H15V7z',
+        'main_course': 'M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z',
+        'drinks': 'M21 5V3H3v2l8 9v5H6v2h12v-2h-5v-5l8-9zM7.43 7L5.66 5h12.69l-1.78 2H7.43z',
+        'coffee': 'M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4v-2z',
+        'desserts': 'M12 6c2.45 0 4.71 1.04 6.34 2.78C17.29 9.53 16.01 10 14.66 10c-1.57 0-3.1-.59-4.24-1.59C8.99 7.37 7.45 6 5.66 6c-1.35 0-2.63.53-3.68 1.28C3.29 5.54 5.55 4.5 8 4.5c2.76 0 5.25 1.13 7.05 2.95C16.85 5.63 19.34 4.5 22 4.5c2.45 0 4.71 1.04 6.34 2.78C26.99 7.37 25.45 6 23.66 6c-1.35 0-2.63.53-3.68 1.28C18.29 5.54 16.01 4.5 13.66 4.5c-1.57 0-3.1.59-4.24 1.59C7.99 7.13 6.45 8.5 4 8.5c-2.76 0-5.25-1.13-7.05-2.95C5.15 7.37 2.66 8.5 0 8.5v2c2.76 0 5.25-1.13 7.05-2.95C8.85 9.37 11.34 10.5 14 10.5c2.76 0 5.25-1.13 7.05-2.95C22.85 9.37 25.34 10.5 28 10.5v-2z'
+    };
+    return icons[category] ? `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='${icons[category]}'/></svg>` : 'M12 4v16m8-8H4';
+}
 
             window.getCategoryIcon = getCategoryIcon;
 
