@@ -8,6 +8,20 @@
 
     // Define page title
     $page_title = "Admin Dashboards";
+    
+    try {
+        $notificationStmt = $conn->prepare("
+            SELECT * FROM notifications_tb 
+            WHERE user_id = :user_id 
+            ORDER BY created_at DESC
+            LIMIT 3
+        ");
+        $notificationStmt->execute([':user_id' => $_SESSION['user_id']]);
+        $notifications = $notificationStmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Error fetching notifications: " . $e->getMessage());
+        $notifications = [];
+    }
 
     // Capture page content
     ob_start();
@@ -436,9 +450,21 @@
                                 <i class="fas fa-chart-line mr-2 text-accent-brown"></i>
                                 Revenue Analysis
                             </h3>
-                            <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
-                                <i class="fas fa-download mr-2"></i> Export Data
-                            </button>
+                            <div class="flex items-center">
+                                <div class="relative mr-3">
+                                    <select id="timePeriodSelect" class="bg-warm-cream border border-deep-brown text-deep-brown rounded-lg px-3 py-2 appearance-none focus:outline-none focus:ring-2 focus:ring-accent-brown cursor-pointer font-baskerville">
+                                        <option value="daily">Daily (Weekdays)</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-deep-brown">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <button onclick="printChartData('revenueChart', 'Revenue Analysis')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center">
+                                    <i class="fas fa-download mr-2"></i> Export Data
+                                </button>
+                            </div>
                         </div>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
@@ -531,46 +557,41 @@
                 </div>
 
                 <!-- Recent Activity -->
-                <div class="dashboard-card fade-in bg-white rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-deep-brown mb-6 font-playfair flex items-center">
-                        <i class="fas fa-clock mr-2 text-accent-brown"></i>
-                        Recent Activity
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-shopping-cart text-green-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">New order #1234 received</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">2 Cappuccino, 1 Croissant - ₱385</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">5 min ago</span>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-user-plus text-blue-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">New employee added</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">Maria Santos - Barista</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">1 hour ago</span>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4 p-4 bg-warm-cream/20 rounded-lg hover:bg-warm-cream/30 transition-all duration-300">
-                            <div class="bg-orange-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-deep-brown font-playfair">Low inventory warning</p>
-                                <p class="text-xs text-rich-brown font-baskerville mt-1">Coffee beans running low (5 kg remaining)</p>
-                            </div>
-                            <span class="text-xs text-rich-brown font-baskerville whitespace-nowrap">3 hours ago</span>
-                        </div>
+                <div class="dashboard-card fade-in bg-white rounded-xl p-8 shadow-lg">
+    <h3 class="text-2xl font-bold text-deep-brown mb-6 font-playfair flex items-center">
+        <i class="fas fa-clock mr-3 text-accent-brown text-xl"></i>
+        Recent Activity
+    </h3>
+    <div class="space-y-6">
+        <?php if (count($notifications) > 0): ?>
+            <?php foreach ($notifications as $notification): ?>
+                <div class="flex items-start space-x-5 p-5 bg-warm-cream/10 rounded-lg hover:bg-warm-cream/20 transition-all duration-300 border border-warm-cream/20">
+                    <div class="rounded-full w-14 h-14 flex items-center justify-center flex-shrink-0 <?php 
+                        echo strpos($notification['message'], 'booking') !== false ? 'bg-green-100' : 
+                             (strpos($notification['message'], 'payment') !== false ? 'bg-blue-100' : 'bg-orange-100');
+                    ?>">
+                        <i class="fas fa-<?php 
+                            echo strpos($notification['message'], 'booking') !== false ? 'calendar-check text-green-600' : 
+                                 (strpos($notification['message'], 'payment') !== false ? 'money-bill-wave text-blue-600' : 'bell text-orange-600');
+                        ?> text-2xl"></i>
                     </div>
+                    <div class="flex-1">
+                        <p class="text-base font-medium text-deep-brown font-playfair"><?php echo htmlspecialchars($notification['message']); ?></p>
+                        <p class="text-sm text-rich-brown font-baskerville mt-2"><?php 
+                            $date = new DateTime($notification['created_at']);
+                            echo $date->format('M j, Y g:i A');
+                        ?></p>
+                    </div>
+                    <?php if (!$notification['is_read']): ?>
+                        <span class="inline-block h-3 w-3 rounded-full bg-accent-brown mt-2"></span>
+                    <?php endif; ?>
                 </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="p-5 text-base text-center text-rich-brown font-baskerville bg-warm-cream/10 rounded-lg">No recent activity</div>
+        <?php endif; ?>
+    </div>
+</div>
 
 <?php
     $page_content = ob_get_clean();
@@ -766,27 +787,39 @@
 
         
 
-        // Revenue Analysis Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [65000, 72000, 68000, 78000, 82000, 84000],
-                    borderColor: '#8B4513',
-                    backgroundColor: 'rgba(139, 69, 19, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#8B4513',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
+        let revenueChart;
+
+        // Initialize the chart
+        function initRevenueChart() {
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [],
+                        borderColor: '#8B4513',
+                        backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#8B4513',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: getChartOptions()
+            });
+            
+            // Load initial data
+            loadRevenueData('daily');
+        }
+
+        // Function to get chart options (reusable)
+        function getChartOptions() {
+            return {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -803,8 +836,7 @@
                 },
                 scales: {
                     y: {
-                        beginAtZero: false,
-                        min: 60000,
+                        beginAtZero: true,
                         grid: {
                             color: 'rgba(232, 224, 213, 0.3)',
                             drawBorder: false
@@ -829,7 +861,42 @@
                     intersect: false,
                     mode: 'index'
                 }
+            };
+        }
+
+        // Function to load data from server
+        async function loadRevenueData(timePeriod) {
+            try {
+                const response = await fetch(`dashboard_handlers/revenue_chart.php?period=${timePeriod}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Update chart data
+                revenueChart.data.labels = data.labels;
+                revenueChart.data.datasets[0].data = data.revenues;
+                
+                // Adjust y-axis minimum based on data
+                const minValue = Math.min(...data.revenues);
+                revenueChart.options.scales.y.min = Math.max(0, minValue * 0.8);
+                
+                revenueChart.update();
+            } catch (error) {
+                console.error('Error loading revenue data:', error);
+                alert('Failed to load revenue data. Please try again.');
             }
+        }
+
+        // Event listener for the dropdown
+        document.getElementById('timePeriodSelect').addEventListener('change', function() {
+            loadRevenueData(this.value);
+        });
+
+        // Initialize the chart when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initRevenueChart();
         });
 
         // Menu Sales Chart
