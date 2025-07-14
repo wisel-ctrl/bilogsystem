@@ -181,7 +181,7 @@ ob_start();
     </div>
 
     <!-- Content -->
-    <div class="menu-card-content p-6">
+    <div class="p-6">
         <!-- Title -->
         <h4 class="font-playfair text-2xl font-bold text-deep-brown mb-2">
             ${package.package_name || 'Menu Item'}
