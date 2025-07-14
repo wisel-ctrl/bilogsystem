@@ -336,14 +336,14 @@ ob_start();
 
             function getCategoryIcon(category) {
                 const icons = {
-                    'house-salad': 'fa-leaf',
-                    'spanish-dish': 'fa-pepper-hot',
-                    'italian-dish': 'fa-pizza-slice',
-                    'burgers': 'fa-hamburger',
-                    'pizza': 'fa-pizza-slice',
+                    'house_salad': 'fa-leaf',
+                    'spanish_dish': 'fa-pepper-hot',
+                    'italian_dish': 'fa-pizza-slice',
+                    'burgers_pizza': 'fa-hamburger',
+                    // 'pizza': 'fa-pizza-slice',
                     'Pasta': 'fa-utensils',
                     'pasta_caza': 'fa-utensils',
-                    'main-course': 'fa-drumstick-bite',
+                    'main_course': 'fa-drumstick-bite',
                     'drinks': 'fa-glass-martini-alt',
                     'coffee': 'fa-coffee',
                     'desserts': 'fa-ice-cream'
