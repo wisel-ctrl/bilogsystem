@@ -1,3 +1,73 @@
+<?php
+require_once '../db_connect.php';
+
+session_start(); // Start session to access customer_id if available
+
+// Initialize variables
+$booking_id = isset($_GET['booking_id']) ? (int)$_GET['booking_id'] : null;
+$customer_id = isset($_SESSION['customer_id']) ? (int)$_SESSION['customer_id'] : (isset($_GET['customer_id']) ? (int)$_GET['customer_id'] : null);
+$errors = [];
+$success = false;
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Validate required fields
+        $required_ratings = ['food', 'ambiance', 'service'];
+        $ratings = [];
+        
+        foreach ($required_ratings as $category) {
+            if (!isset($_POST["{$category}_rating"]) || (int)$_POST["{$category}_rating"] === 0) {
+                $errors[] = "Please provide a rating for $category.";
+            } else {
+                $ratings[$category] = [
+                    'rating' => (int)$_POST["{$category}_rating"],
+                    'comment' => trim($_POST["{$category}_comment"] ?? '')
+                ];
+                if (empty($ratings[$category]['comment'])) {
+                    $errors[] = "Please provide a comment for $category.";
+                }
+            }
+        }
+        
+        // Optional reservation rating
+        if (isset($_POST['reservation_rating']) && (int)$_POST['reservation_rating'] > 0) {
+            $ratings['reservation'] = [
+                'rating' => (int)$_POST['reservation_rating'],
+                'comment' => trim($_POST['reservation_comment'] ?? '')
+            ];
+        }
+        
+        // If no errors, insert ratings into database
+        if (empty($errors)) {
+            $conn->beginTransaction();
+            $stmt = $conn->prepare("
+                INSERT INTO rating_tb (booking_id, rating_value, submitted_via, customer_id, review_text)
+                VALUES (:booking_id, :rating_value, :submitted_via, :customer_id, :review_text)
+            ");
+            
+            $submitted_via = $booking_id ? 'booking' : 'walkin';
+            
+            foreach ($ratings as $category => $data) {
+                $stmt->execute([
+                    'booking_id' => $booking_id ?: null,
+                    'rating_value' => $data['rating'],
+                    'submitted_via' => $submitted_via,
+                    'customer_id' => $customer_id ?: null,
+                    'review_text' => $data['comment'] ?: null
+                ]);
+            }
+            
+            $conn->commit();
+            $success = true;
+        }
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        $errors[] = "Database error: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,12 +97,20 @@
 </head>
 <body class="bg-gradient-to-br from-warm-cream to-[rgb(232,224,213)] min-h-screen flex flex-col items-center justify-center p-4 text-deep-brown">
     <main class="w-full max-w-lg mx-auto px-4 py-6">
+        <?php if (!empty($errors)): ?>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-6">
+                <?php foreach ($errors as $error): ?>
+                    <p><?php echo htmlspecialchars($error); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
         <section class="bg-white/95 backdrop-blur-lg rounded-xl p-6 shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
             <div class="text-center mb-6">
                 <h2 class="font-playfair text-3xl font-bold text-deep-brown">Rate Your Visit</h2>
                 <p class="font-baskerville text-base text-deep-brown/80 mt-2">Your feedback helps us make every moment at Caffè Lilio unforgettable!</p>
             </div>
-            <form id="ratingForm" class="space-y-6">
+            <form id="ratingForm" method="POST" class="space-y-6">
                 <div class="space-y-6">
                     <!-- Food Quality Rating -->
                     <div class="space-y-3">
@@ -71,18 +149,16 @@
                     <!-- Reservation Experience Rating -->
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Reservation Experience</h4>
-                        <div class="space-y-3">
-                            <div class="star-rating flex justify-center space-x-3">
-                                <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
-                                <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="reservation"></i>
-                                <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="reservation"></i>
-                                <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="reservation"></i>
-                                <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="reservation"></i>
-                                <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="reservation"></i>
-                            </div>
-                            <textarea name="reservation_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
-                                      placeholder="How was your reservation process?" rows="3"></textarea>
+                        <div class="star-rating flex justify-center space-x-3">
+                            <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
+                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="reservation"></i>
                         </div>
+                        <textarea name="reservation_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
+                                  placeholder="How was your reservation process?" rows="3"></textarea>
                     </div>
 
                     <!-- Service Rating -->
@@ -114,7 +190,7 @@
         </section>
 
         <!-- Enhanced Thank You Modal -->
-        <div class="fixed inset-0 bg-deep-brown/40 backdrop-blur-sm hidden items-center justify-center z-[1000]" id="successModal">
+        <div class="fixed inset-0 bg-deep-brown/40 backdrop-blur-sm hidden items-center justify-center z-[1000] <?php echo $success ? '' : 'hidden'; ?>" id="successModal">
             <div class="bg-warm-cream rounded-2xl p-10 max-w-[90%] w-[450px] text-center shadow-2xl border border-rich-brown/10 opacity-0 -translate-y-5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
                 <div class="text-6xl text-accent-brown mb-6 animate-[bounce_0.6s_ease]">
                     <i class="fas fa-check-circle"></i>
@@ -194,7 +270,6 @@
             // Form validation
             const form = document.getElementById('ratingForm');
             form.addEventListener('submit', function(e) {
-                e.preventDefault();
                 let isValid = true;
                 
                 const requiredRatings = ['food', 'ambiance', 'service'];
@@ -219,9 +294,10 @@
                     }
                 });
                 
-                if (isValid) {
-                    showModal();
+                if (!isValid) {
+                    e.preventDefault();
                 }
+                // Server-side validation will handle showing the modal
             });
 
             // Close modal when pressing Escape key
@@ -230,6 +306,11 @@
                     hideModal();
                 }
             });
+
+            // Show modal if submission was successful
+            <?php if ($success): ?>
+                showModal();
+            <?php endif; ?>
         });
     </script>
 </body>
