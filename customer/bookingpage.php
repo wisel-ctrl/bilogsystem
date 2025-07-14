@@ -193,7 +193,7 @@ ob_start();
         </p>
 
         <!-- Footer -->
-        <div class="menu-card-footer flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class=" flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="price-display font-baskerville text-deep-brown text-lg">
                 ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm text-deep-brown/60">per pax</span>
             </div>
