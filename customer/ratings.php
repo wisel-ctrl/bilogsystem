@@ -1,73 +1,3 @@
-<?php
-require_once '../db_connect.php';
-
-session_start(); // Start session to access customer_id if available
-
-// Initialize variables
-$booking_id = isset($_GET['booking_id']) ? (int)$_GET['booking_id'] : null;
-$customer_id = isset($_SESSION['customer_id']) ? (int)$_SESSION['customer_id'] : (isset($_GET['customer_id']) ? (int)$_GET['customer_id'] : null);
-$errors = [];
-$success = false;
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        // Validate required fields
-        $required_ratings = ['food', 'ambiance', 'service'];
-        $ratings = [];
-        
-        foreach ($required_ratings as $category) {
-            if (!isset($_POST["{$category}_rating"]) || (int)$_POST["{$category}_rating"] === 0) {
-                $errors[] = "Please provide a rating for $category.";
-            } else {
-                $ratings[$category] = [
-                    'rating' => (int)$_POST["{$category}_rating"],
-                    'comment' => trim($_POST["{$category}_comment"] ?? '')
-                ];
-                if (empty($ratings[$category]['comment'])) {
-                    $errors[] = "Please provide a comment for $category.";
-                }
-            }
-        }
-        
-        // Optional reservation rating
-        if (isset($_POST['reservation_rating']) && (int)$_POST['reservation_rating'] > 0) {
-            $ratings['reservation'] = [
-                'rating' => (int)$_POST['reservation_rating'],
-                'comment' => trim($_POST['reservation_comment'] ?? '')
-            ];
-        }
-        
-        // If no errors, insert ratings into database
-        if (empty($errors)) {
-            $conn->beginTransaction();
-            $stmt = $conn->prepare("
-                INSERT INTO rating_tb (booking_id, rating_value, submitted_via, customer_id, review_text)
-                VALUES (:booking_id, :rating_value, :submitted_via, :customer_id, :review_text)
-            ");
-            
-            $submitted_via = $booking_id ? 'booking' : 'walkin';
-            
-            foreach ($ratings as $category => $data) {
-                $stmt->execute([
-                    'booking_id' => $booking_id ?: null,
-                    'rating_value' => $data['rating'],
-                    'submitted_via' => $submitted_via,
-                    'customer_id' => $customer_id ?: null,
-                    'review_text' => $data['comment'] ?: null
-                ]);
-            }
-            
-            $conn->commit();
-            $success = true;
-        }
-    } catch (PDOException $e) {
-        $conn->rollBack();
-        $errors[] = "Database error: " . $e->getMessage();
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,37 +24,174 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 42, 10, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000; /* Increased to ensure visibility */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #F5F0E8;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(74, 42, 10, 0.25);
+            border: 1px solid rgba(122, 59, 10, 0.1);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            color: #9B5C2F;
+            margin-bottom: 1.5rem;
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        body {
+            background: linear-gradient(135deg, #F5F0E8, #E8E0D5);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(74, 42, 10, 0.15);
+        }
+
+        .bg-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+        }
+
+        .star-rating .fa-star {
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .star-rating .fa-star:hover,
+        .star-rating .fa-star.active {
+            color: #FBBF24 !important;
+            transform: scale(1.2);
+        }
+
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            background: #7A3B0A;
+            color: #F5F0E8;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #9B5C2F;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(245, 240, 232, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:active::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F0E8;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #7A3B0A;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4A2A0A;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-warm-cream to-[rgb(232,224,213)] min-h-screen flex flex-col items-center justify-center p-4 text-deep-brown">
+<body class="text-deep-brown">
     <main class="w-full max-w-lg mx-auto px-4 py-6">
-        <?php if (!empty($errors)): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-6">
-                <?php foreach ($errors as $error): ?>
-                    <p><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <section class="bg-white/95 backdrop-blur-lg rounded-xl p-6 shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
+        <section class="bg-card rounded-xl p-6 shadow-md hover-lift">
             <div class="text-center mb-6">
                 <h2 class="font-playfair text-3xl font-bold text-deep-brown">Rate Your Visit</h2>
                 <p class="font-baskerville text-base text-deep-brown/80 mt-2">Your feedback helps us make every moment at Caffè Lilio unforgettable!</p>
             </div>
-            <form id="ratingForm" method="POST" class="space-y-6">
+            <form id="ratingForm" class="space-y-6">
                 <div class="space-y-6">
                     <!-- Food Quality Rating -->
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Food Quality <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
                             <input type="hidden" name="food_rating" id="food_rating" value="0" required>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="food"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="food"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="food"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="food"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="food"></i>
                         </div>
                         <div id="food-error" class="text-red-500 text-sm hidden text-center">Please rate the food quality</div>
-                        <textarea name="food_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
+                        <textarea name="food_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
                                   placeholder="What did you think of the food?" rows="3" required></textarea>
                         <div id="food-comment-error" class="text-red-500 text-sm hidden text-center">Please share your thoughts about the food</div>
                     </div>
@@ -134,14 +201,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Ambiance <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
                             <input type="hidden" name="ambiance_rating" id="ambiance_rating" value="0" required>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="ambiance"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="ambiance"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="ambiance"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="ambiance"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="ambiance"></i>
                         </div>
                         <div id="ambiance-error" class="text-red-500 text-sm hidden text-center">Please rate the ambiance</div>
-                        <textarea name="ambiance_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
+                        <textarea name="ambiance_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
                                   placeholder="How was the atmosphere?" rows="3" required></textarea>
                         <div id="ambiance-comment-error" class="text-red-500 text-sm hidden text-center">Please share your thoughts about the ambiance</div>
                     </div>
@@ -151,13 +218,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Reservation Experience</h4>
                         <div class="star-rating flex justify-center space-x-3">
                             <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="reservation"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="reservation"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="reservation"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="reservation"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="reservation"></i>
                         </div>
-                        <textarea name="reservation_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
+                        <textarea name="reservation_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
                                   placeholder="How was your reservation process?" rows="3"></textarea>
                     </div>
 
@@ -166,33 +233,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Service <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
                             <input type="hidden" name="service_rating" id="service_rating" value="0" required>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="1" data-category="service"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="2" data-category="service"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="3" data-category="service"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="4" data-category="service"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 cursor-pointer transition-all hover:scale-125 hover:text-yellow-500" data-rating="5" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="service"></i>
                         </div>
                         <div id="service-error" class="text-red-500 text-sm hidden text-center">Please rate the service</div>
-                        <textarea name="service_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all resize-none"
+                        <textarea name="service_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
                                   placeholder="How was the service?" rows="3" required></textarea>
                         <div id="service-comment-error" class="text-red-500 text-sm hidden text-center">Please share your thoughts about the service</div>
                     </div>
                 </div>
 
                 <div class="flex justify-center mt-8">
-                    <button type="submit" class="relative overflow-hidden bg-rich-brown text-warm-cream px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center space-x-2 group">
+                    <button type="submit" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center space-x-2 group">
                         <span>Submit Feedback</span>
                         <i class="fas fa-check transition-transform group-hover:scale-110"></i>
-                        <span class="absolute inset-0 bg-warm-cream/20 rounded-full scale-0 group-active:scale-[2] transition-transform duration-600 origin-center"></span>
                     </button>
                 </div>
             </form>
         </section>
 
         <!-- Enhanced Thank You Modal -->
-        <div class="fixed inset-0 bg-deep-brown/40 backdrop-blur-sm hidden items-center justify-center z-[1000] <?php echo $success ? '' : 'hidden'; ?>" id="successModal">
-            <div class="bg-warm-cream rounded-2xl p-10 max-w-[90%] w-[450px] text-center shadow-2xl border border-rich-brown/10 opacity-0 -translate-y-5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
-                <div class="text-6xl text-accent-brown mb-6 animate-[bounce_0.6s_ease]">
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="modal-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <h3 class="font-playfair text-3xl font-bold text-deep-brown mb-3">Thank You!</h3>
@@ -203,10 +269,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="font-baskerville italic text-accent-brown mb-8">
                     We hope to welcome you back to Caffè Lilio soon!
                 </p>
-                <button id="closeModal" class="relative overflow-hidden bg-rich-brown text-warm-cream px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
+                <button id="closeModal" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
                     <span>Close</span>
                     <i class="fas fa-times transition-transform group-hover:scale-110"></i>
-                    <span class="absolute inset-0 bg-warm-cream/20 rounded-full scale-0 group-active:scale-[2] transition-transform duration-600 origin-center"></span>
                 </button>
             </div>
         </div>
@@ -223,9 +288,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     const starsInCategory = document.querySelectorAll(`.star[data-category="${category}"]`);
                     
                     starsInCategory.forEach((s, index) => {
-                        s.classList.toggle('text-yellow-500', index < rating);
-                        s.classList.toggle('text-deep-brown/30', index >= rating);
-                        s.classList.toggle('scale-125', index < rating);
+                        if (index < rating) {
+                            s.classList.remove('text-deep-brown/30');
+                            s.classList.add('text-yellow-500');
+                        } else {
+                            s.classList.remove('text-yellow-500');
+                            s.classList.add('text-deep-brown/30');
+                        }
                     });
                     
                     document.getElementById(`${category}_rating`).value = rating;
@@ -239,22 +308,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const closeModalButton = document.getElementById('closeModal');
             
             function showModal() {
-                modal.classList.remove('hidden');
-                modal.querySelector('.opacity-0').classList.remove('opacity-0', '-translate-y-5');
+                console.log('Showing modal'); // Debug log
+                modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
                 document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
             }
             
             function hideModal() {
-                modal.classList.add('hidden');
-                modal.querySelector('.transition-all').classList.add('opacity-0', '-translate-y-5');
+                console.log('Hiding modal'); // Debug log
+                modal.classList.remove('show');
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
                 
                 // Reset form and stars
                 document.getElementById('ratingForm').reset();
                 document.querySelectorAll('.star').forEach(star => {
-                    star.classList.remove('text-yellow-500', 'scale-125');
+                    star.classList.remove('text-yellow-500');
                     star.classList.add('text-deep-brown/30');
                 });
             }
@@ -270,11 +339,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Form validation
             const form = document.getElementById('ratingForm');
             form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submitted'); // Debug log
                 let isValid = true;
                 
                 const requiredRatings = ['food', 'ambiance', 'service'];
                 requiredRatings.forEach(category => {
                     const rating = document.getElementById(`${category}_rating`).value;
+                    console.log(`${category}_rating: ${rating}`); // Debug log
                     if (rating === '0') {
                         document.getElementById(`${category}-error`).classList.remove('hidden');
                         isValid = false;
@@ -286,6 +358,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const requiredComments = ['food_comment', 'ambiance_comment', 'service_comment'];
                 requiredComments.forEach(name => {
                     const comment = form.elements[name].value.trim();
+                    console.log(`${name}: ${comment}`); // Debug log
                     if (comment === '') {
                         document.getElementById(`${name}-error`).classList.remove('hidden');
                         isValid = false;
@@ -294,23 +367,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 });
                 
-                if (!isValid) {
-                    e.preventDefault();
+                if (isValid) {
+                    console.log('Form is valid, showing modal'); // Debug log
+                    showModal();
+                } else {
+                    console.log('Form validation failed'); // Debug log
                 }
-                // Server-side validation will handle showing the modal
             });
 
             // Close modal when pressing Escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
                     hideModal();
                 }
             });
-
-            // Show modal if submission was successful
-            <?php if ($success): ?>
-                showModal();
-            <?php endif; ?>
         });
     </script>
 </body>
