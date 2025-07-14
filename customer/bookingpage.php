@@ -173,43 +173,37 @@ ob_start();
                             
                             data.data.forEach(package => {
                                 const menuItem = document.createElement('div');
-                                menuItem.className = 'bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
+                                menuItem.className = 'menu-card bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
                                 menuItem.innerHTML = `
-                                  <!-- Package Badge -->
-    <div class="package-badge bg-rich-brown text-warm-cream px-3 py-1 text-xs font-semibold inline-block rounded-br-xl">
-        ${package.type || 'Package'}
-    </div>
+                                    <div class="package-badge">
+                                        ${package.type || 'Package'}
+                                    </div>
+                                    <div class="menu-card-content p-6">
+                                        <h4 class="font-playfair text-xl font-bold mb-3 text-deep-brown pr-20">
+                                            ${package.package_name || 'Menu Item'}
+                                        </h4>
+                                        <p class="font-baskerville text-deep-brown/80 menu-card-description mb-4">
+                                            ${package.package_description || 'Delicious menu item description.'}
+                                        </p>
+                                        <div class="menu-card-footer">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <span class="price-display font-baskerville">
+                                                    ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm">per pax</span>
+                                                </span>
+                                                <div class="text-sm text-deep-brown/60 font-baskerville">
+                                                    <i class="fas fa-clock mr-1"></i>
+                                                    Available
+                                                </div>
+                                            </div>
+                                            <button class="reserve-btn bg-rich-brown text-warm-cream px-5 py-2.5 rounded-full font-baskerville text-base font-semibold flex items-center gap-2 hover:bg-deep-brown shadow-md hover:shadow-lg transition-all duration-300 group"
+                                                    onclick="showPackageDetails(${package.package_id})"
+                                                    aria-label="Reserve ${package.package_name}">
+                                                <span>Reserve Now</span>
+                                                <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+                                            </button>
 
-    <!-- Content -->
-    <div class="p-6">
-        <!-- Title -->
-        <h4 class="font-playfair text-2xl font-bold text-deep-brown mb-2">
-            ${package.package_name || 'Menu Item'}
-        </h4>
-
-        <!-- Description -->
-        <p class="font-baskerville text-deep-brown/80 text-sm mb-5 leading-relaxed">
-            ${package.package_description || 'Delicious menu item description.'}
-        </p>
-
-        <!-- Footer -->
-        <div class=" flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="price-display font-baskerville text-deep-brown text-lg">
-                ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm text-deep-brown/60">per pax</span>
-            </div>
-            <div class="flex items-center text-sm text-deep-brown/60 font-baskerville">
-                <i class="fas fa-clock mr-2"></i>Available
-            </div>
-        </div>
-
-        <!-- Button -->
-        <div class="mt-6">
-            <button class="reserve-btn bg-rich-brown text-warm-cream px-5 py-2.5 rounded-full font-baskerville text-base font-semibold flex items-center gap-2 hover:bg-deep-brown shadow-md hover:shadow-lg transition-all duration-300 group w-full justify-center">
-                <span>Reserve Now</span>
-                <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
-            </button>
-        </div>
-    </div>
+                                        </div>
+                                    </div>
                                 `;
                                 menuContainer.appendChild(menuItem);
                             });
@@ -1088,7 +1082,11 @@ ob_start();
                             display: none !important;
                         }
                         
-                   
+                        .menu-card {
+                            break-inside: avoid;
+                            margin-bottom: 1rem;
+                        }
+                        
                         .hover-lift:hover {
                             transform: none;
                             box-shadow: none;
