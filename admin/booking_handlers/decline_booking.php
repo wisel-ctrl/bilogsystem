@@ -162,15 +162,20 @@ function createNotification($conn, $user_id, $booking_id, $status, $reason = nul
         $reasonText = $reason ? " Reason: $reason" : "";
         $message = "Your booking #$booking_id for $reservationDate has been declined.$reasonText";
     }
+    
+    // Get current datetime in Philippine time
+    $philippineTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $createdAt = $philippineTime->format('Y-m-d H:i:s');
 
-    // Insert notification
+    // Insert notification with explicit Philippine time
     $stmt = $conn->prepare("
-        INSERT INTO notifications_tb (user_id, booking_id, message)
-        VALUES (:user_id, :booking_id, :message)
+        INSERT INTO notifications_tb (user_id, booking_id, message, created_at)
+        VALUES (:user_id, :booking_id, :message, :created_at)
     ");
     $stmt->bindParam(':user_id', $customer_id, PDO::PARAM_INT);
     $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
     $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+    $stmt->bindParam(':created_at', $createdAt, PDO::PARAM_STR);
     
     return $stmt->execute();
 }
