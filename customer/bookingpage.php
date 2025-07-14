@@ -792,32 +792,40 @@ ob_start();
             window.submitReservation = submitReservation;
 
             function showModal(title, content) {
-                const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fadeIn';
-                modal.innerHTML = `
-                    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
-                        <div class="p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-2xl font-bold text-rich-brown">${title}</h2>
-                                <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
-                                    <i class="fas fa-times text-xl"></i>
-                                </button>
-                            </div>
-                            ${content}
-                        </div>
-                    </div>
-                `;
-                
-                document.body.appendChild(modal);
-                document.body.style.overflow = 'hidden';
-                
-                // Close modal when clicking outside
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeModal();
-                    }
-                });
-            }
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 p-4 sm:p-6 transition-opacity duration-300 ease-out';
+    modal.innerHTML = `
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-xl w-full max-h-[85vh] overflow-y-auto transform transition-all duration-300 ease-out scale-95 sm:scale-100">
+            <div class="p-6 sm:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 tracking-tight">${title}</h2>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-full p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-gray-700 leading-relaxed">${content}</div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Smoothly animate modal entrance
+    setTimeout(() => {
+        modal.querySelector('div').classList.remove('scale-95');
+        modal.classList.add('opacity-100');
+    }, 50);
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
 
             function closeModal() {
                 const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
