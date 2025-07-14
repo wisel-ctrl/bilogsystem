@@ -195,12 +195,13 @@ ob_start();
                                                     Available
                                                 </div>
                                             </div>
-                                            <button class="reserve-btn btn-primary bg-rich-brown text-warm-cream rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 group"
-                                                    onclick="showPackageDetails(${package.package_id})"
-                                                    aria-label="Reserve ${package.package_name}">
-                                                <span>Reserve Now</span>
-                                                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                                            </button>
+                                    <button class="reserve-btn bg-rich-brown text-warm-cream px-5 py-2.5 rounded-full font-baskerville text-base font-semibold flex items-center gap-2 hover:bg-deep-brown shadow-md hover:shadow-lg transition-all duration-300 group"
+                                            onclick="showPackageDetails(${package.package_id})"
+                                            aria-label="Reserve ${package.package_name}">
+                                        <span>Reserve Now</span>
+                                        <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+                                    </button>
+
                                         </div>
                                     </div>
                                 `;
