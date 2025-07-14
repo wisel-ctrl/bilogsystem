@@ -27,7 +27,7 @@ ob_start();
                 </button>
             </div>
             
-            <div class="bg-card rounded-xl p-4 sm:p-6 shadow-md">
+            <div class="rounded-xl p-4 sm:p-6 shadow-md">
                 <!-- Loading State -->
                 <div id="menu-loading" class="menu-grid">
                     <div class="loading-card skeleton">
