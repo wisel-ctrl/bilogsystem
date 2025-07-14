@@ -18,20 +18,17 @@ try {
             mpd.dish_id,
             mpd.quantity,
             d.dish_name,
-            d.dish_category,
-            CASE WHEN bs.status = 'show' THEN 1 ELSE 0 END AS is_best_seller
+            d.dish_category
         FROM 
             menu_packages_tb AS mp
         JOIN 
             menu_package_dishes_tb AS mpd ON mp.package_id = mpd.package_id
         JOIN 
             dishes_tb AS d ON mpd.dish_id = d.dish_id
-        LEFT JOIN 
-            best_seller_tb AS bs ON d.dish_id = bs.dish_id AND bs.status = 'show' AND bs.deleted_at IS NULL
         WHERE 
             mp.package_id = ?
         ORDER BY 
-            FIELD(d.dish_category, 'house_salad', 'spanish_dish', 'italian_dish', 'burgers_pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'),
+            FIELD(d.dish_category, 'best_seller', 'house_salad', 'spanish_dish', 'italian_dish', 'burgers_pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'),
             d.dish_name
     ");
     
