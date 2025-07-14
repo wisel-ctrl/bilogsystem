@@ -1088,11 +1088,7 @@ ob_start();
                             display: none !important;
                         }
                         
-                        .menu-card {
-                            break-inside: avoid;
-                            
-                        }
-                        
+                   
                         .hover-lift:hover {
                             transform: none;
                             box-shadow: none;
