@@ -799,9 +799,9 @@ ob_start();
                         <div class="p-6">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-2xl font-bold text-rich-brown">${title}</h2>
-                                <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
-                                    <i class="fas fa-times text-xl"></i>
-                                </button>
+                                // <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
+                                //     <i class="fas fa-times text-xl"></i>
+                                // </button>
                             </div>
                             ${content}
                         </div>
