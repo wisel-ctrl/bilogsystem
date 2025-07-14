@@ -233,7 +233,7 @@ ob_start();
                             
                             // Group dishes by category in the order we want
                             // const categoriesOrder = ['house-salad', 'spanish-dish', 'italian-dish', 'burgers', 'pizza', 'Pasta', 'pasta_caza', 'main-course', 'drinks', 'coffee', 'desserts'];
-                            const categoriesOrder = ['house_salad', 'spanish_dish', 'italian_dish', 'burgers', 'pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'];
+                            const categoriesOrder = ['house_salad', 'spanish_dish', 'italian_dish', 'burgers_pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'];
                             const dishesByCategory = {};
                             
                             // Initialize categories
