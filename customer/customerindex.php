@@ -17,61 +17,6 @@ try {
     die("Error fetching user data: " . $e->getMessage());
 }
 
-try {
-    $stmt = $conn->prepare("
-        SELECT 
-            n.notification_id,
-            n.message,
-            n.is_read,
-            COALESCE(
-                CASE 
-                    WHEN b.booking_status IN ('accepted', 'declined') THEN b.acceptdecline_datetime
-                    ELSE n.created_at
-                END
-            ) as display_datetime,
-            TIMESTAMPDIFF(SECOND, 
-                COALESCE(
-                    CASE 
-                        WHEN b.booking_status IN ('accepted', 'declined') THEN b.acceptdecline_datetime
-                        ELSE n.created_at
-                    END
-                ), NOW()) as seconds_ago
-        FROM notifications_tb n
-        LEFT JOIN booking_tb b ON n.booking_id = b.booking_id
-        WHERE n.user_id = :user_id
-        ORDER BY display_datetime DESC
-        LIMIT 3
-    ");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Format the time ago and date
-    foreach ($notifications as &$notification) {
-        $seconds = $notification['seconds_ago'];
-        if ($seconds < 60) {
-            $notification['time_ago'] = 'Just now';
-        } elseif ($seconds < 3600) {
-            $minutes = floor($seconds / 60);
-            $notification['time_ago'] = $minutes . ' min' . ($minutes > 1 ? 's' : '') . ' ago';
-        } elseif ($seconds < 86400) {
-            $hours = floor($seconds / 3600);
-            $notification['time_ago'] = $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
-        } else {
-            $days = floor($seconds / 86400);
-            $notification['time_ago'] = $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
-        }
-        // Format the exact date and time
-        $display_datetime = new DateTime($notification['display_datetime']);
-        $notification['formatted_date'] = $display_datetime->format('F j, Y, g:i A');
-    }
-} catch (PDOException $e) {
-    $notifications = [];
-    error_log("Error fetching notifications: " . $e->getMessage());
-}
-
-
-
 // Set page title
 $page_title = "Customer Dashboard - Caffè Lilio";
 
@@ -101,7 +46,6 @@ ob_start();
         }
 
         .bg-card {
-            /* background: linear-gradient(145deg, #E8E0D5, #d6c7b6); */
             background: white;
             backdrop-filter: blur(8px);
         }
@@ -172,32 +116,6 @@ ob_start();
             opacity: 1;
         }
 
-        /* Button animations */
-        /* .btn-primary {
-            position: relative;
-            overflow: hidden;
-            background: #8B4513;
-            color: #E8E0D5;
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(232, 224, 213, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-primary:active::after {
-            width: 200%;
-            height: 200%;
-        } */
-
         /* Improved mobile menu */
         .mobile-menu {
             transform: translateX(-100%);
@@ -267,7 +185,7 @@ ob_start();
         <a href="contact.php" class="btn-primary bg-warm-cream text-deep-brown px-6 py-3 rounded-lg font-baskerville hover:bg-warm-cream/50 transition-all duration-300 w-full flex items-center justify-center space-x-2">
             <span>Get Help</span>
             <i class="fas fa-headset ml-2"></i>
-    </a>
+        </a>
     </div>
 </section>
 
@@ -436,31 +354,52 @@ ob_start();
     
     <div class="bg-white/90 rounded-xl p-6 shadow-lg">
         <div class="space-y-4">
-            <?php if (count($notifications) > 0): ?>
-                <?php foreach ($notifications as $index => $notification): ?>
-                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-deep-brown/5 transition-colors duration-300 <?php echo $notification['is_read'] ? '' : 'bg-warm-cream/50'; ?>">
-                        <div class="bg-deep-brown/10 rounded-full p-3 flex-shrink-0">
-                            <i class="fas fa-bell text-deep-brown text-lg"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <div class="flex items-center justify-between">
-                                <p class="font-baskerville font-bold text-deep-brown"><?php echo htmlspecialchars($notification['message']); ?></p>
-                                <div class="text-sm text-deep-brown/60 text-right">
-                                    <div><?php echo htmlspecialchars($notification['formatted_date']); ?></div>
-                                </div>
+            <?php
+            // Fetch recent notifications from database
+            try {
+                $stmt = $conn->prepare("SELECT message, created_at 
+                                      FROM notifications_tb 
+                                      WHERE user_id = :user_id 
+                                      ORDER BY created_at DESC 
+                                      LIMIT 3");
+                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $stmt->execute();
+                $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($notifications) > 0) {
+                    foreach ($notifications as $notification) {
+                        $created_at = new DateTime($notification['created_at']);
+                        $formatted_time = $created_at->format('M j, g:i A');
+                        ?>
+                        <div class="flex items-start p-4 border-b border-deep-brown/10 last:border-0">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-rich-brown/10 flex items-center justify-center text-rich-brown mr-4">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-baskerville text-deep-brown"><?php echo htmlspecialchars($notification['message']); ?></p>
+                                <p class="text-sm text-deep-brown/50 mt-1"><?php echo htmlspecialchars($formatted_time); ?></p>
                             </div>
                         </div>
+                        <?php
+                    }
+                } else {
+                    ?>
+                    <div class="p-4 text-center text-deep-brown/60 font-baskerville">
+                        No recent activity found.
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="p-4 text-center text-deep-brown/60 font-baskerville">
-                    No recent activity found.
+                    <?php
+                }
+            } catch(Exception $e) {
+                ?>
+                <div class="p-4 text-center text-red-500 font-baskerville">
+                    Error loading recent activity: <?php echo htmlspecialchars($e->getMessage()); ?>
                 </div>
-            <?php endif; ?>
+                <?php
+            }
+            ?>
         </div>
     </div>
 </section>
-
 
 <?php
 $content = ob_get_clean();
