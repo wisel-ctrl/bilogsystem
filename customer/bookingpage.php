@@ -1090,7 +1090,7 @@ ob_start();
                         
                         .menu-card {
                             break-inside: avoid;
-                            margin-bottom: 1rem;
+                            
                         }
                         
                         .hover-lift:hover {
