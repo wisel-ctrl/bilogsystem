@@ -259,9 +259,7 @@ ob_start();
                                                 <span class="font-semibold">$${package.price}</span>
                                             </div>
                                         </div>
-                                        <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
-                                            <i class="fas fa-times text-xl"></i>
-                                        </button>
+                                      
                                     </div>
                                     
                                     <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6">
@@ -799,9 +797,9 @@ ob_start();
                         <div class="p-6">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-2xl font-bold text-rich-brown">${title}</h2>
-                                // <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
-                                //     <i class="fas fa-times text-xl"></i>
-                                // </button>
+                                <button onclick="closeModal()" class="text-gray-500 hover:text-rich-brown transition">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
                             </div>
                             ${content}
                         </div>
