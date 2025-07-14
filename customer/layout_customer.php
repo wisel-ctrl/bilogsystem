@@ -795,45 +795,6 @@ require_once '../db_connect.php';
                 }, 3000);
             }
 
-            document.querySelectorAll('.fa-trash').forEach(button => {
-                button.addEventListener('click', function() {
-                    const confirmDialog = document.createElement('div');
-                    confirmDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-                    confirmDialog.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
-                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Cancel Reservation?</h3>
-                            <p class="text-deep-brown/80 mb-6">Are you sure you want to cancel this reservation? This action cannot be undone.</p>
-                            <div class="flex justify-end space-x-4">
-                                <button class="px-4 py-2 rounded-lg text-deep-brown hover:bg-deep-brown/10 transition-colors duration-300" id="cancel-dialog">
-                                    Keep Reservation
-                                </button>
-                                <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors duration-300" id="confirm-cancel">
-                                    Yes, Cancel
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(confirmDialog);
-                    document.body.classList.add('overflow-hidden');
-
-                    document.getElementById('cancel-dialog').addEventListener('click', () => {
-                        confirmDialog.remove();
-                        document.body.classList.remove('overflow-hidden');
-                    });
-
-                    document.getElementById('confirm-cancel').addEventListener('click', () => {
-                        NProgress.start();
-                        setTimeout(() => {
-                            confirmDialog.remove();
-                            document.body.classList.remove('overflow-hidden');
-                            showToast('Reservation cancelled successfully');
-                            NProgress.done();
-                        }, 1000);
-                    });
-                });
-            });
-
             document.querySelectorAll('.fa-edit').forEach(button => {
                 button.addEventListener('click', function() {
                     showToast('Opening reservation editor...', 'success');
