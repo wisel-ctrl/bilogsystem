@@ -173,7 +173,7 @@ ob_start();
                             
                             data.data.forEach(package => {
                                 const menuItem = document.createElement('div');
-                                menuItem.className = 'menu-card bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
+                                menuItem.className = 'bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
                                 menuItem.innerHTML = `
                                     <div class="package-badge">
                                         ${package.type || 'Package'}
