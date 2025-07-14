@@ -28,7 +28,7 @@ try {
         WHERE 
             mp.package_id = ?
         ORDER BY 
-            FIELD(d.dish_category, 'house-salad', 'spanish-dish', 'italian-dish', 'burgers', 'pizza', 'Pasta', 'pasta_caza', 'main-course', 'drinks', 'coffee', 'desserts'),
+            FIELD(d.dish_category, 'house_salad', 'spanish_dish', 'italian_dish', 'burgers_pizza', 'pasta', 'pasta_caza', 'main_course', 'drinks', 'coffee', 'desserts'),
             d.dish_name
     ");
     
