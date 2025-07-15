@@ -1,9 +1,6 @@
 <?php
-// Initialize database connection (update with your credentials)
-$servername = "localhost";
-$username = "your_username";
-$password = "your_password";
-$dbname = "your_database";
+require_once 'db_connect.php';
+
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
