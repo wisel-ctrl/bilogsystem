@@ -962,10 +962,10 @@
                     datasets: [{
                         label: 'Revenue',
                         data: [
-                            seasonData.Spring,
-                            seasonData.Summer,
-                            seasonData.Fall,
-                            seasonData.Winter
+                        seasonData.Spring || 0,
+                        seasonData.Summer || 0,
+                        seasonData.Fall || 0,
+                        seasonData.Winter || 0
                         ],
                         backgroundColor: [
                             '#8B4513',
