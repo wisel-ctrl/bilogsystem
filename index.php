@@ -24,7 +24,10 @@ try {
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Calculate average rating for each entry
+    // Debug: Log the number of rows returned
+    error_log("Fetched " . count($ratings) . " ratings from database");
+
+    // Calculate average rating and prepare display name
     foreach ($ratings as &$rating) {
         $valid_ratings = array_filter([
             $rating['food_rating'],
@@ -37,6 +40,8 @@ try {
         $rating['display_name'] = ($rating['user_id'] === 'anonymous' || empty($rating['first_name']) || empty($rating['last_name'])) 
             ? 'Anonymous' 
             : trim($rating['first_name'] . ' ' . $rating['last_name']);
+        // Debug: Log each rating's display name and user_id
+        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, display_name={$rating['display_name']}");
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
