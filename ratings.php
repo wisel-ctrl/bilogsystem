@@ -50,6 +50,78 @@ try {
     http_response_code(500);
     echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
+?><?php
+header('Content-Type: application/json');
+
+// Include database connection
+require_once 'db_connect.php';
+
+// Enable error reporting for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+try {
+    // Check if form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Log received POST data for debugging
+        file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);
+
+        // Sanitize and validate input
+        $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
+        $ambiance_rating = filter_input(INPUT_POST, 'ambiance_rating', FILTER_VALIDATE_INT);
+        $reservation_rating = filter_input(INPUT_POST, 'reservation_rating', FILTER_VALIDATE_INT) ?: 0;
+        $service_rating = filter_input(INPUT_POST, 'service_rating', FILTER_VALIDATE_INT);
+        $general_comment = filter_input(INPUT_POST, 'general_comment', FILTER_SANITIZE_STRING);
+
+        // Validate required fields
+        $errors = [];
+        if ($food_rating === false || $food_rating < 1 || $food_rating > 5) {
+            $errors[] = 'Food rating must be between 1 and 5';
+        }
+        if ($ambiance_rating === false || $ambiance_rating < 1 || $ambiance_rating > 5) {
+            $errors[] = 'Ambiance rating must be between 1 and 5';
+        }
+        if ($service_rating === false || $service_rating < 1 || $service_rating > 5) {
+            $errors[] = 'Service rating must be between 1 and 5';
+        }
+        if (empty($general_comment)) {
+            $errors[] = 'Comment is required';
+        }
+
+        if (!empty($errors)) {
+            http_response_code(400);
+            echo json_encode(['error' => implode(', ', $errors)]);
+            exit;
+        }
+
+        // Prepare and execute SQL statement
+        $stmt = $conn->prepare("
+            INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
+            VALUES (:food, :ambiance, :reservation, :service, :comment)
+        ");
+
+        $stmt->execute([
+            ':food' => $food_rating,
+            ':ambiance' => $ambiance_rating,
+            ':reservation' => $reservation_rating,
+            ':service' => $service_rating,
+            ':comment' => $general_comment
+        ]);
+
+        // Return success response
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
+    }
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Unexpected error: ' . $e->getMessage()]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
