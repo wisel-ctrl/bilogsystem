@@ -2,43 +2,9 @@
 // Include database connection
 require_once 'db_connect.php';
 
-// Initialize ratings array
-$ratings = [];
-
-// Debug: Test database connection
-try {
-    $conn->query("SELECT 1");
-    echo "<!-- Debug: Database connection successful -->\n";
-} catch (PDOException $e) {
-    error_log("Connection test failed: " . $e->getMessage());
-    echo "<!-- Debug: Connection test failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
-    die("Database connection failed. Please check db_connect.php.");
-}
-
-// Debug: Check if tables exist
-try {
-    $tables = $conn->query("SHOW TABLES LIKE 'ratings'")->fetchAll(PDO::FETCH_COLUMN);
-    echo "<!-- Debug: Ratings table exists: " . (count($tables) > 0 ? 'Yes' : 'No') . " -->\n";
-    $tables = $conn->query("SHOW TABLES LIKE 'user_tb'")->fetchAll(PDO::FETCH_COLUMN);
-    echo "<!-- Debug: user_tb table exists: " . (count($tables) > 0 ? 'Yes' : 'No') . " -->\n";
-} catch (PDOException $e) {
-    error_log("Table check failed: " . $e->getMessage());
-    echo "<!-- Debug: Table check failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
-}
-
-// Debug: Check if ratings table has data
-try {
-    $countStmt = $conn->query("SELECT COUNT(*) FROM ratings");
-    $ratingCount = $countStmt->fetchColumn();
-    echo "<!-- Debug: Number of rows in ratings table: $ratingCount -->\n";
-} catch (PDOException $e) {
-    error_log("Ratings count query failed: " . $e->getMessage());
-    echo "<!-- Debug: Ratings count query failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
-}
-
 // Fetch ratings with user details
 try {
-    $query = "
+    $stmt = $conn->prepare("
         SELECT 
             r.id,
             r.food_rating,
@@ -55,31 +21,12 @@ try {
                 COALESCE(u.suffix, '')
             ) AS user_name
         FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = CAST(u.id AS CHAR)
+        LEFT JOIN user_tb u ON r.user_id = u.id
         ORDER BY r.created_at DESC
         LIMIT 10
-    ";
-    $stmt = $conn->prepare($query);
+    ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Debug: Log query and results
-    error_log("Ratings query: $query");
-    error_log("Number of ratings fetched: " . count($ratings));
-    echo "<!-- Debug: Ratings query: $query -->\n";
-    echo "<!-- Debug: Number of ratings fetched: " . count($ratings) . " -->\n";
-    echo "<!-- Debug: Raw ratings data: " . print_r($ratings, true) . " -->\n";
-
-    // Debug: Check user_id values
-    try {
-        $userIds = $conn->query("SELECT DISTINCT user_id FROM ratings")->fetchAll(PDO::FETCH_COLUMN);
-        echo "<!-- Debug: Unique user_id values in ratings: " . implode(', ', $userIds) . " -->\n";
-        $userTbIds = $conn->query("SELECT id FROM user_tb")->fetchAll(PDO::FETCH_COLUMN);
-        echo "<!-- Debug: user_tb.id values: " . implode(', ', $userTbIds) . " -->\n";
-    } catch (PDOException $e) {
-        error_log("User ID check failed: " . $e->getMessage());
-        echo "<!-- Debug: User ID check failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
-    }
 
     // Calculate average rating for each entry
     foreach ($ratings as &$rating) {
@@ -94,7 +41,6 @@ try {
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
-    echo "<!-- Debug: Error fetching ratings: " . htmlspecialchars($e->getMessage()) . " -->\n";
     $ratings = [];
 }
 ?>
@@ -522,8 +468,8 @@ try {
         </div>
     </section>
 
-    <!-- Feedback Section -->
-    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+<!-- Feedback Section -->
+<section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
@@ -533,46 +479,68 @@ try {
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php if (empty($ratings)): ?>
-                    <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
-                <?php else: ?>
-                    <?php foreach ($ratings as $rating): ?>
-                        <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                            <div class="flex items-center mb-4">
-                                <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['user_name']); ?></h3>
-                            </div>
-                            <div class="flex items-center mb-3">
-                                <div class="flex space-x-1">
-                                    <?php
-                                    $avg = $rating['average_rating'];
-                                    $full_stars = floor($avg);
-                                    $has_half_star = ($avg - $full_stars) >= 0.5;
-                                    for ($i = 1; $i <= 5; $i++):
-                                        if ($i <= $full_stars): ?>
-                                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                                        <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
-                                            <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
-                                        <?php else: ?>
-                                            <i class="far fa-star text-deep-brown/30 text-lg"></i>
-                                        <?php endif; ?>
-                                    <?php endfor; ?>
-                                </div>
-                                <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avg, 1); ?> stars</span>
-                            </div>
-                            <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
-                            <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo date('F j, Y', strtotime($rating['created_at'])); ?></p>
+                <!-- Sample Feedback 1 -->
+                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">John Doe</h3>
+                    </div>
+                    <div class="flex items-center mb-3">
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                        <span class="ml-2 font-baskerville text-deep-brown">4.5 stars</span>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">The coffee here is absolutely divine! The ambiance is cozy, and the staff are incredibly friendly.</p>
+                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 10, 2024</p>
+                </div>
+                <!-- Sample Feedback 2 -->
+                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">Jane Smith</h3>
+                    </div>
+                    <div class="flex items-center mb-3">
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="far fa-star text-deep-brown/30 text-lg"></i>
+                        </div>
+                        <span class="ml-2 font-baskerville text-deep-brown">4.0 stars</span>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Loved the pastries and the latte art! Would love to see more vegan options on the menu.</p>
+                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 5, 2024</p>
+                </div>
+                <!-- Sample Feedback 3 -->
+                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">Alex Brown</h3>
+                    </div>
+                    <div class="flex items-center mb-3">
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                        </div>
+                        <span class="ml-2 font-baskerville text-deep-brown">5.0 stars</span>
+                    </div>
+                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Best café in town! The cappuccino is perfection, and the service is top-notch.</p>
+                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">September 28, 2024</p>
+                </div>
             </div>
             <div class="text-center mt-10">
-                <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
                     Share Your Feedback
                 </a>
             </div>
         </div>
     </section>
-
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
