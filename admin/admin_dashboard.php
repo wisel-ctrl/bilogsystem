@@ -995,7 +995,7 @@
                     scales: {
                         y: {
                             beginAtZero: false,
-                            min: 150000,
+                            min: 0,
                             grid: {
                                 color: 'rgba(232, 224, 213, 0.3)',
                                 drawBorder: false
