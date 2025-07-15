@@ -22,14 +22,14 @@ try {
             u.first_name,
             u.last_name
         FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = u.username
+        LEFT JOIN users_tb u ON r.user_id = u.username
         ORDER BY r.created_at DESC
         LIMIT 3
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Debug: Log the number of rows and raw data
+    // Debug: Log query results
     error_log("Fetched " . count($ratings) . " ratings from database");
     error_log("Ratings data: " . print_r($ratings, true));
 
@@ -51,6 +51,8 @@ try {
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
     $ratings = [];
+    // Debug: Display error on page for testing
+    echo "Error fetching ratings: " . htmlspecialchars($e->getMessage());
 }
 ?>
 <!DOCTYPE html>
