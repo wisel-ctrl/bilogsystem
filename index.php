@@ -21,12 +21,17 @@ try {
                 COALESCE(u.suffix, '')
             ) AS user_name
         FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = u.id
+        LEFT JOIN user_tb u ON r.user_id = CAST(u.id AS CHAR)
         ORDER BY r.created_at DESC
         LIMIT 10
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Debugging: Log number of rows and raw data
+    error_log("Number of ratings fetched: " . count($ratings));
+    echo "<!-- Debug: Number of ratings fetched: " . count($ratings) . " -->\n";
+    echo "<!-- Debug: Raw ratings data: " . print_r($ratings, true) . " -->\n";
 
     // Calculate average rating for each entry
     foreach ($ratings as &$rating) {
@@ -41,6 +46,7 @@ try {
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
+    echo "<!-- Debug: Error fetching ratings: " . htmlspecialchars($e->getMessage()) . " -->\n";
     $ratings = [];
 }
 ?>
@@ -137,7 +143,7 @@ try {
                     <div>
                         <h1 class="nav-title font-playfair font-bold text-xl text-warm-cream">Caffè Lilio</h1>
                         <p class="nav-subtitle text-xs text-warm-cream tracking-widest">RISTORANTE</p>
-                    </div>
+                    </ Phyllis>
                 </div>
                 
                 <!-- Desktop Menu -->
@@ -668,6 +674,268 @@ try {
             <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-800 opacity-50 hover:opacity-100 transition-opacity duration-300 package-indicator" data-index="7"></button>
         </div>
     </div>
+
+    <!-- JavaScript for Swipeable Carousel -->
+    <script>
+        const carousel = document.getElementById('packageCarousel');
+        const indicators = document.querySelectorAll('.package-indicator');
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+
+        function updateCarousel() {
+            const slideWidth = window.innerWidth < 640 ? 100 : window.innerWidth < 1024 ? 50 : 33.33;
+            carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('opacity-100', index === currentIndex);
+                indicator.classList.toggle('opacity-50', index !== currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = Math.max(0, Math.min(index, indicators.length - 1));
+            updateCarousel();
+        }
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diffX = startX - currentX;
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0 && currentIndex < indicators.length - 1) {
+                    currentIndex++;
+                } else if (diffX < 0 && currentIndex > 0) {
+                    currentIndex--;
+                }
+                updateCarousel();
+                isDragging = false;
+            }
+        });
+
+        carousel.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Initialize carousel
+        updateCarousel();
+    </script>
+</div>
+    <!-- What We Offer Section -->
+    <section id="services" class="py-20 bg-warm-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">What We Offer</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in">
+                    <div class="relative">
+                        <!-- Services Carousel Container -->
+                        <div class="overflow-hidden rounded-xl shadow-2xl">
+                            <div id="servicesCarousel" class="flex transition-transform duration-500 ease-in-out">
+                                <!-- Slide 1 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_2.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 2 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_1.jpg" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 3 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_3.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <!-- Slide 4 -->
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_4.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_5.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_6.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_7.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0">
+                                    <img src="images/Events_image_8.jpg"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carousel Indicators -->
+                        <div class="flex justify-center mt-4 space-x-2">
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="0"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="1"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="2"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="3"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="4"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="5"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="6"></button>
+                            <button class="w-3 h-3 rounded-full bg-rich-brown opacity-50 transition-opacity duration-300 services-indicator" data-index="7"></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="space-y-6 font-baskerville text-lg text-deep-brown leading-relaxed">
+                        <p>
+                            At Caffè Lilio, we believe that every occasion—big or small—deserves a memorable setting and flavorful experience. 
+                            That's why we offer a range of services designed to bring people together through food, ambiance, and thoughtful service.
+                        </p>
+                        <p>
+                            Whether you're planning an intimate family gathering, a corporate event, or a grand celebration, we're here to make it seamless. 
+                            Our team provides customizable event packages, catering services, and venue reservations tailored to your guest count and preferred setup.
+                        </p>
+                        <p>
+                            We have various venue options, each with a different ambiance and capacity, so you can choose the space that fits your celebration best. 
+                            From classic sit-down dinners to themed celebrations, we're ready to help you design a setting that reflects your taste.
+                        </p>
+                        <p>
+                            Our goal is to make hosting easier for you—whether that means delivering delicious food to your location or taking care of everything 
+                            from the table setup to the last toast of the night.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-brown text-warm-cream py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <!-- Logo and Tagline -->
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div>
+                        <h3 class="font-playfair font-bold text-xl sm:text-2xl">Caffè Lilio</h3>
+                        <p class="text-xs sm:text-sm tracking-widest opacity-75">RISTORANTE</p>
+                    </div>
+                </div>
+                
+                <!-- Social Media Links -->
+                <div class="flex justify-center space-x-6 sm:space-x-8 mb-8">
+                    <a href="https://web.facebook.com/caffelilio.ph" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/caffelilio.ph/" target="_blank" class="text-warm-cream hover:text-rich-brown transition-colors duration-300 focus:outline-none">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465.66.255 1.216.567 1.772 1.123.556.556.868 1.112 1.123 1.772.247.636.416 1.363.465 2.427.048 1.024.06 1.379.06 3.808 0 2.43-.013 2.784-.06 3.808-.049 1.064-.218 1.791-.465 2.427-.255.66-.567 1.216-1.123 1.772-.556.556-1.112.868-1.772 1.123-.636.247-1.363.416-2.427.465-1.024.048-1.379.06-3.808.06-2.43 0-2.784-.013-3.808-.06-1.064-.049-1.791-.218-2.427-.465-.66-.255-1.216-.567-1.772-1.123-.556-.556-.868-1.112-1.123-1.772-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.379-.06-3.808 0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427.255-.66.567-1.216 1.123-1.772.556-.556 1.112-.868 1.772-1.123.636-.247 1.363-.416 2.427-.465 1.024-.048 1.379-.06 3.808-.06zm0-1.315c-2.486 0-2.847.013-3.846.06-1.07.05-1.791.222-2.423.475-.662.262-1.223.582-1.785 1.144-.562.562-.882 1.123-1.144 1.785-.253.632-.425 1.353-.475 2.423-.047.999-.06 1.36-.06 3.846s.013 2.847.06 3.846c.05 1.07.222 1.791.475 2.423.262.662.582 1.223 1.144 1.785.562.562 1.123.882 1.785 1.144.632.253 1.353.425 2.423.475.999.047 1.36.06 3.846.06s2.847-.013 3.846-.06c1.07-.05 1.791-.222 2.423-.475.662-.262 1.223-.582 1.785-1.144.562-.562.882-1.123 1.144-1.785.253-.632.425-1.353.475-2.423.047-.999.06-1.36.06-3.846s-.013-2.847-.06-3.846c-.05-1.07-.222-1.791-.475-2.423-.262-.662-.582-1.223-1.144-1.785-.562-.562-1.123-.882-1.785-1.144-.632-.253-1.353-.425-2.423-.475-1.024-.047-1.379-.06-3.846-.06zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- Copyright and Tagline -->
+                <div class="border-t border-rich-brown pt-6 sm:pt-8">
+                    <p class="font-baskerville text-sm sm:text-base opacity-75">
+                        © 2025 Caffè Lilio Ristorante. All rights reserved. | 
+                        <span class="italic">Authentically Italian and Spanish since 2021</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for zoomed image -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
+        <div class="relative max-w-7xl mx-auto px-4 py-8 w-full h-full flex items-center justify-center">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain">
+        </div>
+    </div>
+    
+    
+    <!-- Add this inside your body tag, just before the closing </body> -->
+    <div class="fixed bottom-6 right-6 z-50 flex items-end space-x-4">
+        <!-- Chat Window -->
+        <div id="supportWindow" class="support-widget bg-warm-cream rounded-lg overflow-hidden hidden closed flex flex-col" style="height: 500px; width: 320px;">
+            <!-- Header -->
+            <div class="bg-deep-brown text-warm-cream p-4 flex justify-between items-center">
+                <h3 class="font-playfair font-bold">Caffè Lilio Support</h3>
+                <button id="closeSupport" class="text-warm-cream hover:text-rich-brown transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Chat Content -->
+            <div id="chatContent" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Initial welcome message -->
+                <div class="chat-message bot-message bg-deep-brown/10 text-deep-brown p-3 rounded-lg">
+                    <p>Welcome to Caffè Lilio Support! 👋 Please select a category below or type your question in the input field.</p>
+                    <div class="mt-2 grid grid-cols-1 gap-2">
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="location">📍 Location & Hours</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="reservations">📅 Reservations & Events</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="menu">🍽️ Menu & Dietary</button>
+                        <button class="category-btn bg-deep-brown/20 hover:bg-deep-brown/30 p-2 rounded" data-category="contact">📞 Contact Us</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="p-3 border-t border-deep-brown/20" id="inputArea">
+                <input type="text" id="userInput" placeholder="Type your question..." class="w-full p-2 border border-deep-brown/30 rounded">
+            </div>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <div id="supportToggle" class="support-toggle bg-deep-brown text-warm-cream w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-rich-brown transition-all duration-300 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </div>
+    </div>
+
+    <style>
+        /* Update the support widget styles */
+        .support-widget {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(0);
+        }
+
+        .support-widget.closed {
+            transform: translateX(calc(100% + 1rem));
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .support-widget.open {
+            transform: translateX(0);
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .support-toggle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 
     <!-- JavaScript for Swipeable Carousel -->
     <script>
