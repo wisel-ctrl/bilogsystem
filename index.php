@@ -1,4 +1,9 @@
 <?php
+// Enable error reporting for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Include database connection
 require_once 'db_connect.php';
 
@@ -17,15 +22,16 @@ try {
             u.first_name,
             u.last_name
         FROM ratings r
-        LEFT JOIN users_tb u ON r.user_id = u.username
+        LEFT JOIN user_tb u ON r.user_id = u.username
         ORDER BY r.created_at DESC
         LIMIT 3
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Debug: Log the number of rows returned
+    // Debug: Log the number of rows and raw data
     error_log("Fetched " . count($ratings) . " ratings from database");
+    error_log("Ratings data: " . print_r($ratings, true));
 
     // Calculate average rating and prepare display name
     foreach ($ratings as &$rating) {
@@ -36,12 +42,11 @@ try {
             $rating['service_rating']
         ], function($val) { return $val > 0; });
         $rating['average_rating'] = !empty($valid_ratings) ? round(array_sum($valid_ratings) / count($valid_ratings), 1) : 0;
-        // Combine first_name and last_name, handle anonymous or missing names
         $rating['display_name'] = ($rating['user_id'] === 'anonymous' || empty($rating['first_name']) || empty($rating['last_name'])) 
             ? 'Anonymous' 
             : trim($rating['first_name'] . ' ' . $rating['last_name']);
-        // Debug: Log each rating's display name and user_id
-        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, display_name={$rating['display_name']}");
+        // Debug: Log each rating's details
+        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, display_name={$rating['display_name']}, comment={$rating['general_comment']}");
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
@@ -521,7 +526,6 @@ try {
         </div>
     </div>
 </section>
-
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
