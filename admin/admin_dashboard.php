@@ -897,113 +897,132 @@
         // Initialize the chart when the page loads
         document.addEventListener('DOMContentLoaded', function() {
             initRevenueChart();
+            initializeMenuChart();
+            fetchSeasonalData();
         });
 
-        // Menu Sales Chart
-        const menuCtx = document.getElementById('menuChart').getContext('2d');
-        const menuChart = new Chart(menuCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Cappuccino', 'Latte', 'Americano', 'Espresso', 'Frappe', 'Others'],
-                datasets: [{
-                    data: [35, 25, 15, 10, 8, 7],
-                    backgroundColor: [
-                        '#8B4513',
-                        '#A0522D',
-                        '#5D2F0F',
-                        '#E8E0D5',
-                        '#D2B48C',
-                        '#CD853F'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true,
-                            pointStyle: 'circle'
+        async function initializeMenuChart() {
+            try {
+                const response = await fetch('dashboard_handlers/menu_chart.php');
+                const chartData = await response.json();
+                
+                const menuCtx = document.getElementById('menuChart').getContext('2d');
+                const menuChart = new Chart(menuCtx, {
+                    type: 'doughnut',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
+                            }
+                        },
+                        cutout: '70%',
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
                         }
                     }
-                },
-                cutout: '70%',
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
-                }
+                });
+            } catch (error) {
+                console.error('Error loading chart data:', error);
             }
-        });
+        }
 
         // Season Trends Chart
-        const seasonCtx = document.getElementById('seasonChart').getContext('2d');
-        const seasonChart = new Chart(seasonCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Spring', 'Summer', 'Fall', 'Winter'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [180000, 250000, 220000, 200000],
-                    backgroundColor: [
-                        '#8B4513',
-                        '#A0522D',
-                        '#5D2F0F',
-                        '#E8E0D5'
-                    ],
-                    borderRadius: 8,
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return '₱' + context.parsed.y.toLocaleString();
-                            }
-                        }
-                    }
+        // Function to fetch seasonal data
+        async function fetchSeasonalData() {
+            try {
+                const response = await fetch('dashboard_handlers/seasonal_chart.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateSeasonalChart(data.data);
+                } else {
+                    console.error('Error fetching seasonal data:', data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Function to update the chart with new data
+        function updateSeasonalChart(seasonData) {
+            const seasonCtx = document.getElementById('seasonChart').getContext('2d');
+            const seasonChart = new Chart(seasonCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Spring', 'Summer', 'Fall', 'Winter'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [
+                        seasonData.Spring || 0,
+                        seasonData.Summer || 0,
+                        seasonData.Fall || 0,
+                        seasonData.Winter || 0
+                        ],
+                        backgroundColor: [
+                            '#8B4513',
+                            '#A0522D',
+                            '#5D2F0F',
+                            '#E8E0D5'
+                        ],
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 150000,
-                        grid: {
-                            color: 'rgba(232, 224, 213, 0.3)',
-                            drawBorder: false
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return '₱' + value.toLocaleString();
-                            },
-                            padding: 10
-                        }
-                    },
-                    x: {
-                        grid: {
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: false
                         },
-                        ticks: {
-                            padding: 10
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '₱' + context.parsed.y.toLocaleString();
+                                }
+                            }
                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            grid: {
+                                color: 'rgba(232, 224, 213, 0.3)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '₱' + value.toLocaleString();
+                                },
+                                padding: 10
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                padding: 10
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeInOutQuart'
                 }
-            }
-        });
+            });
+        }
 
 
 

@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 try {
     // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT dish_id, dish_name, dish_description, dish_category, price, dish_pic_url FROM dishes_tb WHERE status = 'active'");
+    $stmt = $conn->prepare("SELECT dish_id, codename, dish_name, dish_description, dish_category, price, dish_pic_url FROM dishes_tb WHERE status = 'active'");
     $stmt->execute();
     
     // Fetch all results as associative array
@@ -36,6 +36,7 @@ try {
         return [
             'id' => (int)$dish['dish_id'],
             'name' => $dish['dish_name'],
+            'codename' => $dish['codename'],
             'description' => $dish['dish_description'],
             'price' => (float)$dish['price'],
             'category' => $category,
