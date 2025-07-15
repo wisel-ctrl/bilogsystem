@@ -1,37 +1,3 @@
-<?php
-// Include the database connection
-require_once 'db_connect.php';
-
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $rating_value = isset($_POST['rating']) ? (int)$_POST['rating'] : 0;
-    $review_text = isset($_POST['review_text']) ? trim($_POST['review_text']) : '';
-    $booking_id = isset($_POST['booking_id']) ? (int)$_POST['booking_id'] : null; // Adjust based on how you get this
-    $customer_id = isset($_POST['customer_id']) ? (int)$_POST['customer_id'] : null; // Adjust based on how you get this
-    $submitted_via = isset($_POST['submitted_via']) ? $_POST['submitted_via'] : 'booking';
-
-    // Validate inputs
-    if ($rating_value >= 1 && $rating_value <= 5 && !empty($review_text)) {
-        try {
-            $stmt = $conn->prepare("INSERT INTO ratings_tb (booking_id, rating_value, submitted_via, customer_id, review_text, rated_at) 
-                                    VALUES (:booking_id, :rating_value, :submitted_via, :customer_id, :review_text, NOW())");
-            $stmt->execute([
-                ':booking_id' => $booking_id,
-                ':rating_value' => $rating_value,
-                ':submitted_via' => $submitted_via,
-                ':customer_id' => $customer_id,
-                ':review_text' => $review_text
-            ]);
-            // Success: JavaScript will show the modal
-        } catch(PDOException $e) {
-            echo "<script>alert('Error saving rating: " . $e->getMessage() . "');</script>";
-        }
-    } else {
-        echo "<script>alert('Please provide a valid rating and review.');</script>";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,13 +107,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .star-rating .fa-star {
             cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
+            transition: color 0.2s ease;
         }
 
         .star-rating .fa-star:hover,
         .star-rating .fa-star.active {
             color: #FBBF24 !important;
-            transform: scale(1.2);
         }
 
         .btn-primary {
@@ -210,27 +175,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h2 class="font-playfair text-3xl font-bold text-deep-brown">Rate Your Visit</h2>
                 <p class="font-baskerville text-base text-deep-brown/80 mt-2">Your feedback helps us make every moment at Caffè Lilio unforgettable!</p>
             </div>
-            <form id="ratingForm" method="POST" class="space-y-6">
+            <form id="ratingForm" class="space-y-6">
                 <div class="space-y-6">
-                    <!-- Overall Rating -->
+                    <!-- Food Quality Rating -->
                     <div class="space-y-3">
-                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Overall Experience <span class="text-red-500">*</span></h4>
+                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Food Quality <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
-                            <input type="hidden" name="rating" id="rating" value="0" required>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4"></i>
-                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5"></i>
+                            <input type="hidden" name="food_rating" id="food_rating" value="0" required>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="food"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="food"></i>
                         </div>
-                        <div id="rating-error" class="text-red-500 text-sm hidden text-center">Please provide a rating</div>
-                        <textarea name="review_text" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
-                                  placeholder="Share your thoughts about your experience" rows="5" required></textarea>
-                        <div id="review-text-error" class="text-red-500 text-sm hidden text-center">Please share your feedback</div>
-                        <!-- Hidden fields for booking_id, customer_id, and submitted_via -->
-                        <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars(isset($_GET['booking_id']) ? $_GET['booking_id'] : ''); ?>">
-                        <input type="hidden" name="customer_id" value="<?php echo htmlspecialchars(isset($_GET['customer_id']) ? $_GET['customer_id'] : ''); ?>">
-                        <input type="hidden" name="submitted_via" value="booking"> <!-- Adjust as needed -->
+                        <div id="food-error" class="text-red-500 text-sm hidden text-center">Please rate the food quality</div>
+                    </div>
+
+                    <!-- Ambiance Rating -->
+                    <div class="space-y-3">
+                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Ambiance <span class="text-red-500">*</span></h4>
+                        <div class="star-rating flex justify-center space-x-3">
+                            <input type="hidden" name="ambiance_rating" id="ambiance_rating" value="0" required>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="ambiance"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="ambiance"></i>
+                        </div>
+                        <div id="ambiance-error" class="text-red-500 text-sm hidden text-center">Please rate the ambiance</div>
+                    </div>
+
+                    <!-- Reservation Experience Rating -->
+                    <div class="space-y-3">
+                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Reservation Experience</h4>
+                        <div class="star-rating flex justify-center space-x-3">
+                            <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="reservation"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="reservation"></i>
+                        </div>
+                    </div>
+
+                    <!-- Service Rating -->
+                    <div class="space-y-3">
+                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Service <span class="text-red-500">*</span></h4>
+                        <div class="star-rating flex justify-center space-x-3">
+                            <input type="hidden" name="service_rating" id="service_rating" value="0" required>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="4" data-category="service"></i>
+                            <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="5" data-category="service"></i>
+                        </div>
+                        <div id="service-error" class="text-red-500 text-sm hidden text-center">Please rate the service</div>
+                    </div>
+
+                    <!-- Single Comment Section -->
+                    <div class="space-y-3">
+                        <h4 class="font-baskerville text-lg font-bold text-deep-brown">Comments <span class="text-red-500">*</span></h4>
+                        <textarea name="general_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
+                                  placeholder="Please share your thoughts about your experience" rows="5" required></textarea>
+                        <div id="general-comment-error" class="text-red-500 text-sm hidden text-center">Please share your thoughts about your experience</div>
                     </div>
                 </div>
 
@@ -243,7 +250,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </section>
 
-        <!-- Thank You Modal -->
         <div class="modal" id="successModal">
             <div class="modal-content">
                 <div class="modal-icon">
@@ -272,7 +278,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             stars.forEach(star => {
                 star.addEventListener('click', function() {
                     const rating = parseInt(this.getAttribute('data-rating'));
-                    stars.forEach((s, index) => {
+                    const category = this.getAttribute('data-category');
+                    const starsInCategory = document.querySelectorAll(`.star[data-category="${category}"]`);
+                    
+                    starsInCategory.forEach((s, index) => {
                         if (index < rating) {
                             s.classList.remove('text-deep-brown/30');
                             s.classList.add('text-yellow-500');
@@ -281,35 +290,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             s.classList.add('text-deep-brown/30');
                         }
                     });
-                    document.getElementById('rating').value = rating;
-                    document.getElementById('rating-error').classList.add('hidden');
+                    
+                    document.getElementById(`${category}_rating`).value = rating;
+                    const errorElement = document.getElementById(`${category}-error`);
+                    if (errorElement) errorElement.classList.add('hidden');
                 });
             });
 
             // Modal functionality
             const modal = document.getElementById('successModal');
             const closeModalButton = document.getElementById('closeModal');
-
+            
             function showModal() {
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
                 document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
             }
-
+            
             function hideModal() {
                 modal.classList.remove('show');
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
+                
                 // Reset form and stars
                 document.getElementById('ratingForm').reset();
-                stars.forEach(star => {
+                document.querySelectorAll('.star').forEach(star => {
                     star.classList.remove('text-yellow-500');
                     star.classList.add('text-deep-brown/30');
                 });
             }
-
+            
             closeModalButton.addEventListener('click', hideModal);
-
+            
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     hideModal();
@@ -321,28 +333,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 let isValid = true;
-
-                // Validate rating
-                const rating = document.getElementById('rating').value;
-                if (rating === '0') {
-                    document.getElementById('rating-error').classList.remove('hidden');
+                
+                const requiredRatings = ['food', 'ambiance', 'service'];
+                requiredRatings.forEach(category => {
+                    const rating = document.getElementById(`${category}_rating`).value;
+                    if (rating === '0') {
+                        document.getElementById(`${category}-error`).classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById(`${category}-error`).classList.add('hidden');
+                    }
+                });
+                
+                const comment = form.elements['general_comment'].value.trim();
+                if (comment === '') {
+                    document.getElementById('general-comment-error').classList.remove('hidden');
                     isValid = false;
                 } else {
-                    document.getElementById('rating-error').classList.add('hidden');
+                    document.getElementById('general-comment-error').classList.add('hidden');
                 }
-
-                // Validate review text
-                const reviewText = form.elements['review_text'].value.trim();
-                if (reviewText === '') {
-                    document.getElementById('review-text-error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('review-text-error').classList.add('hidden');
-                }
-
+                
                 if (isValid) {
-                    // Submit the form (PHP will handle the rest)
-                    form.submit();
                     showModal();
                 }
             });
