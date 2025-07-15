@@ -917,7 +917,239 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(card);
     });
 });
+
+
+// Helper function to capitalize the first letter of each word
+function capitalizeWords(str) {
+    if (!str) return str; // Return empty string if input is empty
+    return str
+        .toLowerCase() // Convert to lowercase first
+        .split(' ') // Split by spaces
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter
+        .join(' '); // Join back with spaces
+}
+
+// Real-time Form Validation
+document.addEventListener('DOMContentLoaded', () => {
+    // Elements
+    const editButton = document.getElementById('edit-profile-btn');
+    const saveButton = document.getElementById('save-profile-btn');
+    const profileForm = document.getElementById('profile-update-form');
+    const profileFormInputs = document.querySelectorAll('#profile-update-form input');
+
+    // Validation Patterns (from customer side)
+    const patterns = {
+        name: /^[A-Za-zÀ-ÖØ-öø-ÿ \-']{2,50}$/,
+        optionalName: /^[A-Za-zÀ-ÖØ-öø-ÿ \-']{0,50}$/,
+        suffix: /^[A-Za-z.]{0,10}$/,
+        username: /^[A-Za-z][A-Za-z0-9_.]{3,29}$/,
+        phone: /^(0[0-9]{10}|\+63[0-9]{10})$/
+    };
+
+    // Track availability status
+    let isPhoneAvailable = true; // Assume true initially
+    let isUsernameAvailable = true; // Assume true initially
+
+    // Enable edit mode with validation
+    editButton.addEventListener('click', () => {
+        profileFormInputs.forEach(input => {
+            input.disabled = false;
+            // Trigger validation when enabling fields
+            input.addEventListener('input', validateField);
+        });
+        editButton.classList.add('hidden');
+        saveButton.classList.remove('hidden');
+    });
+
+    // Field Validation Function (from customer side)
+    function validateField(e) {
+        const field = e.target;
+        const fieldId = field.id;
+        const errorElement = document.getElementById(`${fieldId}-error`);
+        let isValid = true;
+        let errorMessage = '';
+
+        // Capitalize first letter for name fields
+        if (['first-name', 'middle-name', 'last-name'].includes(fieldId)) {
+            field.value = capitalizeWords(field.value.trim());
+        } else {
+            // Trim whitespace for other fields
+            field.value = field.value.trim();
+        }
+
+        switch(fieldId) {
+            case 'first-name':
+            case 'last-name':
+                if (!patterns.name.test(field.value)) {
+                    errorMessage = 'Only letters, spaces, hyphens, and apostrophes allowed (2-50 characters)';
+                    isValid = false;
+                }
+                break;
+                
+            case 'middle-name':
+                if (field.value && !patterns.optionalName.test(field.value)) {
+                    errorMessage = 'Only letters, spaces, hyphens, and apostrophes allowed (max 50 characters)';
+                    isValid = false;
+                }
+                break;
+                
+            case 'suffix':
+                if (field.value && !patterns.suffix.test(field.value)) {
+                    errorMessage = 'Only letters and periods allowed (max 10 characters)';
+                    isValid = false;
+                }
+                break;
+                
+            case 'username':
+                if (!patterns.username.test(field.value)) {
+                    errorMessage = '4-30 chars, start with letter, only letters, numbers, _ and .';
+                    isValid = false;
+                    isUsernameAvailable = false; // Reset availability
+                } else {
+                    // Check username availability
+                    checkFieldAvailability('username', field.value, (available) => {
+                        isUsernameAvailable = available;
+                        validateForm(); // Re-validate form after availability check
+                    });
+                }
+                break;
+                
+            case 'phone':
+                if (!patterns.phone.test(field.value)) {
+                    errorMessage = 'Must be exactly 11 digits starting with 0 or 12 digits starting with +63';
+                    isValid = false;
+                    isPhoneAvailable = false; // Reset availability
+                } else {
+                    // Check phone availability
+                    checkFieldAvailability('contact_number', field.value, (available) => {
+                        isPhoneAvailable = available;
+                        validateForm(); // Re-validate form after availability check
+                    });
+                }
+                break;
+        }
+
+        // Update UI
+        if (isValid) {
+            field.classList.remove('border-red-500');
+            field.classList.add('border-warm-cream');
+            errorElement.classList.add('hidden');
+        } else {
+            field.classList.remove('border-warm-cream');
+            field.classList.add('border-red-500');
+            errorElement.textContent = errorMessage;
+            errorElement.classList.remove('hidden');
+        }
+
+        // Validate form to update save button state
+        validateForm();
+    }
+
+    // Check if field value is already taken (from customer side)
+    function checkFieldAvailability(fieldName, value, callback) {
+        if (!value) {
+            callback(true); // Empty value is considered available
+            return;
+        }
+
+        fetch('../customer/profileAPI/check_availability.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                field: fieldName,
+                value: value,
+                current_user_id: <?php echo $_SESSION['user_id']; ?>
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const fieldId = fieldName === 'contact_number' ? 'phone' : fieldName;
+            const errorElement = document.getElementById(`${fieldId}-error`);
+            
+            if (!data.available) {
+                document.getElementById(fieldId).classList.add('border-red-500');
+                errorElement.textContent = `This ${fieldName.replace('_', ' ')} is already in use`;
+                errorElement.classList.remove('hidden');
+                callback(false);
+            } else {
+                // Only hide error if no other validation error exists
+                if (!errorElement.textContent.includes('allowed') && !errorElement.textContent.includes('chars') && !errorElement.textContent.includes('digits')) {
+                    errorElement.classList.add('hidden');
+                }
+                document.getElementById(fieldId).classList.remove('border-red-500');
+                document.getElementById(fieldId).classList.add('border-warm-cream');
+                callback(true);
+            }
+        })
+        .catch(error => {
+            console.error('Availability check failed:', error);
+            callback(false); // Assume unavailable on error
+        });
+    }
+
+    // Validate entire form (from customer side)
+    function validateForm() {
+        let isFormValid = true;
+        
+        profileFormInputs.forEach(input => {
+            if (input.required && !input.value.trim()) {
+                isFormValid = false;
+            }
+            
+            if (input.id === 'first-name' || input.id === 'last-name') {
+                if (!patterns.name.test(input.value)) {
+                    isFormValid = false;
+                }
+            }
+            
+            if (input.id === 'middle-name' && input.value && !patterns.optionalName.test(input.value)) {
+                isFormValid = false;
+            }
+            
+            if (input.id === 'username') {
+                if (!patterns.username.test(input.value) || !isUsernameAvailable) {
+                    isFormValid = false;
+                }
+            }
+            
+            if (input.id === 'phone') {
+                if (!patterns.phone.test(input.value) || !isPhoneAvailable) {
+                    isFormValid = false;
+                }
+            }
+            
+            if (input.id === 'suffix' && input.value && !patterns.suffix.test(input.value)) {
+                isFormValid = false;
+            }
+            
+            // Check for visible error messages
+            const errorElement = document.getElementById(`${input.id}-error`);
+            if (errorElement && !errorElement.classList.contains('hidden')) {
+                isFormValid = false;
+            }
+        });
+        
+        saveButton.disabled = !isFormValid;
+    }
+    
+    // Cancel button functionality
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    cancelEditBtn.addEventListener('click', () => {
+        profileFormInputs.forEach(input => {
+            input.disabled = true;
+            input.classList.remove('border-red-500');
+            const errorElement = document.getElementById(`${input.id}-error`);
+            if (errorElement) errorElement.classList.add('hidden');
+        });
+        editButton.classList.remove('hidden');
+        cancelEditBtn.classList.add('hidden');
+        saveButton.classList.add('hidden');
+    });
+});
 </script>
+
 
 <?php
 $page_content = ob_get_clean();
