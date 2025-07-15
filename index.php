@@ -17,7 +17,7 @@ try {
             u.first_name,
             u.last_name
         FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = u.username
+        LEFT JOIN users_tb u ON r.user_id = u.username
         ORDER BY r.created_at DESC
         LIMIT 3
     ");
