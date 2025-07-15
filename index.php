@@ -1,36 +1,49 @@
 <?php
-function displayCustomerFeedback($conn) {
-    // Query to fetch ratings with user information
-    $sql = "SELECT r.food_rating, r.ambiance_rating, r.reservation_rating, r.service_rating, 
-                   r.general_comment, r.created_at, 
-                   u.first_name, u.last_name, u.suffix
-            FROM ratings r
-            LEFT JOIN user_tb u ON r.user_id = u.username
-            ORDER BY r.created_at DESC
-            LIMIT 3"; // Limit to 3 recent reviews
+// Include database connection
+require_once 'db_connect.php';
 
-    $result = $conn->query($sql);
+// Fetch ratings with user details
+try {
+    $stmt = $conn->prepare("
+        SELECT 
+            r.id,
+            r.food_rating,
+            r.ambiance_rating,
+            r.reservation_rating,
+            r.service_rating,
+            r.general_comment,
+            r.created_at,
+            r.user_id,
+            CONCAT(
+                COALESCE(u.first_name, ''), ' ',
+                COALESCE(u.middle_name, ''), ' ',
+                COALESCE(u.last_name, ''), ' ',
+                COALESCE(u.suffix, '')
+            ) AS user_name
+        FROM ratings r
+        LEFT JOIN user_tb u ON r.user_id = u.username
+        ORDER BY r.created_at DESC
+        LIMIT 3
+    ");
+    $stmt->execute();
+    $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Calculate average rating and display stars
-    function renderStars($avgRating) {
-        $fullStars = floor($avgRating);
-        $halfStar = $avgRating - $fullStars >= 0.5 ? 1 : 0;
-        $emptyStars = 5 - $fullStars - $halfStar;
-        
-        $starsHtml = '';
-        for ($i = 0; $i < $fullStars; $i++) {
-            $starsHtml .= '<i class="fas fa-star text-yellow-500 text-lg"></i>';
-        }
-        if ($halfStar) {
-            $starsHtml .= '<i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>';
-        }
-        for ($i = 0; $i < $emptyStars; $i++) {
-            $starsHtml .= '<i class="far fa-star text-deep-brown/30 text-lg"></i>';
-        }
-        return $starsHtml;
+    // Calculate average rating for each entry
+    foreach ($ratings as &$rating) {
+        $valid_ratings = array_filter([
+            $rating['food_rating'],
+            $rating['ambiance_rating'],
+            $rating['reservation_rating'],
+            $rating['service_rating']
+        ], function($val) { return $val > 0; });
+        $rating['average_rating'] = !empty($valid_ratings) ? round(array_sum($valid_ratings) / count($valid_ratings), 1) : 0;
+        $rating['user_name'] = ($rating['user_id'] === 'anonymous' || empty($rating['user_name'])) ? 'Anonymous' : trim($rating['user_name']);
     }
+} catch (PDOException $e) {
+    error_log("Error fetching ratings: " . $e->getMessage());
+    $ratings = [];
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -466,55 +479,46 @@ function displayCustomerFeedback($conn) {
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        // Calculate average rating
-                        $ratings = [
-                            $row['food_rating'],
-                            $row['ambiance_rating'],
-                            $row['reservation_rating'] ?: 0, // Use 0 if null
-                            $row['service_rating']
-                        ];
-                        $avgRating = array_sum($ratings) / count(array_filter($ratings));
-                        
-                        // Format user name
-                        $suffix = $row['suffix'] ? " {$row['suffix']}" : '';
-                        $fullName = htmlspecialchars($row['first_name'] . ' ' . $row['last_name'] . $suffix);
-                        $comment = htmlspecialchars($row['general_comment']);
-                        $date = date('F j, Y', strtotime($row['created_at']));
-                ?>
-                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo $fullName; ?></h3>
-                        </div>
-                        <div class="flex items-center mb-3">
-                            <div class="flex space-x-1">
-                                <?php echo renderStars($avgRating); ?>
+                <?php if (empty($ratings)): ?>
+                    <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
+                <?php else: ?>
+                    <?php foreach ($ratings as $rating): ?>
+                        <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['user_name']); ?></h3>
                             </div>
-                            <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avgRating, 1); ?> stars</span>
+                            <div class="flex items-center mb-3">
+                                <div class="flex space-x-1">
+                                    <?php
+                                    $avg = $rating['average_rating'];
+                                    $full_stars = floor($avg);
+                                    $has_half_star = ($avg - $full_stars) >= 0.5;
+                                    for ($i = 1; $i <= 5; $i++):
+                                        if ($i <= $full_stars): ?>
+                                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                        <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
+                                            <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
+                                        <?php else: ?>
+                                            <i class="far fa-star text-deep-brown/30 text-lg"></i>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                                <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avg, 1); ?> stars</span>
+                            </div>
+                            <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
+                            <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo date('F j, Y', strtotime($rating['created_at'])); ?></p>
                         </div>
-                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo $comment; ?></p>
-                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo $date; ?></p>
-                    </div>
-                <?php
-                    }
-                } else {
-                    echo '<p class="text-center font-baskerville text-deep-brown">No feedback available yet.</p>';
-                }
-                ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="text-center mt-10">
-                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
                     Share Your Feedback
                 </a>
             </div>
         </div>
     </section>
-    <?php
-// Close database connection if not needed elsewhere
-$conn->close();
-?>
+
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
