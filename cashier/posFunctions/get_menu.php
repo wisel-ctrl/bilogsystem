@@ -36,6 +36,7 @@ try {
         return [
             'id' => (int)$dish['dish_id'],
             'name' => $dish['dish_name'],
+            'codename' => $dish['codename'],
             'description' => $dish['dish_description'],
             'price' => (float)$dish['price'],
             'category' => $category,
