@@ -1,48 +1,99 @@
 <?php
-// Include database connection
 require_once 'db_connect.php';
 
-// Fetch ratings with user details
-try {
-    $stmt = $conn->prepare("
-        SELECT 
-            r.id,
-            r.food_rating,
-            r.ambiance_rating,
-            r.reservation_rating,
-            r.service_rating,
-            r.general_comment,
-            r.created_at,
-            r.user_id,
-            CONCAT(
-                COALESCE(u.first_name, ''), ' ',
-                COALESCE(u.middle_name, ''), ' ',
-                COALESCE(u.last_name, ''), ' ',
-                COALESCE(u.suffix, '')
-            ) AS user_name
-        FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = u.id
-        ORDER BY r.created_at DESC
-        LIMIT 10
-    ");
-    $stmt->execute();
-    $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Calculate average rating for each entry
-    foreach ($ratings as &$rating) {
-        $valid_ratings = array_filter([
-            $rating['food_rating'],
-            $rating['ambiance_rating'],
-            $rating['reservation_rating'],
-            $rating['service_rating']
-        ], function($val) { return $val > 0; });
-        $rating['average_rating'] = !empty($valid_ratings) ? round(array_sum($valid_ratings) / count($valid_ratings), 1) : 0;
-        $rating['user_name'] = ($rating['user_id'] === 'anonymous' || empty($rating['user_name'])) ? 'Anonymous' : trim($rating['user_name']);
+function displayCustomerFeedback($conn) {
+    // Query to fetch ratings from the database
+    $sql = "SELECT user_id, general_comment, created_at, 
+            (food_rating + ambiance_rating + reservation_rating + service_rating) / 4.0 AS average_rating
+            FROM ratings 
+            ORDER BY created_at DESC LIMIT 3";
+    
+    $result = $conn->query($sql);
+    
+    if (!$result) {
+        return "<p class='text-center text-red-600'>Error fetching feedback: " . $conn->error . "</p>";
     }
-} catch (PDOException $e) {
-    error_log("Error fetching ratings: " . $e->getMessage());
-    $ratings = [];
+    
+    $output = '
+    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
+                    Hear what our valued customers have to say about their experience at Caffè Lilio.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $username = htmlspecialchars($row['user_id'] === 'anonymous' ? 'Anonymous' : $row['user_id']);
+            $comment = htmlspecialchars($row['general_comment']);
+            $rating = floatval($row['average_rating']);
+            $date = date('F j, Y', strtotime($row['created_at']));
+            
+            // Generate star rating HTML
+            $stars = '';
+            for ($i = 1; $i <= 5; $i++) {
+                if ($rating >= $i) {
+                    $stars .= '<i class="fas fa-star text-yellow-500 text-lg"></i>';
+                } elseif ($rating >= $i - 0.5) {
+                    $stars .= '<i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>';
+                } else {
+                    $stars .= '<i class="far fa-star text-deep-brown/30 text-lg"></i>';
+                }
+            }
+            
+            $output .= '
+            <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <h3 class="font-baskerville font-bold text-lg text-deep-brown">' . $username . '</h3>
+                </div>
+                <div class="flex items-center mb-3">
+                    <div class="flex space-x-1">
+                        ' . $stars . '
+                    </div>
+                    <span class="ml-2 font-baskerville text-deep-brown">' . number_format($rating, 1) . ' stars</span>
+                </div>
+                <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">' . $comment . '</p>
+                <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">' . $date . '</p>
+            </div>';
+        }
+    } else {
+        $output .= '<p class="text-center text-deep-brown">No feedback available yet.</p>';
+    }
+    
+    $output .= '
+            </div>
+            <div class="text-center mt-10">
+                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                    Share Your Feedback
+                </a>
+            </div>
+        </div>
+    </section>';
+    
+    return $output;
 }
+
+// Example usage:
+/*
+$servername = "localhost";
+$username = "your_username";
+$password = "your_password";
+$dbname = "your_database";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+echo displayCustomerFeedback($conn);
+
+$conn->close();
+*/
 ?>
 
 <!DOCTYPE html>
@@ -468,78 +519,78 @@ try {
         </div>
     </section>
 
-<!-- Feedback Section -->
-<section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
-                    Hear what our valued customers have to say about their experience at Caffè Lilio.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Sample Feedback 1 -->
-                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">John Doe</h3>
-                    </div>
-                    <div class="flex items-center mb-3">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
-                        </div>
-                        <span class="ml-2 font-baskerville text-deep-brown">4.5 stars</span>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">The coffee here is absolutely divine! The ambiance is cozy, and the staff are incredibly friendly.</p>
-                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 10, 2024</p>
+    <!-- Feedback Section -->
+    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                    <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
+                        Hear what our valued customers have to say about their experience at Caffè Lilio.
+                    </p>
                 </div>
-                <!-- Sample Feedback 2 -->
-                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">Jane Smith</h3>
-                    </div>
-                    <div class="flex items-center mb-3">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="far fa-star text-deep-brown/30 text-lg"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sample Feedback 1 -->
+                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <h3 class="font-baskerville font-bold text-lg text-deep-brown">John Doe</h3>
                         </div>
-                        <span class="ml-2 font-baskerville text-deep-brown">4.0 stars</span>
+                        <div class="flex items-center mb-3">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
+                            </div>
+                            <span class="ml-2 font-baskerville text-deep-brown">4.5 stars</span>
+                        </div>
+                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">The coffee here is absolutely divine! The ambiance is cozy, and the staff are incredibly friendly.</p>
+                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 10, 2024</p>
                     </div>
-                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Loved the pastries and the latte art! Would love to see more vegan options on the menu.</p>
-                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 5, 2024</p>
+                    <!-- Sample Feedback 2 -->
+                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <h3 class="font-baskerville font-bold text-lg text-deep-brown">Jane Smith</h3>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="far fa-star text-deep-brown/30 text-lg"></i>
+                            </div>
+                            <span class="ml-2 font-baskerville text-deep-brown">4.0 stars</span>
+                        </div>
+                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Loved the pastries and the latte art! Would love to see more vegan options on the menu.</p>
+                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">October 5, 2024</p>
+                    </div>
+                    <!-- Sample Feedback 3 -->
+                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <h3 class="font-baskerville font-bold text-lg text-deep-brown">Alex Brown</h3>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                <i class="fas fa-star text-yellow-500 text-lg"></i>
+                            </div>
+                            <span class="ml-2 font-baskerville text-deep-brown">5.0 stars</span>
+                        </div>
+                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Best café in town! The cappuccino is perfection, and the service is top-notch.</p>
+                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">September 28, 2024</p>
+                    </div>
                 </div>
-                <!-- Sample Feedback 3 -->
-                <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <h3 class="font-baskerville font-bold text-lg text-deep-brown">Alex Brown</h3>
-                    </div>
-                    <div class="flex items-center mb-3">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                            <i class="fas fa-star text-yellow-500 text-lg"></i>
-                        </div>
-                        <span class="ml-2 font-baskerville text-deep-brown">5.0 stars</span>
-                    </div>
-                    <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">Best café in town! The cappuccino is perfection, and the service is top-notch.</p>
-                    <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">September 28, 2024</p>
+                <div class="text-center mt-10">
+                    <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                        Share Your Feedback
+                    </a>
                 </div>
             </div>
-            <div class="text-center mt-10">
-                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
-                    Share Your Feedback
-                </a>
-            </div>
-        </div>
     </section>
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
