@@ -1,58 +1,4 @@
 <?php
-require_once 'db_connect.php';
-
-
-try {
-    // Create PDO connection
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Check if form is submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitize and validate input
-        $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
-        $ambiance_rating = filter_input(INPUT_POST, 'ambiance_rating', FILTER_VALIDATE_INT);
-        $reservation_rating = filter_input(INPUT_POST, 'reservation_rating', FILTER_VALIDATE_INT) ?: 0;
-        $service_rating = filter_input(INPUT_POST, 'service_rating', FILTER_VALIDATE_INT);
-        $general_comment = filter_input(INPUT_POST, 'general_comment', FILTER_SANITIZE_STRING);
-
-        // Validate required fields
-        if ($food_rating === false || $food_rating < 1 || $food_rating > 5 ||
-            $ambiance_rating === false || $ambiance_rating < 1 || $ambiance_rating > 5 ||
-            $service_rating === false || $service_rating < 1 || $service_rating > 5 ||
-            empty($general_comment)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Invalid input. Please ensure all required fields are filled correctly.']);
-            exit;
-        }
-
-        // Prepare and execute SQL statement
-        $stmt = $pdo->prepare("
-            INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
-            VALUES (:food, :ambiance, :reservation, :service, :comment)
-        ");
-
-        $stmt->execute([
-            ':food' => $food_rating,
-            ':ambiance' => $ambiance_rating,
-            ':reservation' => $reservation_rating,
-            ':service' => $service_rating,
-            ':comment' => $general_comment
-        ]);
-
-        // Return success response
-        echo json_encode(['success' => true]);
-    } else {
-        http_response_code(405);
-        echo json_encode(['error' => 'Method not allowed']);
-    }
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-}
-?><?php
-header('Content-Type: application/json');
-
 // Include database connection
 require_once 'db_connect.php';
 
@@ -61,11 +7,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-try {
-    // Check if form is submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Initialize variables for form processing
+$errors = [];
+$success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
         // Log received POST data for debugging
-        file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);
+        file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\n", FILE_APPEND);
 
         // Sanitize and validate input
         $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
@@ -75,7 +24,6 @@ try {
         $general_comment = filter_input(INPUT_POST, 'general_comment', FILTER_SANITIZE_STRING);
 
         // Validate required fields
-        $errors = [];
         if ($food_rating === false || $food_rating < 1 || $food_rating > 5) {
             $errors[] = 'Food rating must be between 1 and 5';
         }
@@ -89,38 +37,28 @@ try {
             $errors[] = 'Comment is required';
         }
 
-        if (!empty($errors)) {
-            http_response_code(400);
-            echo json_encode(['error' => implode(', ', $errors)]);
-            exit;
+        if (empty($errors)) {
+            // Prepare and execute SQL statement
+            $stmt = $conn->prepare("
+                INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
+                VALUES (:food, :ambiance, :reservation, :service, :comment)
+            ");
+
+            $stmt->execute([
+                ':food' => $food_rating,
+                ':ambiance' => $ambiance_rating,
+                ':reservation' => $reservation_rating,
+                ':service' => $service_rating,
+                ':comment' => $general_comment
+            ]);
+
+            $success = true;
         }
-
-        // Prepare and execute SQL statement
-        $stmt = $conn->prepare("
-            INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
-            VALUES (:food, :ambiance, :reservation, :service, :comment)
-        ");
-
-        $stmt->execute([
-            ':food' => $food_rating,
-            ':ambiance' => $ambiance_rating,
-            ':reservation' => $reservation_rating,
-            ':service' => $service_rating,
-            ':comment' => $general_comment
-        ]);
-
-        // Return success response
-        echo json_encode(['success' => true]);
-    } else {
-        http_response_code(405);
-        echo json_encode(['error' => 'Method not allowed']);
+    } catch (PDOException $e) {
+        $errors[] = 'Database error: ' . $e->getMessage();
+    } catch (Exception $e) {
+        $errors[] = 'Unexpected error: ' . $e->getMessage();
     }
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Unexpected error: ' . $e->getMessage()]);
 }
 ?>
 <!DOCTYPE html>
@@ -301,6 +239,11 @@ try {
     </style>
 </head>
 <body class="text-deep-brown">
+    <?php if (!empty($errors)): ?>
+        <div class="error-message">
+            <?php echo implode(', ', $errors); ?>
+        </div>
+    <?php endif; ?>
     <main class="w-full max-w-lg mx-auto px-4 py-6">
         <section class="bg-card rounded-xl p-6 shadow-md hover-lift">
             <div class="text-center mb-6">
@@ -313,7 +256,7 @@ try {
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Food Quality <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
-                            <input type="hidden" name="food_rating" id="food_rating" value="0" required>
+                            <input type="hidden" name="food_rating" id="food_rating" value="<?php echo isset($_POST['food_rating']) ? htmlspecialchars($_POST['food_rating']) : '0'; ?>" required>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="food"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="food"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="food"></i>
@@ -327,7 +270,7 @@ try {
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Ambiance <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
-                            <input type="hidden" name="ambiance_rating" id="ambiance_rating" value="0" required>
+                            <input type="hidden" name="ambiance_rating" id="ambiance_rating" value="<?php echo isset($_POST['ambiance_rating']) ? htmlspecialchars($_POST['ambiance_rating']) : '0'; ?>" required>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="ambiance"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="ambiance"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="ambiance"></i>
@@ -341,7 +284,7 @@ try {
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Reservation Experience</h4>
                         <div class="star-rating flex justify-center space-x-3">
-                            <input type="hidden" name="reservation_rating" id="reservation_rating" value="0">
+                            <input type="hidden" name="reservation_rating" id="reservation_rating" value="<?php echo isset($_POST['reservation_rating']) ? htmlspecialchars($_POST['reservation_rating']) : '0'; ?>">
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="reservation"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="reservation"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="reservation"></i>
@@ -354,7 +297,7 @@ try {
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Service <span class="text-red-500">*</span></h4>
                         <div class="star-rating flex justify-center space-x-3">
-                            <input type="hidden" name="service_rating" id="service_rating" value="0" required>
+                            <input type="hidden" name="service_rating" id="service_rating" value="<?php echo isset($_POST['service_rating']) ? htmlspecialchars($_POST['service_rating']) : '0'; ?>" required>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="1" data-category="service"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="2" data-category="service"></i>
                             <i class="fas fa-star text-3xl text-deep-brown/30 star" data-rating="3" data-category="service"></i>
@@ -368,7 +311,7 @@ try {
                     <div class="space-y-3">
                         <h4 class="font-baskerville text-lg font-bold text-deep-brown">Comments <span class="text-red-500">*</span></h4>
                         <textarea name="general_comment" class="w-full p-3 border border-deep-brown/20 rounded-lg focus:border-accent-brown focus:ring-2 focus:ring-accent-brown/20 transition-all"
-                                  placeholder="Please share your thoughts about your experience" rows="5" required></textarea>
+                                  placeholder="Please share your thoughts about your experience" rows="5" required><?php echo isset($_POST['general_comment']) ? htmlspecialchars($_POST['general_comment']) : ''; ?></textarea>
                         <div id="general-comment-error" class="text-red-500 text-sm hidden text-center">Please share your thoughts about your experience</div>
                     </div>
                 </div>
@@ -382,7 +325,7 @@ try {
             </form>
         </section>
 
-        <div class="modal" id="successModal">
+        <div class="modal <?php echo $success ? 'show' : ''; ?>" id="successModal">
             <div class="modal-content">
                 <div class="modal-icon">
                     <i class="fas fa-check-circle"></i>
@@ -490,9 +433,17 @@ try {
                     const formData = new FormData(form);
                     fetch('ratings.php', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.success) {
                             showModal();
@@ -505,9 +456,10 @@ try {
                         }
                     })
                     .catch(error => {
+                        console.error('Fetch error:', error);
                         const errorDiv = document.createElement('div');
                         errorDiv.className = 'error-message';
-                        errorDiv.textContent = 'An error occurred while submitting your feedback.';
+                        errorDiv.textContent = `Submission failed: ${error.message}`;
                         form.appendChild(errorDiv);
                         setTimeout(() => errorDiv.remove(), 5000);
                     });
