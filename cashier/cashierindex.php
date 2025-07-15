@@ -696,24 +696,40 @@ require_once 'cashier_auth.php';
                 itemElement.className = 'menu-item-card fade-in cursor-pointer';
                 itemElement.dataset.id = item.id; // Add item ID to the card
                 itemElement.innerHTML = `
-                    <div class="relative overflow-hidden group">
-                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
-                        <div class="absolute top-3 right-3">
-                            <button class="add-to-cart bg-deep-brown text-warm-cream px-6 py-3 rounded-lg hover:bg-rich-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl" data-id="${item.id}">
-                                <i class="fas fa-plus"></i>
-                                <span>Add</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-deep-brown font-playfair mb-2">${item.name}</h3>
-                        <p class="text-rich-brown/70 font-baskerville mb-3">${item.description}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-lg font-bold text-accent-brown font-baskerville">₱${item.price.toFixed(2)}</span>
-                        </div>
-                    </div>
-                `;
+  <div class="relative overflow-hidden group">
+    <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
+    <div class="absolute top-3 right-3">
+      <button class="add-to-cart bg-deep-brown text-warm-cream px-6 py-3 rounded-lg hover:bg-rich-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+              data-id="${item.id}">
+        <i class="fas fa-plus"></i>
+        <span>Add</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="p-4">
+    <h3 class="text-xl font-bold text-deep-brown font-playfair mb-1">
+      ${item.name}
+    </h3>
+
+    <!-- Codename (shows null/blank if not provided) -->
+    <p class="text-sm text-rich-brown/70 font-baskerville mb-2">
+      ${item.codename ?? null}
+    </p>
+
+    <p class="text-rich-brown/70 font-baskerville mb-3">
+      ${item.description}
+    </p>
+
+    <div class="flex justify-between items-center">
+      <span class="text-lg font-bold text-accent-brown font-baskerville">
+        ₱${item.price.toFixed(2)}
+      </span>
+    </div>
+  </div>
+`;
+
                 menuItemsContainer.appendChild(itemElement);
             });
         }

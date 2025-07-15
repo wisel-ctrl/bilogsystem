@@ -684,7 +684,7 @@
                                         <option value="italian_dish">Italian Dish</option>
                                         <option value="spanish_dish">Spanish Dish</option>
                                         <option value="house_salad">House Salad</option>
-                                        <option value="burger_pizza">Pizza</option>
+                                        <option value="burger_pizza">Burger & Pizza</option>
                                         <option value="pasta">Pasta</option>
                                         <option value="pasta_caza">Pasta e Caza</option>
                                         <option value="desserts">Desserts</option>
