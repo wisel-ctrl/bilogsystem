@@ -21,12 +21,17 @@ try {
                 COALESCE(u.suffix, '')
             ) AS user_name
         FROM ratings r
-        LEFT JOIN user_tb u ON r.user_id = u.id
+        LEFT JOIN user_tb u ON r.user_id = CAST(u.id AS CHAR)
         ORDER BY r.created_at DESC
         LIMIT 10
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Debugging: Log number of rows and raw data
+    error_log("Number of ratings fetched: " . count($ratings));
+    echo "<!-- Debug: Number of ratings fetched: " . count($ratings) . " -->\n";
+    echo "<!-- Debug: Raw ratings data: " . print_r($ratings, true) . " -->\n";
 
     // Calculate average rating for each entry
     foreach ($ratings as &$rating) {
@@ -41,6 +46,7 @@ try {
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
+    echo "<!-- Debug: Error fetching ratings: " . htmlspecialchars($e->getMessage()) . " -->\n";
     $ratings = [];
 }
 ?>
