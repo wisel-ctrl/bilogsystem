@@ -897,48 +897,42 @@
         // Initialize the chart when the page loads
         document.addEventListener('DOMContentLoaded', function() {
             initRevenueChart();
+            initializeMenuChart();
         });
 
-        // Menu Sales Chart
-        const menuCtx = document.getElementById('menuChart').getContext('2d');
-        const menuChart = new Chart(menuCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Cappuccino', 'Latte', 'Americano', 'Espresso', 'Frappe', 'Others'],
-                datasets: [{
-                    data: [35, 25, 15, 10, 8, 7],
-                    backgroundColor: [
-                        '#8B4513',
-                        '#A0522D',
-                        '#5D2F0F',
-                        '#E8E0D5',
-                        '#D2B48C',
-                        '#CD853F'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true,
-                            pointStyle: 'circle'
+        async function initializeMenuChart() {
+            try {
+                const response = await fetch('dashboard_handlers/menu_chart.php');
+                const chartData = await response.json();
+                
+                const menuCtx = document.getElementById('menuChart').getContext('2d');
+                const menuChart = new Chart(menuCtx, {
+                    type: 'doughnut',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
+                            }
+                        },
+                        cutout: '70%',
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
                         }
                     }
-                },
-                cutout: '70%',
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
-                }
+                });
+            } catch (error) {
+                console.error('Error loading chart data:', error);
             }
-        });
+        }
 
         // Season Trends Chart
         const seasonCtx = document.getElementById('seasonChart').getContext('2d');
