@@ -15,9 +15,7 @@ error_reporting(E_ALL);
 // Include customer authentication (optional for non-logged-in users)
 session_name('CUSTOMER_SESSION');
 session_start();
-
-// Determine user_id: use session user_id if usertype == 3, else NULL for anonymous
-$user_id = isset($_SESSION['user_id']) && isset($_SESSION['usertype']) && $_SESSION['usertype'] == 3 ? (int)$_SESSION['user_id'] : null;
+$user_id = isset($_SESSION['user_id']) && $_SESSION['usertype'] == 3 ? $_SESSION['user_id'] : 'anonymous';
 
 // Initialize variables for form processing
 $errors = [];
@@ -29,7 +27,7 @@ $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Log request details for debugging
-        file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\nUser ID: " . ($user_id ?? 'NULL') . "\n", FILE_APPEND);
+        file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\nUser ID: $user_id\n", FILE_APPEND);
 
         // Sanitize and validate input
         $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
