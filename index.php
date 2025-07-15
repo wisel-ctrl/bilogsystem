@@ -61,12 +61,12 @@ try {
         .font-baskerville { font-family: 'Libre Baskerville', serif; }
         
         .star-rating .fa-star,
-.star-rating .fa-star-half-alt {
-    color: #FBBF24; /* Matches ratings.php star color */
-}
-.star-rating .far.fa-star {
-    color: rgba(74, 42, 10, 0.3); /* Matches deep-brown/30 */
-}
+        .star-rating .fa-star-half-alt {
+            color: #FBBF24; /* Matches ratings.php star color */
+        }
+        .star-rating .far.fa-star {
+            color: rgba(74, 42, 10, 0.3); /* Matches deep-brown/30 */
+        }
 
         .parallax-bg {
             background-attachment: fixed;
@@ -468,56 +468,56 @@ try {
         </div>
     </section>
 
-<!-- Feedback Section -->
-<section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 fade-in">
-            <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
-            <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-            <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
-                Hear what our valued customers have to say about their experience at Caffè Lilio.
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php if (empty($ratings)): ?>
-                <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
-            <?php else: ?>
-                <?php foreach ($ratings as $rating): ?>
-                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['user_name']); ?></h3>
-                        </div>
-                        <div class="flex items-center mb-3">
-                            <div class="flex space-x-1">
-                                <?php
-                                $avg = $rating['average_rating'];
-                                $full_stars = floor($avg);
-                                $has_half_star = ($avg - $full_stars) >= 0.5;
-                                for ($i = 1; $i <= 5; $i++):
-                                    if ($i <= $full_stars): ?>
-                                        <i class="fas fa-star text-yellow-500 text-lg"></i>
-                                    <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
-                                        <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
-                                    <?php else: ?>
-                                        <i class="far fa-star text-deep-brown/30 text-lg"></i>
-                                    <?php endif; ?>
-                                <?php endfor; ?>
+    <!-- Feedback Section -->
+    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
+                    Hear what our valued customers have to say about their experience at Caffè Lilio.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php if (empty($ratings)): ?>
+                    <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
+                <?php else: ?>
+                    <?php foreach ($ratings as $rating): ?>
+                        <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['user_name']); ?></h3>
                             </div>
-                            <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avg, 1); ?> stars</span>
+                            <div class="flex items-center mb-3">
+                                <div class="flex space-x-1">
+                                    <?php
+                                    $avg = $rating['average_rating'];
+                                    $full_stars = floor($avg);
+                                    $has_half_star = ($avg - $full_stars) >= 0.5;
+                                    for ($i = 1; $i <= 5; $i++):
+                                        if ($i <= $full_stars): ?>
+                                            <i class="fas fa-star text-yellow-500 text-lg"></i>
+                                        <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
+                                            <i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>
+                                        <?php else: ?>
+                                            <i class="far fa-star text-deep-brown/30 text-lg"></i>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                                <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avg, 1); ?> stars</span>
+                            </div>
+                            <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
+                            <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo date('F j, Y', strtotime($rating['created_at'])); ?></p>
                         </div>
-                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
-                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo date('F j, Y', strtotime($rating['created_at'])); ?></p>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <div class="text-center mt-10">
+                <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                    Share Your Feedback
+                </a>
+            </div>
         </div>
-        <div class="text-center mt-10">
-            <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
-                Share Your Feedback
-            </a>
-        </div>
-    </div>
-</section>
+    </section>
 
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
