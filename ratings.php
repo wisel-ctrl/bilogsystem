@@ -12,6 +12,11 @@ ini_set('log_errors', 1);
 ini_set('error_log', 'php_errors.log');
 error_reporting(E_ALL);
 
+// Include customer authentication (optional for non-logged-in users)
+session_name('CUSTOMER_SESSION');
+session_start();
+$user_id = isset($_SESSION['user_id']) && $_SESSION['usertype'] == 3 ? $_SESSION['user_id'] : 'anonymous';
+
 // Initialize variables for form processing
 $errors = [];
 $success = false;
@@ -22,7 +27,7 @@ $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Log request details for debugging
-        file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\n", FILE_APPEND);
+        file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\nUser ID: $user_id\n", FILE_APPEND);
 
         // Sanitize and validate input
         $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
@@ -56,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Prepare and execute SQL statement
             $stmt = $conn->prepare("
-                INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
-                VALUES (:food, :ambiance, :reservation, :service, :comment)
+                INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment, user_id)
+                VALUES (:food, :ambiance, :reservation, :service, :comment, :user_id)
             ");
 
             $stmt->execute([
@@ -65,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':ambiance' => $ambiance_rating,
                 ':reservation' => $reservation_rating,
                 ':service' => $service_rating,
-                ':comment' => $general_comment
+                ':comment' => $general_comment,
+                ':user_id' => $user_id
             ]);
 
             $success = true;
@@ -79,19 +85,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (PDOException $e) {
         $errors[] = 'Database error: ' . $e->getMessage();
+        file_put_contents('php_errors.log', "PDOException: " . $e->getMessage() . "\n", FILE_APPEND);
         if ($isAjax) {
             header('Content-Type: application/json');
             http_response_code(500);
-            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+            echo json_encode(['error' => 'Database error']);
             ob_end_flush();
             exit;
         }
     } catch (Exception $e) {
         $errors[] = 'Unexpected error: ' . $e->getMessage();
+        file_put_contents('php_errors.log', "Exception: " . $e->getMessage() . "\n", FILE_APPEND);
         if ($isAjax) {
             header('Content-Type: application/json');
             http_response_code(500);
-            echo json_encode(['error' => 'Unexpected error: ' . $e->getMessage()]);
+            echo json_encode(['error' => 'Unexpected error']);
             ob_end_flush();
             exit;
         }
