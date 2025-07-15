@@ -32,28 +32,51 @@ try {
         case 'monthly':
             $query = "
                 WITH months AS (
-                    SELECT 1 AS month_num, 'January' AS month_name UNION ALL
-                    SELECT 2, 'February' UNION ALL
-                    SELECT 3, 'March' UNION ALL
-                    SELECT 4, 'April' UNION ALL
-                    SELECT 5, 'May' UNION ALL
-                    SELECT 6, 'June' UNION ALL
-                    SELECT 7, 'July' UNION ALL
-                    SELECT 8, 'August' UNION ALL
-                    SELECT 9, 'September' UNION ALL
-                    SELECT 10, 'October' UNION ALL
-                    SELECT 11, 'November' UNION ALL
-                    SELECT 12, 'December'
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 11 MONTH), '%Y-%m') AS month_val, 
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 11 MONTH), '%M %Y') AS month_name,
+                           1 AS month_order UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 10 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 10 MONTH), '%M %Y'),
+                           2 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 9 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 9 MONTH), '%M %Y'),
+                           3 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 8 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 8 MONTH), '%M %Y'),
+                           4 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%M %Y'),
+                           5 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 MONTH), '%M %Y'),
+                           6 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%M %Y'),
+                           7 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 4 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 4 MONTH), '%M %Y'),
+                           8 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 3 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 3 MONTH), '%M %Y'),
+                           9 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 MONTH), '%M %Y'),
+                           10 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%M %Y'),
+                           11 UNION ALL
+                    SELECT DATE_FORMAT(CURDATE(), '%Y-%m'),
+                           DATE_FORMAT(CURDATE(), '%M %Y'),
+                           12
                 )
                 SELECT 
                     m.month_name,
                     COALESCE(SUM(s.total_price), 0) AS revenue
                 FROM months m
                 LEFT JOIN sales_tb s 
-                    ON MONTH(s.created_at) = m.month_num
-                    AND YEAR(s.created_at) = YEAR(CURDATE())
-                GROUP BY m.month_num, m.month_name
-                ORDER BY m.month_num;
+                    ON DATE_FORMAT(s.created_at, '%Y-%m') = m.month_val
+                GROUP BY m.month_order, m.month_name, m.month_val
+                ORDER BY m.month_order;
             ";
             $labelKey = 'month_name';
             break;
@@ -61,23 +84,37 @@ try {
         case 'daily':
         default:
             $query = "
-                WITH weekdays AS (
-                    SELECT 'Sunday' AS dayname, 1 AS day_order UNION ALL
-                    SELECT 'Monday', 2 UNION ALL
-                    SELECT 'Tuesday', 3 UNION ALL
-                    SELECT 'Wednesday', 4 UNION ALL
-                    SELECT 'Thursday', 5 UNION ALL
-                    SELECT 'Friday', 6 UNION ALL
-                    SELECT 'Saturday', 7
+                WITH days AS (
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 DAY), '%Y-%m-%d') AS date_val,
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 DAY), '%W') AS day_name,
+                           1 AS day_order UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 DAY), '%Y-%m-%d'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 DAY), '%W'),
+                           2 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 4 DAY), '%Y-%m-%d'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 4 DAY), '%W'),
+                           3 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 3 DAY), '%Y-%m-%d'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 3 DAY), '%W'),
+                           4 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 DAY), '%Y-%m-%d'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 DAY), '%W'),
+                           5 UNION ALL
+                    SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY), '%Y-%m-%d'),
+                           DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY), '%W'),
+                           6 UNION ALL
+                    SELECT DATE_FORMAT(CURDATE(), '%Y-%m-%d'),
+                           DATE_FORMAT(CURDATE(), '%W'),
+                           7
                 )
                 SELECT 
-                    w.dayname AS weekday,
+                    d.day_name AS weekday,
                     COALESCE(SUM(s.total_price), 0) AS revenue
-                FROM weekdays w
+                FROM days d
                 LEFT JOIN sales_tb s 
-                    ON DAYOFWEEK(s.created_at) = w.day_order
-                GROUP BY w.day_order, w.dayname
-                ORDER BY w.day_order;
+                    ON DATE(s.created_at) = d.date_val
+                GROUP BY d.day_order, d.day_name, d.date_val
+                ORDER BY d.day_order;
             ";
             $labelKey = 'weekday';
             break;
