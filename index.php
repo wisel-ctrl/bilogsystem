@@ -2,9 +2,43 @@
 // Include database connection
 require_once 'db_connect.php';
 
+// Initialize ratings array
+$ratings = [];
+
+// Debug: Test database connection
+try {
+    $conn->query("SELECT 1");
+    echo "<!-- Debug: Database connection successful -->\n";
+} catch (PDOException $e) {
+    error_log("Connection test failed: " . $e->getMessage());
+    echo "<!-- Debug: Connection test failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
+    die("Database connection failed. Please check db_connect.php.");
+}
+
+// Debug: Check if tables exist
+try {
+    $tables = $conn->query("SHOW TABLES LIKE 'ratings'")->fetchAll(PDO::FETCH_COLUMN);
+    echo "<!-- Debug: Ratings table exists: " . (count($tables) > 0 ? 'Yes' : 'No') . " -->\n";
+    $tables = $conn->query("SHOW TABLES LIKE 'user_tb'")->fetchAll(PDO::FETCH_COLUMN);
+    echo "<!-- Debug: user_tb table exists: " . (count($tables) > 0 ? 'Yes' : 'No') . " -->\n";
+} catch (PDOException $e) {
+    error_log("Table check failed: " . $e->getMessage());
+    echo "<!-- Debug: Table check failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
+}
+
+// Debug: Check if ratings table has data
+try {
+    $countStmt = $conn->query("SELECT COUNT(*) FROM ratings");
+    $ratingCount = $countStmt->fetchColumn();
+    echo "<!-- Debug: Number of rows in ratings table: $ratingCount -->\n";
+} catch (PDOException $e) {
+    error_log("Ratings count query failed: " . $e->getMessage());
+    echo "<!-- Debug: Ratings count query failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
+}
+
 // Fetch ratings with user details
 try {
-    $stmt = $conn->prepare("
+    $query = "
         SELECT 
             r.id,
             r.food_rating,
@@ -24,14 +58,28 @@ try {
         LEFT JOIN user_tb u ON r.user_id = CAST(u.id AS CHAR)
         ORDER BY r.created_at DESC
         LIMIT 10
-    ");
+    ";
+    $stmt = $conn->prepare($query);
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Debugging: Log number of rows and raw data
+    // Debug: Log query and results
+    error_log("Ratings query: $query");
     error_log("Number of ratings fetched: " . count($ratings));
+    echo "<!-- Debug: Ratings query: $query -->\n";
     echo "<!-- Debug: Number of ratings fetched: " . count($ratings) . " -->\n";
     echo "<!-- Debug: Raw ratings data: " . print_r($ratings, true) . " -->\n";
+
+    // Debug: Check user_id values
+    try {
+        $userIds = $conn->query("SELECT DISTINCT user_id FROM ratings")->fetchAll(PDO::FETCH_COLUMN);
+        echo "<!-- Debug: Unique user_id values in ratings: " . implode(', ', $userIds) . " -->\n";
+        $userTbIds = $conn->query("SELECT id FROM user_tb")->fetchAll(PDO::FETCH_COLUMN);
+        echo "<!-- Debug: user_tb.id values: " . implode(', ', $userTbIds) . " -->\n";
+    } catch (PDOException $e) {
+        error_log("User ID check failed: " . $e->getMessage());
+        echo "<!-- Debug: User ID check failed: " . htmlspecialchars($e->getMessage()) . " -->\n";
+    }
 
     // Calculate average rating for each entry
     foreach ($ratings as &$rating) {
