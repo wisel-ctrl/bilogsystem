@@ -1,19 +1,27 @@
 <?php
+// Start output buffering to prevent unwanted output
+ob_start();
+
 // Include database connection
 require_once 'db_connect.php';
 
-// Enable error reporting for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Enable error reporting for debugging (log errors, don't display)
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', 'php_errors.log');
 error_reporting(E_ALL);
 
 // Initialize variables for form processing
 $errors = [];
 $success = false;
 
+// Check if this is an AJAX request
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Log received POST data for debugging
+        // Log request details for debugging
         file_put_contents('debug.log', "Request Method: {$_SERVER['REQUEST_METHOD']}\nHeaders: " . print_r(getallheaders(), true) . "\nPOST Data: " . print_r($_POST, true) . "\n", FILE_APPEND);
 
         // Sanitize and validate input
@@ -37,7 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Comment is required';
         }
 
-        if (empty($errors)) {
+        if (!empty($errors)) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['error' => implode(', ', $errors)]);
+                ob_end_flush();
+                exit;
+            }
+        } else {
             // Prepare and execute SQL statement
             $stmt = $conn->prepare("
                 INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
@@ -53,13 +69,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             $success = true;
+
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true]);
+                ob_end_flush();
+                exit;
+            }
         }
     } catch (PDOException $e) {
         $errors[] = 'Database error: ' . $e->getMessage();
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+            ob_end_flush();
+            exit;
+        }
     } catch (Exception $e) {
         $errors[] = 'Unexpected error: ' . $e->getMessage();
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['error' => 'Unexpected error: ' . $e->getMessage()]);
+            ob_end_flush();
+            exit;
+        }
     }
 }
+
+// Clean output buffer for non-AJAX requests
+ob_end_clean();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -239,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body class="text-deep-brown">
-    <?php if (!empty($errors)): ?>
+    <?php if (!empty($errors) && !$isAjax): ?>
         <div class="error-message">
             <?php echo implode(', ', $errors); ?>
         </div>
@@ -325,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
 
-        <div class="modal <?php echo $success ? 'show' : ''; ?>" id="successModal">
+        <div class="modal <?php echo $success && !$isAjax ? 'show' : ''; ?>" id="successModal">
             <div class="modal-content">
                 <div class="modal-icon">
                     <i class="fas fa-check-circle"></i>
@@ -435,12 +475,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         method: 'POST',
                         body: formData,
                         headers: {
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
                         }
                     })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
+                            return response.text().then(text => {
+                                throw new Error(`HTTP error! Status: ${response.status}, Response: ${text}`);
+                            });
                         }
                         return response.json();
                     })
