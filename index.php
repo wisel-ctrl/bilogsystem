@@ -1,100 +1,36 @@
 <?php
-require_once 'db_connect.php';
-
 function displayCustomerFeedback($conn) {
-    // Query to fetch ratings from the database
-    $sql = "SELECT user_id, general_comment, created_at, 
-            (food_rating + ambiance_rating + reservation_rating + service_rating) / 4.0 AS average_rating
-            FROM ratings 
-            ORDER BY created_at DESC LIMIT 3";
-    
+    // Query to fetch ratings with user information
+    $sql = "SELECT r.food_rating, r.ambiance_rating, r.reservation_rating, r.service_rating, 
+                   r.general_comment, r.created_at, 
+                   u.first_name, u.last_name, u.suffix
+            FROM ratings r
+            LEFT JOIN user_tb u ON r.user_id = u.username
+            ORDER BY r.created_at DESC
+            LIMIT 3"; // Limit to 3 recent reviews
+
     $result = $conn->query($sql);
-    
-    if (!$result) {
-        return "<p class='text-center text-red-600'>Error fetching feedback: " . $conn->error . "</p>";
-    }
-    
-    $output = '
-    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-                <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
-                    Hear what our valued customers have to say about their experience at Caffè Lilio.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
-    
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $username = htmlspecialchars($row['user_id'] === 'anonymous' ? 'Anonymous' : $row['user_id']);
-            $comment = htmlspecialchars($row['general_comment']);
-            $rating = floatval($row['average_rating']);
-            $date = date('F j, Y', strtotime($row['created_at']));
-            
-            // Generate star rating HTML
-            $stars = '';
-            for ($i = 1; $i <= 5; $i++) {
-                if ($rating >= $i) {
-                    $stars .= '<i class="fas fa-star text-yellow-500 text-lg"></i>';
-                } elseif ($rating >= $i - 0.5) {
-                    $stars .= '<i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>';
-                } else {
-                    $stars .= '<i class="far fa-star text-deep-brown/30 text-lg"></i>';
-                }
-            }
-            
-            $output .= '
-            <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
-                <div class="flex items-center mb-4">
-                    <h3 class="font-baskerville font-bold text-lg text-deep-brown">' . $username . '</h3>
-                </div>
-                <div class="flex items-center mb-3">
-                    <div class="flex space-x-1">
-                        ' . $stars . '
-                    </div>
-                    <span class="ml-2 font-baskerville text-deep-brown">' . number_format($rating, 1) . ' stars</span>
-                </div>
-                <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed">' . $comment . '</p>
-                <p class="text-sm text-deep-brown/60 mt-3 font-baskerville">' . $date . '</p>
-            </div>';
+
+    // Calculate average rating and display stars
+    function renderStars($avgRating) {
+        $fullStars = floor($avgRating);
+        $halfStar = $avgRating - $fullStars >= 0.5 ? 1 : 0;
+        $emptyStars = 5 - $fullStars - $halfStar;
+        
+        $starsHtml = '';
+        for ($i = 0; $i < $fullStars; $i++) {
+            $starsHtml .= '<i class="fas fa-star text-yellow-500 text-lg"></i>';
         }
-    } else {
-        $output .= '<p class="text-center text-deep-brown">No feedback available yet.</p>';
+        if ($halfStar) {
+            $starsHtml .= '<i class="fas fa-star-half-alt text-yellow-500 text-lg"></i>';
+        }
+        for ($i = 0; $i < $emptyStars; $i++) {
+            $starsHtml .= '<i class="far fa-star text-deep-brown/30 text-lg"></i>';
+        }
+        return $starsHtml;
     }
-    
-    $output .= '
-            </div>
-            <div class="text-center mt-10">
-                <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
-                    Share Your Feedback
-                </a>
-            </div>
-        </div>
-    </section>';
-    
-    return $output;
-}
-
-// Example usage:
-/*
-$servername = "localhost";
-$username = "your_username";
-$password = "your_password";
-$dbname = "your_database";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-echo displayCustomerFeedback($conn);
-
-$conn->close();
-*/
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -520,7 +456,65 @@ $conn->close();
     </section>
 
     <!-- Feedback Section -->
-    <?php echo displayCustomerFeedback($conn); ?>
+    <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
+                <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
+                    Hear what our valued customers have to say about their experience at Caffè Lilio.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        // Calculate average rating
+                        $ratings = [
+                            $row['food_rating'],
+                            $row['ambiance_rating'],
+                            $row['reservation_rating'] ?: 0, // Use 0 if null
+                            $row['service_rating']
+                        ];
+                        $avgRating = array_sum($ratings) / count(array_filter($ratings));
+                        
+                        // Format user name
+                        $suffix = $row['suffix'] ? " {$row['suffix']}" : '';
+                        $fullName = htmlspecialchars($row['first_name'] . ' ' . $row['last_name'] . $suffix);
+                        $comment = htmlspecialchars($row['general_comment']);
+                        $date = date('F j, Y', strtotime($row['created_at']));
+                ?>
+                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo $fullName; ?></h3>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex space-x-1">
+                                <?php echo renderStars($avgRating); ?>
+                            </div>
+                            <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avgRating, 1); ?> stars</span>
+                        </div>
+                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo $comment; ?></p>
+                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo $date; ?></p>
+                    </div>
+                <?php
+                    }
+                } else {
+                    echo '<p class="text-center font-baskerville text-deep-brown">No feedback available yet.</p>';
+                }
+                ?>
+            </div>
+            <div class="text-center mt-10">
+                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                    Share Your Feedback
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php
+// Close database connection if not needed elsewhere
+$conn->close();
+?>
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
