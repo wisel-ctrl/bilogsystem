@@ -1,3 +1,56 @@
+<?php
+require_once 'db_connect.php';
+
+
+try {
+    // Create PDO connection
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Check if form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitize and validate input
+        $food_rating = filter_input(INPUT_POST, 'food_rating', FILTER_VALIDATE_INT);
+        $ambiance_rating = filter_input(INPUT_POST, 'ambiance_rating', FILTER_VALIDATE_INT);
+        $reservation_rating = filter_input(INPUT_POST, 'reservation_rating', FILTER_VALIDATE_INT) ?: 0;
+        $service_rating = filter_input(INPUT_POST, 'service_rating', FILTER_VALIDATE_INT);
+        $general_comment = filter_input(INPUT_POST, 'general_comment', FILTER_SANITIZE_STRING);
+
+        // Validate required fields
+        if ($food_rating === false || $food_rating < 1 || $food_rating > 5 ||
+            $ambiance_rating === false || $ambiance_rating < 1 || $ambiance_rating > 5 ||
+            $service_rating === false || $service_rating < 1 || $service_rating > 5 ||
+            empty($general_comment)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid input. Please ensure all required fields are filled correctly.']);
+            exit;
+        }
+
+        // Prepare and execute SQL statement
+        $stmt = $pdo->prepare("
+            INSERT INTO ratings (food_rating, ambiance_rating, reservation_rating, service_rating, general_comment)
+            VALUES (:food, :ambiance, :reservation, :service, :comment)
+        ");
+
+        $stmt->execute([
+            ':food' => $food_rating,
+            ':ambiance' => $ambiance_rating,
+            ':reservation' => $reservation_rating,
+            ':service' => $service_rating,
+            ':comment' => $general_comment
+        ]);
+
+        // Return success response
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
+    }
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -166,6 +219,13 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #4A2A0A;
         }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body class="text-deep-brown">
@@ -175,7 +235,7 @@
                 <h2 class="font-playfair text-3xl font-bold text-deep-brown">Rate Your Visit</h2>
                 <p class="font-baskerville text-base text-deep-brown/80 mt-2">Your feedback helps us make every moment at Caffè Lilio unforgettable!</p>
             </div>
-            <form id="ratingForm" class="space-y-6">
+            <form id="ratingForm" action="ratings.php" method="POST" class="space-y-6">
                 <div class="space-y-6">
                     <!-- Food Quality Rating -->
                     <div class="space-y-3">
@@ -328,12 +388,13 @@
                 }
             });
 
-            // Form validation
+            // Form submission with AJAX
             const form = document.getElementById('ratingForm');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 let isValid = true;
                 
+                // Client-side validation
                 const requiredRatings = ['food', 'ambiance', 'service'];
                 requiredRatings.forEach(category => {
                     const rating = document.getElementById(`${category}_rating`).value;
@@ -354,7 +415,30 @@
                 }
                 
                 if (isValid) {
-                    showModal();
+                    const formData = new FormData(form);
+                    fetch('ratings.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showModal();
+                        } else {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.className = 'error-message';
+                            errorDiv.textContent = data.error || 'An error occurred while submitting your feedback.';
+                            form.appendChild(errorDiv);
+                            setTimeout(() => errorDiv.remove(), 5000);
+                        }
+                    })
+                    .catch(error => {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.textContent = 'An error occurred while submitting your feedback.';
+                        form.appendChild(errorDiv);
+                        setTimeout(() => errorDiv.remove(), 5000);
+                    });
                 }
             });
 
