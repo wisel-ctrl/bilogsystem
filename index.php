@@ -67,7 +67,7 @@ function displayCustomerFeedback($conn) {
     $output .= '
             </div>
             <div class="text-center mt-10">
-                <a href="ratings.html" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+                <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
                     Share Your Feedback
                 </a>
             </div>
