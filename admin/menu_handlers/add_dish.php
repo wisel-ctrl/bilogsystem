@@ -8,12 +8,11 @@ try {
     {
         // 1) Category → prefix map
         $prefixes = [
-            'main-course'   => 'mc',
-            'italian-dish'  => 'it',
-            'spanish-dish'  => 'sp',
-            'house-salad'   => 'hs',
-            'pizza'         => 'pz',
-            'burgers'       => 'bg',
+            'main_course'   => 'mc',
+            'italian_dish'  => 'it',
+            'spanish_dish'  => 'sp',
+            'house_salad'   => 'hs',
+            'burger_pizza'  => 'bp',
             'pasta'         => 'ps',
             'pasta_caza'    => 'pc',
             'desserts'      => 'ds',
