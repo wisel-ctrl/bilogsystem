@@ -1,80 +1,85 @@
 <?php
-// Enable error reporting for debugging (remove in production)
+/* ------------------------------------------------------------------
+ *  ratings_loader.php   –  fetch the 3 most‑recent, unique comments
+ * -----------------------------------------------------------------*/
+
+// ***** DEBUGGING (disable in production) *****
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Include database connection
+// ***** DATABASE CONNECTION *****
 require_once 'db_connect.php';
 
-// Fetch ratings with user details
 try {
-    $stmt = $conn->prepare("
-        SELECT DISTINCT
-            r.id,
-            r.food_rating,
-            r.ambiance_rating,
-            r.reservation_rating,
-            r.service_rating,
-            r.general_comment,
-            r.created_at,
-            r.user_id,
-            u.first_name,
-            u.last_name
+    /* --------------------------------------------------------------
+     *  1. SQL: keep just ONE row per (user_id, general_comment)
+     *     – the one with the greatest created_at
+     *  2. Grab the newest three of those rows for display.
+     * -------------------------------------------------------------*/
+    $sql = "
+        SELECT  r.id,
+                r.food_rating,
+                r.ambiance_rating,
+                r.reservation_rating,
+                r.service_rating,
+                r.general_comment,
+                r.created_at,
+                r.user_id,
+                u.first_name,
+                u.last_name
         FROM ratings r
-        LEFT JOIN users_tb u ON r.user_id = CAST(u.id AS CHAR)
-        GROUP BY r.general_comment, r.user_id, r.created_at
+        /* ---- inner query does the de‑duplication ---- */
+        INNER JOIN (
+            SELECT user_id,
+                   general_comment,
+                   MAX(created_at) AS latest
+            FROM   ratings
+            WHERE  general_comment <> ''           -- ignore blank comments
+            GROUP  BY user_id, general_comment
+        ) t  ON  t.user_id         = r.user_id
+            AND t.general_comment = r.general_comment
+            AND t.latest          = r.created_at    -- keep only newest copy
+        LEFT  JOIN users_tb u ON u.id = r.user_id
         ORDER BY r.created_at DESC
-        LIMIT 4
-    ");
+        LIMIT 3;                                    -- show 3 cards
+    ";
+
+    $stmt = $conn->prepare($sql);
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $unique = [];
-foreach ($ratings as $row) {
-    $key = $row['user_id'] . '|' . $row['general_comment']; // uniq key
-    if (!isset($unique[$key])) {
-        $unique[$key] = $row;      // first occurrence wins
-    }
-}
-$ratings = array_slice(array_values($unique), 0, 3); // keep only 3
-
-
-    // Debug: Log query results
-    error_log("Fetched " . count($ratings) . " ratings from database");
-    error_log("Ratings data: " . print_r($ratings, true));
-
-    // Check for duplicate IDs
-    $seen_ids = [];
-    foreach ($ratings as $rating) {
-        if (in_array($rating['id'], $seen_ids)) {
-            error_log("Duplicate rating ID found: {$rating['id']}");
-        }
-        $seen_ids[] = $rating['id'];
-    }
-
-    // Calculate average rating and prepare display name
+    /* ------------- Compute average stars & display name ------------ */
     foreach ($ratings as &$rating) {
-        $valid_ratings = array_filter([
+        /* Average of non‑zero category scores */
+        $valid = array_filter([
             $rating['food_rating'],
             $rating['ambiance_rating'],
             $rating['reservation_rating'],
             $rating['service_rating']
-        ], function($val) { return $val > 0; });
-        $rating['average_rating'] = !empty($valid_ratings) ? round(array_sum($valid_ratings) / count($valid_ratings), 1) : 0;
-        $rating['display_name'] = ($rating['user_id'] === 'anonymous' || empty($rating['first_name']) || empty($rating['last_name'])) 
-            ? 'Anonymous' 
+        ], fn($v) => $v > 0);
+
+        $rating['average_rating'] = $valid
+            ? round(array_sum($valid) / count($valid), 1)
+            : 0;
+
+        /* Anonymous fallback */
+        $rating['display_name'] =
+            ($rating['user_id'] === 'anonymous'
+             || empty($rating['first_name'])
+             || empty($rating['last_name']))
+            ? 'Anonymous'
             : trim($rating['first_name'] . ' ' . $rating['last_name']);
-        // Debug: Log each rating's details
-        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, first_name={$rating['first_name']}, last_name={$rating['last_name']}, display_name={$rating['display_name']}, comment={$rating['general_comment']}");
     }
+    unset($rating);   // break reference
 } catch (PDOException $e) {
-    error_log("Error fetching ratings: " . $e->getMessage());
+    // Log & fail softly
+    error_log('Error fetching ratings: ' . $e->getMessage());
     $ratings = [];
-    // Debug: Display error on page for testing
-    echo "Error fetching ratings: " . htmlspecialchars($e->getMessage());
+    echo 'Error fetching ratings: ' . htmlspecialchars($e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
