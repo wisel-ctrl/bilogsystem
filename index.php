@@ -532,7 +532,7 @@ try {
             <?php if (empty($ratings)): ?>
                 <div class="col-span-full text-center py-12">
                     <div class="inline-block p-4 rounded-full bg-amber-100 mb-4">
-                        <svg class="w-12 h-12 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-12 h-12 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                         </svg>
                     </div>
@@ -575,9 +575,9 @@ try {
                             </div>
                             
                             <div class="relative">
-                                <div class="absolute -left-2 -top-1 text-amber-400/40 text-4xl font-serif">"</div>
+                                <div class="absolute -left-2 -top-1 text-amber-400 text-4xl font-serif">"</div>
                                 <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed pl-4 italic"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
-                                <div class="absolute -right-1 -bottom-2 text-amber-400/40 text-4xl font-serif rotate-180">"</div>
+                                <div class="absolute -right-1 -bottom-2 text-amber-400 text-4xl font-serif rotate-180">"</div>
                             </div>
                             
                             <div class="mt-4 pt-4 border-t border-amber-200/50">
