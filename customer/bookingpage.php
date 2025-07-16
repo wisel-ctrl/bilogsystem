@@ -590,9 +590,16 @@ ob_start();
                     // Double-check availability before submission
                     const reservationDate = document.getElementById('reservationDate').value;
                     if (!reservationDate || !isTimeSlotAvailable) {
-                        alert('Please select an available time slot before submitting.');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Unavailable Time Slot',
+                            text: 'Kindly select a different date and time for your reservation. Thank you!',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#D69E2E' // Optional: Gold theme to match your palette
+                        });
                         return;
                     }
+
                     
                     // Validate inputs before submission
                     if (validateReservationForm()) {
