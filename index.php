@@ -10,7 +10,7 @@ require_once 'db_connect.php';
 // Fetch ratings with user details
 try {
     $stmt = $conn->prepare("
-        SELECT 
+        SELECT DISTINCT
             r.id,
             r.food_rating,
             r.ambiance_rating,
@@ -32,6 +32,15 @@ try {
     // Debug: Log query results
     error_log("Fetched " . count($ratings) . " ratings from database");
     error_log("Ratings data: " . print_r($ratings, true));
+
+    // Check for duplicate IDs
+    $seen_ids = [];
+    foreach ($ratings as $rating) {
+        if (in_array($rating['id'], $seen_ids)) {
+            error_log("Duplicate rating ID found: {$rating['id']}");
+        }
+        $seen_ids[] = $rating['id'];
+    }
 
     // Calculate average rating and prepare display name
     foreach ($ratings as &$rating) {
@@ -529,7 +538,6 @@ try {
         </div>
     </div>
 </section>
-
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
