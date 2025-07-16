@@ -443,13 +443,13 @@ ob_end_clean();
                 });
             }
             
-            closeModalButton.addEventListener('click', hideModal);
+            // closeModalButton.addEventListener('click', hideModal);
             
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    hideModal();
-                }
-            });
+            // modal.addEventListener('click', function(e) {
+            //     if (e.target === modal) {
+            //         hideModal();
+            //     }
+            // });
 
             // Form submission with AJAX
             const form = document.getElementById('ratingForm');
