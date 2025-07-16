@@ -24,7 +24,7 @@ try {
         FROM ratings r
         LEFT JOIN users_tb u ON r.user_id = CAST(u.id AS CHAR)
         ORDER BY r.created_at DESC
-        LIMIT 3
+        LIMIT 4
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
