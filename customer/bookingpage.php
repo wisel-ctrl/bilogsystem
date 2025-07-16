@@ -592,7 +592,7 @@ ob_start();
                     if (!reservationDate || !isTimeSlotAvailable) {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Unavailable Time Slot',
+                            title: 'Unavailable Reservation Date',
                             text: 'Kindly select a different date and time for your reservation. Thank you!',
                             confirmButtonText: 'OK',
                             confirmButtonColor: '#D69E2E' // Optional: Gold theme to match your palette
