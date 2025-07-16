@@ -692,46 +692,63 @@ require_once 'cashier_auth.php';
             }
             
             filteredItems.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'menu-item-card fade-in cursor-pointer';
-                itemElement.dataset.id = item.id; // Add item ID to the card
-                itemElement.innerHTML = `
-                                        <div class="relative overflow-hidden group">
-                                            <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
-                                            <div class="absolute top-3 right-3">
-                                            <button class="add-to-cart bg-deep-brown text-warm-cream px-6 py-3 rounded-lg hover:bg-rich-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
-                                                    data-id="${item.id}">
-                                                <i class="fas fa-plus"></i>
-                                                <span>Add</span>
-                                            </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="p-4">
-                                            <h3 class="text-xl font-bold text-deep-brown font-playfair mb-1">
-                                            ${item.name}
-                                            </h3>
-
-                                            <!-- Codename (shows null/blank if not provided) -->
-                                            <p class="text-sm text-rich-brown/70 font-baskerville mb-2">
-                                            ${item.codename ?? null}
-                                            </p>
-
-                                            <p class="text-rich-brown/70 font-baskerville mb-3">
-                                            ${item.description}
-                                            </p>
-
-                                            <div class="flex justify-between items-center">
-                                            <span class="text-lg font-bold text-accent-brown font-baskerville">
-                                                ₱${item.price.toFixed(2)}
-                                            </span>
-                                            </div>
-                                        </div>
-                                        `;
-
-                menuItemsContainer.appendChild(itemElement);
-            });
+    const itemElement = document.createElement('div');
+    itemElement.className = 'menu-item-card fade-in cursor-pointer';
+    itemElement.dataset.id = item.id; // Add item ID to the card
+    itemElement.innerHTML = `
+        <div class="relative overflow-hidden group rounded-t-xl">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent group-hover:from-black/40 transition-all duration-500"></div>
+            
+            <!-- Enhanced codename badge -->
+            ${item.codename ? `
+                <div class="absolute top-3 left-3 z-10">
+                    <div class="bg-gradient-to-r from-accent-brown to-deep-brown text-warm-cream px-3 py-1 rounded-full text-xs font-semibold font-baskerville shadow-lg backdrop-blur-sm border border-warm-cream/20">
+                        <i class="fas fa-tag mr-1"></i>
+                        ${item.codename}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <!-- Enhanced add button -->
+            <div class="absolute top-3 right-3 z-10">
+                <button class="add-to-cart bg-gradient-to-r from-deep-brown to-rich-brown text-warm-cream px-6 py-3 rounded-xl hover:from-rich-brown hover:to-deep-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-2xl backdrop-blur-sm border border-warm-cream/20"
+                        data-id="${item.id}">
+                    <i class="fas fa-plus"></i>
+                    <span>Add</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-6 bg-gradient-to-b from-warm-cream to-warm-cream/95">
+            <!-- Enhanced title -->
+            <h3 class="text-xl font-bold text-deep-brown font-playfair mb-2 leading-tight">
+                ${item.name}
+            </h3>
+            
+            <!-- Enhanced description -->
+            <p class="text-rich-brown/80 font-baskerville mb-4 leading-relaxed text-sm">
+                ${item.description}
+            </p>
+            
+            <!-- Enhanced price section -->
+            <div class="flex justify-between items-center pt-2 border-t border-rich-brown/10">
+                <span class="text-2xl font-bold text-accent-brown font-baskerville tracking-wide">
+                    ₱${item.price.toFixed(2)}
+                </span>
+                <div class="flex items-center space-x-1 text-rich-brown/60">
+                    <i class="fas fa-star text-xs"></i>
+                    <i class="fas fa-star text-xs"></i>
+                    <i class="fas fa-star text-xs"></i>
+                    <i class="fas fa-star text-xs"></i>
+                    <i class="fas fa-star text-xs"></i>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    menuItemsContainer.appendChild(itemElement);
+});
         }
 
         // Render cart items
