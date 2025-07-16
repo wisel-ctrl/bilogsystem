@@ -144,8 +144,6 @@ function getDailyRevenue($conn) {
         return [];
     }
 }
-
-// Function to fetch weekly revenue
 function getWeeklyRevenue($conn) {
     try {
         $query = "
@@ -167,6 +165,7 @@ function getWeeklyRevenue($conn) {
         return [];
     }
 }
+
 
 // Function to fetch monthly revenue
 function getMonthlyRevenue($conn) {
@@ -214,204 +213,23 @@ function getYearlyRevenue($conn) {
     }
 }
 
-// Function to generate customer satisfaction report
-// Function to generate customer satisfaction report
-function generateCustomerSatisfactionReport($conn, $period = 'monthly') {
-    try {
-        // Initialize table body
-        $tableBody = '';
-
-        // Helper function to calculate percentages for a given dataset
-        function calculateRatingPercentages($ratings, $total) {
-            if ($total == 0) {
-                return ['excellent' => 0, 'good' => 0, 'average' => 0, 'poor' => 0, 'total' => 0];
-            }
-            $excellent = $good = $average = $poor = 0;
-            foreach ($ratings as $rating) {
-                if ($rating == 5) $excellent++;
-                elseif ($rating == 4) $good++;
-                elseif ($rating == 3) $average++;
-                elseif ($rating == 1 || $rating == 2) $poor++;
-            }
-            return [
-                'excellent' => round(($excellent / $total) * 100, 0),
-                'good' => round(($good / $total) * 100, 0),
-                'average' => round(($average / $total) * 100, 0),
-                'poor' => round(($poor / $total) * 100, 0),
-                'total' => $total
-            ];
-        }
-
-        if ($period == 'daily') {
-            $sql = "
-                SELECT 
-                    DATE(created_at) as period_date,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-                GROUP BY DATE(created_at)
-                ORDER BY period_date DESC
-                LIMIT 7
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = date('F j, Y', strtotime($row['period_date']));
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'weekly') {
-            $sql = "
-                SELECT 
-                    CONCAT(YEAR(created_at), '-W', LPAD(WEEK(created_at, 1), 2, '0')) as period_week,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
-                GROUP BY YEAR(created_at), WEEK(created_at, 1)
-                ORDER BY created_at DESC
-                LIMIT 12
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = formatWeekPeriod($row['period_week']);
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'monthly') {
-            $sql = "
-                SELECT 
-                    DATE_FORMAT(created_at, '%Y-%m') as period_month,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
-                GROUP BY YEAR(created_at), MONTH(created_at)
-                ORDER BY created_at DESC
-                LIMIT 12
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = date('F Y', strtotime($row['period_month'] . '-01'));
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'yearly') {
-            $sql = "
-                SELECT 
-                    YEAR(created_at) as period_year,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
-                GROUP BY YEAR(created_at)
-                ORDER BY period_year DESC
-                LIMIT 5
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = $row['period_year'];
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        }
-
-        if (empty($ratingsData)) {
-            $tableBody = "<tr><td colspan='6' class='text-center'>No data available</td></tr>";
-        }
-
-        return $tableBody;
-    } catch (PDOException $e) {
-        error_log("Customer Satisfaction Query Failed: " . $e->getMessage());
-        return "<tr><td colspan='6'>Error fetching data: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
-    }
-}
-// Handle filter parameters
-$period = isset($_GET['period']) ? $_GET['period'] : 'daily';
-$category = isset($_GET['category']) ? $_GET['category'] : 'revenue';
-
-// Fetch data based on filters
-$daily_orders = $period == 'daily' && in_array($category, ['orders', '']) ? getDailyOrders($conn) : [];
-$weekly_orders = $period == 'weekly' && in_array($category, ['orders', '']) ? getWeeklyOrders($conn) : [];
-$monthly_orders = $period == 'monthly' && in_array($category, ['orders', '']) ? getMonthlyOrders($conn) : [];
-$yearly_orders = $period == 'yearly' && in_array($category, ['orders', '']) ? getYearlyOrders($conn) : [];
-$daily_revenue = $period == 'daily' && in_array($category, ['revenue', '']) ? getDailyRevenue($conn) : [];
-$weekly_revenue = $period == 'weekly' && in_array($category, ['revenue', '']) ? getWeeklyRevenue($conn) : [];
-$monthly_revenue = $period == 'monthly' && in_array($category, ['revenue', '']) ? getMonthlyRevenue($conn) : [];
-$yearly_revenue = $period == 'yearly' && in_array($category, ['revenue', '']) ? getYearlyRevenue($conn) : [];
-$customerSatisfactionTableBody = in_array($category, ['customer_satisfaction', '']) ? generateCustomerSatisfactionReport($conn, $period) : '';
+// Fetch data
+$daily_orders = getDailyOrders($conn);
+$weekly_orders = getWeeklyOrders($conn);
+$monthly_orders = getMonthlyOrders($conn);
+$yearly_orders = getYearlyOrders($conn);
+$daily_revenue = getDailyRevenue($conn);
+$weekly_revenue = getWeeklyRevenue($conn);
+$monthly_revenue = getMonthlyRevenue($conn);
+$yearly_revenue = getYearlyRevenue($conn);
 
 // Capture page content
 ob_start();
 ?>
+
+
+
+
 
 
 
@@ -558,397 +376,397 @@ ob_start();
 
 <!-- Main Content Area -->
 <div class="p-6">
-    <div class="dashboard-card fade-in bg-white rounded-xl shadow-lg p-6 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-            <div class="flex items-center mb-3 md:mb-0">
-                <h3 class="text-2xl font-bold text-deep-brown font-playfair flex items-center">
-                    <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
-                    Reports
-                </h3>
-            </div>
-        </div>
-
-        <div class="border-t border-warm-cream/30 pt-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
-                    <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                        <option value="">--</option>
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
-                    <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
-                        <option value="">Customer Satisfaction</option>
-                        <option value="revenue">Revenue</option>
-                        <option value="orders">Orders</option>
-                        <option value="customer_satisfaction">Customer Satisfaction</option>
-                    </select>
-                </div>
-                <div class="flex items-end space-x-2">
-                    <button id="applyFilters" class="w-full bg-deep-brown hover:bg-rich-brown text-warm-cream px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
-                        <i class="fas fa-filter mr-2"></i> Apply
-                    </button>
-                    <button id="resetFilters" class="w-full bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
-                        <i class="fas fa-undo mr-2"></i> Reset
-                    </button>
-                </div>
-            </div>
+<div class="dashboard-card fade-in bg-white rounded-xl shadow-lg p-6 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        <div class="flex items-center mb-3 md:mb-0">
+            <h3 class="text-2xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-file-alt mr-2 text-accent-brown"></i>
+                Reports
+            </h3>
         </div>
     </div>
 
-    <!-- Daily Revenue Table -->
-    <div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-coins mr-2 text-accent-brown"></i>
-                Daily Revenue
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
+    <div class="border-t border-warm-cream/30 pt-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Period</label>
+                <select id="periodFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <option value="">--</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-rich-brown font-baskerville mb-1">Category</label>
+                <select id="categoryFilter" class="w-full p-2 text-sm rounded-lg border border-warm-cream/50 focus:ring-2 focus:ring-deep-brown focus:outline-none font-baskerville">
+                    <option value="">Customer Satisfaction</option>
+                    <option value="revenue">Revenue</option>
+                    <option value="orders">Orders</option>
+                    <option value="customer_satisfaction">Customer Satisfaction</option>
+                </select>
+            </div>
+            <div class="flex items-end space-x-2">
+                <button id="applyFilters" class="w-full bg-deep-brown hover:bg-rich-brown text-warm-cream px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
+                    <i class="fas fa-filter mr-2"></i> Apply
+                </button>
+                <button id="resetFilters" class="w-full bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center justify-center hover-lift">
+                    <i class="fas fa-undo mr-2"></i> Reset
                 </button>
             </div>
         </div>
-        <div class="overflow-x-auto">
-            <table id="dailyRevenueTable" class="report-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($daily_revenue)): ?>
-                        <tr>
-                            <td colspan="4" class="text-center">No data available</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($daily_revenue as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['revenue_date']))); ?></td>
-                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                                <td><?php echo number_format($row['transaction_count']); ?></td>
-                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+    </div>
+</div>
+
+<!-- Daily Revenue Table -->
+<div id="dailyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-coins mr-2 text-accent-brown"></i>
+            Daily Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('dailyRevenueTable', 'Daily Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Weekly Revenue Table -->
-    <div id="weeklyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
-                Weekly Revenue
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('weeklyRevenueTable', 'Weekly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="weeklyRevenueTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="dailyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($daily_revenue)): ?>
                     <tr>
-                        <th>Week</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($weekly_revenue)): ?>
+                <?php else: ?>
+                    <?php foreach ($daily_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['revenue_date']))); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($weekly_revenue as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(formatWeekPeriod($row['revenue_week'])); ?></td>
-                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                                <td><?php echo number_format($row['transaction_count']); ?></td>
-                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Weekly Revenue Table -->
+<div id="weeklyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+            Weekly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('weeklyRevenueTable', 'Weekly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Monthly Revenue Table -->
-    <div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
-                Monthly Revenue
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="monthlyRevenueTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="weeklyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($weekly_revenue)): ?>
                     <tr>
-                        <th>Month</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($monthly_revenue)): ?>
+                <?php else: ?>
+                    <?php foreach ($weekly_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(formatWeekPeriod($row['revenue_week'])); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($monthly_revenue as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date('F Y', strtotime($row['revenue_month'] . '-01'))); ?></td>
-                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                                <td><?php echo number_format($row['transaction_count']); ?></td>
-                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Monthly Revenue Table -->
+<div id="monthlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
+            Monthly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('monthlyRevenueTable', 'Monthly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Yearly Revenue Table -->
-    <div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-trophy mr-2 text-accent-brown"></i>
-                Yearly Revenue
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="yearlyRevenueTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="monthlyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($monthly_revenue)): ?>
                     <tr>
-                        <th>Year</th>
-                        <th>Total Revenue</th>
-                        <th>Number of Transactions</th>
-                        <th>Average Transaction</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($yearly_revenue)): ?>
+                <?php else: ?>
+                    <?php foreach ($monthly_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(date('F Y', strtotime($row['revenue_month'] . '-01'))); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($yearly_revenue as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['revenue_year']); ?></td>
-                                <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
-                                <td><?php echo number_format($row['transaction_count']); ?></td>
-                                <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            </table>
+<!-- Yearly Revenue Table -->
+<div id="yearlyRevenueSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-trophy mr-2 text-accent-brown"></i>
+            Yearly Revenue
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('yearlyRevenueTable', 'Yearly Revenue Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Daily Orders Table -->
-    <div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
-                Daily Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="dailyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="yearlyRevenueTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Revenue</th>
+                    <th>Number of Transactions</th>
+                    <th>Average Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($yearly_revenue)): ?>
                     <tr>
-                        <th>Date</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($daily_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($yearly_revenue as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars($row['revenue_year']); ?></td>
+                            <td>₱<?php echo number_format($row['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($row['transaction_count']); ?></td>
+                            <td>₱<?php echo number_format($row['avg_transaction'], 2); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($daily_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['order_date']))); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
 
-            </table>
+        </table>
+    </div>
+</div>
+
+<!-- Daily Orders Table -->
+<div id="dailyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-shopping-bag mr-2 text-accent-brown"></i>
+            Daily Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('dailyOrdersTable', 'Daily Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Weekly Orders Table -->
-    <div id="weeklyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
-                Weekly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('weeklyOrdersTable', 'Weekly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="weeklyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="dailyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($daily_orders)): ?>
                     <tr>
-                        <th>Week</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($weekly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($daily_orders as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['order_date']))); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($weekly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(formatWeekPeriod($row['order_week'])); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<!-- Weekly Orders Table -->
+<div id="weeklyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+            Weekly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('weeklyOrdersTable', 'Weekly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Monthly Orders Table -->
-    <div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
-                Monthly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="monthlyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="weeklyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($weekly_orders)): ?>
                     <tr>
-                        <th>Month</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($monthly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($weekly_orders as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(formatWeekPeriod($row['order_week'])); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($monthly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Monthly Orders Table -->
+<div id="monthlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-clipboard-list mr-2 text-accent-brown"></i>
+            Monthly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('monthlyOrdersTable', 'Monthly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
-
-    <!-- Yearly Orders Table -->
-    <div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                <i class="fas fa-award mr-2 text-accent-brown"></i>
-                Yearly Orders
-            </h3>
-            <div class="space-x-2">
-                <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                    <i class="fas fa-print mr-2"></i> Print
-                </button>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table id="yearlyOrdersTable" class="report-table">
-                <thead>
+    <div class="overflow-x-auto">
+        <table id="monthlyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($monthly_orders)): ?>
                     <tr>
-                        <th>Year</th>
-                        <th>Total Orders</th>
-                        <th>Completed Orders</th>
-                        <th>Pending Orders</th>
+                        <td colspan="4" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($yearly_orders)): ?>
+                <?php else: ?>
+                    <?php foreach ($monthly_orders as $row): ?>
                         <tr>
-                            <td colspan="4" class="text-center">No data available</td>
+                            <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($yearly_orders as $row): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['order_year']); ?></td>
-                                <td><?php echo number_format($row['total_orders']); ?></td>
-                                <td><?php echo number_format($row['completed_orders']); ?></td>
-                                <td><?php echo number_format($row['pending_orders']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Yearly Orders Table -->
+<div id="yearlyOrdersSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-award mr-2 text-accent-brown"></i>
+            Yearly Orders
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('yearlyOrdersTable', 'Yearly Orders Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
         </div>
     </div>
+    <div class="overflow-x-auto">
+        <table id="yearlyOrdersTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Orders</th>
+                    <th>Completed Orders</th>
+                    <th>Pending Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($yearly_orders)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($yearly_orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['order_year']); ?></td>
+                            <td><?php echo number_format($row['total_orders']); ?></td>
+                            <td><?php echo number_format($row['completed_orders']); ?></td>
+                            <td><?php echo number_format($row['pending_orders']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- Customer Satisfaction Table -->
-<div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 <?php echo in_array($category, ['customer_satisfaction', '']) ? '' : 'hidden'; ?>">
+<div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
             <i class="fas fa-smile mr-2 text-accent-brown"></i>
@@ -962,20 +780,43 @@ ob_start();
     </div>
     <div class="overflow-x-auto">
         <table id="customerSatisfactionTable" class="report-table">
-            <thead>
-                <tr>
-                    <th>Period</th>
-                    <th>Excellent</th>
-                    <th>Good</th>
-                    <th>Average</th>
-                    <th>Poor</th>
-                    <th>Total Responses</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php echo $customerSatisfactionTableBody; ?>
-            </tbody>
-        </table>
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Excellent</th>
+                        <th>Good</th>
+                        <th>Average</th>
+                        <th>Poor</th>
+                        <th>Total Responses</th>
+                    </tr>
+                </thead>
+                <tbody>
+        <tr>
+            <td>July 2025</td>
+            <td>65%</td>
+            <td>25%</td>
+            <td>8%</td>
+            <td>2%</td>
+            <td>1,000</td>
+        </tr>
+        <tr>
+            <td>June 2025</td>
+            <td>60%</td>
+            <td>28%</td>
+            <td>10%</td>
+            <td>2%</td>
+            <td>950</td>
+        </tr>
+        <tr>
+            <td>2025</td>
+            <td>62%</td>
+            <td>26%</td>
+            <td>9%</td>
+            <td>3%</td>
+            <td>12,000</td>
+        </tr>
+    </tbody>
+            </table>
     </div>
 </div>
 </div>
