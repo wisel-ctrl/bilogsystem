@@ -679,7 +679,9 @@ require_once 'cashier_auth.php';
                     const term = searchTerm.toLowerCase();
                     return (
                         item.name.toLowerCase().includes(term) || 
-                        item.description.toLowerCase().includes(term))
+                        item.description.toLowerCase().includes(term) ||
+                (item.codename && item.codename.toLowerCase().includes(term)) 
+                    );
                 });
             
             if (filteredItems.length === 0) {

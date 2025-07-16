@@ -37,18 +37,30 @@ try {
         throw new Exception('Invalid PDO database connection');
     }
 
+    // Get selected status filter (default to 'pending')
+    $status_filter = isset($_GET['status']) ? $_GET['status'] : 'pending';
+    $valid_statuses = ['pending', 'accepted', 'declined', 'done', 'cancel', 'all'];
+    if (!in_array($status_filter, $valid_statuses)) {
+        $status_filter = 'pending';
+    }
+
     // Pagination settings
     $items_per_page = 5;
-    $current_page = isset($_GETrobin) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+    $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
     $offset = ($current_page - 1) * $items_per_page;
 
     // Get total number of bookings for pagination
     $count_query = "SELECT COUNT(*) as total 
                     FROM booking_tb 
-                    WHERE customer_id = :user_id 
-                    AND booking_status NOT IN ('cancel', 'done')";
+                    WHERE customer_id = :user_id";
+    if ($status_filter !== 'all') {
+        $count_query .= " AND booking_status = :status";
+    }
     $count_stmt = $conn->prepare($count_query);
     $count_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    if ($status_filter !== 'all') {
+        $count_stmt->bindValue(':status', $status_filter, PDO::PARAM_STR);
+    }
     $count_stmt->execute();
     $total_bookings = $count_stmt->fetch(PDO::FETCH_ASSOC)['total'];
     $total_pages = ceil($total_bookings / $items_per_page);
@@ -56,15 +68,20 @@ try {
     // Fetch bookings for current page
     $query = "SELECT booking_id, reservation_datetime, event, pax, booking_status, decline_reason 
               FROM booking_tb 
-              WHERE customer_id = :user_id 
-              AND booking_status NOT IN ('cancel', 'done')
-              ORDER BY reservation_datetime ASC 
-              LIMIT :limit OFFSET :offset";
+              WHERE customer_id = :user_id";
+    if ($status_filter !== 'all') {
+        $query .= " AND booking_status = :status";
+    }
+    $query .= " ORDER BY reservation_datetime ASC 
+                LIMIT :limit OFFSET :offset";
     $stmt = $conn->prepare($query);
     if (!$stmt) {
         throw new Exception('Query preparation failed: ' . implode(' | ', $conn->errorInfo()));
     }
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    if ($status_filter !== 'all') {
+        $stmt->bindValue(':status', $status_filter, PDO::PARAM_STR);
+    }
     $stmt->bindValue(':limit', $items_per_page, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     if (!$stmt->execute()) {
@@ -90,11 +107,10 @@ ob_start();
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
-    .font-playfair { font-family: 'Playfair Display', serif; }
-    .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
     
     .hover-lift {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         will-change: transform;
     }
     
@@ -147,7 +163,7 @@ ob_start();
     }
 
     ::-webkit-scrollbar-thumb {
-        background: #8B4513;
+        background: 8 Black 4513;
         border-radius: 4px;
     }
 
@@ -274,6 +290,20 @@ ob_start();
         color: #E8E0D5;
         font-weight: bold;
     }
+
+    .status-filter {
+        border: 1px solid #8B4513;
+        border-radius: 0.375rem;
+        padding: 0.5rem;
+        background: #E8E0D5;
+        color: #5D2F0F;
+        font-family: 'Libre Baskerville', serif;
+    }
+
+    .status-filter:focus {
+        border-color: #5D2F0F;
+        box-shadow: 0 0 0 2px rgba(93, 47, 15, 0.2);
+    }
 </style>
 
 <!-- Loading Progress Bar -->
@@ -285,11 +315,21 @@ ob_start();
 <!-- Main Content -->
 <section class="mb-12">
     <div class="flex items-center justify-between mb-6">
-        <h3 class="font-playfair text-2xl font-bold text-deep-brown">Upcoming Reservations</h3>
-        <a href="bookingpage.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2">
-            <span>Make New Reservation</span>
-            <i class="fas fa-calendar-plus"></i>
-        </a>
+        <h3 class="font-playfair text-2xl font-bold text-deep-brown">My Reservations</h3>
+        <div class="flex items-center space-x-4">
+            <select id="status-filter" class="status-filter">
+                <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                <option value="accepted" <?php echo $status_filter === 'accepted' ? 'selected' : ''; ?>>Accepted</option>
+                <option value="declined" <?php echo $status_filter === 'declined' ? 'selected' : ''; ?>>Declined</option>
+                <option value="done" <?php echo $status_filter === 'done' ? 'selected' : ''; ?>>Done</option>
+                <option value="cancel" <?php echo $status_filter === 'cancel' ? 'selected' : ''; ?>>Cancelled</option>
+                <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All</option>
+            </select>
+            <a href="bookingpage.php" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2">
+                <span>Make New Reservation</span>
+                <i class="fas fa-calendar-plus"></i>
+            </a>
+        </div>
     </div>
     <div class="bg-white/50 rounded-xl p-6 shadow-md">
         <div class="overflow-x-auto">
@@ -300,14 +340,16 @@ ob_start();
                         <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
                         <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Guests</th>
                         <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Status</th>
-                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Actions</th>
+                        <?php if ($status_filter === 'pending' || $status_filter === 'all'): ?>
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Action</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody id="bookings-table-body">
                     <?php if (empty($bookings)): ?>
                         <tr>
-                            <td colspan="5" class="py-4 px-4 text-center font-baskerville text-deep-brown">
-                                No upcoming reservations found
+                            <td colspan="<?php echo ($status_filter === 'pending' || $status_filter === 'all') ? 5 : 4; ?>" class="py-4 px-4 text-center font-baskerville text-deep-brown">
+                                No reservations found
                             </td>
                         </tr>
                     <?php else: ?>
@@ -334,8 +376,12 @@ ob_start();
                                             echo 'bg-warm-cream/50 text-deep-brown';
                                         } elseif ($booking['booking_status'] === 'declined') {
                                             echo 'bg-red-100/50 text-red-800';
-                                        } else {
+                                        } elseif ($booking['booking_status'] === 'pending') {
                                             echo 'bg-yellow-100/50 text-yellow-800';
+                                        } elseif ($booking['booking_status'] === 'done') {
+                                            echo 'bg-green-100/50 text-green-800';
+                                        } else {
+                                            echo 'bg-gray-100/50 text-gray-800';
                                         }
                                         ?>">
                                         <span class="w-2 h-2 rounded-full mr-2 
@@ -344,8 +390,12 @@ ob_start();
                                                 echo 'bg-green-500';
                                             } elseif ($booking['booking_status'] === 'declined') {
                                                 echo 'bg-red-500';
-                                            } else {
+                                            } elseif ($booking['booking_status'] === 'pending') {
                                                 echo 'bg-yellow-500';
+                                            } elseif ($booking['booking_status'] === 'done') {
+                                                echo 'bg-green-500';
+                                            } else {
+                                                echo 'bg-gray-500';
                                             }
                                             ?>">
                                         </span>
@@ -359,23 +409,27 @@ ob_start();
                                         </button>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex space-x-2">
-                                        <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50 cancel-reservation"
-                                                data-booking-id="<?php echo $booking['booking_id']; ?>"
-                                                data-tippy-content="Cancel reservation">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                <?php if ($status_filter === 'pending' || $status_filter === 'all'): ?>
+                                    <td class="py-4 px-4">
+                                        <?php if ($booking['booking_status'] === 'pending'): ?>
+                                            <div class="flex space-x-2">
+                                                <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50 cancel-reservation"
+                                                        data-booking-id="<?php echo $booking['booking_id']; ?>"
+                                                        data-tippy-content="Cancel reservation">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
-        <?php if ($total_pages > 1): ?>
-            <div class="pagination" id="pagination">
+        <div class="pagination" id="pagination">
+            <?php if ($total_pages > 1): ?>
                 <button data-page="1" <?php echo $current_page == 1 ? 'disabled' : ''; ?>>First</button>
                 <button data-page="<?php echo $current_page - 1; ?>" <?php echo $current_page == 1 ? 'disabled' : ''; ?>>Previous</button>
                 <?php
@@ -397,8 +451,8 @@ ob_start();
                 <?php endfor; ?>
                 <button data-page="<?php echo $current_page + 1; ?>" <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>>Next</button>
                 <button data-page="<?php echo $total_pages; ?>" <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>>Last</button>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </section>
 
@@ -476,127 +530,170 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // AJAX Pagination
-    function loadBookings(page) {
-        NProgress.start();
-        fetch('reservationsAPI/fetch_reservations.php?page=' + page, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
+// AJAX Pagination with proper column handling
+function loadBookings(page, status = 'pending') {
+    NProgress.start();
+    fetch(`reservationsAPI/fetch_reservations.php?page=${page}&status=${status}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        NProgress.done();
+        const tbody = document.getElementById('bookings-table-body');
+        const pagination = document.getElementById('pagination');
+        
+        if (!tbody) {
+            showToast('Error: Table body not found', 'error');
+            console.error('Table body element not found');
+            return;
+        }
+
+        // Determine if actions column should be shown
+        const showActionsColumn = (status === 'pending' || status === 'all');
+        const colspan = showActionsColumn ? 5 : 4;
+
+        // Update table header to show/hide Actions column
+        const tableHeader = document.querySelector('thead tr');
+        if (tableHeader) {
+            const actionsHeader = tableHeader.querySelector('th:last-child');
+            if (showActionsColumn) {
+                if (!actionsHeader || !actionsHeader.textContent.includes('Action')) {
+                    tableHeader.innerHTML = `
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Date & Time</th>
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Guests</th>
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Status</th>
+                        <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Action</th>
+                    `;
+                }
+            } else {
+                tableHeader.innerHTML = `
+                    <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Date & Time</th>
+                    <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Event Type</th>
+                    <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Guests</th>
+                    <th class="text-left py-3 px-4 font-baskerville text-deep-brown" scope="col">Status</th>
+                `;
             }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            NProgress.done();
-            const tbody = document.getElementById('bookings-table-body');
-            const pagination = document.getElementById('pagination');
-            
-            // Update table body
-            tbody.innerHTML = '';
-            if (data.bookings.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="py-4 px-4 text-center font-baskerville text-deep-brown">
-                            No upcoming reservations found
+        }
+
+        // Update table body
+        tbody.innerHTML = '';
+        if (!data.success || data.bookings.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="${colspan}" class="py-4 px-4 text-center font-baskerville text-deep-brown">
+                        No reservations found
+                    </td>
+                </tr>
+            `;
+        } else {
+            data.bookings.forEach(booking => {
+                const statusClass = booking.booking_status === 'accepted' ? 'bg-warm-cream/50 text-deep-brown' :
+                                 booking.booking_status === 'declined' ? 'bg-red-100/50 text-red-800' :
+                                 booking.booking_status === 'pending' ? 'bg-yellow-100/50 text-yellow-800' :
+                                 booking.booking_status === 'done' ? 'bg-green-100/50 text-green-800' :
+                                 'bg-gray-100/50 text-gray-800';
+                const statusDotClass = booking.booking_status === 'accepted' ? 'bg-green-500' :
+                                     booking.booking_status === 'declined' ? 'bg-red-500' :
+                                     booking.booking_status === 'pending' ? 'bg-yellow-500' :
+                                     booking.booking_status === 'done' ? 'bg-green-500' :
+                                     'bg-gray-500';
+                const declineReason = booking.booking_status === 'declined' && booking.decline_reason ? `
+                    <button class="ml-2 text-red-600 hover:text-red-700 transition-colors duration-300 p-1 rounded-full hover:bg-red-50 view-reason"
+                            data-reason="${booking.decline_reason}"
+                            data-tippy-content="View decline reason">
+                        <i class="fas fa-info-circle"></i>
+                    </button>` : '';
+                
+                // Only show actions column if status is 'pending' or 'all'
+                const actionColumn = showActionsColumn && booking.booking_status === 'pending' ? `
+                    <td class="py-4 px-4">
+                        <div class="flex space-x-2">
+                            <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50 cancel-reservation"
+                                    data-booking-id="${booking.booking_id}"
+                                    data-tippy-content="Cancel reservation">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>` : (showActionsColumn ? '<td class="py-4 px-4"></td>' : '');
+                
+                tbody.innerHTML += `
+                    <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
+                        <td class="py-4 px-4">
+                            <div class="font-baskerville text-deep-brown">
+                                ${new Date(booking.reservation_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                            </div>
+                            <div class="text-sm text-deep-brown/60">
+                                ${new Date(booking.reservation_datetime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+                            </div>
                         </td>
+                        <td class="py-4 px-4 font-baskerville text-deep-brown">
+                            ${booking.event || 'Not Specified'}
+                        </td>
+                        <td class="py-4 px-4 font-baskerville text-deep-brown">
+                            ${booking.pax}
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10 ${statusClass}">
+                                <span class="w-2 h-2 rounded-full mr-2 ${statusDotClass}"></span>
+                                ${booking.booking_status.charAt(0).toUpperCase() + booking.booking_status.slice(1)}
+                            </span>
+                            ${declineReason}
+                        </td>
+                        ${actionColumn}
                     </tr>
                 `;
-            } else {
-                data.bookings.forEach(booking => {
-                    const statusClass = booking.booking_status === 'accepted' ? 'bg-warm-cream/50 text-deep-brown' :
-                                     booking.booking_status === 'declined' ? 'bg-red-100/50 text-red-800' :
-                                     'bg-yellow-100/50 text-yellow-800';
-                    const statusDotClass = booking.booking_status === 'accepted' ? 'bg-green-500' :
-                                         booking.booking_status === 'declined' ? 'bg-red-500' :
-                                         'bg-yellow-500';
-                    const declineReason = booking.booking_status === 'declined' && booking.decline_reason ? `
-                        <button class="ml-2 text-red-600 hover:text-red-700 transition-colors duration-300 p-1 rounded-full hover:bg-red-50 view-reason"
-                                data-reason="${booking.decline_reason}"
-                                data-tippy-content="View decline reason">
-                            <i class="fas fa-info-circle"></i>
-                        </button>` : '';
-                    
-                    tbody.innerHTML += `
-                        <tr class="border-b border-deep-brown/10 hover:bg-deep-brown/5 transition-colors duration-300">
-                            <td class="py-4 px-4">
-                                <div class="font-baskerville text-deep-brown">
-                                    ${new Date(booking.reservation_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                                </div>
-                                <div class="text-sm text-deep-brown/60">
-                                    ${new Date(booking.reservation_datetime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-baskerville text-deep-brown">
-                                ${booking.event || 'Not Specified'}
-                            </td>
-                            <td class="py-4 px-4 font-baskerville text-deep-brown">
-                                ${booking.pax}
-                            </td>
-                            <td class="py-4 px-4">
-                                <span class="px-3 py-1 rounded-full text-sm font-baskerville inline-flex items-center border border-deep-brown/10 ${statusClass}">
-                                    <span class="w-2 h-2 rounded-full mr-2 ${statusDotClass}"></span>
-                                    ${booking.booking_status.charAt(0).toUpperCase() + booking.booking_status.slice(1)}
-                                </span>
-                                ${declineReason}
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="flex space-x-2">
-                                    <button class="text-red-600 hover:text-red-700 transition-colors duration-300 p-2 rounded-full hover:bg-red-50 cancel-reservation"
-                                            data-booking-id="${booking.booking_id}"
-                                            data-tippy-content="Cancel reservation">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-                
-                // Reinitialize tooltips for new elements
-                tippy('[data-tippy-content]', {
-                    theme: 'custom',
-                    animation: 'scale',
-                    duration: [200, 150],
-                    placement: 'bottom'
-                });
+            });
+            
+            // Reinitialize tooltips for new elements
+            tippy('[data-tippy-content]', {
+                theme: 'custom',
+                animation: 'scale',
+                duration: [200, 150],
+                placement: 'bottom'
+            });
 
-                // Reinitialize view reason buttons
-                document.querySelectorAll('.view-reason').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const reason = this.getAttribute('data-reason');
-                        const reasonDialog = document.createElement('div');
-                        reasonDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-                        reasonDialog.innerHTML = `
-                            <div class="bg-white rounded-lg p-6 max-w-md mx-4">
-                                <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Decline Reason</h3>
-                                <div class="bg-red-50/50 border border-red-100 rounded-lg p-4 mb-4">
-                                    <p class="text-red-800 font-baskerville">${reason}</p>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button class="px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition-colors duration-300" id="close-reason">
-                                        Close
-                                    </button>
-                                </div>
+            // Reinitialize view reason buttons
+            document.querySelectorAll('.view-reason').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reason = this.getAttribute('data-reason');
+                    const reasonDialog = document.createElement('div');
+                    reasonDialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    reasonDialog.innerHTML = `
+                        <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+                            <h3 class="font-playfair text-xl font-bold mb-4 text-deep-brown">Decline Reason</h3>
+                            <div class="bg-red-50/50 border border-red-100 rounded-lg p-4 mb-4">
+                                <p class="text-red-800 font-baskerville">${reason}</p>
                             </div>
-                        `;
-                        
-                        document.body.appendChild(reasonDialog);
-                        document.body.classList.add('overflow-hidden');
+                            <div class="flex justify-end">
+                                <button class="px-4 py-2 rounded-lg bg-rich-brown text-white hover:bg-deep-brown transition-colors duration-300" id="close-reason">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(reasonDialog);
+                    document.body.classList.add('overflow-hidden');
 
-                        document.getElementById('close-reason').addEventListener('click', () => {
-                            reasonDialog.remove();
-                            document.body.classList.remove('overflow-hidden');
-                        });
+                    document.getElementById('close-reason').addEventListener('click', () => {
+                        reasonDialog.remove();
+                        document.body.classList.remove('overflow-hidden');
                     });
                 });
-            }
+            });
+        }
 
-            // Update pagination
+        // Update pagination
+        if (pagination) {
             pagination.innerHTML = '';
             if (data.total_pages > 1) {
                 const start_page = Math.max(1, data.current_page - 1);
@@ -625,24 +722,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.addEventListener('click', () => {
                         const page = button.getAttribute('data-page');
                         if (page && !button.disabled) {
-                            loadBookings(page);
+                            loadBookings(page, document.getElementById('status-filter').value);
                         }
                     });
                 });
             }
-        })
-        .catch(error => {
-            NProgress.done();
-            showToast('Error loading bookings: ' + error.message, 'error');
-        });
-    }
+        } else {
+            console.error('Pagination element not found');
+            showToast('Error: Pagination container not found', 'error');
+        }
+    })
+    .catch(error => {
+        NProgress.done();
+        console.error('Error loading bookings:', error);
+        showToast(`Error loading bookings: ${error.message}`, 'error');
+    });
+}
+
+    // Initialize status filter
+    document.getElementById('status-filter').addEventListener('change', function() {
+        loadBookings(1, this.value);
+    });
 
     // Initialize pagination buttons
     document.querySelectorAll('#pagination button').forEach(button => {
         button.addEventListener('click', () => {
             const page = button.getAttribute('data-page');
             if (page && !button.disabled) {
-                loadBookings(page);
+                loadBookings(page, document.getElementById('status-filter').value);
             }
         });
     });
@@ -799,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded',
                             },
-                            body: `action=verify_otp&otp=${otp}&booking_id=${bookingId}` // Include booking_id
+                            body: `action=verify_otp&otp=${otp}&booking_id=${bookingId}`
                         })
                         .then(response => {
                             if (!response.ok) {
@@ -820,7 +927,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     willClose: () => {
                                         otpDialog.remove();
                                         document.body.classList.remove('overflow-hidden');
-                                        loadBookings(1);
+                                        loadBookings(1, document.getElementById('status-filter').value);
                                     }
                                 });
                             } else {
@@ -854,12 +961,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadNotifications() {
         const notificationsContainer = document.querySelector('#notifications-button + div .animate-pulse');
         setTimeout(() => {
-            notificationsContainer.innerHTML = `
-                <div class="p-4 border-b border-deep-brown/10">
-                    <p class="font-baskerville text-deep-brown">New special offer available!</p>
-                    <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
-                </div>
-            `;
+            if (notificationsContainer) {
+                notificationsContainer.innerHTML = `
+                    <div class="p-4 border-b border-deep-brown/10">
+                        <p class="font-baskerville text-deep-brown">New special offer available!</p>
+                        <p class="text-sm text-deep-brown/60">Check out our weekend buffet special.</p>
+                    </div>
+                `;
+            }
         }, 1000);
     }
 
