@@ -25,7 +25,7 @@ try {
         LEFT JOIN users_tb u ON r.user_id = CAST(u.id AS CHAR)
         GROUP BY r.general_comment, r.user_id, r.created_at
         ORDER BY r.created_at DESC
-        LIMIT 4
+        LIMIT 3
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
