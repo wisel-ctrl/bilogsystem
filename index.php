@@ -42,7 +42,7 @@ try {
             AND t.latest          = r.created_at    -- keep only newest copy
         LEFT  JOIN users_tb u ON u.id = r.user_id
         ORDER BY r.created_at DESC
-        LIMIT 3;                                    -- show 3 cards
+        LIMIT 4;                                    -- show 3 cards
     ";
 
     $stmt = $conn->prepare($sql);
