@@ -386,10 +386,14 @@ ob_end_clean();
                 <p class="font-baskerville italic text-accent-brown mb-8">
                     We hope to welcome you back to Caffè Lilio soon!
                 </p>
-                <button id="closeModal" class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg hover:bg-accent-brown transition-all duration-300 flex items-center mx-auto space-x-2 group">
-                    <span>Close</span>
-                    <i class="fas fa-times transition-transform group-hover:scale-110"></i>
-                </button>
+                <a href="index.php"
+                    class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg
+                            hover:bg-accent-brown transition-all duration-300
+                            flex items-center mx-auto space-x-2 group">
+                        <span>Close</span>
+                        <i class="fas fa-times transition-transform group-hover:scale-110"></i>
+                    </a>
+
             </div>
         </div>
     </main>
@@ -422,7 +426,7 @@ ob_end_clean();
 
             // Modal functionality
             const modal = document.getElementById('successModal');
-            const closeModalButton = document.getElementById('closeModal');
+            // const closeModalButton = document.getElementById('closeModal');
             
             function showModal() {
                 modal.classList.add('show');
