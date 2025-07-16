@@ -816,7 +816,7 @@ ob_start();
 
             async function checkAvailability(reservationDateTime) {
                 try {
-                    const response = await fetch('reservationAPI/check_availability.php', {
+                    const response = await fetch('reservationsAPI/check_availability.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
