@@ -727,9 +727,7 @@ require_once 'cashier_auth.php';
             </div>
             
             <!-- Enhanced description -->
-            <p class="text-rich-brown/80 font-baskerville mb-4 leading-relaxed text-sm">
-                ${item.description}
-            </p>
+     
             
             <!-- Enhanced price section -->
             <div class="flex justify-between items-center pt-2 border-t border-rich-brown/10">
