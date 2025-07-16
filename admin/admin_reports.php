@@ -213,6 +213,106 @@ function getYearlyRevenue($conn) {
     }
 }
 
+// Function to fetch daily customer satisfaction
+function getDailyCustomerSatisfaction($conn) {
+    try {
+        $query = "
+            SELECT 
+                DATE(created_at) as satisfaction_date,
+                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                COUNT(*) as total_responses
+            FROM customer_satisfaction_tb
+            WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            GROUP BY DATE(created_at)
+            ORDER BY satisfaction_date DESC
+            LIMIT 7
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Daily Customer Satisfaction Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Function to fetch weekly customer satisfaction
+function getWeeklyCustomerSatisfaction($conn) {
+    try {
+        $query = "
+            SELECT 
+                CONCAT(YEAR(created_at), '-W', LPAD(WEEK(created_at, 1), 2, '0')) as satisfaction_week,
+                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                COUNT(*) as total_responses
+            FROM customer_satisfaction_tb
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
+            GROUP BY YEAR(created_at), WEEK(created_at, 1)
+            ORDER BY created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Weekly Customer Satisfaction Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Function to fetch monthly customer satisfaction
+function getMonthlyCustomerSatisfaction($conn) {
+    try {
+        $query = "
+            SELECT 
+                DATE_FORMAT(created_at, '%Y-%m') as satisfaction_month,
+                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                COUNT(*) as total_responses
+            FROM customer_satisfaction_tb
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+            GROUP BY YEAR(created_at), MONTH(created_at)
+            ORDER BY created_at DESC
+            LIMIT 12
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Monthly Customer Satisfaction Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Function to fetch yearly customer satisfaction
+function getYearlyCustomerSatisfaction($conn) {
+    try {
+        $query = "
+            SELECT 
+                YEAR(created_at) as satisfaction_year,
+                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                COUNT(*) as total_responses
+            FROM customer_satisfaction_tb
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
+            GROUP BY YEAR(created_at)
+            ORDER BY satisfaction_year DESC
+            LIMIT 5
+        ";
+        $stmt = $conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Yearly Customer Satisfaction Query Failed: " . $e->getMessage());
+        return [];
+    }
+}
+
 // Fetch data
 $daily_orders = getDailyOrders($conn);
 $weekly_orders = getWeeklyOrders($conn);
@@ -223,13 +323,15 @@ $weekly_revenue = getWeeklyRevenue($conn);
 $monthly_revenue = getMonthlyRevenue($conn);
 $yearly_revenue = getYearlyRevenue($conn);
 
+// Fetch customer satisfaction data (add after existing fetch data calls)
+$daily_satisfaction = getDailyCustomerSatisfaction($conn);
+$weekly_satisfaction = getWeeklyCustomerSatisfaction($conn);
+$monthly_satisfaction = getMonthlyCustomerSatisfaction($conn);
+$yearly_satisfaction = getYearlyCustomerSatisfaction($conn);
+
 // Capture page content
 ob_start();
 ?>
-
-
-
-
 
 
 
@@ -765,60 +867,198 @@ ob_start();
     </div>
 </div>
 
-<!-- Customer Satisfaction Table -->
-<div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
+
+
+
+<!-- Daily Customer Satisfaction Table -->
+<div id="dailyCustomerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
             <i class="fas fa-smile mr-2 text-accent-brown"></i>
-            Customer Satisfaction
+            Daily Customer Satisfaction
         </h3>
         <div class="space-x-2">
-            <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+            <button onclick="printTable('dailyCustomerSatisfactionTable', 'Daily Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
                 <i class="fas fa-print mr-2"></i> Print
             </button>
         </div>
     </div>
     <div class="overflow-x-auto">
-        <table id="customerSatisfactionTable" class="report-table">
-                <thead>
+        <table id="dailyCustomerSatisfactionTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Excellent</th>
+                    <th>Good</th>
+                    <th>Average</th>
+                    <th>Poor</th>
+                    <th>Total Responses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($daily_satisfaction)): ?>
                     <tr>
-                        <th>Period</th>
-                        <th>Excellent</th>
-                        <th>Good</th>
-                        <th>Average</th>
-                        <th>Poor</th>
-                        <th>Total Responses</th>
+                        <td colspan="6" class="text-center">No data available</td>
                     </tr>
-                </thead>
-                <tbody>
-        <tr>
-            <td>July 2025</td>
-            <td>65%</td>
-            <td>25%</td>
-            <td>8%</td>
-            <td>2%</td>
-            <td>1,000</td>
-        </tr>
-        <tr>
-            <td>June 2025</td>
-            <td>60%</td>
-            <td>28%</td>
-            <td>10%</td>
-            <td>2%</td>
-            <td>950</td>
-        </tr>
-        <tr>
-            <td>2025</td>
-            <td>62%</td>
-            <td>26%</td>
-            <td>9%</td>
-            <td>3%</td>
-            <td>12,000</td>
-        </tr>
-    </tbody>
-            </table>
+                <?php else: ?>
+                    <?php foreach ($daily_satisfaction as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['satisfaction_date']))); ?></td>
+                            <td><?php echo number_format(($row['excellent_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['good_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['average_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['poor_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format($row['total_responses']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
+
+<!-- Weekly Customer Satisfaction Table -->
+<div id="weeklyCustomerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-week mr-2 text-accent-brown"></i>
+            Weekly Customer Satisfaction
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('weeklyCustomerSatisfactionTable', 'Weekly Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="weeklyCustomerSatisfactionTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Excellent</th>
+                    <th>Good</th>
+                    <th>Average</th>
+                    <th>Poor</th>
+                    <th>Total Responses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($weekly_satisfaction)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($weekly_satisfaction as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars(formatWeekPeriod($row['satisfaction_week'])); ?></td>
+                            <td><?php echo number_format(($row['excellent_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['good_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['average_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['poor_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format($row['total_responses']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Monthly Customer Satisfaction Table -->
+<div id="monthlyCustomerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-calendar-alt mr-2 text-accent-brown"></i>
+            Monthly Customer Satisfaction
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('monthlyCustomerSatisfactionTable', 'Monthly Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="monthlyCustomerSatisfactionTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Excellent</th>
+                    <th>Good</th>
+                    <th>Average</th>
+                    <th>Poor</th>
+                    <th>Total Responses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($monthly_satisfaction)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($monthly_satisfaction as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars(date('F Y', strtotime($row['satisfaction_month'] . '-01'))); ?></td>
+                            <td><?php echo number_format(($row['excellent_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['good_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['average_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['poor_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format($row['total_responses']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Yearly Customer Satisfaction Table -->
+<div id="yearlyCustomerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 hidden">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+            <i class="fas fa-trophy mr-2 text-accent-brown"></i>
+            Yearly Customer Satisfaction
+        </h3>
+        <div class="space-x-2">
+            <button onclick="printTable('yearlyCustomerSatisfactionTable', 'Yearly Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="yearlyCustomerSatisfactionTable" class="report-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Excellent</th>
+                    <th>Good</th>
+                    <th>Average</th>
+                    <th>Poor</th>
+                    <th>Total Responses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($yearly_satisfaction)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center">No data available</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($yearly_satisfaction as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['satisfaction_year']); ?></td>
+                            <td><?php echo number_format(($row['excellent_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['good_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['average_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format(($row['poor_count'] / $row['total_responses']) * 100, 1); ?>%</td>
+                            <td><?php echo number_format($row['total_responses']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 </div>
 
 <?php
