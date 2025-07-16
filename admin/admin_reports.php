@@ -1121,7 +1121,10 @@ ob_start();
                 'weeklyOrdersSection',
                 'monthlyOrdersSection',
                 'yearlyOrdersSection',
-                'customerSatisfactionSection'
+                'dailyCustomerSatisfactionSection',
+                'weeklyCustomerSatisfactionSection',
+                'monthlyCustomerSatisfactionSection',
+                'yearlyCustomerSatisfactionSection'
             ];
 
             // Hide all sections
@@ -1134,39 +1137,47 @@ ob_start();
                 // If both filters are "All", show only Customer Satisfaction
                 document.getElementById('customerSatisfactionSection').classList.remove('hidden');
             } else {
-                let targetSection = '';
-                if (category === 'revenue') {
-                    if (period === 'daily') targetSection = 'dailyRevenueSection';
-                    else if (period === 'weekly') targetSection = 'weeklyRevenueSection';
-                    else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
-                    else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
-                } else if (category === 'orders') {
-                    if (period === 'daily') targetSection = 'dailyOrdersSection';
-                    else if (period === 'weekly') targetSection = 'weeklyOrdersSection';
-                    else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
-                    else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
-                } else if (category === 'customer_satisfaction') {
-                    targetSection = 'customerSatisfactionSection';
-                } else if (category === '' && period) {
-                    // If category is "All" but period is selected, show all tables for that period
-                    if (period === 'daily') {
-                        document.getElementById('dailyRevenueSection').classList.remove('hidden');
-                        document.getElementById('dailyOrdersSection').classList.remove('hidden');
-                    } else if (period === 'weekly') {
-                        document.getElementById('weeklyRevenueSection').classList.remove('hidden'); // Added
-                        document.getElementById('weeklyOrdersSection').classList.remove('hidden');
-                    } else if (period === 'monthly') {
-                        document.getElementById('monthlyRevenueSection').classList.remove('hidden');
-                        document.getElementById('monthlyOrdersSection').classList.remove('hidden');
-                    } else if (period === 'yearly') {
-                        document.getElementById('yearlyRevenueSection').classList.remove('hidden');
-                        document.getElementById('yearlyOrdersSection').classList.remove('hidden');
-                    }
-                }
-                if (targetSection) {
-                    document.getElementById(targetSection).classList.remove('hidden');
-                }
+        let targetSection = '';
+        if (category === 'revenue') {
+            if (period === 'daily') targetSection = 'dailyRevenueSection';
+            else if (period === 'weekly') targetSection = 'weeklyRevenueSection';
+            else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
+            else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
+        } else if (category === 'orders') {
+            if (period === 'daily') targetSection = 'dailyOrdersSection';
+            else if (period === 'weekly') targetSection = 'weeklyOrdersSection';
+            else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
+            else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
+        } else if (category === 'customer_satisfaction') {
+            if (period === 'daily') targetSection = 'dailyCustomerSatisfactionSection';
+            else if (period === 'weekly') targetSection = 'weeklyCustomerSatisfactionSection';
+            else if (period === 'monthly') targetSection = 'monthlyCustomerSatisfactionSection';
+            else if (period === 'yearly') targetSection = 'yearlyCustomerSatisfactionSection';
+            else targetSection = 'dailyCustomerSatisfactionSection'; // Default to daily if no period
+        } else if (category === '' && period) {
+            // If category is "All" but period is selected, show all tables for that period
+            if (period === 'daily') {
+                document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                document.getElementById('dailyOrdersSection').classList.remove('hidden');
+                document.getElementById('dailyCustomerSatisfactionSection').classList.remove('hidden');
+            } else if (period === 'weekly') {
+                document.getElementById('weeklyRevenueSection').classList.remove('hidden');
+                document.getElementById('weeklyOrdersSection').classList.remove('hidden');
+                document.getElementById('weeklyCustomerSatisfactionSection').classList.remove('hidden');
+            } else if (period === 'monthly') {
+                document.getElementById('monthlyRevenueSection').classList.remove('hidden');
+                document.getElementById('monthlyOrdersSection').classList.remove('hidden');
+                document.getElementById('monthlyCustomerSatisfactionSection').classList.remove('hidden');
+            } else if (period === 'yearly') {
+                document.getElementById('yearlyRevenueSection').classList.remove('hidden');
+                document.getElementById('yearlyOrdersSection').classList.remove('hidden');
+                document.getElementById('yearlyCustomerSatisfactionSection').classList.remove('hidden');
             }
+        }
+        if (targetSection) {
+            document.getElementById(targetSection).classList.remove('hidden');
+        }
+    }
         }
 
         // Reset filters function
