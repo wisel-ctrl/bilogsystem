@@ -144,6 +144,8 @@ function getDailyRevenue($conn) {
         return [];
     }
 }
+
+// Function to fetch weekly revenue
 function getWeeklyRevenue($conn) {
     try {
         $query = "
@@ -165,7 +167,6 @@ function getWeeklyRevenue($conn) {
         return [];
     }
 }
-
 
 // Function to fetch monthly revenue
 function getMonthlyRevenue($conn) {
@@ -213,27 +214,8 @@ function getYearlyRevenue($conn) {
     }
 }
 
-// Fetch data
-$daily_orders = getDailyOrders($conn);
-$weekly_orders = getWeeklyOrders($conn);
-$monthly_orders = getMonthlyOrders($conn);
-$yearly_orders = getYearlyOrders($conn);
-$daily_revenue = getDailyRevenue($conn);
-$weekly_revenue = getWeeklyRevenue($conn);
-$monthly_revenue = getMonthlyRevenue($conn);
-$yearly_revenue = getYearlyRevenue($conn);
-
-// Capture page content
-ob_start();
-?>
-
-
-
-
-
-
-<?php
-function generateCustomerSatisfactionReport($pdo, $year = 2025, $months = ['06', '07']) {
+// Function to generate customer satisfaction report
+function generateCustomerSatisfactionReport($conn, $year = 2025, $months = ['06', '07']) {
     try {
         // Initialize table body
         $tableBody = '';
@@ -262,10 +244,10 @@ function generateCustomerSatisfactionReport($pdo, $year = 2025, $months = ['06',
         // 1. Yearly Report (for the entire year)
         $sqlYearly = "
             SELECT food_rating, ambiance_rating, service_rating, reservation_rating
-            FROM feedback
+            FROM ratings
             WHERE YEAR(created_at) = :year
         ";
-        $stmt = $pdo->prepare($sqlYearly);
+        $stmt = $conn->prepare($sqlYearly);
         $stmt->execute(['year' => $year]);
         $yearlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -296,10 +278,10 @@ function generateCustomerSatisfactionReport($pdo, $year = 2025, $months = ['06',
         foreach ($months as $month) {
             $sqlMonthly = "
                 SELECT food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM feedback
+                FROM ratings
                 WHERE YEAR(created_at) = :year AND MONTH(created_at) = :month
             ";
-            $stmt = $pdo->prepare($sqlMonthly);
+            $stmt = $conn->prepare($sqlMonthly);
             $stmt->execute(['year' => $year, 'month' => $month]);
             $monthlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -332,22 +314,24 @@ function generateCustomerSatisfactionReport($pdo, $year = 2025, $months = ['06',
 
         return $tableBody;
     } catch (PDOException $e) {
+        error_log("Customer Satisfaction Query Failed: " . $e->getMessage());
         return "<tr><td colspan='6'>Error fetching data: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
     }
 }
 
-// Database connection (update with your credentials)
-try {
-    $pdo = new PDO("mysql:host=localhost;dbname=your_database_name", "your_username", "your_password");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+// Fetch data
+$daily_orders = getDailyOrders($conn);
+$weekly_orders = getWeeklyOrders($conn);
+$monthly_orders = getMonthlyOrders($conn);
+$yearly_orders = getYearlyOrders($conn);
+$daily_revenue = getDailyRevenue($conn);
+$weekly_revenue = getWeeklyRevenue($conn);
+$monthly_revenue = getMonthlyRevenue($conn);
+$yearly_revenue = getYearlyRevenue($conn);
+$customerSatisfactionTableBody = generateCustomerSatisfactionReport($conn, 2025, ['06', '07']);
 
-// Call the function
-$year = 2025;
-$months = ['06', '07']; // June and July
-$customerSatisfactionTableBody = generateCustomerSatisfactionReport($pdo, $year, $months);
+// Capture page content
+ob_start();
 ?>
 
 
