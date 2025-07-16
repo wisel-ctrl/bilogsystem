@@ -219,10 +219,14 @@ function getDailyCustomerSatisfaction($conn) {
         $query = "
             SELECT 
                 DATE(created_at) as satisfaction_date,
-                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
-                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
-                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
-                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) >= 4.5 THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 3.5 AND 4.4 THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 2.5 AND 3.4 THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) < 2.5 THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
             FROM ratings
             WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
@@ -244,10 +248,14 @@ function getWeeklyCustomerSatisfaction($conn) {
         $query = "
             SELECT 
                 CONCAT(YEAR(created_at), '-W', LPAD(WEEK(created_at, 1), 2, '0')) as satisfaction_week,
-                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
-                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
-                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
-                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) >= 4.5 THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 3.5 AND 4.4 THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 2.5 AND 3.4 THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) < 2.5 THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
             FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
@@ -269,10 +277,14 @@ function getMonthlyCustomerSatisfaction($conn) {
         $query = "
             SELECT 
                 DATE_FORMAT(created_at, '%Y-%m') as satisfaction_month,
-                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
-                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
-                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
-                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) >= 4.5 THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 3.5 AND 4.4 THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 2.5 AND 3.4 THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) < 2.5 THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
             FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
@@ -294,10 +306,14 @@ function getYearlyCustomerSatisfaction($conn) {
         $query = "
             SELECT 
                 YEAR(created_at) as satisfaction_year,
-                SUM(CASE WHEN rating = 'excellent' THEN 1 ELSE 0 END) as excellent_count,
-                SUM(CASE WHEN rating = 'good' THEN 1 ELSE 0 END) as good_count,
-                SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
-                SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) >= 4.5 THEN 1 ELSE 0 END) as excellent_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 3.5 AND 4.4 THEN 1 ELSE 0 END) as good_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) BETWEEN 2.5 AND 3.4 THEN 1 ELSE 0 END) as average_count,
+                SUM(CASE WHEN (food_rating + ambiance_rating + IFNULL(reservation_rating, 0) + service_rating) / 
+                    (4 - IF(reservation_rating IS NULL, 1, 0)) < 2.5 THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
             FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
@@ -312,6 +328,7 @@ function getYearlyCustomerSatisfaction($conn) {
         return [];
     }
 }
+
 
 // Fetch data
 $daily_orders = getDailyOrders($conn);
