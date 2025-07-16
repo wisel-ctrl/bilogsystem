@@ -22,7 +22,7 @@ try {
             u.first_name,
             u.last_name
         FROM ratings r
-        LEFT JOIN users_tb u ON r.user_id COLLATE utf8mb4_unicode_ci = u.username
+        LEFT JOIN users_tb u ON r.user_id = CAST(u.id AS CHAR)
         ORDER BY r.created_at DESC
         LIMIT 3
     ");
@@ -477,6 +477,7 @@ try {
             </div>
         </div>
     </section>
+    
 
 <!-- Feedback Section -->
 <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
@@ -528,6 +529,7 @@ try {
         </div>
     </div>
 </section>
+
 
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
