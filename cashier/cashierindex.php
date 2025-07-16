@@ -710,21 +710,21 @@ require_once 'cashier_auth.php';
                 </div>
             ` : ''}
             
-            <!-- Enhanced add button -->
-            <div class="absolute top-3 right-3 z-10">
-                <button class="add-to-cart bg-gradient-to-r from-deep-brown to-rich-brown text-warm-cream px-6 py-3 rounded-xl hover:from-rich-brown hover:to-deep-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-2xl backdrop-blur-sm border border-warm-cream/20"
+
+        </div>
+        
+        <div class="p-6 bg-gradient-to-b from-warm-cream to-warm-cream/95">
+            <!-- Title and Add button row -->
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-xl font-bold text-deep-brown font-playfair leading-tight">
+                    ${item.name}
+                </h3>
+                <button class="add-to-cart bg-gradient-to-r from-deep-brown to-rich-brown text-warm-cream px-4 py-2 rounded-lg hover:from-rich-brown hover:to-deep-brown transition-all duration-300 font-baskerville flex items-center space-x-2 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
                         data-id="${item.id}">
                     <i class="fas fa-plus"></i>
                     <span>Add</span>
                 </button>
             </div>
-        </div>
-        
-        <div class="p-6 bg-gradient-to-b from-warm-cream to-warm-cream/95">
-            <!-- Enhanced title -->
-            <h3 class="text-xl font-bold text-deep-brown font-playfair mb-2 leading-tight">
-                ${item.name}
-            </h3>
             
             <!-- Enhanced description -->
             <p class="text-rich-brown/80 font-baskerville mb-4 leading-relaxed text-sm">
@@ -736,13 +736,6 @@ require_once 'cashier_auth.php';
                 <span class="text-2xl font-bold text-accent-brown font-baskerville tracking-wide">
                     ₱${item.price.toFixed(2)}
                 </span>
-                <div class="flex items-center space-x-1 text-rich-brown/60">
-                    <i class="fas fa-star text-xs"></i>
-                    <i class="fas fa-star text-xs"></i>
-                    <i class="fas fa-star text-xs"></i>
-                    <i class="fas fa-star text-xs"></i>
-                    <i class="fas fa-star text-xs"></i>
-                </div>
             </div>
         </div>
     `;
