@@ -10,7 +10,28 @@ ob_start();
 
 
 
-
+<style>
+    /* Add to your CSS */
+.availability-checking {
+    position: relative;
+}
+.availability-checking::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 50%;
+    border-top-color: #5F4B32;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+</style>
 
 
 
@@ -561,7 +582,7 @@ ob_start();
                 showModal('Complete Reservation', formHtml);
                 
                 // Add form submission handler
-                document.getElementById('reservationForm')?.addEventListener('submit', function(e) {
+                document.getElementById('reservationForm')?.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
                     // Validate inputs before submission
@@ -601,16 +622,38 @@ ob_start();
                     //reservationDateInput.step = 3600;
                     
                     // Add event listener to validate time when changed
-                    reservationDateInput.addEventListener('change', function() {
-                        if (this.value && !validateReservationTime(this.value)) {
-                            const dateError = document.getElementById('dateError');
+                    reservationDateInput.addEventListener('change', async function() {
+                        if (!this.value) return;
+                        
+                        const dateError = document.getElementById('dateError');
+                        
+                        // Add loading indicator
+                        this.classList.add('availability-checking');
+                        
+                        if (!validateReservationTime(this.value)) {
                             dateError.textContent = 'Reservations are only available between 10 AM and 10 PM.';
                             dateError.classList.remove('hidden');
                             this.classList.add('border-red-500');
-                        } else {
-                            const dateError = document.getElementById('dateError');
-                            dateError.classList.add('hidden');
-                            this.classList.remove('border-red-500');
+                            this.classList.remove('availability-checking');
+                            return;
+                        }
+                        
+                        try {
+                            const availability = await checkAvailability(this.value);
+                            if (!availability.available) {
+                                dateError.textContent = availability.message || 'This time slot is fully booked. Please choose another time.';
+                                dateError.classList.remove('hidden');
+                                this.classList.add('border-red-500');
+                            } else {
+                                dateError.classList.add('hidden');
+                                this.classList.remove('border-red-500');
+                            }
+                        } catch (error) {
+                            dateError.textContent = 'Error checking availability. Please try again.';
+                            dateError.classList.remove('hidden');
+                            this.classList.add('border-red-500');
+                        } finally {
+                            this.classList.remove('availability-checking');
                         }
                     });
                 }
@@ -701,7 +744,7 @@ ob_start();
 
             window.showReservationForm = showReservationForm;
 
-            window.validateReservationForm = function() {
+            window.validateReservationForm = async function() {
                 let isValid = true;
                 
                 // Validate number of pax
@@ -733,8 +776,29 @@ ob_start();
                     reservationDate.classList.add('border-red-500');
                     isValid = false;
                 } else {
-                    dateError.classList.add('hidden');
-                    reservationDate.classList.remove('border-red-500');
+                    // Check availability with server
+                    try {
+                        NProgress.start();
+                        const availability = await checkAvailability(reservationDate.value);
+                        
+                        if (!availability.available) {
+                            dateError.textContent = availability.message || 'This time slot is fully booked. Please choose another time.';
+                            dateError.classList.remove('hidden');
+                            reservationDate.classList.add('border-red-500');
+                            isValid = false;
+                        } else {
+                            dateError.classList.add('hidden');
+                            reservationDate.classList.remove('border-red-500');
+                        }
+                    } catch (error) {
+                        console.error('Availability check error:', error);
+                        dateError.textContent = 'Error checking availability. Please try again.';
+                        dateError.classList.remove('hidden');
+                        reservationDate.classList.add('border-red-500');
+                        isValid = false;
+                    } finally {
+                        NProgress.done();
+                    }
                 }
                 
                 return isValid;
@@ -749,6 +813,28 @@ ob_start();
                 // Validate time is between 10 AM (10) and 10 PM (22)
                 return hours >= 10 && hours < 22;
             }
+
+            async function checkAvailability(reservationDateTime) {
+                try {
+                    const response = await fetch('reservationAPI/check_availability.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            reservation_datetime: reservationDateTime
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error checking availability:', error);
+                    return { available: false, message: 'Error checking availability' };
+                }
+            }
+
+            window.checkAvailability = checkAvailability;
 
             function submitReservation(packageId) {
                 const form = document.getElementById('reservationForm');
