@@ -588,12 +588,32 @@ ob_start();
                     }
                 });
                 
-                // Set minimum date/time to current moment
-                const now = new Date();
-                // Adjust for timezone offset
-                const timezoneOffset = now.getTimezoneOffset() * 60000;
-                const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
-                document.getElementById('reservationDate').min = localISOTime;
+                const reservationDateInput = document.getElementById('reservationDate');
+                if (reservationDateInput) {
+                    // Set minimum date/time to current moment
+                    const now = new Date();
+                    // Adjust for timezone offset
+                    const timezoneOffset = now.getTimezoneOffset() * 60000;
+                    const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
+                    reservationDateInput.min = localISOTime;
+                    
+                    // Set step to 1 hour to prevent minutes selection
+                    //reservationDateInput.step = 3600;
+                    
+                    // Add event listener to validate time when changed
+                    reservationDateInput.addEventListener('change', function() {
+                        if (this.value && !validateReservationTime(this.value)) {
+                            const dateError = document.getElementById('dateError');
+                            dateError.textContent = 'Reservations are only available between 10 AM and 10 PM.';
+                            dateError.classList.remove('hidden');
+                            this.classList.add('border-red-500');
+                        } else {
+                            const dateError = document.getElementById('dateError');
+                            dateError.classList.add('hidden');
+                            this.classList.remove('border-red-500');
+                        }
+                    });
+                }
                 
                 // Initialize the total amount display
                 calculateTotal();
@@ -703,6 +723,12 @@ ob_start();
                 const now = new Date();
                 
                 if (!reservationDate.value || selectedDate <= now) {
+                    dateError.textContent = 'Please select a future date and time.';
+                    dateError.classList.remove('hidden');
+                    reservationDate.classList.add('border-red-500');
+                    isValid = false;
+                } else if (!validateReservationTime(reservationDate.value)) {
+                    dateError.textContent = 'Reservations are only available between 10 AM and 10 PM.';
                     dateError.classList.remove('hidden');
                     reservationDate.classList.add('border-red-500');
                     isValid = false;
@@ -712,6 +738,16 @@ ob_start();
                 }
                 
                 return isValid;
+            }
+
+            window.validateReservationTime = function(dateTimeString) {
+                if (!dateTimeString) return false;
+                
+                const selectedDate = new Date(dateTimeString);
+                const hours = selectedDate.getHours();
+                
+                // Validate time is between 10 AM (10) and 10 PM (22)
+                return hours >= 10 && hours < 22;
             }
 
             function submitReservation(packageId) {
