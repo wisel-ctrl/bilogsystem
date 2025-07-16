@@ -1,6 +1,6 @@
 <?php
 /* --------------------------------------------------------------
- *  ratings_loader.php – unique comments, only high‑scorers (> 3.3)
+ *  ratings_loader.php – show only 4‑ & 5‑star comments (unique)
  * -------------------------------------------------------------*/
 
 ini_set('display_errors', 1);
@@ -9,11 +9,12 @@ error_reporting(E_ALL);
 
 require_once 'db_connect.php';
 
-$SCORE_FLOOR = 3.3;   // hide ratings at or below this average
-$MAX_CARDS   = 3;     // how many cards you want to show
+/* ---- tweak these two constants to taste ---- */
+$MIN_AVERAGE = 4.0;   // hide anything below 4‑star
+$MAX_CARDS   = 4;     // how many cards appear on the page
 
 try {
-    /* STEP 1: grab the newest copy of every (user_id, comment) pair */
+    /* STEP 1 – newest copy of each (user_id, general_comment) */
     $sql = "
         SELECT  r.id,
                 r.food_rating,
@@ -38,18 +39,16 @@ try {
             AND t.latest          = r.created_at
         LEFT JOIN users_tb u ON u.id = r.user_id
         ORDER BY r.created_at DESC
-        LIMIT 20                     -- pull a safety buffer; we'll filter later
+        LIMIT 40                      /* buffer so we still have 4 after filtering */
     ";
-
     $stmt   = $conn->prepare($sql);
     $stmt->execute();
-    $raw    = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $rows   = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    /* STEP 2: compute average and filter out low‑score rows */
+    /* STEP 2 – compute average and keep only ≥ 4.0 */
     $ratings = [];
-    foreach ($raw as $row) {
+    foreach ($rows as $row) {
 
-        // average of NON‑zero category scores
         $parts = array_filter([
             $row['food_rating'],
             $row['ambiance_rating'],
@@ -59,11 +58,10 @@ try {
 
         $avg = $parts ? round(array_sum($parts) / count($parts), 1) : 0;
 
-        if ($avg <= $SCORE_FLOOR) {
-            continue;                       // skip weak ratings
+        if ($avg < $MIN_AVERAGE) {
+            continue;                  // skip anything < 4.0
         }
 
-        // prettify
         $row['average_rating'] = $avg;
         $row['display_name']   =
             ($row['user_id'] === 'anonymous'
@@ -74,7 +72,7 @@ try {
 
         $ratings[] = $row;
         if (count($ratings) === $MAX_CARDS) {
-            break;                          // stop once we have enough cards
+            break;                     // we have enough for the grid
         }
     }
 
