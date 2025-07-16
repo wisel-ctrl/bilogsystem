@@ -227,6 +227,133 @@ $yearly_revenue = getYearlyRevenue($conn);
 ob_start();
 ?>
 
+
+
+
+
+
+<?php
+function generateCustomerSatisfactionReport($pdo, $year = 2025, $months = ['06', '07']) {
+    try {
+        // Initialize table body
+        $tableBody = '';
+
+        // Helper function to calculate percentages for a given dataset
+        function calculateRatingPercentages($ratings, $total) {
+            if ($total == 0) {
+                return ['excellent' => 0, 'good' => 0, 'average' => 0, 'poor' => 0, 'total' => 0];
+            }
+            $excellent = $good = $average = $poor = 0;
+            foreach ($ratings as $rating) {
+                if ($rating == 5) $excellent++;
+                elseif ($rating == 4) $good++;
+                elseif ($rating == 3) $average++;
+                elseif ($rating == 1 || $rating == 2) $poor++;
+            }
+            return [
+                'excellent' => round(($excellent / $total) * 100, 0),
+                'good' => round(($good / $total) * 100, 0),
+                'average' => round(($average / $total) * 100, 0),
+                'poor' => round(($poor / $total) * 100, 0),
+                'total' => $total
+            ];
+        }
+
+        // 1. Yearly Report (for the entire year)
+        $sqlYearly = "
+            SELECT food_rating, ambiance_rating, service_rating, reservation_rating
+            FROM feedback
+            WHERE YEAR(created_at) = :year
+        ";
+        $stmt = $pdo->prepare($sqlYearly);
+        $stmt->execute(['year' => $year]);
+        $yearlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Combine all ratings into a single array
+        $allYearlyRatings = [];
+        foreach ($yearlyRatings as $row) {
+            $allYearlyRatings[] = $row['food_rating'];
+            $allYearlyRatings[] = $row['ambiance_rating'];
+            $allYearlyRatings[] = $row['service_rating'];
+            if ($row['reservation_rating'] > 0) { // Only include non-zero reservation ratings
+                $allYearlyRatings[] = $row['reservation_rating'];
+            }
+        }
+        $yearlyStats = calculateRatingPercentages($allYearlyRatings, count($allYearlyRatings));
+
+        // Add yearly row to table
+        $tableBody .= "
+            <tr>
+                <td>$year</td>
+                <td>{$yearlyStats['excellent']}%</td>
+                <td>{$yearlyStats['good']}%</td>
+                <td>{$yearlyStats['average']}%</td>
+                <td>{$yearlyStats['poor']}%</td>
+                <td>" . number_format($yearlyStats['total']) . "</td>
+            </tr>";
+
+        // 2. Monthly Reports
+        foreach ($months as $month) {
+            $sqlMonthly = "
+                SELECT food_rating, ambiance_rating, service_rating, reservation_rating
+                FROM feedback
+                WHERE YEAR(created_at) = :year AND MONTH(created_at) = :month
+            ";
+            $stmt = $pdo->prepare($sqlMonthly);
+            $stmt->execute(['year' => $year, 'month' => $month]);
+            $monthlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Combine all ratings into a single array
+            $allMonthlyRatings = [];
+            foreach ($monthlyRatings as $row) {
+                $allMonthlyRatings[] = $row['food_rating'];
+                $allMonthlyRatings[] = $row['ambiance_rating'];
+                $allMonthlyRatings[] = $row['service_rating'];
+                if ($row['reservation_rating'] > 0) {
+                    $allMonthlyRatings[] = $row['reservation_rating'];
+                }
+            }
+            $monthlyStats = calculateRatingPercentages($allMonthlyRatings, count($allMonthlyRatings));
+
+            // Convert month number to name
+            $monthName = DateTime::createFromFormat('!m', $month)->format('F');
+
+            // Add monthly row to table
+            $tableBody .= "
+                <tr>
+                    <td>$monthName $year</td>
+                    <td>{$monthlyStats['excellent']}%</td>
+                    <td>{$monthlyStats['good']}%</td>
+                    <td>{$monthlyStats['average']}%</td>
+                    <td>{$monthlyStats['poor']}%</td>
+                    <td>" . number_format($monthlyStats['total']) . "</td>
+                </tr>";
+        }
+
+        return $tableBody;
+    } catch (PDOException $e) {
+        return "<tr><td colspan='6'>Error fetching data: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    }
+}
+
+// Database connection (update with your credentials)
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=your_database_name", "your_username", "your_password");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+
+// Call the function
+$year = 2025;
+$months = ['06', '07']; // June and July
+$customerSatisfactionTableBody = generateCustomerSatisfactionReport($pdo, $year, $months);
+?>
+
+
+
+
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
@@ -783,31 +910,8 @@ ob_start();
                 </tr>
             </thead>
             <tbody>
-    <tr>
-        <td>July 2025</td>
-        <td>65%</td>
-        <td>25%</td>
-        <td>8%</td>
-        <td>2%</td>
-        <td>1,000</td>
-    </tr>
-    <tr>
-        <td>June 2025</td>
-        <td>60%</td>
-        <td>28%</td>
-        <td>10%</td>
-        <td>2%</td>
-        <td>950</td>
-    </tr>
-    <tr>
-        <td>2025</td>
-        <td>62%</td>
-        <td>26%</td>
-        <td>9%</td>
-        <td>3%</td>
-        <td>12,000</td>
-    </tr>
-</tbody>
+                <?php echo $customerSatisfactionTableBody; ?>
+            </tbody>
         </table>
     </div>
 </div>
