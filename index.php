@@ -30,6 +30,16 @@ try {
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $unique = [];
+foreach ($ratings as $row) {
+    $key = $row['user_id'] . '|' . $row['general_comment']; // uniq key
+    if (!isset($unique[$key])) {
+        $unique[$key] = $row;      // first occurrence wins
+    }
+}
+$ratings = array_slice(array_values($unique), 0, 3); // keep only 3
+
+
     // Debug: Log query results
     error_log("Fetched " . count($ratings) . " ratings from database");
     error_log("Ratings data: " . print_r($ratings, true));
