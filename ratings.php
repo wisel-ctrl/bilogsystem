@@ -389,9 +389,13 @@ ob_end_clean();
                 <a href="index.php"
                     class="btn-primary px-8 py-3 rounded-lg font-baskerville text-lg
                             hover:bg-accent-brown transition-all duration-300
-                            flex items-center mx-auto space-x-2 group">
-                        <span>Close</span>
-                        <i class="fas fa-times transition-transform group-hover:scale-110"></i>
+                            flex items-center justify-center mx-auto space-x-2 group
+                            focus:outline-none focus:ring-2 focus:ring-accent-brown focus:ring-opacity-50
+                            active:bg-accent-brown-dark cursor-pointer"
+                    aria-label="Close and return to home page"
+                    title="Return to home page">
+                        <span class="text-center">Close</span>
+                        <i class="fas fa-times transition-transform group-hover:scale-110" aria-hidden="true"></i>
                     </a>
 
             </div>
