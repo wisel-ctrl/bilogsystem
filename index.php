@@ -509,56 +509,104 @@ try {
 
 
 <!-- Feedback Section -->
-<section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 via-amber-100 to-orange-50 relative overflow-hidden">
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-amber-200/20 to-orange-200/20 rounded-full blur-3xl -translate-x-32 -translate-y-32"></div>
+    <div class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-amber-300/15 to-orange-300/15 rounded-full blur-3xl translate-x-40 translate-y-40"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-16 fade-in">
-            <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6">Customer Feedback</h2>
-            <div class="w-24 h-1 bg-gradient-to-r from-rich-brown to-accent-brown mx-auto mb-8"></div>
-            <p class="font-baskerville text-lg md:text-xl text-deep-brown max-w-4xl mx-auto leading-relaxed">
+            <div class="inline-block p-3 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 mb-6">
+                <svg class="w-8 h-8 text-rich-brown" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+            </div>
+            <h2 class="font-playfair text-5xl md:text-6xl font-bold text-deep-brown mb-6 tracking-tight">Customer Feedback</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-rich-brown via-accent-brown to-amber-600 mx-auto mb-8 rounded-full shadow-sm"></div>
+            <p class="font-baskerville text-lg md:text-xl text-deep-brown/90 max-w-4xl mx-auto leading-relaxed">
                 Hear what our valued customers have to say about their experience at Caffè Lilio.
             </p>
         </div>
+        
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <?php if (empty($ratings)): ?>
-                <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
+                <div class="col-span-full text-center py-12">
+                    <div class="inline-block p-4 rounded-full bg-amber-100 mb-4">
+                        <svg class="w-12 h-12 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-center text-deep-brown/80 font-baskerville text-lg">No feedback available yet.</p>
+                    <p class="text-center text-deep-brown/60 font-baskerville text-sm mt-2">Be the first to share your experience!</p>
+                </div>
             <?php else: ?>
                 <?php foreach ($ratings as $rating): ?>
-                    <div class="bg-warm-cream rounded-xl p-6 shadow-lg hover:shadow-xl hover-lift transition-all duration-300 fade-in">
-                        <div class="flex items-center mb-4">
-                            <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['display_name']); ?></h3>
+                    <div class="bg-gradient-to-br from-warm-cream to-amber-50 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover-lift transition-all duration-500 fade-in border border-amber-200/50 relative overflow-hidden group">
+                        <!-- Subtle pattern overlay -->
+                        <div class="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full blur-xl"></div>
                         </div>
-                        <div class="flex items-center mb-3">
-                            <div class="flex space-x-1 star-rating">
-                                <?php
-                                $avg = $rating['average_rating'];
-                                $full_stars = floor($avg);
-                                $has_half_star = ($avg - $full_stars) >= 0.5;
-                                for ($i = 1; $i <= 5; $i++):
-                                    if ($i <= $full_stars): ?>
-                                        <i class="fas fa-star text-lg"></i>
-                                    <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
-                                        <i class="fas fa-star-half-alt text-lg"></i>
-                                    <?php else: ?>
-                                        <i class="far fa-star text-lg"></i>
-                                    <?php endif; ?>
-                                <?php endfor; ?>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-baskerville font-bold text-lg text-deep-brown"><?php echo htmlspecialchars($rating['display_name']); ?></h3>
+                                <div class="w-10 h-10 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full flex items-center justify-center">
+                                    <span class="text-deep-brown font-bold text-sm"><?php echo substr($rating['display_name'], 0, 1); ?></span>
+                                </div>
                             </div>
-                            <span class="ml-2 font-baskerville text-deep-brown"><?php echo number_format($avg, 1); ?> stars</span>
+                            
+                            <div class="flex items-center mb-4">
+                                <div class="flex space-x-1 star-rating">
+                                    <?php
+                                    $avg = $rating['average_rating'];
+                                    $full_stars = floor($avg);
+                                    $has_half_star = ($avg - $full_stars) >= 0.5;
+                                    for ($i = 1; $i <= 5; $i++):
+                                        if ($i <= $full_stars): ?>
+                                            <i class="fas fa-star text-lg text-amber-500 drop-shadow-sm"></i>
+                                        <?php elseif ($has_half_star && $i == $full_stars + 1): ?>
+                                            <i class="fas fa-star-half-alt text-lg text-amber-500 drop-shadow-sm"></i>
+                                        <?php else: ?>
+                                            <i class="far fa-star text-lg text-amber-300"></i>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                                <span class="ml-2 font-baskerville text-deep-brown font-semibold"><?php echo number_format($avg, 1); ?> stars</span>
+                            </div>
+                            
+                            <div class="relative">
+                                <div class="absolute -left-2 -top-1 text-amber-400/40 text-4xl font-serif">"</div>
+                                <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed pl-4 italic"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
+                                <div class="absolute -right-1 -bottom-2 text-amber-400/40 text-4xl font-serif rotate-180">"</div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-amber-200/50">
+                                <p class="text-sm text-deep-brown/60 font-baskerville flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <?php echo date('F j, Y', strtotime($rating['created_at'])); ?>
+                                </p>
+                            </div>
                         </div>
-                        <p class="font-baskerville text-deep-brown/80 text-base leading-relaxed"><?php echo htmlspecialchars($rating['general_comment']); ?></p>
-                        <p class="text-sm text-deep-brown/60 mt-3 font-baskerville"><?php echo date('F j, Y', strtotime($rating['created_at'])); ?></p>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <div class="text-center mt-10">
-            <a href="ratings.php" class="inline-block bg-gradient-to-r from-rich-brown to-deep-brown text-warm-cream px-8 py-3 rounded-full font-baskerville font-bold hover:shadow-xl transition-all duration-300">
+        
+        <div class="text-center mt-12">
+            <a href="ratings.php" class="inline-flex items-center bg-gradient-to-r from-rich-brown via-accent-brown to-deep-brown text-warm-cream px-10 py-4 rounded-full font-baskerville font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
+                <svg class="w-5 h-5 mr-3 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
                 Share Your Feedback
+                <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
             </a>
         </div>
     </div>
 </section>
-
 <div class="pt-12 sm:pt-16 md:pt-20 bg-gradient-to-b from-amber-50 to-amber-100">
     <div class="text-center mb-10 sm:mb-12 md:mb-16 px-4 animate-fade-in">
         <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-brown-900 mb-4 sm:mb-6">Buffet Packages</h2>
