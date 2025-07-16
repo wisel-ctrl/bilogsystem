@@ -224,7 +224,7 @@ function getDailyCustomerSatisfaction($conn) {
                 SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
                 SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
-            FROM customer_satisfaction_tb
+            FROM ratings
             WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
             GROUP BY DATE(created_at)
             ORDER BY satisfaction_date DESC
@@ -249,7 +249,7 @@ function getWeeklyCustomerSatisfaction($conn) {
                 SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
                 SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
-            FROM customer_satisfaction_tb
+            FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
             GROUP BY YEAR(created_at), WEEK(created_at, 1)
             ORDER BY created_at DESC
@@ -274,7 +274,7 @@ function getMonthlyCustomerSatisfaction($conn) {
                 SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
                 SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
-            FROM customer_satisfaction_tb
+            FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
             GROUP BY YEAR(created_at), MONTH(created_at)
             ORDER BY created_at DESC
@@ -299,7 +299,7 @@ function getYearlyCustomerSatisfaction($conn) {
                 SUM(CASE WHEN rating = 'average' THEN 1 ELSE 0 END) as average_count,
                 SUM(CASE WHEN rating = 'poor' THEN 1 ELSE 0 END) as poor_count,
                 COUNT(*) as total_responses
-            FROM customer_satisfaction_tb
+            FROM ratings
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
             GROUP BY YEAR(created_at)
             ORDER BY satisfaction_year DESC
