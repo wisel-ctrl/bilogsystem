@@ -1046,20 +1046,24 @@
                 document.body.appendChild(printSection);
             }
             
-            // Generate table HTML
+            // Generate table HTML with enhanced header and new footer
             let tableHtml = `
-                <div class="print-header">
-                    <h1 style="font-size: 24px; font-weight: bold; font-family: 'Playfair Display', serif;">${title}</h1>
-                    <h2 style="font-size: 16px; color: #666; margin-top: 5px;">Caffè Lilio</h2>
+                <div class="print-header" style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #8B4513; padding-bottom: 15px;">
+                    <h1 style="font-size: 28px; font-weight: bold; font-family: 'Playfair Display', serif; color: #8B4513; margin-bottom: 5px;">Caffè Lilio Ristorante</h1>
+                    <h2 style="font-size: 20px; color: #333; margin-top: 0; font-style: italic;">Authentic Italian Cuisine in Liliw, Laguna</h2>
+                    <div style="margin-top: 10px;">
+                        <span style="font-size: 14px; color: #666;">${title}</span>
+                    </div>
                 </div>
-                <div class="print-date">
-                    Generated on: ${new Date().toLocaleString()}
+                <div class="print-meta" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 12px; color: #666;">
+                    <div>Website: https://caffelilioristorante.com/</div>
+                    <div>Generated on: ${new Date().toLocaleString()}</div>
                 </div>
-                <table class="print-table">
+                <table class="print-table" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
                     <thead>
                         <tr>
-                            <th style="background-color: #8B4513; color: white;">Category</th>
-                            <th style="background-color: #8B4513; color: white;">Value</th>
+                            <th style="background-color: #8B4513; color: white; padding: 10px; text-align: left;">Category</th>
+                            <th style="background-color: #8B4513; color: white; padding: 10px; text-align: left;">Value</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1069,9 +1073,9 @@
             data.labels.forEach((label, index) => {
                 const value = data.datasets[0].data[index];
                 tableHtml += `
-                    <tr>
-                        <td>${label}</td>
-                        <td>${chartId === 'revenueChart' || chartId === 'seasonChart' ? '₱' + Number(value).toLocaleString() : value}</td>
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 8px 10px;">${label}</td>
+                        <td style="padding: 8px 10px;">${chartId === 'revenueChart' || chartId === 'seasonChart' ? '₱' + Number(value).toLocaleString() : value}</td>
                     </tr>
                 `;
             });
@@ -1081,8 +1085,8 @@
                 const total = data.datasets[0].data.reduce((sum, value) => sum + Number(value), 0);
                 tableHtml += `
                     <tr style="font-weight: bold; background-color: #f5f5f5;">
-                        <td>Total</td>
-                        <td>₱${total.toLocaleString()}</td>
+                        <td style="padding: 8px 10px;">Total</td>
+                        <td style="padding: 8px 10px;">₱${total.toLocaleString()}</td>
                     </tr>
                 `;
             }
@@ -1090,6 +1094,12 @@
             tableHtml += `
                     </tbody>
                 </table>
+                <div class="print-footer" style="text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 14px; color: #555;">
+                    <p>For more inquiries, please contact us:</p>
+                    <p style="margin: 5px 0;">Email: caffelilio.liliw@gmail.com</p>
+                    <p style="margin: 5px 0;">Facebook: Caffè Lilio Ristorante | Liliw</p>
+                    <p style="margin-top: 15px; font-style: italic;">Grazie per aver scelto Caffè Lilio!</p>
+                </div>
             `;
             
             // Set the content and print
