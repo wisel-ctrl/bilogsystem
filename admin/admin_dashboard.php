@@ -516,6 +516,7 @@
                             <!-- Chart will be populated by JavaScript -->
                         </div>
                     </div>
+                </div>
 
                 <!-- Recent Activity -->
                 <div class="dashboard-card fade-in bg-white rounded-xl p-8 shadow-lg">
@@ -997,7 +998,7 @@
         // Fetch data and populate chart
         async function loadCustomerSatisfaction() {
             try {
-                const response = await fetch('api/customer_satisfaction.php');
+                const response = await fetch('dashboard_handlers/customer_chart.php');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
