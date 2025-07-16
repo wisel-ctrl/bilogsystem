@@ -726,7 +726,6 @@ require_once 'cashier_auth.php';
                 </button>
             </div>
             
-            <!-- Enhanced description -->
      
             
             <!-- Enhanced price section -->
