@@ -598,7 +598,7 @@ ob_start();
                     reservationDateInput.min = localISOTime;
                     
                     // Set step to 1 hour to prevent minutes selection
-                    reservationDateInput.step = 3600;
+                    //reservationDateInput.step = 3600;
                     
                     // Add event listener to validate time when changed
                     reservationDateInput.addEventListener('change', function() {
