@@ -46,7 +46,7 @@ try {
             ? 'Anonymous' 
             : trim($rating['first_name'] . ' ' . $rating['last_name']);
         // Debug: Log each rating's details
-        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, display_name={$rating['display_name']}, comment={$rating['general_comment']}");
+        error_log("Rating ID {$rating['id']}: user_id={$rating['user_id']}, first_name={$rating['first_name']}, last_name={$rating['last_name']}, display_name={$rating['display_name']}, comment={$rating['general_comment']}");
     }
 } catch (PDOException $e) {
     error_log("Error fetching ratings: " . $e->getMessage());
@@ -477,7 +477,7 @@ try {
             </div>
         </div>
     </section>
-    
+
 
 <!-- Feedback Section -->
 <section id="feedback" class="py-20 bg-gradient-to-b from-amber-50 to-amber-100">
