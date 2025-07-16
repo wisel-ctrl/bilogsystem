@@ -398,6 +398,8 @@ ob_start();
             }
 
             function showReservationForm(packageId, packagePrice) {
+                let isTimeSlotAvailable = false;
+
                 const formHtml = `
                     <div class="reservation-form">
                         <form id="reservationForm" enctype="multipart/form-data">
@@ -585,6 +587,13 @@ ob_start();
                 document.getElementById('reservationForm')?.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
+                    // Double-check availability before submission
+                    const reservationDate = document.getElementById('reservationDate').value;
+                    if (!reservationDate || !isTimeSlotAvailable) {
+                        alert('Please select an available time slot before submitting.');
+                        return;
+                    }
+                    
                     // Validate inputs before submission
                     if (validateReservationForm()) {
                         submitReservation(packageId);
@@ -618,14 +627,15 @@ ob_start();
                     const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
                     reservationDateInput.min = localISOTime;
                     
-                    // Set step to 1 hour to prevent minutes selection
-                    //reservationDateInput.step = 3600;
-                    
                     // Add event listener to validate time when changed
                     reservationDateInput.addEventListener('change', async function() {
                         if (!this.value) return;
                         
                         const dateError = document.getElementById('dateError');
+                        const submitButton = document.querySelector('.btn-reserve');
+                        
+                        // Disable submit button while checking
+                        submitButton.disabled = true;
                         
                         // Add loading indicator
                         this.classList.add('availability-checking');
@@ -635,6 +645,8 @@ ob_start();
                             dateError.classList.remove('hidden');
                             this.classList.add('border-red-500');
                             this.classList.remove('availability-checking');
+                            isTimeSlotAvailable = false;
+                            submitButton.disabled = true;
                             return;
                         }
                         
@@ -644,14 +656,20 @@ ob_start();
                                 dateError.textContent = availability.message || 'This time slot is fully booked. Please choose another time.';
                                 dateError.classList.remove('hidden');
                                 this.classList.add('border-red-500');
+                                isTimeSlotAvailable = false;
+                                submitButton.disabled = true;
                             } else {
                                 dateError.classList.add('hidden');
                                 this.classList.remove('border-red-500');
+                                isTimeSlotAvailable = true;
+                                submitButton.disabled = false;
                             }
                         } catch (error) {
                             dateError.textContent = 'Error checking availability. Please try again.';
                             dateError.classList.remove('hidden');
                             this.classList.add('border-red-500');
+                            isTimeSlotAvailable = false;
+                            submitButton.disabled = true;
                         } finally {
                             this.classList.remove('availability-checking');
                         }
