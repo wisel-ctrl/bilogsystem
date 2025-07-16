@@ -512,49 +512,10 @@
                             <i class="fas fa-smile mr-2 text-accent-brown"></i>
                             Customer Satisfaction
                         </h3>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium text-rich-brown font-baskerville">Excellent</span>
-                                    <span class="text-sm font-bold text-deep-brown font-baskerville">65%</span>
-                                </div>
-                                <div class="w-full bg-warm-cream/30 rounded-full h-3">
-                                    <div class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: 65%"></div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium text-rich-brown font-baskerville">Good</span>
-                                    <span class="text-sm font-bold text-deep-brown font-baskerville">25%</span>
-                                </div>
-                                <div class="w-full bg-warm-cream/30 rounded-full h-3">
-                                    <div class="bg-blue-500 h-3 rounded-full transition-all duration-500" style="width: 25%"></div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium text-rich-brown font-baskerville">Average</span>
-                                    <span class="text-sm font-bold text-deep-brown font-baskerville">8%</span>
-                                </div>
-                                <div class="w-full bg-warm-cream/30 rounded-full h-3">
-                                    <div class="bg-yellow-500 h-3 rounded-full transition-all duration-500" style="width: 8%"></div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium text-rich-brown font-baskerville">Poor</span>
-                                    <span class="text-sm font-bold text-deep-brown font-baskerville">2%</span>
-                                </div>
-                                <div class="w-full bg-warm-cream/30 rounded-full h-3">
-                                    <div class="bg-red-500 h-3 rounded-full transition-all duration-500" style="width: 2%"></div>
-                                </div>
-                            </div>
+                        <div id="satisfaction-chart" class="space-y-6">
+                            <!-- Chart will be populated by JavaScript -->
                         </div>
                     </div>
-                </div>
 
                 <!-- Recent Activity -->
                 <div class="dashboard-card fade-in bg-white rounded-xl p-8 shadow-lg">
@@ -899,6 +860,7 @@
             initRevenueChart();
             initializeMenuChart();
             fetchSeasonalData();
+            loadCustomerSatisfaction();
         });
 
         async function initializeMenuChart() {
@@ -1024,6 +986,48 @@
             });
         }
 
+        // Color mapping
+        const COLORS = {
+            'Excellent': 'bg-green-500',
+            'Good': 'bg-blue-500',
+            'Average': 'bg-yellow-500',
+            'Poor': 'bg-red-500'
+        };
+
+        // Fetch data and populate chart
+        async function loadCustomerSatisfaction() {
+            try {
+                const response = await fetch('api/customer_satisfaction.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                
+                const chartContainer = document.getElementById('satisfaction-chart');
+                chartContainer.innerHTML = '';
+                
+                data.forEach(item => {
+                    const categoryElement = document.createElement('div');
+                    categoryElement.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-rich-brown font-baskerville">${item.category}</span>
+                            <span class="text-sm font-bold text-deep-brown font-baskerville">${item.percentage}%</span>
+                        </div>
+                        <div class="w-full bg-warm-cream/30 rounded-full h-3">
+                            <div class="${COLORS[item.category]} h-3 rounded-full transition-all duration-500" 
+                                style="width: ${item.percentage}%"></div>
+                        </div>
+                    `;
+                    chartContainer.appendChild(categoryElement);
+                });
+                
+            } catch (error) {
+                console.error('Error loading customer satisfaction data:', error);
+                document.getElementById('satisfaction-chart').innerHTML = `
+                    <div class="text-red-500">Error loading customer satisfaction data. Please try again later.</div>
+                `;
+            }
+        }
 
 
         function printChartData(chartId, title) {
