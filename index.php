@@ -25,7 +25,7 @@ try {
         LEFT JOIN users_tb u ON r.user_id = CAST(u.id AS CHAR)
         GROUP BY r.general_comment, r.user_id, r.created_at
         ORDER BY r.created_at DESC
-        LIMIT 3
+        LIMIT 4
     ");
     $stmt->execute();
     $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -499,7 +499,7 @@ try {
                 Hear what our valued customers have to say about their experience at Caffè Lilio.
             </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <?php if (empty($ratings)): ?>
                 <p class="text-center text-deep-brown font-baskerville">No feedback available yet.</p>
             <?php else: ?>
