@@ -156,7 +156,7 @@ function getWeeklyRevenue($conn) {
                 IF(COUNT(DISTINCT s.sales_id) > 0, SUM(s.total_price - s.discount_price) / COUNT(DISTINCT s.sales_id), 0) as avg_transaction
             FROM sales_tb s
             WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
-            GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1) 
+            GROUP BY YEAR(s.created_at), WEEK(s.created_at, 1)
             ORDER BY s.created_at DESC
             LIMIT 12
         ";
@@ -215,7 +215,7 @@ function getYearlyRevenue($conn) {
 }
 
 // Function to generate customer satisfaction report
-function generateCustomerSatisfactionReport($conn, $period = 'monthly') {
+function generateCustomerSatisfactionReport($conn, $year = 2025, $months = ['06', '07']) {
     try {
         // Initialize table body
         $tableBody = '';
@@ -241,150 +241,75 @@ function generateCustomerSatisfactionReport($conn, $period = 'monthly') {
             ];
         }
 
-        if ($period == 'daily') {
-            $sql = "
-                SELECT 
-                    DATE(created_at) as period_date,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-                GROUP BY DATE(created_at)
-                ORDER BY period_date DESC
-                LIMIT 7
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 1. Yearly Report (for the entire year)
+        $sqlYearly = "
+            SELECT food_rating, ambiance_rating, service_rating, reservation_rating
+            FROM ratings
+            WHERE YEAR(created_at) = :year
+        ";
+        $stmt = $conn->prepare($sqlYearly);
+        $stmt->execute(['year' => $year]);
+        $yearlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = date('F j, Y', strtotime($row['period_date']));
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'weekly') {
-            $sql = "
-                SELECT 
-                    CONCAT(YEAR(created_at), '-W', LPAD(WEEK(created_at, 1), 2, '0')) as period_week,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
-                GROUP BY YEAR(created_at), WEEK(created_at, 1)
-                ORDER BY created_at DESC
-                LIMIT 12
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = formatWeekPeriod($row['period_week']);
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'monthly') {
-            $sql = "
-                SELECT 
-                    DATE_FORMAT(created_at, '%Y-%m') as period_month,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
-                GROUP BY YEAR(created_at), MONTH(created_at)
-                ORDER BY created_at DESC
-                LIMIT 12
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = date('F Y', strtotime($row['period_month'] . '-01'));
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
-            }
-        } elseif ($period == 'yearly') {
-            $sql = "
-                SELECT 
-                    YEAR(created_at) as period_year,
-                    food_rating, ambiance_rating, service_rating, reservation_rating
-                FROM ratings
-                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
-                GROUP BY YEAR(created_at)
-                ORDER BY period_year DESC
-                LIMIT 5
-            ";
-            $stmt = $conn->query($sql);
-            $ratingsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($ratingsData as $row) {
-                $allRatings = [
-                    $row['food_rating'],
-                    $row['ambiance_rating'],
-                    $row['service_rating']
-                ];
-                if ($row['reservation_rating'] > 0) {
-                    $allRatings[] = $row['reservation_rating'];
-                }
-                $stats = calculateRatingPercentages($allRatings, count($allRatings));
-                $periodName = $row['period_year'];
-                $tableBody .= "
-                    <tr>
-                        <td>$periodName</td>
-                        <td>{$stats['excellent']}%</td>
-                        <td>{$stats['good']}%</td>
-                        <td>{$stats['average']}%</td>
-                        <td>{$stats['poor']}%</td>
-                        <td>" . number_format($stats['total']) . "</td>
-                    </tr>";
+        // Combine all ratings into a single array
+        $allYearlyRatings = [];
+        foreach ($yearlyRatings as $row) {
+            $allYearlyRatings[] = $row['food_rating'];
+            $allYearlyRatings[] = $row['ambiance_rating'];
+            $allYearlyRatings[] = $row['service_rating'];
+            if ($row['reservation_rating'] > 0) { // Only include non-zero reservation ratings
+                $allYearlyRatings[] = $row['reservation_rating'];
             }
         }
+        $yearlyStats = calculateRatingPercentages($allYearlyRatings, count($allYearlyRatings));
 
-        if (empty($ratingsData)) {
-            $tableBody = "<tr><td colspan='6' class='text-center'>No data available</td></tr>";
+        // Add yearly row to table
+        $tableBody .= "
+            <tr>
+                <td>$year</td>
+                <td>{$yearlyStats['excellent']}%</td>
+                <td>{$yearlyStats['good']}%</td>
+                <td>{$yearlyStats['average']}%</td>
+                <td>{$yearlyStats['poor']}%</td>
+                <td>" . number_format($yearlyStats['total']) . "</td>
+            </tr>";
+
+        // 2. Monthly Reports
+        foreach ($months as $month) {
+            $sqlMonthly = "
+                SELECT food_rating, ambiance_rating, service_rating, reservation_rating
+                FROM ratings
+                WHERE YEAR(created_at) = :year AND MONTH(created_at) = :month
+            ";
+            $stmt = $conn->prepare($sqlMonthly);
+            $stmt->execute(['year' => $year, 'month' => $month]);
+            $monthlyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Combine all ratings into a single array
+            $allMonthlyRatings = [];
+            foreach ($monthlyRatings as $row) {
+                $allMonthlyRatings[] = $row['food_rating'];
+                $allMonthlyRatings[] = $row['ambiance_rating'];
+                $allMonthlyRatings[] = $row['service_rating'];
+                if ($row['reservation_rating'] > 0) {
+                    $allMonthlyRatings[] = $row['reservation_rating'];
+                }
+            }
+            $monthlyStats = calculateRatingPercentages($allMonthlyRatings, count($allMonthlyRatings));
+
+            // Convert month number to name
+            $monthName = DateTime::createFromFormat('!m', $month)->format('F');
+
+            // Add monthly row to table
+            $tableBody .= "
+                <tr>
+                    <td>$monthName $year</td>
+                    <td>{$monthlyStats['excellent']}%</td>
+                    <td>{$monthlyStats['good']}%</td>
+                    <td>{$monthlyStats['average']}%</td>
+                    <td>{$monthlyStats['poor']}%</td>
+                    <td>" . number_format($monthlyStats['total']) . "</td>
+                </tr>";
         }
 
         return $tableBody;
@@ -394,24 +319,21 @@ function generateCustomerSatisfactionReport($conn, $period = 'monthly') {
     }
 }
 
-// Handle filter parameters
-$period = isset($_GET['period']) ? $_GET['period'] : 'daily';
-$category = isset($_GET['category']) ? $_GET['category'] : 'revenue';
-
-// Fetch data based on filters
-$daily_orders = $period == 'daily' && in_array($category, ['orders', '']) ? getDailyOrders($conn) : [];
-$weekly_orders = $period == 'weekly' && in_array($category, ['orders', '']) ? getWeeklyOrders($conn) : [];
-$monthly_orders = $period == 'monthly' && in_array($category, ['orders', '']) ? getMonthlyOrders($conn) : [];
-$yearly_orders = $period == 'yearly' && in_array($category, ['orders', '']) ? getYearlyOrders($conn) : [];
-$daily_revenue = $period == 'daily' && in_array($category, ['revenue', '']) ? getDailyRevenue($conn) : [];
-$weekly_revenue = $period == 'weekly' && in_array($category, ['revenue', '']) ? getWeeklyRevenue($conn) : [];
-$monthly_revenue = $period == 'monthly' && in_array($category, ['revenue', '']) ? getMonthlyRevenue($conn) : [];
-$yearly_revenue = $period == 'yearly' && in_array($category, ['revenue', '']) ? getYearlyRevenue($conn) : [];
-$customerSatisfactionTableBody = in_array($category, ['customer_satisfaction', '']) ? generateCustomerSatisfactionReport($conn, $period) : '';
+// Fetch data
+$daily_orders = getDailyOrders($conn);
+$weekly_orders = getWeeklyOrders($conn);
+$monthly_orders = getMonthlyOrders($conn);
+$yearly_orders = getYearlyOrders($conn);
+$daily_revenue = getDailyRevenue($conn);
+$weekly_revenue = getWeeklyRevenue($conn);
+$monthly_revenue = getMonthlyRevenue($conn);
+$yearly_revenue = getYearlyRevenue($conn);
+$customerSatisfactionTableBody = generateCustomerSatisfactionReport($conn, 2025, ['06', '07']);
 
 // Capture page content
 ob_start();
 ?>
+
 
 
 
@@ -946,37 +868,37 @@ ob_start();
         </div>
     </div>
 
-       <!-- Customer Satisfaction Table -->
-       <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 mb-8 <?php echo in_array($category, ['customer_satisfaction', '']) ? '' : 'hidden'; ?>">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
-                        <i class="fas fa-smile mr-2 text-accent-brown"></i>
-                        Customer Satisfaction
-                    </h3>
-                    <div class="space-x-2">
-                        <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
-                            <i class="fas fa-print mr-2"></i> Print
-                        </button>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table id="customerSatisfactionTable" class="report-table">
-                        <thead>
-                            <tr>
-                                <th>Period</th>
-                                <th>Excellent</th>
-                                <th>Good</th>
-                                <th>Average</th>
-                                <th>Poor</th>
-                                <th>Total Responses</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php echo $customerSatisfactionTableBody; ?>
-                        </tbody>
-                    </table>
-                </div>
+    <!-- Customer Satisfaction Table -->
+    <div id="customerSatisfactionSection" class="dashboard-card fade-in bg-white rounded-xl p-6 hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-deep-brown font-playfair flex items-center">
+                <i class="fas fa-smile mr-2 text-accent-brown"></i>
+                Customer Satisfaction
+            </h3>
+            <div class="space-x-2">
+                <button onclick="printTable('customerSatisfactionTable', 'Customer Satisfaction Report')" class="bg-deep-brown hover:bg-rich-brown text-warm-cream px-4 py-2 rounded-lg text-sm font-baskerville transition-all duration-300 flex items-center hover-lift">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
             </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="customerSatisfactionTable" class="report-table">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Excellent</th>
+                        <th>Good</th>
+                        <th>Average</th>
+                        <th>Poor</th>
+                        <th>Total Responses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php echo $customerSatisfactionTableBody; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <?php
