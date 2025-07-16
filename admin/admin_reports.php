@@ -33,8 +33,7 @@ function getDailyOrders($conn) {
             SELECT 
                 DATE(s.created_at) as order_date,
                 COUNT(DISTINCT o.order_id) as total_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders
             FROM order_tb o
             JOIN sales_tb s ON o.sales_id = s.sales_id
             WHERE DATE(s.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
@@ -57,8 +56,7 @@ function getWeeklyOrders($conn) {
             SELECT 
                 CONCAT(YEAR(s.created_at), '-W', LPAD(WEEK(s.created_at, 1), 2, '0')) as order_week,
                 COUNT(DISTINCT o.order_id) as total_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders
             FROM order_tb o
             JOIN sales_tb s ON o.sales_id = s.sales_id
             WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 WEEK)
@@ -81,8 +79,7 @@ function getMonthlyOrders($conn) {
             SELECT 
                 DATE_FORMAT(s.created_at, '%Y-%m') as order_month,
                 COUNT(DISTINCT o.order_id) as total_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders
             FROM order_tb o
             JOIN sales_tb s ON o.sales_id = s.sales_id
             WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
@@ -105,8 +102,7 @@ function getYearlyOrders($conn) {
             SELECT 
                 YEAR(s.created_at) as order_year,
                 COUNT(DISTINCT o.order_id) as total_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders,
-                COUNT(DISTINCT CASE WHEN s.amount_paid = 0 THEN o.order_id END) as pending_orders
+                COUNT(DISTINCT CASE WHEN s.amount_paid > 0 THEN o.order_id END) as completed_orders
             FROM order_tb o
             JOIN sales_tb s ON o.sales_id = s.sales_id
             WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
@@ -731,7 +727,6 @@ ob_start();
                     <th>Date</th>
                     <th>Total Orders</th>
                     <th>Completed Orders</th>
-                    <th>Pending Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -745,7 +740,6 @@ ob_start();
                             <td><?php echo htmlspecialchars(date('F j, Y', strtotime($row['order_date']))); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
-                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -775,7 +769,6 @@ ob_start();
                     <th>Week</th>
                     <th>Total Orders</th>
                     <th>Completed Orders</th>
-                    <th>Pending Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -789,7 +782,6 @@ ob_start();
                             <td><?php echo htmlspecialchars(formatWeekPeriod($row['order_week'])); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
-                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -818,7 +810,6 @@ ob_start();
                     <th>Month</th>
                     <th>Total Orders</th>
                     <th>Completed Orders</th>
-                    <th>Pending Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -832,7 +823,6 @@ ob_start();
                             <td><?php echo htmlspecialchars(date('F Y', strtotime($row['order_month'] . '-01'))); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
-                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -861,7 +851,6 @@ ob_start();
                     <th>Year</th>
                     <th>Total Orders</th>
                     <th>Completed Orders</th>
-                    <th>Pending Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -875,7 +864,6 @@ ob_start();
                             <td><?php echo htmlspecialchars($row['order_year']); ?></td>
                             <td><?php echo number_format($row['total_orders']); ?></td>
                             <td><?php echo number_format($row['completed_orders']); ?></td>
-                            <td><?php echo number_format($row['pending_orders']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
