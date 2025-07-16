@@ -541,7 +541,7 @@ try {
                 </div>
             <?php else: ?>
                 <?php foreach ($ratings as $rating): ?>
-                    <div class="bg-gradient-to-br from-warm-cream to-amber-50 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover-lift transition-all duration-500 fade-in border border-amber-200/50 relative overflow-hidden group">
+                    <div class="bg-white/80 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover-lift transition-all duration-500 fade-in border border-amber-200/50 relative overflow-hidden group">
                         <!-- Subtle pattern overlay -->
                         <div class="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
                             <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full blur-xl"></div>
