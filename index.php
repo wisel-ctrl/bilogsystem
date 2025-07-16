@@ -1,22 +1,19 @@
 <?php
-/* ------------------------------------------------------------------
- *  ratings_loader.php   –  fetch the 3 most‑recent, unique comments
- * -----------------------------------------------------------------*/
+/* --------------------------------------------------------------
+ *  ratings_loader.php – unique comments, only high‑scorers (> 3.3)
+ * -------------------------------------------------------------*/
 
-// ***** DEBUGGING (disable in production) *****
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// ***** DATABASE CONNECTION *****
 require_once 'db_connect.php';
 
+$SCORE_FLOOR = 3.3;   // hide ratings at or below this average
+$MAX_CARDS   = 3;     // how many cards you want to show
+
 try {
-    /* --------------------------------------------------------------
-     *  1. SQL: keep just ONE row per (user_id, general_comment)
-     *     – the one with the greatest created_at
-     *  2. Grab the newest three of those rows for display.
-     * -------------------------------------------------------------*/
+    /* STEP 1: grab the newest copy of every (user_id, comment) pair */
     $sql = "
         SELECT  r.id,
                 r.food_rating,
@@ -29,56 +26,65 @@ try {
                 u.first_name,
                 u.last_name
         FROM ratings r
-        /* ---- inner query does the de‑duplication ---- */
         INNER JOIN (
             SELECT user_id,
                    general_comment,
                    MAX(created_at) AS latest
             FROM   ratings
-            WHERE  general_comment <> ''           -- ignore blank comments
+            WHERE  general_comment <> ''
             GROUP  BY user_id, general_comment
         ) t  ON  t.user_id         = r.user_id
             AND t.general_comment = r.general_comment
-            AND t.latest          = r.created_at    -- keep only newest copy
-        LEFT  JOIN users_tb u ON u.id = r.user_id
+            AND t.latest          = r.created_at
+        LEFT JOIN users_tb u ON u.id = r.user_id
         ORDER BY r.created_at DESC
-        LIMIT 4;                                    -- show 3 cards
+        LIMIT 20                     -- pull a safety buffer; we'll filter later
     ";
 
-    $stmt = $conn->prepare($sql);
+    $stmt   = $conn->prepare($sql);
     $stmt->execute();
-    $ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $raw    = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    /* ------------- Compute average stars & display name ------------ */
-    foreach ($ratings as &$rating) {
-        /* Average of non‑zero category scores */
-        $valid = array_filter([
-            $rating['food_rating'],
-            $rating['ambiance_rating'],
-            $rating['reservation_rating'],
-            $rating['service_rating']
+    /* STEP 2: compute average and filter out low‑score rows */
+    $ratings = [];
+    foreach ($raw as $row) {
+
+        // average of NON‑zero category scores
+        $parts = array_filter([
+            $row['food_rating'],
+            $row['ambiance_rating'],
+            $row['reservation_rating'],
+            $row['service_rating']
         ], fn($v) => $v > 0);
 
-        $rating['average_rating'] = $valid
-            ? round(array_sum($valid) / count($valid), 1)
-            : 0;
+        $avg = $parts ? round(array_sum($parts) / count($parts), 1) : 0;
 
-        /* Anonymous fallback */
-        $rating['display_name'] =
-            ($rating['user_id'] === 'anonymous'
-             || empty($rating['first_name'])
-             || empty($rating['last_name']))
+        if ($avg <= $SCORE_FLOOR) {
+            continue;                       // skip weak ratings
+        }
+
+        // prettify
+        $row['average_rating'] = $avg;
+        $row['display_name']   =
+            ($row['user_id'] === 'anonymous'
+             || empty($row['first_name'])
+             || empty($row['last_name']))
             ? 'Anonymous'
-            : trim($rating['first_name'] . ' ' . $rating['last_name']);
+            : trim($row['first_name'] . ' ' . $row['last_name']);
+
+        $ratings[] = $row;
+        if (count($ratings) === $MAX_CARDS) {
+            break;                          // stop once we have enough cards
+        }
     }
-    unset($rating);   // break reference
+
 } catch (PDOException $e) {
-    // Log & fail softly
     error_log('Error fetching ratings: ' . $e->getMessage());
     $ratings = [];
     echo 'Error fetching ratings: ' . htmlspecialchars($e->getMessage());
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
