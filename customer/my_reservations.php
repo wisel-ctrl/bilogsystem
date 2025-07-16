@@ -107,8 +107,7 @@ ob_start();
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     
-    .font-playfair { font-family: 'Playfair Display', serif; }
-    .font-baskerville { font-family: 'Libre Brownie', serif; }
+
     
     .hover-lift {
         transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
