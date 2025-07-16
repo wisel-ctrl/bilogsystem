@@ -836,12 +836,15 @@
                 
                 const data = await response.json();
                 
+                // Ensure revenues are numbers
+                const revenues = data.revenues.map(value => Number(value));
+                
                 // Update chart data
                 revenueChart.data.labels = data.labels;
-                revenueChart.data.datasets[0].data = data.revenues;
+                revenueChart.data.datasets[0].data = revenues;
                 
                 // Adjust y-axis minimum based on data
-                const minValue = Math.min(...data.revenues);
+                const minValue = Math.min(...revenues);
                 revenueChart.options.scales.y.min = Math.max(0, minValue * 0.8);
                 
                 revenueChart.update();
@@ -1068,14 +1071,14 @@
                 tableHtml += `
                     <tr>
                         <td>${label}</td>
-                        <td>${chartId === 'revenueChart' || chartId === 'seasonChart' ? '₱' + value.toLocaleString() : value}</td>
+                        <td>${chartId === 'revenueChart' || chartId === 'seasonChart' ? '₱' + Number(value).toLocaleString() : value}</td>
                     </tr>
                 `;
             });
             
             // Add total if applicable
             if (chartId === 'revenueChart' || chartId === 'seasonChart') {
-                const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                const total = data.datasets[0].data.reduce((sum, value) => sum + Number(value), 0);
                 tableHtml += `
                     <tr style="font-weight: bold; background-color: #f5f5f5;">
                         <td>Total</td>
