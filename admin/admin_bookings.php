@@ -477,7 +477,7 @@
                     </div>
                 </div>
 
-                <div id="done-reservations-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden overflow-y-auto">
+                <div id="done-reservations-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden overflow-y-auto">
                     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                             <div class="absolute inset-0 bg-gray-500 opacity-75" onclick="closeDoneReservationsModal()"></div>
