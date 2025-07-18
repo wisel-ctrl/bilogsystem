@@ -344,6 +344,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'search_cashiers') {
+    $search = isset($_POST['search']) ? trim($_POST['search']) : '';
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    $limit = 5;
+    $offset = ($page - 1) * $limit;
+
+    try {
+        // Prepare search query
+        $searchTerm = '%' . $search . '%';
+        // Count total records for pagination
+        $countStmt = $conn->prepare("
+            SELECT COUNT(*) as total 
+            FROM users_tb 
+            WHERE usertype = 2 AND status = 1 
+            AND (
+                CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name, ' ', COALESCE(suffix, '')) LIKE :searchTerm 
+                OR username LIKE :searchTerm
+            )
+        ");
+        $countStmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $countStmt->execute();
+        $totalRecords = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalRecords / $limit);
+
+        // Fetch paginated records
+        $stmt = $conn->prepare("
+            SELECT id, first_name, middle_name, last_name, suffix, created_at 
+            FROM users_tb 
+            WHERE usertype = 2 AND status = 1 
+            AND (
+                CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name, ' ', COALESCE(suffix, '')) LIKE :searchTerm 
+                OR username LIKE :searchTerm
+            )
+            ORDER BY created_at DESC 
+            LIMIT :limit OFFSET :offset
+        ");
+        $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $html = '';
+        if (empty($cashiers)) {
+            $html .= '<tr><td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td></tr>';
+        } else {
+            $counter = $offset + 1;
+            foreach ($cashiers as $cashier) {
+                $html .= '<tr class="hover:bg-gray-50 transition-colors duration-200">';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">' . $counter . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $fullName = htmlspecialchars($cashier['first_name']);
+                if (!empty($cashier['middle_name'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                }
+                $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                if (!empty($cashier['suffix'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                }
+                $html .= $fullName . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                $html .= $date->format('F d, Y') . '</td>';
+                $html .= '<td class="p-4 flex justify-center space-x-3">';
+                $html .= '<button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-edit text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>';
+                $html .= '</button>';
+                $html .= '<button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-archive text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>';
+                $html .= '</button>';
+                $html .= '</td></tr>';
+                $counter++;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'html' => $html,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'totalRecords' => $totalRecords
+        ]);
+        exit;
+    } catch(PDOException $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to fetch cashiers: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
 // Fetch archived users
 try {
     $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, username, created_at FROM users_tb WHERE usertype = 2 AND status = 0 ORDER BY created_at DESC");
@@ -1647,47 +1743,58 @@ ob_start();
         
         addButtonListeners();
 
-        function fetchCashiers(page) {
-            const formData = new FormData();
-            formData.append('action', 'fetch_cashiers');
-            formData.append('page', page);
-            
-            fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('cashier-table-body').innerHTML = data.html;
-                    totalPages = data.totalPages;
-                    currentPage = data.currentPage;
-                    updatePaginationControls();
-                    addButtonListeners(); // Re-attach event listeners to new buttons
-                    // Update showing entries
-                    const start = (currentPage - 1) * 5 + 1;
-                    const end = Math.min(currentPage * 5, data.totalRecords);
-                    document.getElementById('showing-start').textContent = start;
-                    document.getElementById('showing-end').textContent = end;
-                    document.getElementById('total-entries').textContent = data.totalRecords;
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonColor: '#8B4513'
-                    });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'An error occurred: ' + error.message,
-                    icon: 'error',
-                    confirmButtonColor: '#8B4513'
-                });
+// Search functionality
+document.getElementById('cashier-search').addEventListener('input', function() {
+    const searchValue = this.value.trim();
+    currentPage = 1; // Reset to first page on search
+    fetchCashiers(currentPage, searchValue);
+});
+
+// Modified fetchCashiers function to include search parameter
+function fetchCashiers(page, search = '') {
+    const formData = new FormData();
+    formData.append('action', search ? 'search_cashiers' : 'fetch_cashiers');
+    formData.append('page', page);
+    if (search) {
+        formData.append('search', search);
+    }
+    
+    fetch('', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('cashier-table-body').innerHTML = data.html;
+            totalPages = data.totalPages;
+            currentPage = data.currentPage;
+            updatePaginationControls();
+            addButtonListeners(); // Re-attach event listeners to new buttons
+            // Update showing entries
+            const start = (currentPage - 1) * 5 + 1;
+            const end = Math.min(currentPage * 5, data.totalRecords);
+            document.getElementById('showing-start').textContent = start;
+            document.getElementById('showing-end').textContent = end;
+            document.getElementById('total-entries').textContent = data.totalRecords;
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: data.message,
+                icon: 'error',
+                confirmButtonColor: '#8B4513'
             });
         }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Error!',
+            text: 'An error occurred: ' + error.message,
+            icon: 'error',
+            confirmButtonColor: '#8B4513'
+        });
+    });
+}
 
         function updatePaginationControls() {
             const firstBtn = document.getElementById('first-page');
