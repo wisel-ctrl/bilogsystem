@@ -82,8 +82,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Date & Time</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Items</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Total Amount</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Payment Method</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Cashier</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Discount Type</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -94,8 +93,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Oct 15, 2023 10:30 AM</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">3 items</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">$45.99</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Credit Card</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">John Doe</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Senior</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                                 <button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
                                 <button class="text-amber-600 hover:text-amber-800">Print</button>
@@ -108,8 +106,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Oct 15, 2023 11:45 AM</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">5 items</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">$72.50</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Cash</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Jane Smith</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">PWD</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                                 <button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
                                 <button class="text-amber-600 hover:text-amber-800">Print</button>
@@ -122,8 +119,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Oct 15, 2023 2:15 PM</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">2 items</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">$28.75</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Mobile Payment</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">John Doe</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">None</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                                 <button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
                                 <button class="text-amber-600 hover:text-amber-800">Print</button>
@@ -136,8 +132,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Oct 14, 2023 5:30 PM</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">7 items</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">$112.20</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Credit Card</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Jane Smith</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Senior</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                                 <button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
                                 <button class="text-amber-600 hover:text-amber-800">Print</button>
@@ -150,8 +145,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Oct 14, 2023 3:10 PM</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">1 item</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">$15.99</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">Cash</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">John Doe</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">None</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                                 <button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
                                 <button class="text-amber-600 hover:text-amber-800">Print</button>
