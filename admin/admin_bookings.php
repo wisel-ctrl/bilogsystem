@@ -1417,7 +1417,7 @@ function closeReservationModal() {
         if (!$.fn.DataTable.isDataTable('#done-reservations-table')) {
             $('#done-reservations-table').DataTable({
                 ajax: {
-                    url: 'done_bookings.php',
+                    url: 'booking_handlers/done_bookings.php',
                     dataSrc: 'data'
                 },
                 columns: [
