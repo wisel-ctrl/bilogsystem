@@ -35,9 +35,6 @@ function start_user_session($usertype) {
     }
 }
 
-// Do not check sessions here to avoid redirecting logged-in users
-// Instead, rely on *_auth.php files to handle redirects for protected pages
-
 // Prevent caching
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -57,29 +54,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && password_verify($password, $user['password'])) {
-                // Start new session for the user type
-                if (start_user_session($user['usertype'])) {
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['usertype'] = $user['usertype'];
-                    $_SESSION['phone'] = $user['contact_number'];
+            if ($user) {
+                // Check if account is active (status = 1)
+                if ($user['status'] != 1) {
+                    $login_error = 'This account is temporarily suspended';
+                } elseif (password_verify($password, $user['password'])) {
+                    // Start new session for the user type
+                    if (start_user_session($user['usertype'])) {
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['username'] = $user['username'];
+                        $_SESSION['usertype'] = $user['usertype'];
+                        $_SESSION['phone'] = $user['contact_number'];
 
-                    // Redirect based on usertype
-                    switch ($user['usertype']) {
-                        case 1:
-                            header("Location: admin/admin_dashboard.php");
-                            break;
-                        case 2:
-                            header("Location: cashier/cashierindex.php");
-                            break;
-                        case 3:
-                            header("Location: customer/customerindex.php");
-                            break;
+                        // Redirect based on usertype
+                        switch ($user['usertype']) {
+                            case 1:
+                                header("Location: admin/admin_dashboard.php");
+                                break;
+                            case 2:
+                                header("Location: cashier/cashierindex.php");
+                                break;
+                            case 3:
+                                header("Location: customer/customerindex.php");
+                                break;
+                        }
+                        exit();
+                    } else {
+                        $login_error = 'Invalid user type';
                     }
-                    exit();
                 } else {
-                    $login_error = 'Invalid user type';
+                    $login_error = 'Invalid username or password';
                 }
             } else {
                 $login_error = 'Invalid username or password';
