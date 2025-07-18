@@ -272,6 +272,36 @@ ob_start();
 <?php unset($_SESSION['error_message']); ?>
 <?php endif; ?>
 
+
+<style>
+    .custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease forwards;
+}
+.custom-alert.success {
+    background-color: #22c55e;
+    color: white;
+}
+.custom-alert.error {
+    background-color: #ef4444;
+    color: white;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+</style>
+
+
 <div class="container mx-auto px-4 py-8 max-w-6xl">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Profile Photo Section -->
@@ -361,7 +391,7 @@ ob_start();
                         <label class="block text-sm font-medium text-deep-brown/80">Username</label>
                         <div class="relative">
                             <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>"
-                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" disabled required>
+                                   class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"  required>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <i class="fas fa-at text-deep-brown/30"></i>
                             </div>
@@ -374,7 +404,7 @@ ob_start();
                         <div class="relative">
                             <input type="tel" id="phone" name="contact_number" value="<?php echo htmlspecialchars($user['contact_number'] ?? ''); ?>"
                                    class="w-full px-4 py-3 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all" 
-                                   disabled required
+                                    required
                                    pattern="[0-9]*"
                                    inputmode="numeric"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');">
@@ -450,6 +480,121 @@ ob_start();
             </div>
         </div>
     </div>
+    
+    
+<!-- GCash QR Section -->
+<div class="mt-8">
+    <div class="bg-white/90 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl slide-in">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="font-playfair text-2xl font-bold text-deep-brown">GCash QR Codes</h3>
+            <button type="button" id="add-gcash-btn" class="flex items-center text-accent-brown hover:text-deep-brown transition-colors duration-200">
+                <i class="fas fa-plus mr-2"></i>
+                <span class="font-baskerville">Add GCash QR</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gcash-qr-container">
+            <?php
+            // Fetch existing GCash QR codes
+            try {
+                $stmt = $conn->query("SELECT * FROM gcash_qr ORDER BY created_at DESC");
+                $gcashQrs = $stmt->fetchAll();
+                
+                if (empty($gcashQrs)) {
+                    echo '<p class="text-deep-brown/70 col-span-full text-center py-8">No GCash QR codes found.</p>';
+                } else {
+                    foreach ($gcashQrs as $qr) {
+                        echo '
+                        <div class="bg-white/95 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-lg">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-4 w-full flex justify-center">
+                                    <img src="../images/gcash_qr/'.htmlspecialchars($qr['qr_image']).'" 
+                                         class="w-48 h-48 object-contain cursor-pointer hover:scale-105 transition-transform duration-300 qr-image"
+                                         data-number="'.htmlspecialchars($qr['gcash_number']).'">
+                                </div>
+                                <div class="text-center w-full">
+                                    <p class="text-deep-brown font-medium mb-2">'.htmlspecialchars($qr['gcash_number']).'</p>
+                                    <button class="delete-qr text-red-500 hover:text-red-700 text-sm font-baskerville transition-colors duration-200" data-id="'.$qr['id'].'">
+                                        <i class="fas fa-trash mr-1"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>';
+                    }
+                }
+            } catch (PDOException $e) {
+                echo '<p class="text-red-500 col-span-full text-center py-8">Error loading GCash QR codes: '.htmlspecialchars($e->getMessage()).'</p>';
+            }
+            ?>
+        </div>
+    </div>
+</div>
+
+<!-- Add GCash QR Modal -->
+<div id="gcash-modal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 animate-fade-in transform transition-all duration-300">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-playfair text-xl font-bold text-deep-brown">Add GCash QR</h3>
+            <button id="close-gcash-modal" class="text-deep-brown/50 hover:text-deep-brown transition-colors duration-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form id="gcash-qr-form" enctype="multipart/form-data">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-deep-brown/80 mb-1">GCash Number</label>
+                    <input type="text" name="gcash_number" id="gcash-number" 
+                           class="w-full px-4 py-2 bg-white border border-warm-cream rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent transition-all"
+                           placeholder="09XXXXXXXXX" required
+                           pattern="09[0-9]{9}"
+                           maxlength="11">
+                    <p class="text-xs text-deep-brown/50 mt-1">Must be 11 digits starting with 09</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-deep-brown/80 mb-1">QR Code Image</label>
+                    <div class="border-2 border-dashed border-warm-cream rounded-lg p-4 text-center transition-colors duration-300 hover:border-accent-brown">
+                        <input type="file" name="qr_image" id="qr-image" 
+                               class="hidden" accept="image/*" required>
+                        <div id="qr-upload-area" class="cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-accent-brown mb-2 transition-transform duration-300 hover:scale-110"></i>
+                            <p class="text-sm text-deep-brown/70">Click to upload QR image</p>
+                            <p class="text-xs text-deep-brown/50 mt-1">Max 2MB (JPG, PNG, GIF)</p>
+                        </div>
+                        <div id="qr-preview" class="hidden mt-4">
+                            <img id="qr-preview-image" class="mx-auto max-h-40 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" id="cancel-gcash-btn" class="px-4 py-2 rounded-lg font-baskerville text-deep-brown hover:bg-warm-cream/50 transition-all duration-300">
+                    Cancel
+                </button>
+                <button type="submit" class="bg-gradient-to-r from-accent-brown to-rich-brown text-white px-6 py-2 rounded-lg font-baskerville hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
+                    Save QR Code
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- QR Image Modal -->
+<div id="qr-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="relative max-w-2xl w-full">
+        <button id="close-qr-modal" class="absolute -top-10 right-0 text-white hover:text-accent-brown z-[60]">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+        <div class="bg-white p-4 rounded-lg flex flex-col items-center">
+            <img id="modal-qr-image" class="max-w-full max-h-[80vh] object-contain">
+            <div class="mt-2 text-center text-deep-brown font-medium" id="modal-qr-number"></div>
+        </div>
+    </div>
+</div>
+    
+    
 </div>
 
 <script>
@@ -1147,6 +1292,295 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelEditBtn.classList.add('hidden');
         saveButton.classList.add('hidden');
     });
+});
+
+
+// GCash QR Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Helper function to show alerts for GCash QR section
+    function showGcashAlert(message, type) {
+        // Remove any existing alerts
+        const existingAlert = document.querySelector('.custom-alert');
+        if (existingAlert) {
+            existingAlert.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => existingAlert.remove(), 300);
+        }
+        
+        const alert = document.createElement('div');
+        alert.className = `custom-alert ${type === 'success' ? 'success' : 'error'}`;
+        alert.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(alert);
+        
+        // Auto-remove after 5 seconds with fade out animation
+        setTimeout(() => {
+            alert.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => alert.remove(), 300);
+        }, 5000);
+    }
+
+    // GCash QR Functionality
+    const gcashModal = document.getElementById('gcash-modal');
+    const addGcashBtn = document.getElementById('add-gcash-btn');
+    const closeGcashModal = document.getElementById('close-gcash-modal');
+    const cancelGcashBtn = document.getElementById('cancel-gcash-btn');
+    const gcashForm = document.getElementById('gcash-qr-form');
+    const qrUploadArea = document.getElementById('qr-upload-area');
+    const qrImageInput = document.getElementById('qr-image');
+    const qrPreview = document.getElementById('qr-preview');
+    const qrPreviewImage = document.getElementById('qr-preview-image');
+    const qrModal = document.getElementById('qr-modal');
+    const modalQrImage = document.getElementById('modal-qr-image');
+    const modalQrNumber = document.getElementById('modal-qr-number');
+    const closeQrModal = document.getElementById('close-qr-modal');
+    const gcashContainer = document.getElementById('gcash-qr-container');
+
+    // Show add GCash modal
+    addGcashBtn.addEventListener('click', () => {
+        gcashModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    });
+
+    // Close add GCash modal
+    function closeGcashModalFunc() {
+        gcashModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        gcashForm.reset();
+        qrPreview.classList.add('hidden');
+        qrUploadArea.classList.remove('hidden');
+        qrPreviewImage.src = '';
+    }
+
+    closeGcashModal.addEventListener('click', closeGcashModalFunc);
+    cancelGcashBtn.addEventListener('click', closeGcashModalFunc);
+
+    // Handle QR image upload preview
+    qrUploadArea.addEventListener('click', () => {
+        qrImageInput.click();
+    });
+
+    qrImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file
+            if (file.size > 2000000) { // 2MB
+                showGcashAlert('File is too large. Max 2MB allowed.', 'error');
+                return;
+            }
+
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                showGcashAlert('Only JPG, PNG, and GIF files are allowed.', 'error');
+                return;
+            }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                qrPreviewImage.src = event.target.result;
+                qrPreview.classList.remove('hidden');
+                qrUploadArea.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Handle GCash form submission
+    gcashForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Validate GCash number
+        const gcashNumber = document.getElementById('gcash-number').value;
+        if (!/^09[0-9]{9}$/.test(gcashNumber)) {
+            showGcashAlert('GCash number must be 11 digits starting with 09.', 'error');
+            return;
+        }
+
+        // Validate image
+        if (!qrImageInput.files || qrImageInput.files.length === 0) {
+            showGcashAlert('Please upload a QR code image.', 'error');
+            return;
+        }
+
+        // Show confirmation dialog
+        const { isConfirmed } = await Swal.fire({
+            title: 'Add GCash QR',
+            text: 'Are you sure you want to add this GCash QR code?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#A0522D',
+            cancelButtonColor: '#6B3410',
+            confirmButtonText: 'Yes, add it!',
+            cancelButtonText: 'No, cancel'
+        });
+        
+        if (!isConfirmed) {
+            return;
+        }
+
+        const formData = new FormData(gcashForm);
+        const submitBtn = gcashForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        
+        try {
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+            submitBtn.disabled = true;
+
+            const response = await fetch('admin_handle_gcash.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                showGcashAlert('GCash QR added successfully!', 'success');
+                closeGcashModalFunc();
+                setTimeout(() => {
+                    console.log('Reloading page after successful QR addition');
+                    window.location.reload();
+                }, 2000); // Ensure toast is visible
+            } else {
+                showGcashAlert(data.message || 'Error adding GCash QR', 'error');
+            }
+        } catch (error) {
+            console.error('Add QR Error:', error);
+            showGcashAlert('An error occurred while adding GCash QR. Please try again.', 'error');
+        } finally {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Show QR in modal when clicked
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('qr-image')) {
+            modalQrImage.src = e.target.src;
+            modalQrNumber.textContent = e.target.dataset.number;
+            qrModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+    });
+
+    // Close QR modal
+    closeQrModal.addEventListener('click', () => {
+        qrModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    // Delete QR code
+    document.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('delete-qr') || e.target.closest('.delete-qr')) {
+            const button = e.target.classList.contains('delete-qr') ? e.target : e.target.closest('.delete-qr');
+            const id = button.dataset.id;
+            
+            const { isConfirmed } = await Swal.fire({
+                title: 'Delete QR Code',
+                text: 'Are you sure you want to delete this QR code? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#A0522D',
+                cancelButtonColor: '#6B3410',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel'
+            });
+            
+            if (!isConfirmed) return;
+            
+            try {
+                // Show loading state
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Deleting...';
+                button.disabled = true;
+
+                const response = await fetch('admin_handle_gcash.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=delete&id=${id}`
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showGcashAlert('GCash QR deleted successfully!', 'success');
+                    // Remove the QR card from the UI
+                    button.closest('.bg-white\\/95').remove();
+                    // If no more QRs, show message
+                    if (document.querySelectorAll('#gcash-qr-container .bg-white\\/95').length === 0) {
+                        gcashContainer.innerHTML = '<p class="text-deep-brown/70 col-span-full text-center py-8">No GCash QR codes found.</p>';
+                    }
+                    setTimeout(() => {
+                        console.log('Reloading page after successful QR deletion');
+                        window.location.reload();
+                    }, 2000); // Ensure toast is visible
+                } else {
+                    showGcashAlert(data.message || 'Error deleting GCash QR', 'error');
+                    button.innerHTML = '<i class="fas fa-trash mr-1"></i> Delete';
+                    button.disabled = false;
+                }
+            } catch (error) {
+                console.error('Delete QR Error:', error);
+                showGcashAlert('An error occurred while deleting GCash QR. Please try again.', 'error');
+                button.innerHTML = '<i class="fas fa-trash mr-1"></i> Delete';
+                button.disabled = false;
+            }
+        }
+    });
+
+    // Function to fetch and update GCash QR list
+    async function fetchGCashQRs() {
+        try {
+            const response = await fetch('admin_handle_gcash.php?action=fetch');
+            const data = await response.json();
+            
+            if (data.success) {
+                if (data.qrCodes.length === 0) {
+                    gcashContainer.innerHTML = '<p class="text-deep-brown/70 col-span-full text-center py-8">No GCash QR codes found.</p>';
+                } else {
+                    let html = '';
+                    data.qrCodes.forEach(qr => {
+                        html += `
+                        <div class="bg-white/95 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-lg">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-4 w-full flex justify-center">
+                                    <img src="../images/gcash_qr/${qr.qr_image}" 
+                                         class="w-48 h-48 object-contain cursor-pointer hover:scale-105 transition-transform duration-300 qr-image"
+                                         data-number="${qr.gcash_number}">
+                                </div>
+                                <div class="text-center w-full">
+                                    <p class="text-deep-brown font-medium mb-2">${qr.gcash_number}</p>
+                                    <button class="delete-qr text-red-500 hover:text-red-700 text-sm font-baskerville transition-colors duration-200" data-id="${qr.id}">
+                                        <i class="fas fa-trash mr-1"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    gcashContainer.innerHTML = html;
+                }
+            } else {
+                showGcashAlert(data.message || 'Error loading GCash QR codes', 'error');
+            }
+        } catch (error) {
+            console.error('Fetch QR Error:', error);
+            showGcashAlert('An error occurred while loading GCash QR codes.', 'error');
+        }
+    }
 });
 </script>
 
