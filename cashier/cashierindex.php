@@ -462,7 +462,7 @@ require_once 'cashier_auth.php';
                                     <span id="subtotal" class="font-bold text-deep-brown">₱0.00</span>
                                 </div>
                                 <div class="flex justify-between py-1 sm:py-2 border-b border-rich-brown/20">
-                                    <span class="font-bold text-deep-brown">Tax (10%):</span>
+                                    <span class="font-bold text-deep-brown">Service Charge (10%):</span>
                                     <span id="tax" class="font-bold text-deep-brown">₱0.00</span>
                                 </div>
                                 <div class="flex justify-between py-1 sm:py-2 font-bold text-sm sm:text-lg">
