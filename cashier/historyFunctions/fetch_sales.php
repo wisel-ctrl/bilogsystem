@@ -15,6 +15,7 @@ try {
             ) AS items
         FROM sales_tb s
         LEFT JOIN order_tb o ON s.sales_id = o.sales_id
+        WHERE s.sales_type = 'walk-in'
         GROUP BY s.sales_id, s.total_price, s.created_at, s.discount_type
         ORDER BY s.created_at DESC
     ";
