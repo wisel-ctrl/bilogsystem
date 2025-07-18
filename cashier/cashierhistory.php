@@ -402,24 +402,37 @@ $userId = $_SESSION['user_id'];
             return new Date(dateString).toLocaleDateString('en-US', options);
         }
         
-        // Create the HTML content for printing
+        // Create the HTML content for printing with the header and footer from code 1
         let printContent = `
             <html>
                 <head>
                     <title>Sales History Export</title>
                     <style>
                         body { font-family: Arial, sans-serif; margin: 20px; }
-                        h1 { color: #92400e; text-align: center; }
-                        .date-range { text-align: center; margin-bottom: 20px; color: #78350f; }
+                        .print-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #8B4513; padding-bottom: 15px; }
+                        .print-header h1 { font-size: 28px; font-weight: bold; font-family: 'Playfair Display', serif; color: #8B4513; margin-bottom: 5px; }
+                        .print-header h2 { font-size: 20px; color: #333; margin-top: 0; font-style: italic; }
+                        .print-meta { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 12px; color: #666; }
                         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
                         th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
-                        th { background-color: #fef3c7; color: #92400e; }
+                        th { background-color: #8B4513; color: white; }
                         tr:nth-child(even) { background-color: #fffbeb; }
-                        .footer { margin-top: 20px; text-align: right; font-size: 0.8em; color: #6b7280; }
+                        .print-footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 14px; color: #555; }
+                        .date-range { text-align: center; margin-bottom: 20px; color: #78350f; font-weight: bold; }
                     </style>
                 </head>
                 <body>
-                    <h1>Sales History</h1>
+                    <div class="print-header">
+                        <h1>Caffè Lilio Ristorante</h1>
+                        <h2>Authentic Italian Cuisine in Liliw, Laguna</h2>
+                        <div style="margin-top: 10px;">
+                            <span style="font-size: 14px; color: #666;">Sales History Report</span>
+                        </div>
+                    </div>
+                    <div class="print-meta">
+                        <div>Website: https://caffelilioristorante.com/</div>
+                        <div>Generated on: ${new Date().toLocaleString()}</div>
+                    </div>
                     <div class="date-range">${dateRangeText}</div>
                     <table>
                         <thead>
@@ -447,12 +460,15 @@ $userId = $_SESSION['user_id'];
             `;
         });
         
-        // Close the HTML
+        // Close the HTML with the footer from code 1
         printContent += `
                         </tbody>
                     </table>
-                    <div class="footer">
-                        Exported on ${new Date().toLocaleString()}
+                    <div class="print-footer">
+                        <p>For more inquiries, please contact us:</p>
+                        <p style="margin: 5px 0;">Email: caffelilio.liliw@gmail.com</p>
+                        <p style="margin: 5px 0;">Facebook: Caffè Lilio Ristorante | Liliw</p>
+                        <p style="margin-top: 15px; font-style: italic;">Grazie per aver scelto Caffè Lilio!</p>
                     </div>
                 </body>
             </html>
