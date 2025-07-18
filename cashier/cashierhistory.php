@@ -181,8 +181,7 @@ $userId = $_SESSION['user_id'];
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                     ${sale.items === 'past data' ? 
                         '<span class="text-amber-400">No details</span>' : 
-                        `<button class="text-amber-600 hover:text-amber-800 mr-3">View</button>
-                         <button class="text-amber-600 hover:text-amber-800">Print</button>`
+                        `<button class="text-amber-600 hover:text-amber-800 mr-3">View</button>`
                     }
                 </td>
             </tr>
