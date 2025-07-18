@@ -1414,8 +1414,61 @@ function closeReservationModal() {
 <script>
     function openDoneReservationsModal() {
         document.getElementById('done-reservations-modal').classList.remove('hidden');
-        // Here you would typically load the data for done reservations
-        // For example: loadDoneReservationsData();
+        if (!$.fn.DataTable.isDataTable('#done-reservations-table')) {
+            $('#done-reservations-table').DataTable({
+                ajax: {
+                    url: 'done_bookings.php',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'customer_name' },
+                    { 
+                        // Phone column - you may need to adjust this based on your actual data structure
+                        data: null,
+                        render: function(data, type, row) {
+                            // If you have phone data in your response, replace this with the actual field
+                            return 'N/A'; // Placeholder - update with actual phone field from your data
+                        }
+                    },
+                    { data: 'package_name' },
+                    { data: 'pax' },
+                    { 
+                        data: 'reservation_datetime',
+                        render: function(data, type, row) {
+                            // Format the date and time nicely
+                            const date = new Date(data);
+                            return date.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Done</span>';
+                        }
+                    }
+                ],
+                responsive: true,
+                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"mb-4 md:mb-0"l><"flex-grow md:ml-4"f><"mt-4 md:mt-0"p>>rt<"flex flex-col md:flex-row justify-between items-center mt-4"<"mb-4 md:mb-0"i><"pagination"p>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search reservations...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: '<i class="fas fa-chevron-left"></i>',
+                        next: '<i class="fas fa-chevron-right"></i>'
+                    }
+                },
+                initComplete: function() {
+                    // Add custom classes to elements
+                    $('.dataTables_filter input').addClass('border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-brown focus:border-transparent');
+                    $('.dataTables_length select').addClass('border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-accent-brown focus:border-transparent');
+                }
+            });
+        } else {
+            // If table already exists, reload the data
+            $('#done-reservations-table').DataTable().ajax.reload();
+        }
     }
 
     function closeDoneReservationsModal() {
