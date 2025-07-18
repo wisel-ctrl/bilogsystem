@@ -1448,7 +1448,7 @@ function closeReservationModal() {
                     }
                 ],
                 responsive: true,
-                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"mb-4 md:mb-0"l><"flex-grow md:ml-4"f><"mt-4 md:mt-0"p>>rt<"flex flex-col md:flex-row justify-between items-center mt-4"<"mb-4 md:mb-0"i><"pagination"p>>',
+                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"mb-4 md:mb-0"l><"flex-grow md:ml-4"f>>rt<"flex flex-col md:flex-row justify-between items-center mt-4"<"mb-4 md:mb-0"i><"pagination"p>>',
                 language: {
                     search: "",
                     searchPlaceholder: "Search reservations...",
