@@ -54,18 +54,17 @@ $userId = $_SESSION['user_id'];
                 <h1 class="text-2xl font-bold text-amber-900 mb-4 md:mb-0">Sales History</h1>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <div class="relative">
-                        <select class="appearance-none bg-amber-50 border border-amber-200 text-amber-900 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                            <option>Today</option>
-                            <option>Yesterday</option>
-                            <option>Last 7 Days</option>
-                            <option>Last 30 Days</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-amber-700">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="relative">
+                            <input type="date" id="start-date" class="appearance-none bg-amber-50 border border-amber-200 text-amber-900 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
                         </div>
+                        <span class="hidden sm:flex items-center text-amber-700">to</span>
+                        <div class="relative">
+                            <input type="date" id="end-date" class="appearance-none bg-amber-50 border border-amber-200 text-amber-900 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                        </div>
+                        <button id="apply-date-range" class="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg transition-colors duration-200">
+                            Apply
+                        </button>
                     </div>
                     
                     <button class="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
@@ -133,10 +132,14 @@ $userId = $_SESSION['user_id'];
         return '$' + parseFloat(amount).toFixed(2);
     }
 
-    // Fetch sales data
-    async function fetchSalesData() {
+    let dateFilterActive = false;
+    let currentStartDate = null;
+    let currentEndDate = null;
+
+    // Add this function to your JavaScript
+    async function fetchSalesDataByDateRange(startDate, endDate) {
         try {
-            const response = await fetch('historyFunctions/fetch_sales.php');
+            const response = await fetch(`historyFunctions/fetch_sales.php?start_date=${startDate}&end_date=${endDate}`);
             if (!response.ok) throw new Error('Network response was not ok');
             
             const data = await response.json();
@@ -153,6 +156,50 @@ $userId = $_SESSION['user_id'];
             `;
         }
     }
+
+    // Modify your existing fetchSalesData function to handle both cases
+    async function fetchSalesData() {
+        try {
+            let url = 'historyFunctions/fetch_sales.php';
+            if (dateFilterActive && currentStartDate && currentEndDate) {
+                url += `?start_date=${currentStartDate}&end_date=${currentEndDate}`;
+            }
+            
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const data = await response.json();
+            allSalesData = data;
+            filteredData = [...allSalesData];
+            renderSalesData();
+            renderPagination();
+        } catch (error) {
+            console.error('Error fetching sales data:', error);
+            document.getElementById('sales-data').innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-amber-800">Error loading sales data. Please try again.</td>
+                </tr>
+            `;
+        }
+    }
+
+    // Add this event listener to your DOMContentLoaded section
+    document.getElementById('apply-date-range').addEventListener('click', () => {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        
+        if (startDate && endDate) {
+            dateFilterActive = true;
+            currentStartDate = startDate;
+            currentEndDate = endDate;
+            fetchSalesDataByDateRange(startDate, endDate);
+        } else {
+            dateFilterActive = false;
+            currentStartDate = null;
+            currentEndDate = null;
+            fetchSalesData();
+        }
+    });
 
     // Render sales data
     function renderSalesData() {
@@ -286,6 +333,10 @@ $userId = $_SESSION['user_id'];
 
     // Search functionality
     document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').value = today;
+        document.getElementById('end-date').value = today;
+
         fetchSalesData();
         
         // Set up periodic refresh every 10 seconds
