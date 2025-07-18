@@ -207,18 +207,49 @@ $userId = $_SESSION['user_id'];
         }
         
         let buttons = '';
+        const maxVisiblePages = 5;
+        let startPage, endPage;
         
-        // Previous button
+        // Calculate the range of pages to show
+        if (totalPages <= maxVisiblePages) {
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // Show pages around current page
+            const maxPagesBeforeCurrent = Math.floor(maxVisiblePages / 2);
+            const maxPagesAfterCurrent = Math.ceil(maxVisiblePages / 2) - 1;
+            
+            if (currentPage <= maxPagesBeforeCurrent) {
+                // Near the beginning
+                startPage = 1;
+                endPage = maxVisiblePages;
+            } else if (currentPage + maxPagesAfterCurrent >= totalPages) {
+                // Near the end
+                startPage = totalPages - maxVisiblePages + 1;
+                endPage = totalPages;
+            } else {
+                // Somewhere in the middle
+                startPage = currentPage - maxPagesBeforeCurrent;
+                endPage = currentPage + maxPagesAfterCurrent;
+            }
+        }
+        
+        // First page and Previous buttons
         buttons += `
+            <button onclick="changePage(1)" 
+                class="px-3 py-1 rounded-lg border border-amber-200 bg-white text-amber-700 hover:bg-amber-50 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+                ${currentPage === 1 ? 'disabled' : ''}>
+                &lt;&lt;
+            </button>
             <button onclick="changePage(${currentPage - 1})" 
                 class="px-3 py-1 rounded-lg border border-amber-200 bg-white text-amber-700 hover:bg-amber-50 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
                 ${currentPage === 1 ? 'disabled' : ''}>
-                Previous
+                &lt;
             </button>
         `;
         
-        // Page buttons
-        for (let i = 1; i <= totalPages; i++) {
+        // Page buttons - only show the calculated range
+        for (let i = startPage; i <= endPage; i++) {
             buttons += `
                 <button onclick="changePage(${i})" 
                     class="px-3 py-1 rounded-lg border border-amber-200 ${currentPage === i ? 'bg-amber-600 text-white hover:bg-amber-700' : 'bg-white text-amber-700 hover:bg-amber-50'}">
@@ -227,12 +258,17 @@ $userId = $_SESSION['user_id'];
             `;
         }
         
-        // Next button
+        // Next and Last page buttons
         buttons += `
             <button onclick="changePage(${currentPage + 1})" 
                 class="px-3 py-1 rounded-lg border border-amber-200 bg-white text-amber-700 hover:bg-amber-50 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
                 ${currentPage === totalPages ? 'disabled' : ''}>
-                Next
+                &gt;
+            </button>
+            <button onclick="changePage(${totalPages})" 
+                class="px-3 py-1 rounded-lg border border-amber-200 bg-white text-amber-700 hover:bg-amber-50 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
+                ${currentPage === totalPages ? 'disabled' : ''}>
+                &gt;&gt;
             </button>
         `;
         
