@@ -55,6 +55,7 @@ $userId = $_SESSION['user_id'];
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="flex flex-col sm:flex-row gap-2">
+                        <span class="hidden sm:flex items-center text-amber-700">From</span>
                         <div class="relative">
                             <input type="date" id="start-date" class="appearance-none bg-amber-50 border border-amber-200 text-amber-900 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
                         </div>
