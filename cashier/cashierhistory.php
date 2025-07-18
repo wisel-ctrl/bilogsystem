@@ -68,7 +68,7 @@ $userId = $_SESSION['user_id'];
                         </button>
                     </div>
                     
-                    <button class="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <button id="export-button" class="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
@@ -374,6 +374,99 @@ $userId = $_SESSION['user_id'];
             renderPagination();
         });
     });
+
+    // Export/Print functionality
+    document.getElementById('export-button').addEventListener('click', () => {
+        // Create a printable version of the table
+        const printWindow = window.open('', '_blank');
+        
+        // Get the filtered data (or all data if no filter is applied)
+        const dataToExport = filteredData.length > 0 ? filteredData : allSalesData;
+        
+        // Get the date range text
+        let dateRangeText = '';
+        if (dateFilterActive && currentStartDate && currentEndDate) {
+            dateRangeText = `From ${formatDateForExport(currentStartDate)} to ${formatDateForExport(currentEndDate)}`;
+        } else {
+            dateRangeText = 'All dates';
+        }
+        
+        // Format date for export (simpler format)
+        function formatDateForExport(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Create the HTML content for printing
+        let printContent = `
+            <html>
+                <head>
+                    <title>Sales History Export</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #92400e; text-align: center; }
+                        .date-range { text-align: center; margin-bottom: 20px; color: #78350f; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
+                        th { background-color: #fef3c7; color: #92400e; }
+                        tr:nth-child(even) { background-color: #fffbeb; }
+                        .footer { margin-top: 20px; text-align: right; font-size: 0.8em; color: #6b7280; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Sales History</h1>
+                    <div class="date-range">${dateRangeText}</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Date & Time</th>
+                                <th>Items</th>
+                                <th>Total Amount</th>
+                                <th>Discount Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+        
+        // Add the data rows
+        dataToExport.forEach(sale => {
+            printContent += `
+                <tr>
+                    <td>#${sale.sales_id}</td>
+                    <td>${formatDate(sale.created_at)}</td>
+                    <td>${sale.items}</td>
+                    <td>${formatCurrency(sale.total_price)}</td>
+                    <td>${sale.discount_type || 'None'}</td>
+                </tr>
+            `;
+        });
+        
+        // Close the HTML
+        printContent += `
+                        </tbody>
+                    </table>
+                    <div class="footer">
+                        Exported on ${new Date().toLocaleString()}
+                    </div>
+                </body>
+            </html>
+        `;
+        
+        // Write the content to the new window and print
+        printWindow.document.open();
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        
+        // Wait for the content to load before printing
+        printWindow.onload = function() {
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        };
+    });
+
 </script>
 </body>
 </html>
