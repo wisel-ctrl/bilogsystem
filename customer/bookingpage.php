@@ -1,5 +1,14 @@
 <?php
 require_once 'customer_auth.php';
+
+
+require_once '../db_connect.php';
+
+// Fetch all active GCash QR codes
+$stmt = $conn->prepare("SELECT qr_image, gcash_number FROM gcash_qr WHERE is_active = 1");
+$stmt->execute();
+$gcashQRs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Set page title
 $page_title = "Bookings - Caffè Lilio";
 
@@ -89,6 +98,7 @@ ob_start();
                 </div>
             </div>
         </section>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -488,26 +498,56 @@ ob_start();
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <p class="text-gray-700 mb-3">Please scan the QR code to pay the downpayment amount.</p>
+                                        <p class="text-gray-700 mb-3">Please scan a QR code to pay the downpayment amount.</p>
                                         <div class="text-sm text-gray-600 mb-3">
                                             <p class="font-medium">Instructions:</p>
                                             <ol class="list-decimal list-inside space-y-1">
                                                 <li>Open GCash app</li>
                                                 <li>Tap "Scan QR"</li>
-                                                <li>Scan the code on the right</li>
+                                                <li>Scan one of the QR codes below</li>
                                                 <li>Enter the downpayment amount</li>
                                                 <li>Complete the payment</li>
                                             </ol>
                                         </div>
+                                        <?php if (count($gcashQRs) > 1): ?>
+                                            <button type="button" onclick="toggleQRCodes()" 
+                                                class="mt-3 px-4 py-2 bg-purple-100 text-purple-800 rounded-lg hover:bg-purple-200 transition flex items-center">
+                                                <i class="fas fa-qrcode mr-2"></i>
+                                                Show All QR Codes
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="flex justify-center">
-                                        <div class="border-2 border-purple-200 p-2 rounded-lg bg-white">
-                                            <img src="../images/gcashtrial.jpg" alt="GCash QR Code" class="w-48 h-48 object-contain">
-                                            <p class="text-center text-sm text-gray-600 mt-2">Scan this QR code to pay</p>
+                                        <div id="qrCodeContainer" class="border-2 border-purple-200 p-2 rounded-lg bg-white">
+                                            <?php if (!empty($gcashQRs)): ?>
+                                                <!-- Display first QR code by default -->
+                                                <img src="../images/gcash_qr/<?php echo htmlspecialchars($gcashQRs[0]['qr_image']); ?>" 
+                                                     alt="GCash QR Code" 
+                                                     class="w-48 h-48 object-contain active-qr">
+                                                <p class="text-center text-sm text-gray-600 mt-2">
+                                                    GCash Number: <?php echo htmlspecialchars($gcashQRs[0]['gcash_number']); ?>
+                                                </p>
+                                                <!-- Hidden QR codes -->
+                                                <div id="additionalQRCodes" class="hidden mt-4 space-y-4">
+                                                    <?php for ($i = 1; $i < count($gcashQRs); $i++): ?>
+                                                        <div>
+                                                            <img src="../images/gcash_qr/<?php echo htmlspecialchars($gcashQRs[$i]['qr_image']); ?>" 
+                                                                 alt="GCash QR Code" 
+                                                                 class="w-48 h-48 object-contain">
+                                                            <p class="text-center text-sm text-gray-600 mt-2">
+                                                                GCash Number: <?php echo htmlspecialchars($gcashQRs[$i]['gcash_number']); ?>
+                                                            </p>
+                                                        </div>
+                                                    <?php endfor; ?>
+                                                </div>
+                                            <?php else: ?>
+                                                <p class="text-center text-red-500">No active GCash QR codes available.</p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             
                             <div class="mb-4">
                                 <label for="eventType" class="block text-gray-700 mb-2 flex items-center">
@@ -1251,6 +1291,19 @@ ob_start();
 
             console.log('Menu page initialized successfully');
         });
+        
+        function toggleQRCodes() {
+            const additionalQRCodes = document.getElementById('additionalQRCodes');
+            const toggleButton = document.querySelector('button[onclick="toggleQRCodes()"]');
+            
+            if (additionalQRCodes.classList.contains('hidden')) {
+                additionalQRCodes.classList.remove('hidden');
+                toggleButton.innerHTML = '<i class="fas fa-qrcode mr-2"></i>Hide QR Codes';
+            } else {
+                additionalQRCodes.classList.add('hidden');
+                toggleButton.innerHTML = '<i class="fas fa-qrcode mr-2"></i>Show All QR Codes';
+            }
+        }
     </script>
     
     <?php
