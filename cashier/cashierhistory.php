@@ -130,8 +130,13 @@ $userId = $_SESSION['user_id'];
 
     // Format currency
     function formatCurrency(amount) {
-        return '$' + parseFloat(amount).toFixed(2);
+        const formattedAmount = parseFloat(amount).toLocaleString('en-PH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        return '₱ ' + formattedAmount;
     }
+
 
     let dateFilterActive = false;
     let currentStartDate = null;
