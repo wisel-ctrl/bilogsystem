@@ -184,10 +184,8 @@ $userId = $_SESSION['user_id'];
     </main>
 
     <script>
-        <script>
             const userId = <?php echo json_encode($userId); ?>;
             console.log("Logged in User ID:", userId);
-        </script>
         // Set current date
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const currentDate = new Date().toLocaleDateString('en-US', options);
