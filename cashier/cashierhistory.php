@@ -627,37 +627,35 @@ $userId = $_SESSION['user_id'];
             // Build items list and calculate subtotal
             let itemsHtml = '';
             let subtotal = 0;
-            
+
             data.data.items.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 subtotal += itemTotal;
                 
                 itemsHtml += `
-                <div class="flex justify-between">
-                    <span>${item.dish_name} (${item.quantity})</span>
-                    <span>₱${itemTotal.toFixed(2)}</span>
-                </div>
+                <tr>
+                    <td class="py-2 px-4 text-left">${item.dish_name}</td>
+                    <td class="py-2 px-4 text-right">${item.quantity}</td>
+                    <td class="py-2 px-4 text-right">₱${itemTotal.toFixed(2)}</td>
+                </tr>
                 `;
             });
-            
-            document.getElementById('receiptItemsList').innerHTML = itemsHtml;
-            
-            // Calculate service charge (10% of subtotal)
+
+            // Add subtotal and service charge as table rows
             const serviceCharge = subtotal * 0.10;
             const totalBeforeDiscount = subtotal + serviceCharge;
-            
-            // Add service charge row
+
             itemsHtml += `
-                <div class="flex justify-between border-t mt-2 pt-2">
-                    <span>Subtotal:</span>
-                    <span>₱${subtotal.toFixed(2)}</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Service Charge (10%):</span>
-                    <span>₱${serviceCharge.toFixed(2)}</span>
-                </div>
+                <tr class="border-t border-[#d1d5db]">
+                    <td class="py-2 px-4 text-left font-medium" colspan="2">Subtotal:</td>
+                    <td class="py-2 px-4 text-right">₱${subtotal.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 text-left" colspan="2">Service Charge (10%):</td>
+                    <td class="py-2 px-4 text-right">₱${serviceCharge.toFixed(2)}</td>
+                </tr>
             `;
-            
+
             document.getElementById('receiptItemsList').innerHTML = itemsHtml;
             
             // Set summary information
