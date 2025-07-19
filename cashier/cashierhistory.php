@@ -596,20 +596,44 @@ $userId = $_SESSION['user_id'];
             document.getElementById('receiptId').textContent = data.data.sales_id;
             document.getElementById('receiptDate').textContent = formatDate(data.data.created_at);
             
-            // Build items list
+            // Build items list and calculate subtotal
             let itemsHtml = '';
+            let subtotal = 0;
+            
             data.data.items.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
                 itemsHtml += `
                 <div class="flex justify-between">
                     <span>${item.dish_name} (${item.quantity})</span>
-                    <span>₱${item.price.toFixed(2)}</span>
+                    <span>₱${itemTotal.toFixed(2)}</span>
                 </div>
                 `;
             });
+            
+            document.getElementById('receiptItemsList').innerHTML = itemsHtml;
+            
+            // Calculate service charge (10% of subtotal)
+            const serviceCharge = subtotal * 0.10;
+            const totalBeforeDiscount = subtotal + serviceCharge;
+            
+            // Add service charge row
+            itemsHtml += `
+                <div class="flex justify-between border-t mt-2 pt-2">
+                    <span>Subtotal:</span>
+                    <span>₱${subtotal.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Service Charge (10%):</span>
+                    <span>₱${serviceCharge.toFixed(2)}</span>
+                </div>
+            `;
+            
             document.getElementById('receiptItemsList').innerHTML = itemsHtml;
             
             // Set summary information
-            document.getElementById('totalPrice').textContent = data.data.total_price.toFixed(2);
+            document.getElementById('totalPrice').textContent = totalBeforeDiscount.toFixed(2);
             document.getElementById('amountPaid').textContent = data.data.amount_paid.toFixed(2);
             document.getElementById('amountChange').textContent = data.data.amount_change.toFixed(2);
             
@@ -619,6 +643,10 @@ $userId = $_SESSION['user_id'];
                 discountRow.classList.remove('hidden');
                 document.getElementById('discountType').textContent = data.data.discount_type;
                 document.getElementById('discountAmount').textContent = data.data.discount_price.toFixed(2);
+                
+                // Update total price with discount
+                const totalAfterDiscount = totalBeforeDiscount - data.data.discount_price;
+                document.getElementById('totalPrice').textContent = totalAfterDiscount.toFixed(2);
             } else {
                 discountRow.classList.add('hidden');
             }
