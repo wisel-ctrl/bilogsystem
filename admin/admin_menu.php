@@ -524,7 +524,7 @@
                                                 <option value="">Select ingredient</option>
                                                 <!-- Options will be populated by JavaScript -->
                                             </select>
-                                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
+                                            <input type="number" placeholder="Qty (g/ml)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
                                                 <i class="fas fa-trash"></i>
                                             </button>
