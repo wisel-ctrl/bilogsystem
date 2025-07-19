@@ -641,7 +641,7 @@ $userId = $_SESSION['user_id'];
             const discountRow = document.getElementById('discountRow');
             if(data.data.discount_type && data.data.discount_price > 0) {
                 discountRow.classList.remove('hidden');
-                document.getElementById('discountType').textContent = data.data.discount_type;
+                document.getElementById('discountType').textContent = "Discount: " + (data.data.discount_type || 'None');
                 document.getElementById('discountAmount').textContent = data.data.discount_price.toFixed(2);
                 
                 // Update total price with discount
