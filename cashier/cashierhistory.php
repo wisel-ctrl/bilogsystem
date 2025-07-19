@@ -107,7 +107,63 @@ $userId = $_SESSION['user_id'];
         </div>
     </main>
 
-    <script>
+    <!-- Receipt Modal -->
+<div class="modal fade" id="receiptModal" tabindex="-1" role="dialog" aria-labelledby="receiptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="receiptModalLabel">Receipt</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-container" style="width: 100%; max-width: 800px; margin: 0 auto;">
+                    <div class="receipt-header text-center mb-3">
+                        <h4 id="receiptDate" class="font-weight-bold"></h4>
+                        <h5 class="text-muted">Order #<span id="receiptId"></span></h5>
+                    </div>
+                    
+                    <div class="receipt-items mb-4">
+                        <div id="receiptItemsList"></div>
+                    </div>
+                    
+                    <div class="receipt-summary">
+                        <div class="row mb-2" id="discountRow" style="display: none;">
+                            <div class="col-8 text-right pr-4">
+                                <span id="discountType"></span>
+                            </div>
+                            <div class="col-4 text-right">
+                                -<span id="discountAmount"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-8 text-right pr-4 font-weight-bold">Total Price:</div>
+                            <div class="col-4 text-right font-weight-bold">₱<span id="totalPrice"></span></div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-8 text-right pr-4">Amount Paid:</div>
+                            <div class="col-4 text-right">₱<span id="amountPaid"></span></div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-8 text-right pr-4">Amount Change:</div>
+                            <div class="col-4 text-right">₱<span id="amountChange"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
     const userId = <?php echo json_encode($userId); ?>;
     console.log("Logged in User ID:", userId);
     
@@ -234,7 +290,7 @@ $userId = $_SESSION['user_id'];
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-amber-800">
                     ${sale.items === 'past data' ? 
                         '<span class="text-amber-400">No details</span>' : 
-                        `<button class="text-amber-600 hover:text-amber-800 mr-3">View</button>`
+                        `<button onclick="openReceiptModal(${sale.sales_id})" class="text-amber-600 hover:text-amber-800 mr-3">View</button>`
                     }
                 </td>
             </tr>
@@ -488,6 +544,94 @@ $userId = $_SESSION['user_id'];
         };
     });
 
+    function openReceiptModal(sales_id) {
+        // Show loading state
+        $('#receiptModalLabel').text('Loading...');
+        $('#receiptItemsList').html('<div class="text-center py-3"><i class="fas fa-spinner fa-spin"></i> Loading receipt...</div>');
+        
+        // Fetch receipt data via AJAX
+        $.ajax({
+            url: 'handlers/fetch_receipt.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { sales_id: sales_id },
+            success: function(response) {
+                if(response.success) {
+                    // Update modal title
+                    $('#receiptModalLabel').text('Receipt');
+                    
+                    // Set receipt header info
+                    $('#receiptId').text(response.data.sales_id);
+                    $('#receiptDate').text(formatDate(response.data.created_at));
+                    
+                    // Build items list
+                    let itemsHtml = '';
+                    response.data.items.forEach(item => {
+                        itemsHtml += `
+                            <div class="row mb-2">
+                                <div class="col-8">
+                                    ${item.dish_name} (${item.quantity})
+                                </div>
+                                <div class="col-4 text-right">
+                                    ₱${item.price.toFixed(2)}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    $('#receiptItemsList').html(itemsHtml);
+                    
+                    // Set summary information
+                    $('#totalPrice').text(response.data.total_price.toFixed(2));
+                    $('#amountPaid').text(response.data.amount_paid.toFixed(2));
+                    $('#amountChange').text(response.data.amount_change.toFixed(2));
+                    
+                    // Handle discount if exists
+                    if(response.data.discount_type && response.data.discount_price > 0) {
+                        $('#discountRow').show();
+                        $('#discountType').text(response.data.discount_type);
+                        $('#discountAmount').text(response.data.discount_price.toFixed(2));
+                    } else {
+                        $('#discountRow').hide();
+                    }
+                    
+                    // Show the modal
+                    $('#receiptModal').modal('show');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error fetching receipt: ' + error);
+            }
+        });
+    }
+
+    function formatDate(dateString) {
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+
+    function printReceipt() {
+        const printContent = $('.receipt-container').html();
+        const originalContent = $('body').html();
+        
+        $('body').html(`
+            <div style="width: 80mm; margin: 0 auto; padding: 10px; font-family: Arial, sans-serif;">
+                ${printContent}
+            </div>
+        `);
+        
+        window.print();
+        $('body').html(originalContent);
+        $('#receiptModal').modal('show');
+    }
 </script>
+
 </body>
 </html>
