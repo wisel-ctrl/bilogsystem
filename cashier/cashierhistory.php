@@ -639,24 +639,7 @@ $userId = $_SESSION['user_id'];
     document.getElementById('receiptModal').classList.add('hidden');
     }
 
-    // Print function
-    function printReceipt() {
-    const receiptContent = document.querySelector('#receiptModal > div > div > div.bg-white.px-4.pt-5.pb-4.sm\\:p-6.sm\\:pb-4').innerHTML;
-    const originalContent = document.body.innerHTML;
     
-    document.body.innerHTML = `
-        <div class="p-4" style="width: 80mm; margin: 0 auto; font-family: Arial, sans-serif;">
-        ${receiptContent}
-        </div>
-        <script>
-        window.print();
-        setTimeout(() => {
-            document.body.innerHTML = \`${originalContent.replace(/`/g, '\\`')}\`;
-            document.getElementById('receiptModal').classList.remove('hidden');
-        }, 500);
-        </script>
-    `;
-    }
 
 </script>
 
