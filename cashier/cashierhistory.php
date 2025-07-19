@@ -119,58 +119,84 @@ $userId = $_SESSION['user_id'];
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="receiptModalTitle">Receipt</h3>
+                                <!-- Header with date and URL -->
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm text-gray-500">www.caffelilio.com</span>
+                                    <span id="currentDate" class="text-sm text-gray-500"></span>
+                                </div>
+                                
+                                <!-- Restaurant header -->
+                                <div class="text-center mb-6 border-b border-[#d1d5db] pb-4">
+                                    <h1 class="font-playfair text-[28px] font-bold text-[#8B4513]">Caffè Lilio Ristorante</h1>
+                                    <p class="italic font-arial text-[#8B4513]">Authentic Italian Cuisine in Liliw, Laguna</p>
+                                </div>
                                 
                                 <!-- Receipt content -->
                                 <div class="mt-4 w-full max-w-2xl mx-auto">
-                                <!-- Header -->
-                                <div class="text-center mb-6 border-b border-dashed border-gray-300 pb-4">
-                                    <h4 id="receiptDate" class="font-bold text-xl"></h4>
-                                    <p class="text-gray-500">Order #<span id="receiptId"></span></p>
-                                </div>
-                                
-                                <!-- Items list -->
-                                <div id="receiptItemsList" class="mb-6 space-y-2"></div>
-                                
-                                <!-- Summary -->
-                                <div class="border-t border-dashed border-gray-300 pt-4 space-y-2">
-                                    <!-- Discount row (hidden by default) -->
-                                    <div id="discountRow" class="hidden flex justify-between">
-                                    <span id="discountType" class="text-right pr-4"></span>
-                                    <span class="font-medium">-₱<span id="discountAmount"></span></span>
+                                    <!-- Order info -->
+                                    <div class="text-center mb-6 border-b border-[#d1d5db] pb-4">
+                                        <h4 id="receiptDate" class="font-bold text-xl text-[#8B4513]"></h4>
+                                        <p class="text-gray-500">Order #<span id="receiptId"></span></p>
                                     </div>
                                     
-                                    <!-- Total price -->
-                                    <div class="flex justify-between font-bold">
-                                    <span>Total Price:</span>
-                                    <span>₱<span id="totalPrice"></span></span>
-                                    </div>
+                                    <!-- Items list -->
+                                    <table class="w-full mb-6 border-collapse">
+                                        <thead>
+                                            <tr class="bg-[#8B4513] text-white">
+                                                <th class="py-2 px-4 text-left font-arial">Item</th>
+                                                <th class="py-2 px-4 text-right font-arial">Qty</th>
+                                                <th class="py-2 px-4 text-right font-arial">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="receiptItemsList" class="font-arial">
+                                            <!-- Items will be inserted here -->
+                                        </tbody>
+                                    </table>
                                     
-                                    <!-- Amount paid -->
-                                    <div class="flex justify-between">
-                                    <span>Amount Paid:</span>
-                                    <span>₱<span id="amountPaid"></span></span>
+                                    <!-- Summary -->
+                                    <div class="border-t border-[#d1d5db] pt-4 space-y-2 font-arial">
+                                        <!-- Discount row (hidden by default) -->
+                                        <div id="discountRow" class="hidden flex justify-between">
+                                            <span id="discountType" class="text-right pr-4"></span>
+                                            <span class="font-medium">-₱<span id="discountAmount"></span></span>
+                                        </div>
+                                        
+                                        <!-- Total price -->
+                                        <div class="flex justify-between font-bold">
+                                            <span>Total Price:</span>
+                                            <span>₱<span id="totalPrice"></span></span>
+                                        </div>
+                                        
+                                        <!-- Amount paid -->
+                                        <div class="flex justify-between">
+                                            <span>Amount Paid:</span>
+                                            <span>₱<span id="amountPaid"></span></span>
+                                        </div>
+                                        
+                                        <!-- Amount change -->
+                                        <div class="flex justify-between">
+                                            <span>Amount Change:</span>
+                                            <span>₱<span id="amountChange"></span></span>
+                                        </div>
                                     </div>
-                                    
-                                    <!-- Amount change -->
-                                    <div class="flex justify-between">
-                                    <span>Amount Change:</span>
-                                    <span>₱<span id="amountChange"></span></span>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Footer with buttons -->
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Print Receipt
-                        </button>
-                        <button type="button" onclick="closeReceiptModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Close
-                        </button>
+                    <!-- Footer with buttons and contact info -->
+                    <div class="bg-gray-50 px-4 py-3 border-t border-[#d1d5db]">
+                        <div class="text-center text-gray-500 text-[14px] py-2 mb-2">
+                            Contact us: (049) 123-4567 | info@caffelilio.com | P. Burgos St, Liliw, Laguna
+                        </div>
+                        <div class="sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#8B4513] text-base font-medium text-white hover:bg-[#6d360d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] sm:ml-3 sm:w-auto sm:text-sm">
+                                Print Receipt
+                            </button>
+                            <button type="button" onclick="closeReceiptModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-[#d1d5db] shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-[#fffbeb] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -413,8 +439,10 @@ $userId = $_SESSION['user_id'];
     // Search functionality
     document.addEventListener('DOMContentLoaded', () => {
         const today = new Date().toISOString().split('T')[0];
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('start-date').value = today;
         document.getElementById('end-date').value = today;
+        document.getElementById('currentDate').textContent = today.toLocaleDateString(undefined, options);
 
         fetchSalesData();
         
