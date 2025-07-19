@@ -58,7 +58,7 @@
                         <input type="number" id="ingredient-quantity" placeholder="e.g. 1.5" step="0.01" min="0"
                             class="w-full px-4 py-2 pr-12 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                         <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-sm">
-                            kg
+                            Kg/L
                         </div>
                     </div>
                     <p class="mt-1 text-xs text-gray-500">1 kg = 1000 grams</p>
