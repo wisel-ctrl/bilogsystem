@@ -1201,7 +1201,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Dish added successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Dish added successfully!'
+                    });
                     closeModalFunction();
                     // Refresh the dishes table
                     $('#menu-table').DataTable().ajax.reload(null, false);
@@ -1501,7 +1505,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Dish updated successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Dish updated successfully!'
+                    });
                     closeEditModalFunction();
                     // Refresh the dishes table
                     $('#menu-table').DataTable().ajax.reload(null, false);
@@ -1671,7 +1679,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Package created successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Package created successfully!'
+                    });
                     closePackageModalFunction();
                     // You might want to refresh the packages list here
                     $('#packages-table').DataTable().ajax.reload(null, false);
@@ -2180,7 +2192,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Package updated successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Package updated successfully!'
+                    });
                     closeEditPackageModalFunction();
                     // Refresh the packages table
                     $('#packages-table').DataTable().ajax.reload(null, false);
