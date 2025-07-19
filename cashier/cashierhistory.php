@@ -560,6 +560,10 @@ $userId = $_SESSION['user_id'];
             }, 500);
         };
     });
+
+    function openReceiptModal(salesId){
+        console.log(salesId);
+    }
 </script>
 
 </body>
