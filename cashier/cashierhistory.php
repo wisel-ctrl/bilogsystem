@@ -119,45 +119,69 @@ $userId = $_SESSION['user_id'];
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="receiptModalTitle">Receipt</h3>
+                                <!-- Website URL and Date -->
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-500 text-sm">www.caffelilio.com</span>
+                                    <span id="receiptDate" class="text-gray-500 text-sm"></span>
+                                </div>
                                 
-                                <!-- Receipt content -->
-                                <div class="mt-4 w-full max-w-2xl mx-auto">
-                                <!-- Header -->
-                                <div class="text-center mb-6 border-b border-dashed border-gray-300 pb-4">
-                                    <h4 id="receiptDate" class="font-bold text-xl"></h4>
+                                <!-- Header with restaurant info -->
+                                <div class="text-center mb-6 border-b border-[#d1d5db] pb-4">
+                                    <h1 class="font-playfair font-bold text-[28px] text-[#8B4513]">Caffè Lilio Ristorante</h1>
+                                    <p class="italic font-arial text-[#8B4513]">Authentic Italian Cuisine in Liliw, Laguna</p>
+                                </div>
+                                
+                                <!-- Order info -->
+                                <div class="text-center mb-4">
                                     <p class="text-gray-500">Order #<span id="receiptId"></span></p>
                                 </div>
                                 
                                 <!-- Items list -->
-                                <div id="receiptItemsList" class="mb-6 space-y-2"></div>
+                                <div id="receiptItemsList" class="mb-6">
+                                    <table class="w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-[#8B4513] text-white">
+                                                <th class="py-2 px-4 text-left font-arial font-semibold">Item</th>
+                                                <th class="py-2 px-4 text-right font-arial font-semibold">Qty</th>
+                                                <th class="py-2 px-4 text-right font-arial font-semibold">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="font-arial">
+                                            <!-- Items will be inserted here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
                                 
                                 <!-- Summary -->
-                                <div class="border-t border-dashed border-gray-300 pt-4 space-y-2">
+                                <div class="border-t border-[#d1d5db] pt-4 space-y-2">
                                     <!-- Discount row (hidden by default) -->
                                     <div id="discountRow" class="hidden flex justify-between">
-                                    <span id="discountType" class="text-right pr-4"></span>
-                                    <span class="font-medium">-₱<span id="discountAmount"></span></span>
+                                        <span id="discountType" class="text-right pr-4"></span>
+                                        <span class="font-medium">-₱<span id="discountAmount"></span></span>
                                     </div>
                                     
                                     <!-- Total price -->
                                     <div class="flex justify-between font-bold">
-                                    <span>Total Price:</span>
-                                    <span>₱<span id="totalPrice"></span></span>
+                                        <span>Total Price:</span>
+                                        <span>₱<span id="totalPrice"></span></span>
                                     </div>
                                     
                                     <!-- Amount paid -->
                                     <div class="flex justify-between">
-                                    <span>Amount Paid:</span>
-                                    <span>₱<span id="amountPaid"></span></span>
+                                        <span>Amount Paid:</span>
+                                        <span>₱<span id="amountPaid"></span></span>
                                     </div>
                                     
                                     <!-- Amount change -->
                                     <div class="flex justify-between">
-                                    <span>Amount Change:</span>
-                                    <span>₱<span id="amountChange"></span></span>
+                                        <span>Amount Change:</span>
+                                        <span>₱<span id="amountChange"></span></span>
                                     </div>
                                 </div>
+                                
+                                <!-- Footer with contact info -->
+                                <div class="mt-6 pt-4 border-t border-[#d1d5db] text-gray-500 text-[14px] text-center">
+                                    <p>123 Main Street, Liliw, Laguna | (049) 123-4567 | info@caffelilio.com</p>
                                 </div>
                             </div>
                         </div>
@@ -165,16 +189,34 @@ $userId = $_SESSION['user_id'];
                     
                     <!-- Footer with buttons -->
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Print Receipt
+                        <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#8B4513] text-base font-medium text-white hover:bg-[#6B3410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] sm:ml-3 sm:w-auto sm:text-sm">
+                            Print Receipt
                         </button>
                         <button type="button" onclick="closeReceiptModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Close
+                            Close
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <style>
+            .font-playfair {
+                font-family: 'Playfair Display', serif;
+            }
+            .font-arial {
+                font-family: Arial, sans-serif;
+            }
+            #receiptItemsList tbody tr:nth-child(even) {
+                background-color: #fffbeb;
+            }
+            #receiptItemsList tbody tr {
+                border-bottom: 1px solid #d1d5db;
+            }
+            #receiptItemsList th, #receiptItemsList td {
+                padding: 8px 16px;
+            }
+        </style>
 
     </main>
 
