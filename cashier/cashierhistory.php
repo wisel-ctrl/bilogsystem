@@ -105,63 +105,80 @@ $userId = $_SESSION['user_id'];
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Receipt Modal -->
-<div class="modal fade" id="receiptModal" tabindex="-1" role="dialog" aria-labelledby="receiptModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="receiptModalLabel">Receipt</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <!-- Receipt Modal -->
+        <div id="receiptModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <div class="modal-body">
-                <div class="receipt-container" style="width: 100%; max-width: 800px; margin: 0 auto;">
-                    <div class="receipt-header text-center mb-3">
-                        <h4 id="receiptDate" class="font-weight-bold"></h4>
-                        <h5 class="text-muted">Order #<span id="receiptId"></span></h5>
+            
+            <!-- Modal container -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="receiptModalTitle">Receipt</h3>
+                    
+                    <!-- Receipt content -->
+                    <div class="mt-4 w-full max-w-2xl mx-auto">
+                    <!-- Header -->
+                    <div class="text-center mb-6 border-b border-dashed border-gray-300 pb-4">
+                        <h4 id="receiptDate" class="font-bold text-xl"></h4>
+                        <p class="text-gray-500">Order #<span id="receiptId"></span></p>
                     </div>
                     
-                    <div class="receipt-items mb-4">
-                        <div id="receiptItemsList"></div>
-                    </div>
+                    <!-- Items list -->
+                    <div id="receiptItemsList" class="mb-6 space-y-2"></div>
                     
-                    <div class="receipt-summary">
-                        <div class="row mb-2" id="discountRow" style="display: none;">
-                            <div class="col-8 text-right pr-4">
-                                <span id="discountType"></span>
-                            </div>
-                            <div class="col-4 text-right">
-                                -<span id="discountAmount"></span>
-                            </div>
+                    <!-- Summary -->
+                    <div class="border-t border-dashed border-gray-300 pt-4 space-y-2">
+                        <!-- Discount row (hidden by default) -->
+                        <div id="discountRow" class="hidden flex justify-between">
+                        <span id="discountType" class="text-right pr-4"></span>
+                        <span class="font-medium">-₱<span id="discountAmount"></span></span>
                         </div>
                         
-                        <div class="row mb-2">
-                            <div class="col-8 text-right pr-4 font-weight-bold">Total Price:</div>
-                            <div class="col-4 text-right font-weight-bold">₱<span id="totalPrice"></span></div>
+                        <!-- Total price -->
+                        <div class="flex justify-between font-bold">
+                        <span>Total Price:</span>
+                        <span>₱<span id="totalPrice"></span></span>
                         </div>
                         
-                        <div class="row mb-2">
-                            <div class="col-8 text-right pr-4">Amount Paid:</div>
-                            <div class="col-4 text-right">₱<span id="amountPaid"></span></div>
+                        <!-- Amount paid -->
+                        <div class="flex justify-between">
+                        <span>Amount Paid:</span>
+                        <span>₱<span id="amountPaid"></span></span>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-8 text-right pr-4">Amount Change:</div>
-                            <div class="col-4 text-right">₱<span id="amountChange"></span></div>
+                        <!-- Amount change -->
+                        <div class="flex justify-between">
+                        <span>Amount Change:</span>
+                        <span>₱<span id="amountChange"></span></span>
                         </div>
+                    </div>
                     </div>
                 </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
+            
+            <!-- Footer with buttons -->
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                Print Receipt
+                </button>
+                <button type="button" onclick="closeReceiptModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                Close
+                </button>
+            </div>
             </div>
         </div>
-    </div>
-</div>
+        </div>
+
+    </main>
+
+
 
 <script>
     const userId = <?php echo json_encode($userId); ?>;
@@ -544,93 +561,103 @@ $userId = $_SESSION['user_id'];
         };
     });
 
+    // Open modal function
     function openReceiptModal(sales_id) {
-        // Show loading state
-        $('#receiptModalLabel').text('Loading...');
-        $('#receiptItemsList').html('<div class="text-center py-3"><i class="fas fa-spinner fa-spin"></i> Loading receipt...</div>');
+    // Show loading state
+    document.getElementById('receiptModalTitle').textContent = 'Loading...';
+    document.getElementById('receiptItemsList').innerHTML = `
+        <div class="text-center py-4">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Loading receipt...
+        </div>
+    `;
+    
+    // Show modal
+    document.getElementById('receiptModal').classList.remove('hidden');
+    
+    // Fetch receipt data
+    fetch('historyFunctions/fetch_reciept.php', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `sales_id=${sales_id}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+        // Update modal title
+        document.getElementById('receiptModalTitle').textContent = 'Receipt';
         
-        // Fetch receipt data via AJAX
-        $.ajax({
-            url: 'handlers/fetch_receipt.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { sales_id: sales_id },
-            success: function(response) {
-                if(response.success) {
-                    // Update modal title
-                    $('#receiptModalLabel').text('Receipt');
-                    
-                    // Set receipt header info
-                    $('#receiptId').text(response.data.sales_id);
-                    $('#receiptDate').text(formatDate(response.data.created_at));
-                    
-                    // Build items list
-                    let itemsHtml = '';
-                    response.data.items.forEach(item => {
-                        itemsHtml += `
-                            <div class="row mb-2">
-                                <div class="col-8">
-                                    ${item.dish_name} (${item.quantity})
-                                </div>
-                                <div class="col-4 text-right">
-                                    ₱${item.price.toFixed(2)}
-                                </div>
-                            </div>
-                        `;
-                    });
-                    $('#receiptItemsList').html(itemsHtml);
-                    
-                    // Set summary information
-                    $('#totalPrice').text(response.data.total_price.toFixed(2));
-                    $('#amountPaid').text(response.data.amount_paid.toFixed(2));
-                    $('#amountChange').text(response.data.amount_change.toFixed(2));
-                    
-                    // Handle discount if exists
-                    if(response.data.discount_type && response.data.discount_price > 0) {
-                        $('#discountRow').show();
-                        $('#discountType').text(response.data.discount_type);
-                        $('#discountAmount').text(response.data.discount_price.toFixed(2));
-                    } else {
-                        $('#discountRow').hide();
-                    }
-                    
-                    // Show the modal
-                    $('#receiptModal').modal('show');
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error fetching receipt: ' + error);
-            }
-        });
-    }
-
-    function formatDate(dateString) {
-        const options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-    }
-
-    function printReceipt() {
-        const printContent = $('.receipt-container').html();
-        const originalContent = $('body').html();
+        // Set receipt header info
+        document.getElementById('receiptId').textContent = data.data.sales_id;
+        document.getElementById('receiptDate').textContent = formatDate(data.data.created_at);
         
-        $('body').html(`
-            <div style="width: 80mm; margin: 0 auto; padding: 10px; font-family: Arial, sans-serif;">
-                ${printContent}
+        // Build items list
+        let itemsHtml = '';
+        data.data.items.forEach(item => {
+            itemsHtml += `
+            <div class="flex justify-between">
+                <span>${item.dish_name} (${item.quantity})</span>
+                <span>₱${item.price.toFixed(2)}</span>
             </div>
-        `);
+            `;
+        });
+        document.getElementById('receiptItemsList').innerHTML = itemsHtml;
         
-        window.print();
-        $('body').html(originalContent);
-        $('#receiptModal').modal('show');
+        // Set summary information
+        document.getElementById('totalPrice').textContent = data.data.total_price.toFixed(2);
+        document.getElementById('amountPaid').textContent = data.data.amount_paid.toFixed(2);
+        document.getElementById('amountChange').textContent = data.data.amount_change.toFixed(2);
+        
+        // Handle discount if exists
+        const discountRow = document.getElementById('discountRow');
+        if(data.data.discount_type && data.data.discount_price > 0) {
+            discountRow.classList.remove('hidden');
+            document.getElementById('discountType').textContent = data.data.discount_type;
+            document.getElementById('discountAmount').textContent = data.data.discount_price.toFixed(2);
+        } else {
+            discountRow.classList.add('hidden');
+        }
+        } else {
+        alert('Error: ' + data.message);
+        closeReceiptModal();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error fetching receipt');
+        closeReceiptModal();
+    });
     }
+
+    // Close modal function
+    function closeReceiptModal() {
+    document.getElementById('receiptModal').classList.add('hidden');
+    }
+
+    // Print function
+    function printReceipt() {
+    const receiptContent = document.querySelector('#receiptModal > div > div > div.bg-white.px-4.pt-5.pb-4.sm\\:p-6.sm\\:pb-4').innerHTML;
+    const originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = `
+        <div class="p-4" style="width: 80mm; margin: 0 auto; font-family: Arial, sans-serif;">
+        ${receiptContent}
+        </div>
+        <script>
+        window.print();
+        setTimeout(() => {
+            document.body.innerHTML = \`${originalContent.replace(/`/g, '\\`')}\`;
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }, 500);
+        </script>
+    `;
+    }
+
 </script>
 
 </body>
