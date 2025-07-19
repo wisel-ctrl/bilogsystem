@@ -592,7 +592,7 @@ $userId = $_SESSION['user_id'];
     // Open modal function
     function openReceiptModal(sales_id) {
         // Show loading state
-        document.getElementById('receiptModalTitle').textContent = 'Loading...';
+        
         document.getElementById('receiptItemsList').innerHTML = `
             <div class="text-center py-4">
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -618,7 +618,7 @@ $userId = $_SESSION['user_id'];
         .then(data => {
             if(data.success) {
             // Update modal title
-            document.getElementById('receiptModalTitle').textContent = 'Receipt';
+            
             
             // Set receipt header info
             document.getElementById('receiptId').textContent = data.data.sales_id;
