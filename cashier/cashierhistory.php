@@ -187,7 +187,7 @@ $userId = $_SESSION['user_id'];
                     <!-- Footer with buttons and contact info -->
                     <div class="bg-gray-50 px-4 py-3 border-t border-[#d1d5db]">
                         <div class="text-center text-gray-500 text-[14px] py-2 mb-2">
-                            Contact us: (049) 123-4567 | info@caffelilio.com | P. Burgos St, Liliw, Laguna
+                            Contact us: (049) 2542 084 | caffelilio.liliw@gmail.com | Brgy. Rizal st. cr. 4th St., Liliw Laguna
                         </div>
                         <div class="sm:flex sm:flex-row-reverse">
                             <button type="button" onclick="printReceipt()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#8B4513] text-base font-medium text-white hover:bg-[#6d360d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] sm:ml-3 sm:w-auto sm:text-sm">
@@ -693,6 +693,50 @@ $userId = $_SESSION['user_id'];
     document.getElementById('receiptModal').classList.add('hidden');
     }
 
+    function printReceipt() {
+        // Store the original body content
+        const originalContent = document.body.innerHTML;
+        
+        // Get the modal content
+        const modal = document.getElementById('receiptModal');
+        
+        // Make the modal visible temporarily (remove hidden class)
+        modal.classList.remove('hidden');
+        
+        // Get the modal's inner content
+        const modalContent = modal.querySelector('.inline-block').outerHTML;
+        
+        // Replace the body content with just the modal content
+        document.body.innerHTML = `
+            <div class="print-container" style="padding: 20px; max-width: 100%;">
+                ${modalContent}
+            </div>
+        `;
+        
+        // Hide the buttons in the print version
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @media print {
+                button {
+                    display: none !important;
+                }
+                .print-container {
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Print the window
+        window.print();
+        
+        // Restore the original content
+        document.body.innerHTML = originalContent;
+        
+        // Re-add the modal's hidden class
+        modal.classList.add('hidden');
+    }
     
 
 </script>
