@@ -561,9 +561,103 @@ $userId = $_SESSION['user_id'];
         };
     });
 
-    function openReceiptModal(salesId){
-        console.log(salesId);
+    // Open modal function
+    function openReceiptModal(sales_id) {
+        // Show loading state
+        document.getElementById('receiptModalTitle').textContent = 'Loading...';
+        document.getElementById('receiptItemsList').innerHTML = `
+            <div class="text-center py-4">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Loading receipt...
+            </div>
+        `;
+        
+        // Show modal
+        document.getElementById('receiptModal').classList.remove('hidden');
+        
+        // Fetch receipt data
+        fetch('historyFunctions/fetch_reciept.php', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `sales_id=${sales_id}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+            // Update modal title
+            document.getElementById('receiptModalTitle').textContent = 'Receipt';
+            
+            // Set receipt header info
+            document.getElementById('receiptId').textContent = data.data.sales_id;
+            document.getElementById('receiptDate').textContent = formatDate(data.data.created_at);
+            
+            // Build items list
+            let itemsHtml = '';
+            data.data.items.forEach(item => {
+                itemsHtml += `
+                <div class="flex justify-between">
+                    <span>${item.dish_name} (${item.quantity})</span>
+                    <span>₱${item.price.toFixed(2)}</span>
+                </div>
+                `;
+            });
+            document.getElementById('receiptItemsList').innerHTML = itemsHtml;
+            
+            // Set summary information
+            document.getElementById('totalPrice').textContent = data.data.total_price.toFixed(2);
+            document.getElementById('amountPaid').textContent = data.data.amount_paid.toFixed(2);
+            document.getElementById('amountChange').textContent = data.data.amount_change.toFixed(2);
+            
+            // Handle discount if exists
+            const discountRow = document.getElementById('discountRow');
+            if(data.data.discount_type && data.data.discount_price > 0) {
+                discountRow.classList.remove('hidden');
+                document.getElementById('discountType').textContent = data.data.discount_type;
+                document.getElementById('discountAmount').textContent = data.data.discount_price.toFixed(2);
+            } else {
+                discountRow.classList.add('hidden');
+            }
+            } else {
+            alert('Error: ' + data.message);
+            closeReceiptModal();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error fetching receipt');
+            closeReceiptModal();
+        });
     }
+
+    // Close modal function
+    function closeReceiptModal() {
+    document.getElementById('receiptModal').classList.add('hidden');
+    }
+
+    // Print function
+    function printReceipt() {
+    const receiptContent = document.querySelector('#receiptModal > div > div > div.bg-white.px-4.pt-5.pb-4.sm\\:p-6.sm\\:pb-4').innerHTML;
+    const originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = `
+        <div class="p-4" style="width: 80mm; margin: 0 auto; font-family: Arial, sans-serif;">
+        ${receiptContent}
+        </div>
+        <script>
+        window.print();
+        setTimeout(() => {
+            document.body.innerHTML = \`${originalContent.replace(/`/g, '\\`')}\`;
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }, 500);
+        </script>
+    `;
+    }
+
 </script>
 
 </body>
