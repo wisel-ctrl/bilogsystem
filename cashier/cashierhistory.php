@@ -442,7 +442,7 @@ $userId = $_SESSION['user_id'];
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('start-date').value = today;
         document.getElementById('end-date').value = today;
-        document.getElementById('currentDate').textContent = today.toLocaleDateString(undefined, options);
+        document.getElementById('currentDate').textContent = formatDate(today);;
 
         fetchSalesData();
         
