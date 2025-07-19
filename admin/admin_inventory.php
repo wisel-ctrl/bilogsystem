@@ -780,31 +780,51 @@
             
             // Validate quantity
             if (!/^\d*\.?\d+$/.test(quantityInput)) {
-                alert('Quantity must be a positive number (letters and symbols not allowed)');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Quantity',
+                    text: 'Quantity must be a positive number (letters and symbols not allowed)'
+                });
                 return;
             }
             
             const quantity = parseFloat(quantityInput);
             if (quantity <= 0) {
-                alert('Quantity must be greater than zero');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Quantity',
+                    text: 'Quantity must be greater than zero'
+                });
                 return;
             }
             
             // Validate price
             if (!/^\d*\.?\d+$/.test(priceInput)) {
-                alert('Price must be a positive number (letters and symbols not allowed)');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Price',
+                    text: 'Price must be a positive number (letters and symbols not allowed)'
+                });
                 return;
             }
             
             const price = parseFloat(priceInput);
             if (price < 0) {
-                alert('Price cannot be negative');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Price',
+                    text: 'Price cannot be negative'
+                });
                 return;
             }
             
             // Basic validation for other fields
             if (!name || !category) {
-                alert('Please fill all fields');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Missing Information',
+                    text: 'Please fill all fields'
+                });
                 return;
             }
             
@@ -837,14 +857,22 @@
                     // Refresh the DataTable
                     refreshTable();
                     
-                    alert('Ingredient added successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Ingredient added successfully!'
+                    });
                 } else {
                     throw new Error(result.message || 'Failed to add ingredient');
                 }
                 
             } catch (error) {
                 console.error('Error adding ingredient:', error);
-                alert('Error adding ingredient: ' + error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error adding ingredient: ' + error.message
+                });
             }
         });
 
@@ -932,7 +960,11 @@
                     // Refresh the DataTable
                     refreshTable();
                     
-                    alert('Ingredient updated successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Ingredient updated successfully!'
+                    });
                 } else {
                     throw new Error(result.message || 'Failed to update ingredient');
                 }
@@ -984,7 +1016,11 @@
                     // Refresh the DataTable
                     refreshTable();
                     
-                    alert('Ingredient deleted successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Ingredient deleted successfully!'
+                    });
                 } else {
                     throw new Error(result.message || 'Failed to delete ingredient');
                 }
