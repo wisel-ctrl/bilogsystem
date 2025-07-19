@@ -107,7 +107,7 @@ $userId = $_SESSION['user_id'];
         </div>
 
         <!-- Receipt Modal -->
-        <div id="receiptModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div id="receiptModal" class="hidden fixed inset-0 z-50 overflow-y-auto font-arial">
             <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <!-- Background overlay -->
                 <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -128,7 +128,7 @@ $userId = $_SESSION['user_id'];
                                 <!-- Header with restaurant info -->
                                 <div class="text-center mb-6 border-b border-[#d1d5db] pb-4">
                                     <h1 class="font-playfair font-bold text-[28px] text-[#8B4513]">Caffè Lilio Ristorante</h1>
-                                    <p class="italic font-arial text-[#8B4513]">Authentic Italian Cuisine in Liliw, Laguna</p>
+                                    <p class="italic text-[#8B4513]">Authentic Italian Cuisine in Liliw, Laguna</p>
                                 </div>
                                 
                                 <!-- Order info -->
@@ -136,20 +136,22 @@ $userId = $_SESSION['user_id'];
                                     <p class="text-gray-500">Order #<span id="receiptId"></span></p>
                                 </div>
                                 
-                                <!-- Items list -->
-                                <div id="receiptItemsList" class="mb-6">
-                                    <table class="w-full border-collapse">
-                                        <thead>
-                                            <tr class="bg-[#8B4513] text-white">
-                                                <th class="py-2 px-4 text-left font-arial font-semibold">Item</th>
-                                                <th class="py-2 px-4 text-right font-arial font-semibold">Qty</th>
-                                                <th class="py-2 px-4 text-right font-arial font-semibold">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="font-arial">
-                                            <!-- Items will be inserted here dynamically -->
-                                        </tbody>
-                                    </table>
+                                <!-- Items list header -->
+                                <div class="bg-[#8B4513] text-white py-2 px-4 flex justify-between font-semibold mb-2">
+                                    <span>Item</span>
+                                    <span>Price</span>
+                                </div>
+                                
+                                <!-- Items list (div-based structure) -->
+                                <div id="receiptItemsList" class="mb-6 space-y-2">
+                                    <!-- Loading state (will be replaced by JS) -->
+                                    <div class="text-center py-4">
+                                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Loading receipt...
+                                    </div>
                                 </div>
                                 
                                 <!-- Summary -->
@@ -207,14 +209,15 @@ $userId = $_SESSION['user_id'];
             .font-arial {
                 font-family: Arial, sans-serif;
             }
-            #receiptItemsList tbody tr:nth-child(even) {
+            /* Alternating row colors for items */
+            #receiptItemsList > div:nth-child(even) {
                 background-color: #fffbeb;
-            }
-            #receiptItemsList tbody tr {
-                border-bottom: 1px solid #d1d5db;
-            }
-            #receiptItemsList th, #receiptItemsList td {
                 padding: 8px 16px;
+                margin: 0 -16px;
+            }
+            /* Border between items */
+            #receiptItemsList > div:not(:last-child) {
+                border-bottom: 1px solid #d1d5db;
             }
         </style>
 
