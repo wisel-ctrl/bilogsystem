@@ -2235,6 +2235,24 @@
             preventNegativeInputs('edit-dish-capital');
         });
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceInput = document.getElementById('dish-price');
+            const capitalInput = document.getElementById('dish-capital');
+            
+            priceInput.addEventListener('input', function() {
+                // Get the value from price input and parse it as a float
+                const priceValue = parseFloat(priceInput.value);
+                
+                // If it's a valid number, calculate 50% and set the capital value
+                if (!isNaN(priceValue)) {
+                    const capitalValue = priceValue * 0.5;
+                    capitalInput.value = capitalValue.toFixed(2); // Format to 2 decimal places
+                } else {
+                    capitalInput.value = ''; // Clear if price is not a number
+                }
+            });
+        });
+
 
 </script>
 <?php
