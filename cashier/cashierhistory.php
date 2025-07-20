@@ -442,43 +442,12 @@ $userId = $_SESSION['user_id'];
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('start-date').value = today;
         document.getElementById('end-date').value = today;
-        document.getElementById('currentDate').textContent = formatDate(today);;
+        document.getElementById('currentDate').textContent = formatDate(today);
 
         fetchSalesData();
         
         // Set up periodic refresh every 10 seconds
         setInterval(fetchSalesData, 10000);
-        
-        // Add search functionality (you can add a search input to your HTML)
-        const searchInput = document.createElement('input');
-        searchInput.type = 'text';
-        searchInput.placeholder = 'Search transactions...';
-        searchInput.className = 'border border-amber-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500';
-        searchInput.style.marginRight = '10px';
-        
-        // Insert search input (you might want to position it differently)
-        const headerDiv = document.querySelector('.flex.flex-col.md:flex-row.md:items-center.md:justify-between.mb-6');
-        headerDiv.insertBefore(searchInput, headerDiv.children[1]);
-        
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            
-            if (searchTerm.trim() === '') {
-                filteredData = [...allSalesData];
-            } else {
-                filteredData = allSalesData.filter(sale => 
-                    sale.sales_id.toLowerCase().includes(searchTerm) ||
-                    sale.discount_type?.toLowerCase().includes(searchTerm) ||
-                    sale.items.toLowerCase().includes(searchTerm) ||
-                    sale.total_price.toString().includes(searchTerm) ||
-                    formatDate(sale.created_at).toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            currentPage = 1;
-            renderSalesData();
-            renderPagination();
-        });
     });
 
     // Export/Print functionality
