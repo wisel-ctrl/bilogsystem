@@ -828,6 +828,15 @@
 
                         <div class="modal-body flex-1 overflow-y-auto p-6">
                             <div class="space-y-6">
+                                <!-- Package Image -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-1 font-baskerville">Package Image</label>
+                                    <div id="view-package-image-container" class="mt-2 hidden">
+                                        <img id="view-package-image" src="#" alt="Package Image" class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                    </div>
+                                    <p id="view-package-no-image" class="text-gray-700 font-baskerville">No image available</p>
+                                </div>
+
                                 <!-- Package Info -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
