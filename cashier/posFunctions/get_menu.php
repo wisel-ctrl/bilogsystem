@@ -16,6 +16,7 @@ try {
         // Map database categories to the categories used in your frontend
         $categoryMap = [
             'main_course' => 'main-course',
+            'best_seller' => 'best-sellers',
             'desserts' => 'desserts',
             'drinks' => 'Drinks',
             'appetizer' => 'appetizer', // Not present in buttons, kept from original
