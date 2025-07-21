@@ -389,23 +389,30 @@ async function fetchSpecialOffers() {
             const imagePath = package.image_path ? `/Uploads/${package.image_path}` : '../images/default_offer.jpg';
             
             card.innerHTML = `
-    <div class="relative">
-        <img src="${imagePath}" alt="${package.package_name}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
-    </div>
-    <div class="p-6">
-        <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">${package.package_name}</h4>
-        <p class="font-baskerville mb-4 text-deep-brown/80">${package.package_description || 'No description available'}</p>
-        <div class="flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="font-baskerville font-bold text-lg text-deep-brown">₱${parseFloat(package.price).toFixed(2)}/person</span>
-            </div>
-            <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
-                <span>${package.type === 'buffet' ? 'Book Now' : 'Reserve Now'}</span>
-                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-            </button>
-        </div>
-    </div>
-`;
+                <div class="relative">
+                    <img src="${imagePath}" alt="${package.package_name}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute top-4 right-4 bg-${package.discount === '20% OFF' ? 'red-500' : 'deep-brown'} text-white px-3 py-1 rounded-full text-sm font-bold">
+                        ${package.discount || 'SPECIAL'}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">${package.package_name}</h4>
+                    <p class="font-baskerville mb-4 text-deep-brown/80">${package.package_description || 'No description available'}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="space-y-1">
+                            <span class="font-baskerville font-bold text-lg text-deep-brown">₱${parseFloat(package.price).toFixed(2)}/person</span>
+                            <div class="flex items-center space-x-1">
+                                ${starsHTML}
+                                <span class="text-sm text-deep-brown/60 ml-1">(${rating.toFixed(1)})</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
+                            <span>${package.type === 'buffet' ? 'Book Now' : 'Reserve Now'}</span>
+                            <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
             
             container.appendChild(card);
         });
