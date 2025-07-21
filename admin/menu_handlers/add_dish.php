@@ -9,6 +9,7 @@ try {
         // 1) Category → prefix map
         $prefixes = [
             'main_course'   => 'mc',
+            'best_seller'   => 'bs',
             'italian_dish'  => 'it',
             'spanish_dish'  => 'sp',
             'house_salad'   => 'hs',

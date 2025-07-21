@@ -712,6 +712,7 @@
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dish Category</label>
                                     <select id="edit-dish-category" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" required>
                                         <option value="">Select category</option>
+                                        <option value="best_seller">Best-Seller</option>
                                         <option value="italian_dish">Italian Dish</option>
                                         <option value="spanish_dish">Spanish Dish</option>
                                         <option value="house_salad">House Salad</option>
