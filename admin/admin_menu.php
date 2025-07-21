@@ -1940,19 +1940,6 @@ document.getElementById('package-image').addEventListener('change', function(eve
                 document.getElementById('view-package-status').textContent = statusText;
                 document.getElementById('view-package-status').className = `text-lg font-semibold ${statusClass}`;
                 
-                // Populate image
-                const imageContainer = document.getElementById('view-package-image-container');
-                            const imageElement = document.getElementById('view-package-image');
-                            const noImageText = document.getElementById('view-package-no-image');
-                if (packageData.data.image_path) {
-                    imageElement.src = packageData.data.image_path;
-                    imageContainer.classList.remove('hidden');
-                    noImageText.classList.add('hidden');
-                } else {
-                    imageContainer.classList.add('hidden');
-                    noImageText.classList.remove('hidden');
-                }
-
                 // Group dishes by category
                 const dishesContainer = document.getElementById('view-dishes-container');
                 dishesContainer.innerHTML = '';
