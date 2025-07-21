@@ -101,10 +101,10 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
                                 <i class="fas fa-user-circle w-5"></i>
                                 <span>Profile Settings</span>
                             </a>
-                            <a href="#notifications" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
+                            <!-- <a href="#notifications" class="flex items-center px-4 py-2 text-deep-brown hover:bg-rich-brown hover:text-warm-cream transition-colors duration-300">
                                 <i class="fas fa-bell w-5"></i>
                                 <span>Notifications</span>
-                            </a>
+                            </a> -->
                             <hr class="my-2 border-deep-brown/20">
                             <a href="../logout.php?usertype=customer" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-300">
                                 <i class="fas fa-sign-out-alt w-5"></i>
@@ -148,9 +148,9 @@ $profilePicture = $user['profile_picture'] ? '../images/profile_pictures/' . htm
                             <a href="profile.php" class="flex items-center text-deep-brown hover:text-deep-brown/80 transition-colors duration-300">
                                 <i class="fas fa-user-circle w-8"></i> Profile Settings
                             </a>
-                            <a href="#notifications" class="flex items-center text-deep-brown hover:text-deep-brown/80 transition-colors duration-300">
+                            <!-- <a href="#notifications" class="flex items-center text-deep-brown hover:text-deep-brown/80 transition-colors duration-300">
                                 <i class="fas fa-bell w-8"></i> Notifications
-                            </a>
+                            </a> -->
                             <a href="../logout.php?usertype=customer" class="flex items-center text-red-400 hover:text-red-300 transition-colors duration-300">
                                 <i class="fas fa-sign-out-alt w-8"></i> Logout
                             </a>
