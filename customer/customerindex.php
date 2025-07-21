@@ -283,66 +283,8 @@ ob_start();
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-card rounded-xl overflow-hidden shadow-md hover-lift group">
-            <div class="relative">
-                <img src="../images/01_buffet.jpg" alt="Special Buffet Offer" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
-                <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    20% OFF
-                </div>
-            </div>
-            <div class="p-6">
-                <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">Weekend Buffet Special</h4>
-                <p class="font-baskerville mb-4 text-deep-brown/80">Enjoy our premium buffet selection at 20% off every weekend.</p>
-                <div class="flex items-center justify-between">
-                    <div class="space-y-1">
-                        <span class="font-baskerville font-bold text-lg text-deep-brown">₱1,760/person</span>
-                        <div class="flex items-center space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star-half-alt text-yellow-500"></i>
-                            <span class="text-sm text-deep-brown/60 ml-1">(4.8)</span>
-                        </div>
-                    </div>
-                    <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
-                        <span>Book Now</span>
-                        <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-card rounded-xl overflow-hidden shadow-md hover-lift group">
-            <div class="relative">
-                <img src="../images/cheesewheelpasta.jpg" alt="Cheese Wheel Pasta" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
-                <div class="absolute top-4 right-4 bg-deep-brown text-warm-cream px-3 py-1 rounded-full text-sm font-bold">
-                    SPECIAL
-                </div>
-            </div>
-            <div class="p-6">
-                <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">Cheese Wheel Experience</h4>
-                <p class="font-baskerville mb-4 text-deep-brown/80">Try our famous cheese wheel pasta preparation, now with a complimentary glass of wine.</p>
-                <div class="flex items-center justify-between">
-                    <div class="space-y-1">
-                        <span class="font-baskerville font-bold text-lg text-deep-brown">₱850/person</span>
-                        <div class="flex items-center space-x-1">
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <i class="fas fa-star text-yellow-500"></i>
-                            <span class="text-sm text-deep-brown/60 ml-1">(5.0)</span>
-                        </div>
-                    </div>
-                    <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
-                        <span>Reserve Now</span>
-                        <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div id="special-offers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Special offers will be populated here -->
     </div>
 </section>
 
@@ -400,7 +342,83 @@ ob_start();
         </div>
     </div>
 </section>
+<script>
+    // Function to fetch and render special offers
+async function fetchSpecialOffers() {
+    try {
+        const response = await fetch('menu_handlers/get_menu_packages.php');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        
+        if (result.status !== 'success') {
+            throw new Error(result.message || 'Failed to fetch special offers');
+        }
+        
+        const packages = result.data;
+        const container = document.getElementById('special-offers-container');
+        container.innerHTML = ''; // Clear existing content
+        
+        if (packages.length === 0) {
+            container.innerHTML = '<p class="text-gray-500">No special offers available.</p>';
+            return;
+        }
+        
+        packages.forEach(package => {
+            // Create card element
+            const card = document.createElement('div');
+            card.className = 'bg-card rounded-xl overflow-hidden shadow-md hover-lift group';
+            
+            // Format rating stars
+            const rating = package.rating || 4.5; // Default rating if not provided
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let starsHTML = '';
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="fas fa-star text-yellow-500"></i>';
+            }
+            if (hasHalfStar) {
+                starsHTML += '<i class="fas fa-star-half-alt text-yellow-500"></i>';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                starsHTML += '<i class="far fa-star text-yellow-500"></i>';
+            }
+            
+            // Set image path (adjust base path if needed)
+            const imagePath = package.image_path ? `/Uploads/${package.image_path}` : '../images/default_offer.jpg';
+            
+            card.innerHTML = `
+    <div class="relative">
+        <img src="${imagePath}" alt="${package.package_name}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+    </div>
+    <div class="p-6">
+        <h4 class="font-playfair text-xl font-bold mb-2 text-deep-brown">${package.package_name}</h4>
+        <p class="font-baskerville mb-4 text-deep-brown/80">${package.package_description || 'No description available'}</p>
+        <div class="flex items-center justify-between">
+            <div class="space-y-1">
+                <span class="font-baskerville font-bold text-lg text-deep-brown">₱${parseFloat(package.price).toFixed(2)}/person</span>
+            </div>
+            <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
+                <span>${package.type === 'buffet' ? 'Book Now' : 'Reserve Now'}</span>
+                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+            </button>
+        </div>
+    </div>
+`;
+            
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error fetching special offers:', error);
+        const container = document.getElementById('special-offers-container');
+        container.innerHTML = '<p class="text-red-500">Failed to load special offers. Please try again later.</p>';
+    }
+}
 
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', fetchSpecialOffers);
+    </script>
 <?php
 $content = ob_get_clean();
 include 'layout_customer.php';
