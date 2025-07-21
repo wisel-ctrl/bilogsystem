@@ -185,75 +185,80 @@ ob_start();
 
             // Fetch and display menu packages
             function loadMenu() {
-                const menuContainer = document.getElementById('menu-container');
-                const loadingContainer = document.getElementById('menu-loading');
-                const emptyContainer = document.getElementById('menu-empty');
+                    const menuContainer = document.getElementById('menu-container');
+                    const loadingContainer = document.getElementById('menu-loading');
+                    const emptyContainer = document.getElementById('menu-empty');
 
-                // Show loading state
-                loadingContainer.classList.remove('hidden');
-                menuContainer.classList.add('hidden');
-                emptyContainer.classList.add('hidden');
+                    // Show loading state
+                    loadingContainer.classList.remove('hidden');
+                    menuContainer.classList.add('hidden');
+                    emptyContainer.classList.add('hidden');
 
-                fetch('customerindex/get_menu_packages.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success' && data.data && data.data.length > 0) {
-                            loadingContainer.classList.add('hidden');
-                            menuContainer.classList.remove('hidden');
-                            menuContainer.innerHTML = '';
-                            
-                            data.data.forEach(package => {
-                                const menuItem = document.createElement('div');
-                                menuItem.className = 'bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
-                                menuItem.innerHTML = `
-                                    <div class="package-badge">
-                                        ${package.type || 'Package'}
-                                    </div>
-                                    <div class="menu-card-content p-6">
-                                        <h4 class="font-playfair text-xl font-bold mb-3 text-deep-brown pr-20">
-                                            ${package.package_name || 'Menu Item'}
-                                        </h4>
-                                        <p class="font-baskerville text-deep-brown/80 menu-card-description mb-4">
-                                            ${package.package_description || 'Delicious menu item description.'}
-                                        </p>
-                                        <div class="menu-card-footer">
-                                            <div class="flex items-center justify-between mb-4">
-                                                <span class="price-display font-baskerville">
-                                                    ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm">per pax</span>
-                                                </span>
-                                                <div class="text-sm text-deep-brown/60 font-baskerville">
-                                                    <i class="fas fa-clock mr-1"></i>
-                                                    Available
-                                                </div>
+                    fetch('customerindex/get_menu_packages.php')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success' && data.data && data.data.length > 0) {
+                                loadingContainer.classList.add('hidden');
+                                menuContainer.classList.remove('hidden');
+                                menuContainer.innerHTML = '';
+                                
+                                data.data.forEach(package => {
+                                    const menuItem = document.createElement('div');
+                                    menuItem.className = 'bg-card rounded-xl shadow-md hover-lift group relative overflow-hidden';
+                                    
+                                    // Set image path (adjust base path if needed)
+                                    const imagePath = package.image_path ? `/Uploads/${package.image_path}` : '../images/default_offer.jpg';
+                                    
+                                    menuItem.innerHTML = `
+                                        <div class="relative">
+                                            <img src="${imagePath}" alt="${package.package_name || 'Menu Item'}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                                            <div class="package-badge absolute top-4 right-4 bg-deep-brown text-white px-3 py-1 rounded-full text-sm font-bold">
+                                                ${package.type || 'Package'}
                                             </div>
-                                            <button class="reserve-btn bg-rich-brown text-warm-cream px-5 py-2.5 rounded-full font-baskerville text-base font-semibold flex items-center gap-2 hover:bg-deep-brown shadow-md hover:shadow-lg transition-all duration-300 group"
+                                        </div>
+                                        <div class="menu-card-content p-6">
+                                            <h4 class="font-playfair text-xl font-bold mb-3 text-deep-brown">
+                                                ${package.package_name || 'Menu Item'}
+                                            </h4>
+                                            <p class="font-baskerville text-deep-brown/80 menu-card-description mb-4">
+                                                ${package.package_description || 'Delicious menu item description.'}
+                                            </p>
+                                            <div class="menu-card-footer">
+                                                <div class="flex items-center justify-between mb-4">
+                                                    <span class="price-display font-baskerville">
+                                                        ₱${parseFloat(package.price || 0).toFixed(2)} <span class="text-sm">per pax</span>
+                                                    </span>
+                                                    <div class="text-sm text-deep-brown/60 font-baskerville">
+                                                        <i class="fas fa-clock mr-1"></i>
+                                                        Available
+                                                    </div>
+                                                </div>
+                                                <a href="javascript:void(0)" class="reserve-btn bg-rich-brown text-warm-cream px-5 py-2.5 rounded-full font-baskerville text-base font-semibold flex items-center gap-2 hover:bg-deep-brown shadow-md hover:shadow-lg transition-all duration-300 group"
                                                     onclick="showPackageDetails(${package.package_id})"
                                                     aria-label="Reserve ${package.package_name}">
-                                                <span>Reserve Now</span>
-                                                <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
-                                            </button>
-
+                                                    <span>Reserve Now</span>
+                                                    <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                `;
-                                menuContainer.appendChild(menuItem);
-                            });
-                        } else {
+                                    `;
+                                    menuContainer.appendChild(menuItem);
+                                });
+                            } else {
+                                loadingContainer.classList.add('hidden');
+                                emptyContainer.classList.remove('hidden');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching menu data:', error);
                             loadingContainer.classList.add('hidden');
                             emptyContainer.classList.remove('hidden');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching menu data:', error);
-                        loadingContainer.classList.add('hidden');
-                        emptyContainer.classList.remove('hidden');
-                        showToast('Error loading menu. Please try again.', 'error');
-                    })
-                    .finally(() => {
-                        NProgress.done();
-                    });
-            }
-
+                            showToast('Error loading menu. Please try again.', 'error');
+                        })
+                        .finally(() => {
+                            NProgress.done();
+                        });
+                }
             function showPackageDetails(packageId) {
                 // Fetch package details
                 fetch('bookingAPI/get_package_dishes.php?package_id=' + packageId)
