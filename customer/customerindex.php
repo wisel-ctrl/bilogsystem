@@ -344,9 +344,9 @@ ob_start();
 </section>
 <script>
     // Function to fetch and render special offers
-    async function fetchSpecialOffers() {
+async function fetchSpecialOffers() {
     try {
-        const response = await fetch('menu_handlers/get_menu_packages.php');
+        const response = await fetch('customerindex/get_menu_packages.php');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -356,7 +356,7 @@ ob_start();
             throw new Error(result.message || 'Failed to fetch special offers');
         }
         
-        const packages = result.data.slice(0, 2); // Limit to first 2 packages
+        const packages = result.data;
         const container = document.getElementById('special-offers-container');
         container.innerHTML = ''; // Clear existing content
         
@@ -422,9 +422,6 @@ ob_start();
         container.innerHTML = '<p class="text-red-500">Failed to load special offers. Please try again later.</p>';
     }
 }
-
-// Call the function when the page loads
-document.addEventListener('DOMContentLoaded', fetchSpecialOffers);
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', fetchSpecialOffers);
