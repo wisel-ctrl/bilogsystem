@@ -524,7 +524,7 @@
                                                 <option value="">Select ingredient</option>
                                                 <!-- Options will be populated by JavaScript -->
                                             </select>
-                                            <input type="number" placeholder="Quantity (grams)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
+                                            <input type="number" placeholder="Qty (g/ml)" class="w-32 px-3 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville ingredient-quantity" step="0.01" min="0" value="">
                                             <button type="button" class="text-red-500 hover:text-red-700 remove-ingredient hidden">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -1201,7 +1201,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Dish added successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Dish added successfully!'
+                    });
                     closeModalFunction();
                     // Refresh the dishes table
                     $('#menu-table').DataTable().ajax.reload(null, false);
@@ -1501,7 +1505,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Dish updated successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Dish updated successfully!'
+                    });
                     closeEditModalFunction();
                     // Refresh the dishes table
                     $('#menu-table').DataTable().ajax.reload(null, false);
@@ -1671,7 +1679,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Package created successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Package created successfully!'
+                    });
                     closePackageModalFunction();
                     // You might want to refresh the packages list here
                     $('#packages-table').DataTable().ajax.reload(null, false);
@@ -2180,7 +2192,11 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Package updated successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Package updated successfully!'
+                    });
                     closeEditPackageModalFunction();
                     // Refresh the packages table
                     $('#packages-table').DataTable().ajax.reload(null, false);
@@ -2217,6 +2233,24 @@
             preventNegativeInputs('dish-capital');
             preventNegativeInputs('edit-dish-price');
             preventNegativeInputs('edit-dish-capital');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceInput = document.getElementById('dish-price');
+            const capitalInput = document.getElementById('dish-capital');
+            
+            priceInput.addEventListener('input', function() {
+                // Get the value from price input and parse it as a float
+                const priceValue = parseFloat(priceInput.value);
+                
+                // If it's a valid number, calculate 50% and set the capital value
+                if (!isNaN(priceValue)) {
+                    const capitalValue = priceValue * 0.5;
+                    capitalInput.value = capitalValue.toFixed(2); // Format to 2 decimal places
+                } else {
+                    capitalInput.value = ''; // Clear if price is not a number
+                }
+            });
         });
 
 

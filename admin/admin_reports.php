@@ -1113,6 +1113,10 @@ ob_start();
             observer.observe(element);
         });
 
+        // Set default filter values
+        document.getElementById('periodFilter').value = 'daily';
+        document.getElementById('categoryFilter').value = '';
+
         // Filter tables function
         function filterTables() {
             const category = document.getElementById('categoryFilter').value;
@@ -1138,81 +1142,110 @@ ob_start();
             });
 
             // Show relevant section based on filters
-            if (!category && !period) {
-                // If both filters are "All", show only Customer Satisfaction
-                document.getElementById('customerSatisfactionSection').classList.remove('hidden');
-            } else {
-        let targetSection = '';
-        if (category === 'revenue') {
-            if (period === 'daily') targetSection = 'dailyRevenueSection';
-            else if (period === 'weekly') targetSection = 'weeklyRevenueSection';
-            else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
-            else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
-        } else if (category === 'orders') {
-            if (period === 'daily') targetSection = 'dailyOrdersSection';
-            else if (period === 'weekly') targetSection = 'weeklyOrdersSection';
-            else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
-            else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
-        } else if (category === 'customer_satisfaction') {
-            if (period === 'daily') targetSection = 'dailyCustomerSatisfactionSection';
-            else if (period === 'weekly') targetSection = 'weeklyCustomerSatisfactionSection';
-            else if (period === 'monthly') targetSection = 'monthlyCustomerSatisfactionSection';
-            else if (period === 'yearly') targetSection = 'yearlyCustomerSatisfactionSection';
-            else targetSection = 'dailyCustomerSatisfactionSection'; // Default to daily if no period
-        } else if (category === '' && period) {
-            // If category is "All" but period is selected, show all tables for that period
-            if (period === 'daily') {
+            if (!category && period === 'daily') {
+                // Default view - show all daily tables
                 document.getElementById('dailyRevenueSection').classList.remove('hidden');
                 document.getElementById('dailyOrdersSection').classList.remove('hidden');
                 document.getElementById('dailyCustomerSatisfactionSection').classList.remove('hidden');
-            } else if (period === 'weekly') {
-                document.getElementById('weeklyRevenueSection').classList.remove('hidden');
-                document.getElementById('weeklyOrdersSection').classList.remove('hidden');
-                document.getElementById('weeklyCustomerSatisfactionSection').classList.remove('hidden');
-            } else if (period === 'monthly') {
-                document.getElementById('monthlyRevenueSection').classList.remove('hidden');
-                document.getElementById('monthlyOrdersSection').classList.remove('hidden');
-                document.getElementById('monthlyCustomerSatisfactionSection').classList.remove('hidden');
-            } else if (period === 'yearly') {
-                document.getElementById('yearlyRevenueSection').classList.remove('hidden');
-                document.getElementById('yearlyOrdersSection').classList.remove('hidden');
-                document.getElementById('yearlyCustomerSatisfactionSection').classList.remove('hidden');
+            } else if (!category && period) {
+                // If category is "All" but period is selected, show all tables for that period
+                if (period === 'daily') {
+                    document.getElementById('dailyRevenueSection').classList.remove('hidden');
+                    document.getElementById('dailyOrdersSection').classList.remove('hidden');
+                    document.getElementById('dailyCustomerSatisfactionSection').classList.remove('hidden');
+                } else if (period === 'weekly') {
+                    document.getElementById('weeklyRevenueSection').classList.remove('hidden');
+                    document.getElementById('weeklyOrdersSection').classList.remove('hidden');
+                    document.getElementById('weeklyCustomerSatisfactionSection').classList.remove('hidden');
+                } else if (period === 'monthly') {
+                    document.getElementById('monthlyRevenueSection').classList.remove('hidden');
+                    document.getElementById('monthlyOrdersSection').classList.remove('hidden');
+                    document.getElementById('monthlyCustomerSatisfactionSection').classList.remove('hidden');
+                } else if (period === 'yearly') {
+                    document.getElementById('yearlyRevenueSection').classList.remove('hidden');
+                    document.getElementById('yearlyOrdersSection').classList.remove('hidden');
+                    document.getElementById('yearlyCustomerSatisfactionSection').classList.remove('hidden');
+                }
+            } else {
+                // Specific category selected
+                let targetSection = '';
+                if (category === 'revenue') {
+                    if (period === 'daily') targetSection = 'dailyRevenueSection';
+                    else if (period === 'weekly') targetSection = 'weeklyRevenueSection';
+                    else if (period === 'monthly') targetSection = 'monthlyRevenueSection';
+                    else if (period === 'yearly') targetSection = 'yearlyRevenueSection';
+                    else targetSection = 'dailyRevenueSection'; // Default to daily if no period
+                } else if (category === 'orders') {
+                    if (period === 'daily') targetSection = 'dailyOrdersSection';
+                    else if (period === 'weekly') targetSection = 'weeklyOrdersSection';
+                    else if (period === 'monthly') targetSection = 'monthlyOrdersSection';
+                    else if (period === 'yearly') targetSection = 'yearlyOrdersSection';
+                    else targetSection = 'dailyOrdersSection'; // Default to daily if no period
+                } else if (category === 'customer_satisfaction') {
+                    if (period === 'daily') targetSection = 'dailyCustomerSatisfactionSection';
+                    else if (period === 'weekly') targetSection = 'weeklyCustomerSatisfactionSection';
+                    else if (period === 'monthly') targetSection = 'monthlyCustomerSatisfactionSection';
+                    else if (period === 'yearly') targetSection = 'yearlyCustomerSatisfactionSection';
+                    else targetSection = 'dailyCustomerSatisfactionSection'; // Default to daily if no period
+                }
+                
+                if (targetSection) {
+                    document.getElementById(targetSection).classList.remove('hidden');
+                }
             }
-        }
-        if (targetSection) {
-            document.getElementById(targetSection).classList.remove('hidden');
-        }
-    }
         }
 
         // Reset filters function
         function resetFilters() {
             document.getElementById('categoryFilter').value = '';
-            document.getElementById('periodFilter').value = '';
-            const sections = [
-                'dailyRevenueSection',
-                'monthlyRevenueSection',
-                'yearlyRevenueSection',
-                'dailyOrdersSection',
-                'weeklyOrdersSection',
-                'monthlyOrdersSection',
-                'yearlyOrdersSection',
-                'customerSatisfactionSection'
-            ];
-            // Hide all sections except Customer Satisfaction
-            sections.forEach(section => {
-                document.getElementById(section).classList.add('hidden');
-            });
-            document.getElementById('customerSatisfactionSection').classList.remove('hidden');
+            document.getElementById('periodFilter').value = 'daily';
+            filterTables();
         }
 
         // Event listeners for filter buttons
         document.getElementById('applyFilters').addEventListener('click', filterTables);
         document.getElementById('resetFilters').addEventListener('click', resetFilters);
 
-        // Initialize default state
+        // Initialize default state - show all daily tables
         filterTables();
     });
+
+    // Print table function
+    function printTable(tableId, title) {
+        const table = document.getElementById(tableId);
+        const rows = table.querySelectorAll('tbody tr');
+        
+        // Create print section
+        let printSection = document.getElementById('printSection');
+        if (!printSection) {
+            printSection = document.createElement('div');
+            printSection.id = 'printSection';
+            document.body.appendChild(printSection);
+        }
+        
+        // Generate table HTML
+        let tableHtml = `
+            <div class="print-header">
+                <h1 style="font-size: 24px; font-weight: bold; font-family: 'Playfair Display', serif;">${title}</h1>
+                <h2 style="font-size: 16px; color: #666; margin-top: 5px;">Caffè Lilio</h2>
+            </div>
+            <div class="print-date">
+                Generated on: ${new Date().toLocaleString()}
+            </div>
+            <table class="print-table">
+                <thead>
+                    ${table.querySelector('thead').innerHTML}
+                </thead>
+                <tbody>
+                    ${Array.from(rows).map(row => `<tr>${row.innerHTML}</tr>`).join('')}
+                </tbody>
+            </table>
+        `;
+        
+        // Set content and print
+        printSection.innerHTML = tableHtml;
+        window.print();
+    }
 
     // Print table function
     function printTable(tableId, title) {

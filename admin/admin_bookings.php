@@ -198,11 +198,14 @@
 
                 <!-- Accepted Bookings Section -->
                 <div class="dashboard-card animate-on-scroll mt-8 rounded-lg shadow-sm bg-white">
-                    <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-deep-brown flex items-center">
                             <i class="fas fa-check-circle mr-2 text-green-600"></i>
                             Accepted Reservations
                         </h3>
+                        <button onclick="openDoneReservationsModal()" class="bg-accent-brown hover:bg-accent-brown-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                            <i class="fas fa-history mr-2"></i>View Done Reservations
+                        </button>
                     </div>
                     <div class="overflow-x-auto p-4">
                         <div class="flex justify-end mb-4">
@@ -470,6 +473,59 @@
                             <button onclick="closeSuccessModal()" class="w-full px-6 py-2 bg-gradient-to-r from-deep-brown to-rich-brown hover:from-rich-brown hover:to-deep-brown text-warm-cream rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-baskerville">
                                 OK
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="done-reservations-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1000] hidden overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75" onclick="closeDoneReservationsModal()"></div>
+                        </div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                                <i class="fas fa-history text-accent-brown mr-2"></i> Done Reservations
+                                            </h3>
+                                            <button onclick="closeDoneReservationsModal()" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="overflow-x-auto">
+                                                <table id="done-reservations-table" class="w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden">
+                                                    <thead class="bg-gray-100">
+                                                        <tr>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Name</th>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Phone</th>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Menu</th>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Pax</th>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Date & Time</th>
+                                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-gray-200">
+                                                        <!-- Data will be populated here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="flex flex-col md:flex-row justify-between items-center mt-4 text-sm text-gray-700">
+                                                <div id="done-reservations-info" class="mb-2 md:mb-0"></div>
+                                                <div id="done-reservations-pagination" class="inline-flex rounded-md shadow-sm"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="button" onclick="closeDoneReservationsModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-brown sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                    Close
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1354,6 +1410,73 @@ function closeReservationModal() {
     document.querySelector('.flex-1').classList.remove('blur-effect');
     document.querySelector('#sidebar').classList.remove('blur-effect');
 }
+</script>
+<script>
+    function openDoneReservationsModal() {
+        document.getElementById('done-reservations-modal').classList.remove('hidden');
+        if (!$.fn.DataTable.isDataTable('#done-reservations-table')) {
+            $('#done-reservations-table').DataTable({
+                ajax: {
+                    url: 'booking_handlers/done_bookings.php',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'customer_name' },
+                    { 
+                        // Phone column - you may need to adjust this based on your actual data structure
+                        data: null,
+                        render: function(data, type, row) {
+                            // If you have phone data in your response, replace this with the actual field
+                            return 'N/A'; // Placeholder - update with actual phone field from your data
+                        }
+                    },
+                    { data: 'package_name' },
+                    { data: 'pax' },
+                    { 
+                        data: 'reservation_datetime',
+                        render: function(data, type, row) {
+                            // Format the date and time nicely
+                            const date = new Date(data);
+                            return date.toLocaleString();
+                        }
+                    },
+                    { 
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Done</span>';
+                        }
+                    }
+                ],
+                responsive: true,
+                dom: '<"flex flex-col md:flex-row justify-between items-center mb-4"<"mb-4 md:mb-0"l><"flex-grow md:ml-4"f>>rt<"flex flex-col md:flex-row justify-between items-center mt-4"<"mb-4 md:mb-0"i><"pagination"p>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search reservations...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: '<i class="fas fa-chevron-left"></i>',
+                        next: '<i class="fas fa-chevron-right"></i>'
+                    }
+                },
+                initComplete: function() {
+                    // Add custom classes to elements
+                    $('.dataTables_filter input').addClass('border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-brown focus:border-transparent');
+                    $('.dataTables_length select').addClass('border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-accent-brown focus:border-transparent');
+                }
+            });
+        } else {
+            // If table already exists, reload the data
+            $('#done-reservations-table').DataTable().ajax.reload();
+        }
+    }
+
+    function closeDoneReservationsModal() {
+        document.getElementById('done-reservations-modal').classList.add('hidden');
+    }
+
+    // You would also need JavaScript functions to load and populate the table data
+    // function loadDoneReservationsData() { ... }
 </script>
 <?php
 $page_scripts = ob_get_clean();

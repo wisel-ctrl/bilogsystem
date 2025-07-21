@@ -267,13 +267,177 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     }
 }
 
-// Fetch cashiers for display
-try {
-    $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at FROM users_tb WHERE usertype = 2 AND status = 1 ORDER BY created_at DESC");
-    $stmt->execute();
-    $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $errors['database'] = 'Failed to fetch cashiers: ' . $e->getMessage();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'fetch_cashiers') {
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    $limit = 5;
+    $offset = ($page - 1) * $limit;
+    
+    try {
+        // Count total records for pagination
+        $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM users_tb WHERE usertype = 2 AND status = 1");
+        $countStmt->execute();
+        $totalRecords = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalRecords / $limit);
+        
+        // Fetch paginated records
+        $stmt = $conn->prepare("SELECT id, first_name, middle_name, last_name, suffix, created_at 
+                               FROM users_tb 
+                               WHERE usertype = 2 AND status = 1 
+                               ORDER BY created_at DESC 
+                               LIMIT :limit OFFSET :offset");
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $html = '';
+        if (empty($cashiers)) {
+            $html .= '<tr><td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td></tr>';
+        } else {
+            $counter = $offset + 1;
+            foreach ($cashiers as $cashier) {
+                $html .= '<tr class="hover:bg-gray-50 transition-colors duration-200">';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">' . $counter . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $fullName = htmlspecialchars($cashier['first_name']);
+                if (!empty($cashier['middle_name'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                }
+                $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                if (!empty($cashier['suffix'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                }
+                $html .= $fullName . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                $html .= $date->format('F d, Y') . '</td>';
+                $html .= '<td class="p-4 flex justify-center space-x-3">';
+                $html .= '<button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-edit text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>';
+                $html .= '</button>';
+                $html .= '<button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-archive text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>';
+                $html .= '</button>';
+                $html .= '</td></tr>';
+                $counter++;
+            }
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'html' => $html,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'totalRecords' => $totalRecords
+        ]);
+        exit;
+    } catch(PDOException $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to fetch cashiers: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'search_cashiers') {
+    $search = isset($_POST['search']) ? trim($_POST['search']) : '';
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    $limit = 5;
+    $offset = ($page - 1) * $limit;
+
+    try {
+        // Prepare search query
+        $searchTerm = '%' . $search . '%';
+        // Count total records for pagination
+        $countStmt = $conn->prepare("
+            SELECT COUNT(*) as total 
+            FROM users_tb 
+            WHERE usertype = 2 AND status = 1 
+            AND (
+                CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name, ' ', COALESCE(suffix, '')) LIKE :searchTerm 
+                OR username LIKE :searchTerm
+            )
+        ");
+        $countStmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $countStmt->execute();
+        $totalRecords = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalRecords / $limit);
+
+        // Fetch paginated records
+        $stmt = $conn->prepare("
+            SELECT id, first_name, middle_name, last_name, suffix, created_at 
+            FROM users_tb 
+            WHERE usertype = 2 AND status = 1 
+            AND (
+                CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name, ' ', COALESCE(suffix, '')) LIKE :searchTerm 
+                OR username LIKE :searchTerm
+            )
+            ORDER BY created_at DESC 
+            LIMIT :limit OFFSET :offset
+        ");
+        $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $cashiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $html = '';
+        if (empty($cashiers)) {
+            $html .= '<tr><td colspan="4" class="p-4 text-center text-gray-500 text-base font-baskerville">No cashier accounts found.</td></tr>';
+        } else {
+            $counter = $offset + 1;
+            foreach ($cashiers as $cashier) {
+                $html .= '<tr class="hover:bg-gray-50 transition-colors duration-200">';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">' . $counter . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $fullName = htmlspecialchars($cashier['first_name']);
+                if (!empty($cashier['middle_name'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['middle_name']);
+                }
+                $fullName .= ' ' . htmlspecialchars($cashier['last_name']);
+                if (!empty($cashier['suffix'])) {
+                    $fullName .= ' ' . htmlspecialchars($cashier['suffix']);
+                }
+                $html .= $fullName . '</td>';
+                $html .= '<td class="p-4 text-gray-700 text-sm font-baskerville">';
+                $date = new DateTime($cashier['created_at'], new DateTimeZone('Asia/Manila'));
+                $html .= $date->format('F d, Y') . '</td>';
+                $html .= '<td class="p-4 flex justify-center space-x-3">';
+                $html .= '<button class="group edit-btn w-8 hover:w-32 h-8 bg-warm-cream/80 text-rich-brown hover:text-deep-brown rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-edit text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Edit</span>';
+                $html .= '</button>';
+                $html .= '<button class="group archive-btn w-8 hover:w-32 h-8 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 hover:text-blue-500 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden transform" data-id="' . htmlspecialchars($cashier['id']) . '">';
+                $html .= '<i class="fas fa-archive text-lg flex-shrink-0"></i>';
+                $html .= '<span class="opacity-0 group-hover:opacity-100 w-0 group-hover:w-auto ml-0 group-hover:ml-2 whitespace-nowrap transition-all duration-300 ease-in-out delay-300">Archive</span>';
+                $html .= '</button>';
+                $html .= '</td></tr>';
+                $counter++;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'html' => $html,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'totalRecords' => $totalRecords
+        ]);
+        exit;
+    } catch(PDOException $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to fetch cashiers: ' . $e->getMessage()
+        ]);
+        exit;
+    }
 }
 
 // Fetch archived users
@@ -371,6 +535,20 @@ ob_start();
                 <?php endif; ?>
             </tbody>
         </table>
+        <div class="flex justify-between items-center mt-4">
+            <div>
+                <span class="text-sm text-gray-700 font-baskerville">
+                    Showing <span id="showing-start">1</span> to <span id="showing-end">5</span> of <span id="total-entries">0</span> entries
+                </span>
+            </div>
+            <div class="flex space-x-2">
+                <button id="first-page" class="px-3 py-2 bg-warm-cream/80 text-rich-brown rounded-lg hover:bg-amber-600 hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>First</button>
+                <button id="prev-page" class="px-3 py-2 bg-warm-cream/80 text-rich-brown rounded-lg hover:bg-amber-600 hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Previous</button>
+                <span id="page-numbers" class="px-3 py-2 text-gray-700 font-baskerville"></span>
+                <button id="next-page" class="px-3 py-2 bg-warm-cream/80 text-rich-brown rounded-lg hover:bg-amber-600 hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                <button id="last-page" class="px-3 py-2 bg-warm-cream/80 text-rich-brown rounded-lg hover:bg-amber-600 hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">Last</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -439,7 +617,7 @@ ob_start();
                 </div>
                 <div class="input-group col-span-2">
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
-                    <input type="text" id="username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <input type="text" id="username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="username" required>
                     <p class="username-feedback mt-1 text-sm text-red-600 hidden"></p>
                     <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
                 </div>
@@ -452,7 +630,7 @@ ob_start();
                 <div class="input-group col-span-1">
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
                     <div class="relative">
-                        <input type="password" id="password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="new-password" required>
                         <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="password">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -469,7 +647,7 @@ ob_start();
                 <div class="input-group col-span-1">
                     <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
                     <div class="relative">
-                        <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                        <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="new-password" required>
                         <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="confirm-password">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -567,7 +745,7 @@ ob_start();
                 </div>
                 <div class="input-group col-span-2">
                     <label for="edit-username" class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
-                    <input type="text" id="edit-username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" required>
+                    <input type="text" id="edit-username" name="username" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="username" required>
                     <p class="username-feedback mt-1 text-sm text-red-600 hidden"></p>
                     <div class="field-feedback mt-1 text-sm text-red-600 hidden"></div>
                 </div>
@@ -585,7 +763,7 @@ ob_start();
                 <div class="input-group col-span-1 hidden" id="edit-password-group">
                     <label for="edit-password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
                     <div class="relative">
-                        <input type="password" id="edit-password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <input type="password" id="edit-password" name="password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="new-password">
                         <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="edit-password">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -602,7 +780,7 @@ ob_start();
                 <div class="input-group col-span-1 hidden" id="edit-confirm-password-group">
                     <label for="edit-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
                     <div class="relative">
-                        <input type="password" id="edit-confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200">
+                        <input type="password" id="edit-confirm-password" name="confirm-password" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200" autocomplete="new-password">
                         <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-amber-700 toggle-password" data-target="edit-confirm-password">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -702,26 +880,27 @@ ob_start();
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebarTexts = document.querySelectorAll('.sidebar-text');
-        // Profile Dropdown functionality
-        const profileDropdown = document.getElementById('profileDropdown');
-        const profileMenu = document.getElementById('profileMenu');
-        const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
+    // Profile Dropdown functionality
+    const profileDropdown = document.getElementById('profileDropdown');
+    const profileMenu = document.getElementById('profileMenu');
+    const dropdownIcon = profileDropdown.querySelector('.fa-chevron-down');
 
-        profileDropdown.addEventListener('click', () => {
-            profileMenu.classList.toggle('hidden');
-            setTimeout(() => {
-                profileMenu.classList.toggle('opacity-0');
-                dropdownIcon.classList.toggle('rotate-180');
-            }, 50);
-        });
+    profileDropdown.addEventListener('click', () => {
+        profileMenu.classList.toggle('hidden');
+        setTimeout(() => {
+            profileMenu.classList.toggle('opacity-0');
+            dropdownIcon.classList.toggle('rotate-180');
+        }, 50);
+    });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!profileDropdown.contains(e.target)) {
-                profileMenu.classList.add('hidden', 'opacity-0');
-                dropdownIcon.classList.remove('rotate-180');
-            }
-        });
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!profileDropdown.contains(e.target)) {
+            profileMenu.classList.add('hidden', 'opacity-0');
+            dropdownIcon.classList.remove('rotate-180');
+        }
+    });
+
     sidebarToggle.addEventListener('click', () => {
         sidebar.classList.toggle('w-64');
         sidebar.classList.toggle('collapsed');
@@ -771,6 +950,8 @@ ob_start();
         const confirmPasswordGroup = document.getElementById('edit-confirm-password-group');
         const passwordInput = document.getElementById('edit-password');
         const confirmPasswordInput = document.getElementById('edit-confirm-password');
+        let currentPage = 1;
+        let totalPages = 1;
 
         function initFloatingLabels(form, inputs) {
             inputs.forEach(input => {
@@ -1106,7 +1287,6 @@ ob_start();
             });
         }
 
-
         function checkFormValidity(form) {
             const inputs = form.querySelectorAll('input, select');
             const submitBtn = form.querySelector('[type="submit"]');
@@ -1425,8 +1605,9 @@ ob_start();
                                 }
                                 validateField(input, editForm);
                             });
-                            // Trigger username availability check
+                            // Trigger both username and phone number availability checks
                             checkUsernameAvailability(data.cashier.username, editForm, cashierId);
+                            checkPhoneAvailability(data.cashier.contact_number, editForm, cashierId);
                             checkFormValidity(editForm);
                             toggleModal(editModal);
                         } else {
@@ -1561,8 +1742,128 @@ ob_start();
         }
         
         addButtonListeners();
+
+// Search functionality
+document.getElementById('cashier-search').addEventListener('input', function() {
+    const searchValue = this.value.trim();
+    currentPage = 1; // Reset to first page on search
+    fetchCashiers(currentPage, searchValue);
+});
+
+// Modified fetchCashiers function to include search parameter
+function fetchCashiers(page, search = '') {
+    const formData = new FormData();
+    formData.append('action', search ? 'search_cashiers' : 'fetch_cashiers');
+    formData.append('page', page);
+    if (search) {
+        formData.append('search', search);
+    }
+    
+    fetch('', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('cashier-table-body').innerHTML = data.html;
+            totalPages = data.totalPages;
+            currentPage = data.currentPage;
+            updatePaginationControls();
+            addButtonListeners(); // Re-attach event listeners to new buttons
+            // Update showing entries
+            const start = (currentPage - 1) * 5 + 1;
+            const end = Math.min(currentPage * 5, data.totalRecords);
+            document.getElementById('showing-start').textContent = start;
+            document.getElementById('showing-end').textContent = end;
+            document.getElementById('total-entries').textContent = data.totalRecords;
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: data.message,
+                icon: 'error',
+                confirmButtonColor: '#8B4513'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Error!',
+            text: 'An error occurred: ' + error.message,
+            icon: 'error',
+            confirmButtonColor: '#8B4513'
+        });
     });
-    </script>
+}
+
+        function updatePaginationControls() {
+            const firstBtn = document.getElementById('first-page');
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            const lastBtn = document.getElementById('last-page');
+            const pageNumbers = document.getElementById('page-numbers');
+            
+            // Update button states
+            firstBtn.disabled = currentPage === 1;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            lastBtn.disabled = currentPage === totalPages;
+            
+            // Generate page numbers
+            let pagesHtml = '';
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                pagesHtml += `<button class="px-3 py-2 ${i === currentPage ? 'bg-amber-600 text-white' : 'bg-warm-cream/80 text-rich-brown'} rounded-lg hover:bg-amber-600 hover:text-white transition-colors duration-300 page-btn" data-page="${i}">${i}</button>`;
+            }
+            pageNumbers.innerHTML = pagesHtml;
+
+            // Add event listeners to page buttons
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.getAttribute('data-page'));
+                    if (page !== currentPage) {
+                        fetchCashiers(page);
+                    }
+                });
+            });
+        }
+
+        // Add pagination event listeners
+        document.getElementById('first-page').addEventListener('click', () => {
+            if (currentPage !== 1) {
+                fetchCashiers(1);
+            }
+        });
+
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                fetchCashiers(currentPage - 1);
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                fetchCashiers(currentPage + 1);
+            }
+        });
+
+        document.getElementById('last-page').addEventListener('click', () => {
+            if (currentPage !== totalPages) {
+                fetchCashiers(totalPages);
+            }
+        });
+
+        // Initialize first page load
+        fetchCashiers(1);
+    });
+</script>
 <?php
 $page_scripts = ob_get_clean();
 

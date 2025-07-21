@@ -337,7 +337,6 @@ require_once 'cashier_auth.php';
                             <span class="sidebar-text font-baskerville">Burgers & Pizza</span>
                         </button>
                     </li>
-           
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="pasta">
                             <i class="fas fa-utensils w-5"></i>
@@ -356,12 +355,6 @@ require_once 'cashier_auth.php';
                             <span class="sidebar-text font-baskerville">Desserts</span>
                         </button>
                     </li>
-                    <!-- <li>
-                        <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="main">
-                            <i class="fas fa-drumstick-bite w-5"></i>
-                            <span class="sidebar-text font-baskerville">Main Courses</span>
-                        </button>
-                    </li> -->
                     <li>
                         <button class="category-btn w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream/80 hover:text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3" data-category="drinks">
                             <i class="fas fa-glass-martini-alt w-5"></i>
@@ -375,6 +368,14 @@ require_once 'cashier_auth.php';
                         </button>
                     </li>
                 </ul>
+
+                <!-- Sales History Button (outside Categories) -->
+                <div class="mt-8 border-t border-warm-cream/20 pt-4">
+                    <a href="cashierhistory.php" class="w-full text-left px-4 py-3 hover:bg-warm-cream/20 text-warm-cream rounded-lg transition-all duration-200 flex items-center space-x-3">
+                        <i class="fas fa-history w-5"></i>
+                        <span class="sidebar-text font-baskerville">Sales History</span>
+                    </a>
+                </div>
             </nav>
         </div>
 
@@ -462,7 +463,7 @@ require_once 'cashier_auth.php';
                                     <span id="subtotal" class="font-bold text-deep-brown">₱0.00</span>
                                 </div>
                                 <div class="flex justify-between py-1 sm:py-2 border-b border-rich-brown/20">
-                                    <span class="font-bold text-deep-brown">Tax (10%):</span>
+                                    <span class="font-bold text-deep-brown">Service Charge (10%):</span>
                                     <span id="tax" class="font-bold text-deep-brown">₱0.00</span>
                                 </div>
                                 <div class="flex justify-between py-1 sm:py-2 font-bold text-sm sm:text-lg">
