@@ -1986,11 +1986,13 @@ document.getElementById('package-image').addEventListener('change', function(eve
             }
         }
 
-        // Close view modal functions
-        const closeViewPackageModalFunction = () => {
-            viewPackageModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        };
+    // Function to close view package modal
+    function closeViewPackageModal() {
+        const modal = document.getElementById('view-package-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
 
         closeViewPackageModal.addEventListener('click', closeViewPackageModalFunction);
         closeViewPackageBtn.addEventListener('click', closeViewPackageModalFunction);
