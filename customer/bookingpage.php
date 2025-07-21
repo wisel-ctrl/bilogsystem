@@ -48,7 +48,7 @@ ob_start();
         <!-- Menu Section -->
         <section class="mb-12">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-deep-brown">Our Menu</h2>
+                <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-deep-brown">Our Packages</h2>
                 <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center justify-center sm:justify-start space-x-2 p-2 rounded-lg hover:bg-deep-brown/5"
                         data-tippy-content="Refresh menu"
                         id="refresh-btn">

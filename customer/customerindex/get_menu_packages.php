@@ -5,8 +5,7 @@ try {
     $query = "SELECT package_id, package_name, package_description, price, type, status, image_path 
               FROM menu_packages_tb 
               WHERE status = 'active' 
-              ORDER BY type, package_name
-              LIMIT 2"; // Limit to 2 for Special Offers section
+              ORDER BY type, package_name"; // Limit to 2 for Special Offers section
     
     $stmt = $conn->prepare($query);
     $stmt->execute();
