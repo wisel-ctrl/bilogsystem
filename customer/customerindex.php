@@ -406,10 +406,10 @@ async function fetchSpecialOffers() {
                                 <span class="text-sm text-deep-brown/60 ml-1">(${rating.toFixed(1)})</span>
                             </div>
                         </div>
-                        <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
+                        <a href="bookingpage.php?package_id=${package.package_id}" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
                             <span>${package.type === 'buffet' ? 'Book Now' : 'Reserve Now'}</span>
                             <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
             `;
