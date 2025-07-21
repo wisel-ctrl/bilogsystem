@@ -7,42 +7,74 @@ require_once '../../db_connect.php';
 $response = ['success' => false, 'message' => ''];
 
 try {
-    // Get the JSON data from the request body
-    $input = file_get_contents('php://input');
-    $data = json_decode($input, true);
-    
-    if (!$data) {
-        throw new Exception('Invalid input data');
-    }
-    
+    // Get form data
+    $name = $_POST['name'] ?? '';
+    $description = $_POST['description'] ?? null;
+    $price = floatval($_POST['price'] ?? 0);
+    $capital = floatval($_POST['capital'] ?? 0);
+    $type = $_POST['type'] ?? '';
+    $dishes = json_decode($_POST['dishes'] ?? '[]', true);
+
     // Validate required fields
-    if (empty($data['name']) || empty($data['price']) || empty($data['capital']) || empty($data['type'])) {
+    if (empty($name) || $price <= 0 || $capital < 0 || empty($type)) {
         throw new Exception('Required fields are missing');
     }
 
-    // Validate that price and capital are greater than 0
-    if (!is_numeric($data['price']) || $data['price'] <= 0) {
+    // Validate that price and capital are valid
+    if (!is_numeric($price) || $price <= 0) {
         throw new Exception('Price must be a positive number');
     }
 
-    if (!is_numeric($data['capital']) || $data['capital'] <= 0) {
+    if (!is_numeric($capital) || $capital <= 0) {
         throw new Exception('Capital must be a positive number');
+    }
+
+    // Handle image upload
+    $imagePath = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../../Uploads/Package_Images/'; // Ensure this directory exists and is writable
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $imageName = uniqid() . '_' . basename($_FILES['image']['name']);
+        $targetPath = $uploadDir . $imageName;
+
+        // Validate file type
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileType = mime_content_type($_FILES['image']['tmp_name']);
+        if (!in_array($fileType, $allowedTypes)) {
+            throw new Exception('Invalid image format. Only JPEG, PNG, and GIF are allowed.');
+        }
+
+        // Validate file size (e.g., max 5MB)
+        $maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if ($_FILES['image']['size'] > $maxSize) {
+            throw new Exception('Image file is too large. Maximum size is 5MB.');
+        }
+
+        // Move uploaded file
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            throw new Exception('Failed to upload image');
+        }
+        $imagePath = $targetPath;
     }
 
     // Start transaction
     $conn->beginTransaction();
-    
-    // Insert into menu_packages
+
+    // Insert into menu_packages_tb
     $stmt = $conn->prepare("INSERT INTO menu_packages_tb 
-                           (package_name, package_description, price, capital, type) 
-                           VALUES (?, ?, ?, ?, ?)");
+                           (package_name, package_description, price, capital, type, status, image_path) 
+                           VALUES (?, ?, ?, ?, ?, 'active', ?)");
     
     if (!$stmt->execute([
-        $data['name'],
-        $data['description'] ?? null,
-        $data['price'],
-        $data['capital'],
-        $data['type']
+        $name,
+        $description,
+        $price,
+        $capital,
+        $type,
+        $imagePath
     ])) {
         throw new Exception('Failed to create package');
     }
@@ -50,12 +82,12 @@ try {
     $package_id = $conn->lastInsertId();
     
     // Insert dish mappings if there are any
-    if (!empty($data['dishes']) && is_array($data['dishes'])) {
+    if (!empty($dishes) && is_array($dishes)) {
         $dish_stmt = $conn->prepare("INSERT INTO menu_package_dishes_tb 
                                     (package_id, dish_id, quantity) 
                                     VALUES (?, ?, ?)");
         
-        foreach ($data['dishes'] as $dish) {
+        foreach ($dishes as $dish) {
             if (empty($dish['dish_id'])) continue;
             
             $quantity = !empty($dish['quantity']) ? (int)$dish['quantity'] : 1;

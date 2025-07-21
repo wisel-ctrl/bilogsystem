@@ -578,6 +578,37 @@
                                     <textarea id="package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
                                 </div>
 
+
+                                <!-- Add to Package Creation Modal, inside the form -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Image</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative flex-1">
+                                            <input
+                                                id="package-image"
+                                                type="file"
+                                                accept="image/*"
+                                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                            />
+                                            <label
+                                                for="package-image"
+                                                class="block px-4 py-2 border border-warm-cream/50 rounded-lg
+                                                    bg-white/50 backdrop-blur-sm text-center cursor-pointer
+                                                    hover:bg-warm-cream/10 transition-colors duration-200
+                                                    font-baskerville"
+                                            >
+                                                <i class="fas fa-upload mr-2"></i>
+                                                <span id="package-file-name">Choose an image file</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="package-image-preview-container" class="mt-4 hidden">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
+                                        <img id="package-image-preview" src="#" alt="Preview"
+                                            class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                    </div>
+                                </div>
+
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -987,6 +1018,36 @@
         animateElements.forEach(element => {
             observer.observe(element);
         });
+
+
+
+// Add to script section
+document.getElementById('package-image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById('package-image-preview-container');
+    const previewImage = document.getElementById('package-image-preview');
+    const fileNameDisplay = document.getElementById('package-file-name');
+    
+    if (file) {
+        fileNameDisplay.textContent = file.name;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    } else {
+        fileNameDisplay.textContent = 'Choose an image file';
+        previewContainer.classList.add('hidden');
+        previewImage.src = '#';
+    }
+});
+
+
+
+
+
 
         // Image upload preview functionality
         document.getElementById('dish-image').addEventListener('change', function(event) {
@@ -1628,52 +1689,55 @@
             await populateDishes();
         });
 
-        // Form submission
+        // Modify package form submission in existing package-form submit event listener
         document.getElementById('package-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Collect package data
-            const packageData = {
-                name: document.getElementById('package-name').value,
-                description: document.getElementById('package-description').value,
-                price: document.getElementById('package-price').value,
-                capital: document.getElementById('package-capital').value,
-                type: document.getElementById('package-type').value,
-                dishes: []
-            };
+            const packageData = new FormData(); // Change to FormData
+            packageData.append('name', document.getElementById('package-name').value);
+            packageData.append('description', document.getElementById('package-description').value);
+            packageData.append('price', document.getElementById('package-price').value);
+            packageData.append('capital', document.getElementById('package-capital').value);
+            packageData.append('type', document.getElementById('package-type').value);
             
-            // Validate price and capital are not negative
-            if (packageData.price < 0 || packageData.capital < 0) {
-                alert('Price and capital cannot be negative values');
-                return;
+            // Add image if selected
+            const imageFile = document.getElementById('package-image').files[0];
+            if (imageFile) {
+                packageData.append('image', imageFile);
             }
             
-            // Validate price is greater than capital
-            if (packageData.price <= packageData.capital) {
-                alert('Price must be greater than capital cost');
-                return;
-            }
-
             // Collect dish data
+            const dishes = [];
             document.querySelectorAll('.dish-row').forEach(row => {
                 const select = row.querySelector('.dish-select');
                 const quantityInput = row.querySelector('.dish-quantity');
                 
                 if (select && select.value && quantityInput) {
-                    packageData.dishes.push({
+                    dishes.push({
                         dish_id: select.value,
                         quantity: quantityInput.value
                     });
                 }
             });
+            packageData.append('dishes', JSON.stringify(dishes));
             
+            // Validate price and capital are not negative
+            if (packageData.get('price') < 0 || packageData.get('capital') < 0) {
+                alert('Price and capital cannot be negative values');
+                return;
+            }
+            
+            // Validate price is greater than capital
+            if (packageData.get('price') <= packageData.get('capital')) {
+                alert('Price must be greater than capital cost');
+                return;
+            }
+
             try {
                 const response = await fetch('menu_handlers/add_menu_packages.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(packageData)
+                    body: packageData
                 });
                 
                 const result = await response.json();
@@ -1685,7 +1749,6 @@
                         text: 'Package created successfully!'
                     });
                     closePackageModalFunction();
-                    // You might want to refresh the packages list here
                     $('#packages-table').DataTable().ajax.reload(null, false);
                 } else {
                     alert('Error creating package: ' + (result.message || 'Unknown error'));
@@ -1712,6 +1775,10 @@
             const initialDish = dishesContainer.querySelector('.dish-row');
             dishesContainer.innerHTML = '';
             dishesContainer.appendChild(initialDish.cloneNode(true));
+            document.getElementById('package-image').value = '';
+            document.getElementById('package-file-name').textContent = 'Choose an image file';
+            document.getElementById('package-image-preview-container').classList.add('hidden');
+            document.getElementById('package-image-preview').src = '#';
         };
 
         closePackageModal.addEventListener('click', closePackageModalFunction);
