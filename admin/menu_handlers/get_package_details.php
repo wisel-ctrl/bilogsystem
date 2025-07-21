@@ -16,7 +16,7 @@ try {
     
     // Get dishes in this package
     $stmt = $conn->prepare("
-        SELECT m.dish_id, m.quantity, d.dish_name, d.dish_category, d.price, d.capital, d.image_path
+        SELECT m.dish_id, m.quantity, d.dish_name, d.dish_category, d.price, d.capital 
         FROM menu_package_dishes_tb m
         JOIN dishes_tb d ON m.dish_id = d.dish_id
         WHERE m.package_id = ?
