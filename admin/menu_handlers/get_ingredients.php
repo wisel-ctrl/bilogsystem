@@ -5,7 +5,7 @@ require_once '../../db_connect.php';
 
 try {
     
-    $stmt = $conn->prepare("SELECT ingredient_id, ingredient_name FROM ingredients_tb WHERE visibility = 'show'");
+    $stmt = $conn->prepare("SELECT ingredient_id, ingredient_name FROM ingredients_tb WHERE visibility = 'show' ORDER BY ingredient_name ASC");
     $stmt->execute();
     
     $ingredients = $stmt->fetchAll(PDO::FETCH_ASSOC);
