@@ -1915,106 +1915,74 @@ document.getElementById('package-image').addEventListener('change', function(eve
         const closeViewPackageModal = document.getElementById('close-view-package-modal');
         const closeViewPackageBtn = document.getElementById('close-view-package-btn');
 
-        // Function to open view package modal
+        // Function to open view package modal and populate fields
         async function openViewPackageModal(packageId) {
+            const modal = document.getElementById('view-package-modal');
+            const imageContainer = document.getElementById('view-package-image-container');
+            const imageElement = document.getElementById('view-package-image');
+            const noImageText = document.getElementById('view-package-no-image');
+
             try {
-                // Fetch package data
                 const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
                 const packageData = await response.json();
-                
-                // Populate basic info
-                document.getElementById('view-package-name').textContent = packageData.package_name;
-                document.getElementById('view-package-description').textContent = packageData.package_description || 'No description available';
-                document.getElementById('view-package-price').textContent = '₱' + parseFloat(packageData.price).toFixed(2);
-                
-                // Set type
-                const typeText = packageData.type === 'buffet' ? 'Buffet' : 'Per Plate';
-                document.getElementById('view-package-type').textContent = typeText;
-                
-                // Set status
-                const statusText = packageData.status === 'active' ? 'Available' : 'Unavailable';
-                const statusClass = packageData.status === 'active' ? 'text-green-600' : 'text-red-600';
-                document.getElementById('view-package-status').textContent = statusText;
-                document.getElementById('view-package-status').className = `text-lg font-semibold ${statusClass}`;
-                
-                // Group dishes by category
+
+                if (!packageData.success) {
+                    alert('Failed to load package details: ' + (packageData.message || 'Unknown error'));
+                    return;
+                }
+
+                // Populate package details
+                document.getElementById('view-package-name').textContent = packageData.data.package_name || '-';
+                document.getElementById('view-package-type').textContent = packageData.data.type === 'buffet' ? 'Buffet' : 'Sit - On\'s';
+                document.getElementById('view-package-price').textContent = `₱${parseFloat(packageData.data.price).toFixed(2)}` || '-';
+                document.getElementById('view-package-status').textContent = packageData.data.status === 'active' ? 'Available' : 'Unavailable';
+                document.getElementById('view-package-description').textContent = packageData.data.package_description || '-';
+
+                // Populate image
+                if (packageData.data.image_path) {
+                    imageElement.src = packageData.data.image_path;
+                    imageContainer.classList.remove('hidden');
+                    noImageText.classList.add('hidden');
+                } else {
+                    imageContainer.classList.add('hidden');
+                    noImageText.classList.remove('hidden');
+                }
+
+                // Populate dishes
                 const dishesContainer = document.getElementById('view-dishes-container');
                 dishesContainer.innerHTML = '';
-                
-                if (packageData.dishes && packageData.dishes.length > 0) {
-                    const categories = {};
-                    
-                    // Group dishes by category
-                    packageData.dishes.forEach(dish => {
-                        if (!categories[dish.dish_category]) {
-                            categories[dish.dish_category] = [];
+                if (packageData.data.dishes && packageData.data.dishes.length > 0) {
+                    // Group dishes by category (assuming dishes_tb has a category field)
+                    const dishesByCategory = packageData.data.dishes.reduce((acc, dish) => {
+                        const category = dish.category || 'Uncategorized';
+                        if (!acc[category]) {
+                            acc[category] = [];
                         }
-                        categories[dish.dish_category].push(dish);
-                    });
-                    
-                    // Define the order of categories (appetizers first, desserts last)
-                    const categoryOrder = [
-                        'house-salad', 'italian-dish', 'spanish-dish', // Appetizers/salads
-                        'pizza', 'burgers', 'pasta', 'pasta_caza', 'main-course', // Main courses
-                        'desserts', 'drinks', 'coffee' // Desserts/drinks
-                    ];
-                    
-                    // Sort categories according to our defined order
-                    const sortedCategories = Object.keys(categories).sort((a, b) => {
-                        const aIndex = categoryOrder.indexOf(a);
-                        const bIndex = categoryOrder.indexOf(b);
-                        return aIndex - bIndex;
-                    });
-                    
-                    // Create sections for each category
-                    sortedCategories.forEach(category => {
+                        acc[category].push(dish);
+                        return acc;
+                    }, {});
+
+                    // Create HTML for each category
+                    for (const [category, dishes] of Object.entries(dishesByCategory)) {
                         const categoryDiv = document.createElement('div');
-                        categoryDiv.className = 'mb-4';
-                        
-                        // Convert category name to display format
-                        const displayCategory = category.replace(/-/g, ' ').replace(/_/g, ' ');
-                        const categoryTitle = document.createElement('h4');
-                        categoryTitle.className = 'text-lg font-semibold text-deep-brown mb-2 border-b border-accent-brown pb-1';
-                        categoryTitle.textContent = displayCategory.charAt(0).toUpperCase() + displayCategory.slice(1);
-                        categoryDiv.appendChild(categoryTitle);
-                        
-                        // Create list of dishes
-                        const dishList = document.createElement('ul');
-                        dishList.className = 'space-y-2';
-                        
-                        categories[category].forEach(dish => {
-                            const dishItem = document.createElement('li');
-                            dishItem.className = 'flex justify-between items-center';
-                            
-                            const dishName = document.createElement('span');
-                            dishName.className = 'text-rich-brown';
-                            dishName.textContent = dish.dish_name;
-                            
-                            const dishQuantity = document.createElement('span');
-                            dishQuantity.className = 'bg-warm-cream px-2 py-1 rounded text-deep-brown text-sm';
-                            dishQuantity.textContent = `x${dish.quantity}`;
-                            
-                            dishItem.appendChild(dishName);
-                            dishItem.appendChild(dishQuantity);
-                            dishList.appendChild(dishItem);
-                        });
-                        
-                        categoryDiv.appendChild(dishList);
+                        categoryDiv.innerHTML = `
+                            <h4 class="text-sm font-medium text-deep-brown mb-2 font-baskerville">${category}</h4>
+                            <ul class="list-disc pl-5 text-gray-700 font-baskerville">
+                                ${dishes.map(dish => `<li>${dish.dish_name} (x${dish.quantity})</li>`).join('')}
+                            </ul>
+                        `;
                         dishesContainer.appendChild(categoryDiv);
-                    });
+                    }
                 } else {
-                    dishesContainer.innerHTML = '<p class="text-gray-500">No dishes in this package.</p>';
+                    dishesContainer.innerHTML = '<p class="text-gray-700 font-baskerville">No dishes included</p>';
                 }
-                
+
                 // Show modal
-                viewPackageModal.classList.remove('hidden');
+                modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } catch (error) {
-                console.error('Error fetching package data:', error);
-                alert('Failed to load package details');
+                console.error('Error:', error);
+                alert('Failed to load package details. Please try again.');
             }
         }
 
