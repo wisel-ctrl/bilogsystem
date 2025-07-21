@@ -935,6 +935,36 @@
                                     </div>
                                 </div>
 
+                                <!-- Package Image -->
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Image</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative flex-1">
+                                            <input
+                                                id="edit-package-image"
+                                                type="file"
+                                                accept="image/*"
+                                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                            />
+                                            <label
+                                                for="edit-package-image"
+                                                class="block px-4 py-2 border border-warm-cream/50 rounded-lg
+                                                    bg-white/50 backdrop-blur-sm text-center cursor-pointer
+                                                    hover:bg-warm-cream/10 transition-colors duration-200
+                                                    font-baskerville"
+                                            >
+                                                <i class="fas fa-upload mr-2"></i>
+                                                <span id="edit-package-file-name">Choose an image file</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="edit-package-image-preview-container" class="mt-4 hidden">
+                                        <p class="text-sm text-gray-500 mb-2 font-baskerville">Image Preview:</p>
+                                        <img id="edit-package-image-preview" src="#" alt="Preview"
+                                            class="max-w-full h-auto max-h-48 rounded-lg border border-warm-cream/50">
+                                    </div>
+                                </div>
+
                                 <!-- Dishes Section -->
                                 <div>
                                     <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Dishes in Package</label>
@@ -1045,7 +1075,28 @@ document.getElementById('package-image').addEventListener('change', function(eve
 });
 
 
-
+// Handle image selection for edit package modal
+document.getElementById('edit-package-image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById('edit-package-image-preview-container');
+    const previewImage = document.getElementById('edit-package-image-preview');
+    const fileNameDisplay = document.getElementById('edit-package-file-name');
+    
+    if (file) {
+        fileNameDisplay.textContent = file.name;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    } else {
+        fileNameDisplay.textContent = 'Choose an image file';
+        previewContainer.classList.add('hidden');
+        previewImage.src = '#';
+    }
+});
 
 
 
@@ -2032,56 +2083,85 @@ document.getElementById('package-image').addEventListener('change', function(eve
         const addEditPackageDishBtn = document.getElementById('add-edit-package-dish');
         const editPackageDishesContainer = document.getElementById('edit-package-dishes-container');
 
-        // Function to open edit package modal
+        // Function to open edit package modal and populate fields
         async function openEditPackageModal(packageId) {
+            const modal = document.getElementById('edit-package-modal');
+            const form = document.getElementById('edit-package-form');
+            const dishesContainer = document.getElementById('edit-package-dishes-container');
+            const previewContainer = document.getElementById('edit-package-image-preview-container');
+            const previewImage = document.getElementById('edit-package-image-preview');
+            const fileNameDisplay = document.getElementById('edit-package-file-name');
+
             try {
-                // Fetch package data
                 const response = await fetch(`menu_handlers/get_package_details.php?id=${packageId}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
                 const packageData = await response.json();
-                
+
+                if (!packageData.success) {
+                    alert('Failed to load package details: ' + (packageData.message || 'Unknown error'));
+                    return;
+                }
+
                 // Populate form fields
-                document.getElementById('edit-package-id').value = packageData.package_id;
-                document.getElementById('edit-package-name').value = packageData.package_name;
-                document.getElementById('edit-package-description').value = packageData.package_description || '';
-                document.getElementById('edit-package-price').value = packageData.price;
-                document.getElementById('edit-package-capital').value = packageData.capital;
-                document.getElementById('edit-package-status').value = packageData.status;
-                document.getElementById('edit-package-type').value = packageData.type;
-                
-                // Clear and populate dishes
-                editPackageDishesContainer.innerHTML = '';
-                
-                // First fetch all available dishes
-                const dishesResponse = await fetch('menu_handlers/get_dishesForPackageModal.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'query=SELECT dish_id, dish_name, dish_category, price, capital FROM `dishes_tb` WHERE status = "active"'
-                });
-                
-                const allDishes = await dishesResponse.json();
-                
-                if (packageData.dishes && packageData.dishes.length > 0) {
-                    packageData.dishes.forEach(dish => {
-                        addDishRowToEditPackageModal(allDishes, dish.dish_id, dish.quantity);
+                document.getElementById('edit-package-id').value = packageId;
+                document.getElementById('edit-package-name').value = packageData.data.package_name || '';
+                document.getElementById('edit-package-description').value = packageData.data.package_description || '';
+                document.getElementById('edit-package-price').value = packageData.data.price || '';
+                document.getElementById('edit-package-capital').value = packageData.data.capital || '';
+                document.getElementById('edit-package-status').value = packageData.data.status || 'active';
+                document.getElementById('edit-package-type').value = packageData.data.type || 'buffet';
+
+                // Populate image
+                if (packageData.data.image_path) {
+                    previewImage.src = packageData.data.image_path;
+                    previewContainer.classList.remove('hidden');
+                    fileNameDisplay.textContent = 'Current image';
+                } else {
+                    previewContainer.classList.add('hidden');
+                    fileNameDisplay.textContent = 'Choose an image file';
+                    previewImage.src = '#';
+                }
+
+                // Populate dishes
+                dishesContainer.innerHTML = '';
+                if (packageData.data.dishes && packageData.data.dishes.length > 0) {
+                    packageData.data.dishes.forEach(dish => {
+                        const dishRow = document.createElement('div');
+                        dishRow.className = 'dish-row flex items-center space-x-4 mb-2';
+                        dishRow.innerHTML = `
+                            <select class="dish-select w-2/3 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                <!-- Options will be populated -->
+                            </select>
+                            <input type="number" class="dish-quantity w-1/4 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" value="${dish.quantity}" min="1">
+                            <button type="button" class="remove-dish text-rich-brown hover:text-deep-brown"><i class="fas fa-trash"></i></button>
+                        `;
+                        dishesContainer.appendChild(dishRow);
+                        populateDishOptions(dishRow.querySelector('.dish-select'), dish.dish_id);
                     });
                 } else {
-                    // Add at least one empty row
-                    addDishRowToEditPackageModal(allDishes);
+                    // Add one empty dish row
+                    const dishRow = document.createElement('div');
+                    dishRow.className = 'dish-row flex items-center space-x-4 mb-2';
+                    dishRow.innerHTML = `
+                        <select class="dish-select w-2/3 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                            <!-- Options will be populated -->
+                        </select>
+                        <input type="number" class="dish-quantity w-1/4 px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" value="1" min="1">
+                        <button type="button" class="remove-dish text-rich-brown hover:text-deep-brown"><i class="fas fa-trash"></i></button>
+                    `;
+                    dishesContainer.appendChild(dishRow);
+                    populateDishOptions(dishRow.querySelector('.dish-select'));
                 }
-                
+
                 // Show modal
-                editPackageModal.classList.remove('hidden');
+                modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } catch (error) {
-                console.error('Error fetching package data:', error);
-                alert('Failed to load package data for editing');
+                console.error('Error:', error);
+                alert('Failed to load package details. Please try again.');
             }
         }
+
+
 
         // Function to add dish row to edit package modal
         function addDishRowToEditPackageModal(allDishes, selectedId = '', quantity = 1) {
@@ -2211,49 +2291,52 @@ document.getElementById('package-image').addEventListener('change', function(eve
             e.preventDefault();
             
             // Collect package data
-            const packageData = {
-                package_id: document.getElementById('edit-package-id').value,
-                name: document.getElementById('edit-package-name').value,
-                description: document.getElementById('edit-package-description').value,
-                price: document.getElementById('edit-package-price').value,
-                capital: document.getElementById('edit-package-capital').value,
-                type: document.getElementById('edit-package-type').value,
-                status: document.getElementById('edit-package-status').value,
-                dishes: []
-            };
+            const packageData = new FormData();
+            packageData.append('id', document.getElementById('edit-package-id').value);
+            packageData.append('name', document.getElementById('edit-package-name').value);
+            packageData.append('description', document.getElementById('edit-package-description').value);
+            packageData.append('price', document.getElementById('edit-package-price').value);
+            packageData.append('capital', document.getElementById('edit-package-capital').value);
+            packageData.append('status', document.getElementById('edit-package-status').value);
+            packageData.append('type', document.getElementById('edit-package-type').value);
             
-            // Validate price and capital are not negative
-            if (packageData.price < 0 || packageData.capital < 0) {
-                alert('Price and capital cannot be negative values');
-                return;
+            // Add image if selected
+            const imageFile = document.getElementById('edit-package-image').files[0];
+            if (imageFile) {
+                packageData.append('image', imageFile);
             }
             
-            // Validate price is greater than capital
-            if (packageData.price <= packageData.capital) {
-                alert('Price must be greater than capital cost');
-                return;
-            }
-
             // Collect dish data
+            const dishes = [];
             editPackageDishesContainer.querySelectorAll('.dish-row').forEach(row => {
                 const select = row.querySelector('.dish-select');
                 const quantityInput = row.querySelector('.dish-quantity');
                 
                 if (select && select.value && quantityInput) {
-                    packageData.dishes.push({
+                    dishes.push({
                         dish_id: select.value,
                         quantity: quantityInput.value
                     });
                 }
             });
+            packageData.append('dishes', JSON.stringify(dishes));
             
+            // Validate price and capital
+            if (packageData.get('price') < 0 || packageData.get('capital') < 0) {
+                alert('Price and capital cannot be negative values');
+                return;
+            }
+            
+            // Validate price is greater than capital
+            if (parseFloat(packageData.get('price')) <= parseFloat(packageData.get('capital'))) {
+                alert('Price must be greater than capital cost');
+                return;
+            }
+
             try {
                 const response = await fetch('menu_handlers/update_package.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(packageData)
+                    body: packageData
                 });
                 
                 const result = await response.json();
@@ -2265,7 +2348,6 @@ document.getElementById('package-image').addEventListener('change', function(eve
                         text: 'Package updated successfully!'
                     });
                     closeEditPackageModalFunction();
-                    // Refresh the packages table
                     $('#packages-table').DataTable().ajax.reload(null, false);
                 } else {
                     alert('Error updating package: ' + (result.message || 'Unknown error'));
