@@ -344,7 +344,7 @@ ob_start();
 </section>
 <script>
     // Function to fetch and render special offers
-    async function fetchSpecialOffers() {
+async function fetchSpecialOffers() {
     try {
         const response = await fetch('menu_handlers/get_menu_packages.php');
         if (!response.ok) {
