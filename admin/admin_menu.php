@@ -1940,6 +1940,20 @@ document.getElementById('package-image').addEventListener('change', function(eve
                 document.getElementById('view-package-status').textContent = statusText;
                 document.getElementById('view-package-status').className = `text-lg font-semibold ${statusClass}`;
                 
+                // Set image
+                const imageContainer = document.getElementById('view-package-image-container');
+                const imageElement = document.getElementById('view-package-image');
+                const noImageText = document.getElementById('view-package-no-image');
+                
+                if (packageData.image_path && packageData.image_path !== '') {
+                    imageElement.src = packageData.image_path; // Set the image path from the database
+                    imageContainer.classList.remove('hidden');
+                    noImageText.classList.add('hidden');
+                } else {
+                    imageElement.src = '#';
+                    imageContainer.classList.add('hidden');
+                    noImageText.classList.remove('hidden');
+                }
                 
                 // Group dishes by category
                 const dishesContainer = document.getElementById('view-dishes-container');
@@ -1956,14 +1970,14 @@ document.getElementById('package-image').addEventListener('change', function(eve
                         categories[dish.dish_category].push(dish);
                     });
                     
-                    // Define the order of categories (appetizers first, desserts last)
+                    // Define the order of categories
                     const categoryOrder = [
-                        'house-salad', 'italian-dish', 'spanish-dish', // Appetizers/salads
-                        'pizza', 'burgers', 'pasta', 'pasta_caza', 'main-course', // Main courses
-                        'desserts', 'drinks', 'coffee' // Desserts/drinks
+                        'house-salad', 'italian-dish', 'spanish-dish',
+                        'pizza', 'burgers', 'pasta', 'pasta_caza', 'main-course',
+                        'desserts', 'drinks', 'coffee'
                     ];
                     
-                    // Sort categories according to our defined order
+                    // Sort categories according to defined order
                     const sortedCategories = Object.keys(categories).sort((a, b) => {
                         const aIndex = categoryOrder.indexOf(a);
                         const bIndex = categoryOrder.indexOf(b);
