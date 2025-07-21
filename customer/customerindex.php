@@ -346,7 +346,7 @@ ob_start();
     // Function to fetch and render special offers
 async function fetchSpecialOffers() {
     try {
-        const response = await fetch('menu_handlers/get_menu_packages.php');
+        const response = await fetch('customerindex/get_menu_packages.php');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -406,10 +406,10 @@ async function fetchSpecialOffers() {
                                 <span class="text-sm text-deep-brown/60 ml-1">(${rating.toFixed(1)})</span>
                             </div>
                         </div>
-                        <a href="bookingpage.php?package_id=${package.package_id}" class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
+                        <button class="btn-primary bg-rich-brown text-warm-cream px-6 py-3 rounded-lg font-baskerville hover:bg-deep-brown transition-all duration-300 flex items-center space-x-2 group">
                             <span>${package.type === 'buffet' ? 'Book Now' : 'Reserve Now'}</span>
                             <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-                        </a>
+                        </button>
                     </div>
                 </div>
             `;
@@ -422,9 +422,6 @@ async function fetchSpecialOffers() {
         container.innerHTML = '<p class="text-red-500">Failed to load special offers. Please try again later.</p>';
     }
 }
-
-// Call the function when the page loads
-document.addEventListener('DOMContentLoaded', fetchSpecialOffers);
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', fetchSpecialOffers);
