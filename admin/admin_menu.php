@@ -1710,6 +1710,8 @@ document.getElementById('package-image').addEventListener('change', function(eve
             packageData.append('price', document.getElementById('package-price').value);
             packageData.append('capital', document.getElementById('package-capital').value);
             packageData.append('type', document.getElementById('package-type').value);
+
+            console.log("");
             
             // Add image if selected
             const imageFile = document.getElementById('package-image').files[0];
@@ -1740,6 +1742,8 @@ document.getElementById('package-image').addEventListener('change', function(eve
             
             // Validate price is greater than capital
             if (packageData.get('price') <= packageData.get('capital')) {
+                console.log('Price value:', packageData.get('price'));
+                console.log('Capital value:', packageData.get('capital'));
                 alert('Price must be greater than capital cost');
                 return;
             }
