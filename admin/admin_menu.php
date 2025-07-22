@@ -1741,9 +1741,11 @@ document.getElementById('package-image').addEventListener('change', function(eve
             }
             
             // Validate price is greater than capital
-            if (packageData.get('price') <= packageData.get('capital')) {
-                console.log('Price value:', packageData.get('price'));
-                console.log('Capital value:', packageData.get('capital'));
+            const price = parseFloat(packageData.get('price'));
+            const capital = parseFloat(packageData.get('capital'));
+
+            if (price <= capital) {
+                console.log('Price:', price, 'Capital:', capital);
                 alert('Price must be greater than capital cost');
                 return;
             }
