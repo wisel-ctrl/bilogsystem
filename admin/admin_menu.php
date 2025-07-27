@@ -2274,43 +2274,51 @@ document.getElementById('package-image').addEventListener('change', function(eve
         document.getElementById('edit-package-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Collect package data
-            const packageData = {
-                package_id: document.getElementById('edit-package-id').value,
-                name: document.getElementById('edit-package-name').value,
-                description: document.getElementById('edit-package-description').value,
-                price: document.getElementById('edit-package-price').value,
-                capital: document.getElementById('edit-package-capital').value,
-                type: document.getElementById('edit-package-type').value,
-                status: document.getElementById('edit-package-status').value,
-                dishes: []
-            };
+            // Create FormData object instead of regular object
+            const packageData = new FormData();
+            
+            // Append all fields to FormData
+            packageData.append('package_id', document.getElementById('edit-package-id').value);
+            packageData.append('name', document.getElementById('edit-package-name').value);
+            packageData.append('description', document.getElementById('edit-package-description').value);
+            packageData.append('price', document.getElementById('edit-package-price').value);
+            packageData.append('capital', document.getElementById('edit-package-capital').value);
+            packageData.append('type', document.getElementById('edit-package-type').value);
+            packageData.append('status', document.getElementById('edit-package-status').value);
             
             // Validate price and capital are not negative
-            if (packageData.price < 0 || packageData.capital < 0) {
+            const price = parseFloat(document.getElementById('edit-package-price').value);
+            const capital = parseFloat(document.getElementById('edit-package-capital').value);
+            
+            if (price < 0 || capital < 0) {
                 alert('Price and capital cannot be negative values');
                 return;
             }
             
             // Validate price is greater than capital
-            if (packageData.price <= packageData.capital) {
+            if (price <= capital) {
                 alert('Price must be greater than capital cost');
                 return;
             }
 
             // Collect dish data
+            const dishes = [];
             editPackageDishesContainer.querySelectorAll('.dish-row').forEach(row => {
                 const select = row.querySelector('.dish-select');
                 const quantityInput = row.querySelector('.dish-quantity');
                 
                 if (select && select.value && quantityInput) {
-                    packageData.dishes.push({
+                    dishes.push({
                         dish_id: select.value,
                         quantity: quantityInput.value
                     });
                 }
             });
+            
+            // Append dishes as JSON string
+            packageData.append('dishes', JSON.stringify(dishes));
 
+            // Append image file if exists
             const imageInput = document.getElementById('edit-package-image');
             if (imageInput.files[0]) {
                 packageData.append('package_image', imageInput.files[0]);
@@ -2319,10 +2327,7 @@ document.getElementById('package-image').addEventListener('change', function(eve
             try {
                 const response = await fetch('menu_handlers/update_package.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(packageData)
+                    body: packageData // Don't set Content-Type header, FormData will set it automatically
                 });
                 
                 const result = await response.json();
