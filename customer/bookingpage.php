@@ -295,7 +295,7 @@ ob_start();
                                             <h3 class="text-2xl font-playfair font-bold text-rich-brown">${package.package_name}</h3>
                                             <div class="flex items-center mt-1 text-amber-600">
                                                 <i class="fas fa-tag mr-2"></i>
-                                                <span class="font-semibold">$${package.price}</span>
+                                                <span class="font-semibold">₱ ${package.price}</span>
                                             </div>
                                         </div>
                                       
@@ -1311,6 +1311,7 @@ ob_start();
                 toggleButton.innerHTML = '<i class="fas fa-qrcode mr-2"></i>Show All QR Codes';
             }
         }
+
     </script>
     
     <?php
