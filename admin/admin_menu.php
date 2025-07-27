@@ -2310,6 +2310,11 @@ document.getElementById('package-image').addEventListener('change', function(eve
                     });
                 }
             });
+
+            const imageInput = document.getElementById('edit-package-image');
+            if (imageInput.files[0]) {
+                packageData.append('package_image', imageInput.files[0]);
+            }
             
             try {
                 const response = await fetch('menu_handlers/update_package.php', {
