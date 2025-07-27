@@ -278,7 +278,8 @@ ob_start();
     <div class="flex items-center justify-between mb-6">
         <h3 class="font-playfair text-2xl font-bold text-deep-brown">Special Offers</h3>
         <button class="text-deep-brown hover:text-rich-brown transition-colors duration-300 flex items-center space-x-2"
-                data-tippy-content="View all offers">
+                data-tippy-content="View all offers"
+                onclick="goToBookingPage()" >
             <span class="font-baskerville text-sm">View All</span>
             <i class="fas fa-chevron-right"></i>
         </button>
@@ -343,6 +344,10 @@ ob_start();
     </div>
 </section>
 <script>
+
+    function goToBookingPage() {
+        window.location.href = 'bookingpage.php';
+    }
     // Function to fetch and render special offers
     async function fetchSpecialOffers() {
     try {
