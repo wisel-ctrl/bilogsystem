@@ -44,6 +44,31 @@ ob_start();
 #qrCodeModal {
     transition: opacity 0.3s ease;
 }
+
+/* Add these styles to your existing CSS */
+.qr-image-container {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overscroll-behavior: contain; /* Prevent page scroll when zoomed */
+}
+
+.qr-image-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.qr-image-container::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.zoom-controls {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#qrCodeModal:hover .zoom-controls {
+    opacity: 1;
+}
 </style>
 
 
@@ -104,12 +129,27 @@ ob_start();
 
             <!-- Fullscreen QR Code Modal -->
             <div id="qrCodeModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-75">
-                <div class="relative bg-white p-4 rounded-lg max-w-[90vw] max-h-[90vh] flex flex-col items-center">
-                    <button onclick="closeQRModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl">
+                <div class="relative bg-white p-4 rounded-lg max-w-[90vw] max-h-[90vh] flex flex-col items-center overflow-hidden">
+                    <button onclick="closeQRModal()" class="absolute top-2 right-2 text-gray-700 hover:text-rich-brown text-2xl z-10">
                         <i class="fas fa-times"></i>
                     </button>
-                    <img id="fullscreenQR" src="" alt="Fullscreen QR Code" class="max-w-full max-h-[80vh] object-contain">
+                    <div class="qr-image-container relative w-full h-full overflow-auto">
+                        <img id="fullscreenQR" src="" alt="Fullscreen QR Code" 
+                            class="origin-center transition-transform duration-300 cursor-zoom-in max-w-full max-h-[80vh] object-contain"
+                            onclick="toggleZoom(event)">
+                    </div>
                     <p class="mt-2 text-center text-gray-700" id="qrCodeNumber"></p>
+                    <div class="zoom-controls absolute bottom-4 right-4 flex gap-2 z-10">
+                        <button onclick="zoomIn()" class="bg-white/80 text-rich-brown p-2 rounded-full shadow hover:bg-white">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button onclick="zoomOut()" class="bg-white/80 text-rich-brown p-2 rounded-full shadow hover:bg-white">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button onclick="resetZoom()" class="bg-white/80 text-rich-brown p-2 rounded-full shadow hover:bg-white">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1369,6 +1409,110 @@ ob_start();
         }
 
     </script>
+
+    <script>
+let currentScale = 1;
+const minScale = 1;
+const maxScale = 5;
+const scaleStep = 0.5;
+
+function showQRModal(imageSrc, gcashNumber = '') {
+    const modal = document.getElementById('qrCodeModal');
+    const fullscreenImg = document.getElementById('fullscreenQR');
+    const qrNumberDisplay = document.getElementById('qrCodeNumber');
+    
+    // Reset zoom when showing new QR code
+    currentScale = 1;
+    fullscreenImg.style.transform = `scale(${currentScale})`;
+    
+    fullscreenImg.src = imageSrc;
+    if (gcashNumber) {
+        qrNumberDisplay.textContent = `GCash Number: ${gcashNumber}`;
+    } else {
+        qrNumberDisplay.textContent = '';
+    }
+    modal.classList.remove('hidden');
+}
+
+function toggleZoom(event) {
+    // Prevent zooming when clicking on buttons
+    if (event.target.closest('button')) return;
+    
+    const img = event.currentTarget;
+    if (currentScale === minScale) {
+        currentScale = minScale + scaleStep;
+    } else {
+        currentScale = minScale;
+    }
+    img.style.transform = `scale(${currentScale})`;
+}
+
+function zoomIn() {
+    if (currentScale < maxScale) {
+        currentScale += scaleStep;
+        document.getElementById('fullscreenQR').style.transform = `scale(${currentScale})`;
+    }
+}
+
+function zoomOut() {
+    if (currentScale > minScale) {
+        currentScale -= scaleStep;
+        document.getElementById('fullscreenQR').style.transform = `scale(${currentScale})`;
+    }
+}
+
+function resetZoom() {
+    currentScale = minScale;
+    document.getElementById('fullscreenQR').style.transform = `scale(${currentScale})`;
+    
+    // Also scroll to center
+    const container = document.querySelector('.qr-image-container');
+    container.scrollTo({
+        top: container.scrollHeight / 2 - container.clientHeight / 2,
+        left: container.scrollWidth / 2 - container.clientWidth / 2,
+        behavior: 'smooth'
+    });
+}
+
+function closeQRModal() {
+    document.getElementById('qrCodeModal').classList.add('hidden');
+    resetZoom(); // Reset zoom when closing
+}
+
+// Add pinch zoom for touch devices
+let initialDistance = null;
+
+document.getElementById('fullscreenQR').addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        initialDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+    }
+});
+
+document.getElementById('fullscreenQR').addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const currentDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        
+        if (initialDistance) {
+            const scale = currentDistance / initialDistance;
+            const newScale = Math.min(Math.max(currentScale * scale, minScale), maxScale);
+            currentScale = newScale;
+            this.style.transform = `scale(${currentScale})`;
+        }
+    }
+});
+
+document.getElementById('fullscreenQR').addEventListener('touchend', function() {
+    initialDistance = null;
+});
+</script>
     
     <?php
 $content = ob_get_clean();
