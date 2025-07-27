@@ -658,7 +658,7 @@
                         document.getElementById('modal-booking-age').textContent = booking.booking_age;
                         document.getElementById('modal-client-name').textContent = booking.customer_name;
                         document.getElementById('modal-phone').textContent = booking.contact_number;
-                         // Format event_hall as bullet points
+                        // Format event_hall as bullet points
                         const hallsElement = document.getElementById('modal-halls');
                         if (Array.isArray(booking.event_hall)) {
                             // Create bullet list for array
@@ -691,6 +691,62 @@
                             receiptImg.src = `../images/payment_proofs/${booking.downpayment_img}`;
                             receiptImg.classList.remove('hidden');
                             noReceipt.classList.add('hidden');
+                            
+                            // Make the image clickable for fullscreen view
+                            receiptImg.style.cursor = 'pointer';
+                            receiptImg.addEventListener('click', function() {
+                                // Create fullscreen overlay
+                                const fullscreenOverlay = document.createElement('div');
+                                fullscreenOverlay.style.position = 'fixed';
+                                fullscreenOverlay.style.top = '0';
+                                fullscreenOverlay.style.left = '0';
+                                fullscreenOverlay.style.width = '100%';
+                                fullscreenOverlay.style.height = '100%';
+                                fullscreenOverlay.style.backgroundColor = 'rgba(0,0,0,0.9)';
+                                fullscreenOverlay.style.display = 'flex';
+                                fullscreenOverlay.style.justifyContent = 'center';
+                                fullscreenOverlay.style.alignItems = 'center';
+                                fullscreenOverlay.style.zIndex = '9999';
+                                fullscreenOverlay.id = 'fullscreen-receipt-overlay';
+                                
+                                // Create close button
+                                const closeButton = document.createElement('button');
+                                closeButton.innerHTML = '&times;';
+                                closeButton.style.position = 'absolute';
+                                closeButton.style.top = '20px';
+                                closeButton.style.right = '40px';
+                                closeButton.style.fontSize = '40px';
+                                closeButton.style.color = 'white';
+                                closeButton.style.background = 'none';
+                                closeButton.style.border = 'none';
+                                closeButton.style.cursor = 'pointer';
+                                
+                                // Create fullscreen image
+                                const fullscreenImg = document.createElement('img');
+                                fullscreenImg.src = this.src;
+                                fullscreenImg.style.maxWidth = '90%';
+                                fullscreenImg.style.maxHeight = '90%';
+                                fullscreenImg.style.objectFit = 'contain';
+                                
+                                // Add elements to overlay
+                                fullscreenOverlay.appendChild(closeButton);
+                                fullscreenOverlay.appendChild(fullscreenImg);
+                                
+                                // Add to document
+                                document.body.appendChild(fullscreenOverlay);
+                                
+                                // Close functionality
+                                closeButton.addEventListener('click', function() {
+                                    document.body.removeChild(fullscreenOverlay);
+                                });
+                                
+                                // Also close when clicking outside image
+                                fullscreenOverlay.addEventListener('click', function(e) {
+                                    if (e.target === fullscreenOverlay) {
+                                        document.body.removeChild(fullscreenOverlay);
+                                    }
+                                });
+                            });
                         } else {
                             receiptImg.classList.add('hidden');
                             noReceipt.classList.remove('hidden');
