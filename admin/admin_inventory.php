@@ -589,7 +589,11 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "inventory_handlers/fetch_ingredient.php",
-                    "type": "POST"
+                    "type": "POST",
+                    "data": function(d) {
+                        // Add a custom parameter to indicate we want to prioritize out-of-stock items
+                        d.prioritizeOutOfStock = true;
+                    }
                 },
                 "columns": [
                     {
@@ -604,7 +608,17 @@
                     { 
                         "data": "quantity", 
                         "render": function(data, type, row) {
+                            // Display "Out of Stock" for zero quantity
+                            if (parseFloat(data) <= 0) {
+                                return '<span class="text-red-500 font-semibold">Out of Stock</span>';
+                            }
                             return parseFloat(data).toFixed(2) + ' kg';
+                        },
+                        "createdCell": function(td, cellData, rowData, row, col) {
+                            // Add class for zero quantity cells
+                            if (parseFloat(cellData) <= 0) {
+                                $(td).addClass('bg-red-50');
+                            }
                         }
                     },
                     { 
@@ -645,7 +659,7 @@
                         "orderable": false
                     }
                 ],
-                "order": [[0, 'asc']],
+                "order": [[2, 'asc']],
                 "responsive": true,
                 "dom": '<"overflow-x-auto"rt><"flex flex-col sm:flex-row justify-between items-center mt-2"<"text-sm text-gray-600"i><"mt-2 sm:mt-0"p>>',
                 "lengthChange": false,

@@ -1,7 +1,6 @@
 <?php
 require_once '../../db_connect.php';
 
-// Initialize response array with error field
 $response = [
     "draw" => intval($_POST['draw'] ?? 1),
     "recordsTotal" => 0,
@@ -11,14 +10,13 @@ $response = [
 ];
 
 try {
-    // Get parameters from DataTables request
     $start = $_POST['start'] ?? 0;
     $length = $_POST['length'] ?? 10;
     $searchValue = $_POST['search']['value'] ?? '';
     $orderColumn = $_POST['order'][0]['column'] ?? 0;
     $orderDir = $_POST['order'][0]['dir'] ?? 'asc';
+    $prioritizeOutOfStock = $_POST['prioritizeOutOfStock'] ?? false;
 
-    // Column mapping for ordering
     $columns = [
         0 => 'ingredient_name',
         1 => 'category',
@@ -27,7 +25,7 @@ try {
         4 => 'total_price'
     ];
 
-    // Base query for total records (without LIMIT)
+    // Base query
     $baseQuery = "SELECT 
         ingredient_id, 
         ingredient_name, 
@@ -37,23 +35,23 @@ try {
         CASE 
             WHEN quantity < 0 THEN 0 
             ELSE total_price 
-        END AS total_price
+        END AS total_price,
+        CASE
+            WHEN quantity <= 0 THEN 1 ELSE 0
+        END AS is_out_of_stock
     FROM ingredients_tb 
     WHERE visibility = 'show'";
 
-
-    // Query for filtered records (with search conditions if any)
     $filteredQuery = $baseQuery;
     
-    // Add search condition if search value is provided
     if (!empty($searchValue)) {
         $filteredQuery .= " AND (ingredient_name LIKE :search OR category LIKE :search)";
     }
 
-    // Get total records (all visible records)
+    // Get total records
     $totalRecords = $conn->query("SELECT COUNT(*) FROM ingredients_tb WHERE visibility = 'show'")->fetchColumn();
 
-    // Get filtered records count (with search conditions if any)
+    // Get filtered records count
     $stmtCount = $conn->prepare("SELECT COUNT(*) FROM ingredients_tb WHERE visibility = 'show'" . 
                                (!empty($searchValue) ? " AND (ingredient_name LIKE :search OR category LIKE :search)" : ""));
     
@@ -64,14 +62,18 @@ try {
     $stmtCount->execute();
     $filteredRecords = $stmtCount->fetchColumn();
 
-    // Add ordering to data query
+    // Modify ordering if we're prioritizing out-of-stock items
     $orderColumnName = $columns[$orderColumn] ?? $columns[0];
-    $filteredQuery .= " ORDER BY $orderColumnName $orderDir";
+    
+    if ($prioritizeOutOfStock && $orderColumnName === 'quantity') {
+        // First sort by is_out_of_stock (1 comes first), then by quantity
+        $filteredQuery .= " ORDER BY is_out_of_stock DESC, $orderColumnName $orderDir";
+    } else {
+        $filteredQuery .= " ORDER BY $orderColumnName $orderDir";
+    }
 
-    // Add limit for pagination
     $filteredQuery .= " LIMIT :start, :length";
 
-    // Prepare and execute the query for data
     $stmt = $conn->prepare($filteredQuery);
 
     if (!empty($searchValue)) {
@@ -83,10 +85,8 @@ try {
     $stmt->bindParam(':length', $length, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Fetch the data
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Update successful response
     $response = [
         "draw" => intval($_POST['draw'] ?? 1),
         "recordsTotal" => intval($totalRecords),
@@ -96,14 +96,11 @@ try {
     ];
 
 } catch (PDOException $e) {
-    // Database related errors
     $response['error'] = "Database error: " . $e->getMessage();
 } catch (Exception $e) {
-    // All other errors
     $response['error'] = "Error: " . $e->getMessage();
 }
 
-// Return JSON response
 header('Content-Type: application/json');
 echo json_encode($response);
 ?>
