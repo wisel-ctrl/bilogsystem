@@ -40,6 +40,10 @@ ob_start();
 @keyframes spin {
     to { transform: translateY(-50%) rotate(360deg); }
 }
+
+#qrCodeModal {
+    transition: opacity 0.3s ease;
+}
 </style>
 
 
@@ -95,6 +99,16 @@ ob_start();
                             onclick="loadMenu()">
                         Try Again
                     </button>
+                </div>
+            </div>
+
+            <!-- Fullscreen QR Code Modal -->
+            <div id="qrCodeModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-75">
+                <div class="relative">
+                    <button onclick="closeQRModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                    <img id="fullscreenQR" src="" alt="Fullscreen QR Code" class="max-w-full max-h-screen">
                 </div>
             </div>
         </section>
@@ -530,7 +544,7 @@ ob_start();
                                                 <!-- Display first QR code by default -->
                                                 <img src="../images/gcash_qr/<?php echo htmlspecialchars($gcashQRs[0]['qr_image']); ?>" 
                                                      alt="GCash QR Code" 
-                                                     class="w-48 h-48 object-contain active-qr">
+                                                     class="w-48 h-48 object-contain active-qr cursor-pointer">
                                                 <p class="text-center text-sm text-gray-600 mt-2">
                                                     GCash Number: <?php echo htmlspecialchars($gcashQRs[0]['gcash_number']); ?>
                                                 </p>
@@ -540,7 +554,7 @@ ob_start();
                                                         <div>
                                                             <img src="../images/gcash_qr/<?php echo htmlspecialchars($gcashQRs[$i]['qr_image']); ?>" 
                                                                  alt="GCash QR Code" 
-                                                                 class="w-48 h-48 object-contain">
+                                                                 class="w-48 h-48 object-contain cursor-pointer">
                                                             <p class="text-center text-sm text-gray-600 mt-2">
                                                                 GCash Number: <?php echo htmlspecialchars($gcashQRs[$i]['gcash_number']); ?>
                                                             </p>
@@ -732,6 +746,7 @@ ob_start();
                 
                 // Initialize the total amount display
                 calculateTotal();
+                setupQRCodeClickHandlers()
             }
 
             window.handlePaxChange = function() {
@@ -815,6 +830,36 @@ ob_start();
             };
 
             window.showReservationForm = showReservationForm;
+
+            // Add these functions to your JavaScript
+            function showQRModal(imageSrc) {
+                const modal = document.getElementById('qrCodeModal');
+                const fullscreenImg = document.getElementById('fullscreenQR');
+                
+                fullscreenImg.src = imageSrc;
+                modal.classList.remove('hidden');
+            }
+
+            window.showQRModal = showQRModal;
+
+            function closeQRModal() {
+                document.getElementById('qrCodeModal').classList.add('hidden');
+            }
+
+            window.closeQRModal = closeQRModal;
+
+            // Add click event listeners to all QR code images
+            function setupQRCodeClickHandlers() {
+                const qrImages = document.querySelectorAll('#qrCodeContainer img');
+                qrImages.forEach(img => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function() {
+                        showQRModal(this.src);
+                    });
+                });
+            }
+
+            window.setupQRCodeClickHandlers = setupQRCodeClickHandlers;
 
             window.validateReservationForm = async function() {
                 let isValid = true;
