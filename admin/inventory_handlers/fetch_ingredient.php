@@ -28,9 +28,19 @@ try {
     ];
 
     // Base query for total records (without LIMIT)
-    $baseQuery = "SELECT ingredient_id, ingredient_name, category, price, quantity, total_price 
-              FROM ingredients_tb 
-              WHERE visibility = 'show'";
+    $baseQuery = "SELECT 
+        ingredient_id, 
+        ingredient_name, 
+        category, 
+        price, 
+        GREATEST(quantity, 0) AS quantity, 
+        CASE 
+            WHEN quantity < 0 THEN 0 
+            ELSE total_price 
+        END AS total_price
+    FROM ingredients_tb 
+    WHERE visibility = 'show'";
+
 
     // Query for filtered records (with search conditions if any)
     $filteredQuery = $baseQuery;
