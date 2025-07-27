@@ -915,6 +915,17 @@
                                     <textarea id="edit-package-description" rows="3" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville" placeholder="Enter package description"></textarea>
                                 </div>
 
+                                <div>
+                                    <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Package Image</label>
+                                    <input type="file" id="edit-package-image" accept="image/*" class="w-full px-4 py-2 border border-warm-cream/50 rounded-lg focus:ring-2 focus:ring-accent-brown focus:border-transparent bg-white/50 backdrop-blur-sm font-baskerville">
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-deep-brown mb-2 font-baskerville">Image Preview</label>
+                                        <div class="w-full h-48 bg-warm-cream/20 rounded-lg overflow-hidden flex items-center justify-center">
+                                            <img id="edit-package-image-preview" src="" alt="Package Image Preview" class="max-w-full max-h-full object-contain">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Price and Capital -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -2081,6 +2092,28 @@ document.getElementById('package-image').addEventListener('change', function(eve
                 document.getElementById('edit-package-capital').value = packageData.capital;
                 document.getElementById('edit-package-status').value = packageData.status;
                 document.getElementById('edit-package-type').value = packageData.type;
+                
+                // Set image preview if image_path exists
+                const imagePreview = document.getElementById('edit-package-image-preview');
+                if (packageData.image_path) {
+                    imagePreview.src = packageData.image_path;
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+                
+                // Add event listener for image upload
+                document.getElementById('edit-package-image').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            imagePreview.src = event.target.result;
+                            imagePreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
                 
                 // Clear and populate dishes
                 editPackageDishesContainer.innerHTML = '';
