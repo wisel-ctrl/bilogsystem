@@ -103,12 +103,13 @@ ob_start();
             </div>
 
             <!-- Fullscreen QR Code Modal -->
-            <div id="qrCodeModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-75">
-                <div class="relative">
-                    <button onclick="closeQRModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300">
-                        <i class="fas fa-times text-2xl"></i>
+            <div id="qrCodeModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-75">
+                <div class="relative bg-white p-4 rounded-lg max-w-[90vw] max-h-[90vh] flex flex-col items-center">
+                    <button onclick="closeQRModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl">
+                        <i class="fas fa-times"></i>
                     </button>
-                    <img id="fullscreenQR" src="" alt="Fullscreen QR Code" class="max-w-full max-h-screen">
+                    <img id="fullscreenQR" src="" alt="Fullscreen QR Code" class="max-w-full max-h-[80vh] object-contain">
+                    <p class="mt-2 text-center text-gray-700" id="qrCodeNumber"></p>
                 </div>
             </div>
         </section>
@@ -833,11 +834,17 @@ ob_start();
             window.showReservationForm = showReservationForm;
 
             // Add these functions to your JavaScript
-            function showQRModal(imageSrc) {
+            function showQRModal(imageSrc, gcashNumber = '') {
                 const modal = document.getElementById('qrCodeModal');
                 const fullscreenImg = document.getElementById('fullscreenQR');
+                const qrNumberDisplay = document.getElementById('qrCodeNumber');
                 
                 fullscreenImg.src = imageSrc;
+                if (gcashNumber) {
+                    qrNumberDisplay.textContent = `GCash Number: ${gcashNumber}`;
+                } else {
+                    qrNumberDisplay.textContent = '';
+                }
                 modal.classList.remove('hidden');
             }
 
@@ -854,8 +861,10 @@ ob_start();
                 const qrImages = document.querySelectorAll('#qrCodeContainer img');
                 qrImages.forEach(img => {
                     img.style.cursor = 'pointer';
+                    // Find the associated GCash number (it's in the next sibling p element)
+                    const gcashNumber = img.nextElementSibling?.textContent?.replace('GCash Number: ', '') || '';
                     img.addEventListener('click', function() {
-                        showQRModal(this.src);
+                        showQRModal(this.src, gcashNumber);
                     });
                 });
             }
@@ -1352,6 +1361,7 @@ ob_start();
             if (additionalQRCodes.classList.contains('hidden')) {
                 additionalQRCodes.classList.remove('hidden');
                 toggleButton.innerHTML = '<i class="fas fa-qrcode mr-2"></i>Hide QR Codes';
+                setupQRCodeClickHandlers();
             } else {
                 additionalQRCodes.classList.add('hidden');
                 toggleButton.innerHTML = '<i class="fas fa-qrcode mr-2"></i>Show All QR Codes';
