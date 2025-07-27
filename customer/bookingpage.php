@@ -746,7 +746,8 @@ ob_start();
                 
                 // Initialize the total amount display
                 calculateTotal();
-                setupQRCodeClickHandlers()
+                setupQRCodeClickHandlers();
+                closeModal();
             }
 
             window.handlePaxChange = function() {
