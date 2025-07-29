@@ -38,6 +38,12 @@ function sendSemaphoreOTP($contactNumber, $otpCode) {
     return $httpCode === 200;
 }
 
+function isPhoneNumberExists($conn, $phoneNumber) {
+    $stmt = $conn->prepare("SELECT id FROM users_tb WHERE contact_number = ?");
+    $stmt->execute([$phoneNumber]);
+    return $stmt->rowCount() > 0;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'send_otp') {
         $contactNumber = str_replace('-', '', trim($_POST['contactNumber'] ?? ''));
@@ -90,6 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['contactNumber'] = 'Contact number is required';
     } elseif (!preg_match('/^[0-9]{11}$/', $contactNumber)) {
         $errors['contactNumber'] = 'Contact number must be 11 digits';
+    } elseif (isPhoneNumberExists($conn, $contactNumber)) {
+        $errors['contactNumber'] = 'Phone number already registered';
     }
     if (empty($password)) {
         $errors['password'] = 'Password is required';
@@ -149,6 +157,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'check_phone') {
+    $phoneNumber = str_replace('-', '', trim($_POST['phoneNumber'] ?? ''));
+    
+    if (!preg_match('/^[0-9]{11}$/', $phoneNumber) || !preg_match('/^09\d{9}$/', $phoneNumber)) {
+        header('Content-Type: application/json');
+        echo json_encode(['valid' => false, 'message' => 'Invalid contact number format']);
+        exit;
+    }
+    
+    $exists = isPhoneNumberExists($conn, $phoneNumber);
+    header('Content-Type: application/json');
+    echo json_encode(['valid' => !$exists, 'message' => $exists ? 'Phone number already registered' : 'Phone number available']);
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -999,6 +1023,106 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             return data;
         }
+        
+        // Add this function to your JavaScript section
+async function checkPhoneNumberAvailability(phoneNumber) {
+    try {
+        const response = await fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'action': 'check_phone',
+                'phoneNumber': phoneNumber
+            })
+        });
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Error checking phone number:', error);
+        return { valid: false, message: 'Error checking phone number' };
+    }
+}
+
+// Update your contactNumberInput event listener
+contactNumberInput.addEventListener('input', async function() {
+    const cleanNumber = this.value.replace(/\D/g, '');
+    const isValidFormat = cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber);
+    
+    // Validate format first
+    sendOtpBtn.disabled = !isValidFormat;
+    validateField(this);
+    
+    // If format is valid, check availability
+    if (isValidFormat) {
+        const result = await checkPhoneNumberAvailability(cleanNumber);
+        const inputGroup = this.closest('.input-group');
+        const feedback = inputGroup.querySelector('.field-feedback');
+        
+        if (!result.valid) {
+            this.classList.add('field-error');
+            this.classList.remove('field-success');
+            feedback.textContent = result.message;
+            feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-red-600';
+            feedback.classList.remove('hidden');
+            sendOtpBtn.disabled = true;
+        } else {
+            this.classList.add('field-success');
+            this.classList.remove('field-error');
+            feedback.textContent = result.message;
+            feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-green-600';
+            feedback.classList.remove('hidden');
+            sendOtpBtn.disabled = false;
+        }
+    }
+    
+    checkFormValidity();
+});
+
+// Add this helper function to your JavaScript
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Then modify your contactNumberInput event listener to use debounce:
+contactNumberInput.addEventListener('input', debounce(async function() {
+    const cleanNumber = this.value.replace(/\D/g, '');
+    const isValidFormat = cleanNumber.length === 11 && /^09\d{9}$/.test(cleanNumber);
+    
+    // Validate format first
+    sendOtpBtn.disabled = !isValidFormat;
+    validateField(this);
+    
+    // If format is valid, check availability
+    if (isValidFormat && cleanNumber.length === 11) {
+        const result = await checkPhoneNumberAvailability(cleanNumber);
+        const inputGroup = this.closest('.input-group');
+        const feedback = inputGroup.querySelector('.field-feedback');
+        
+        if (!result.valid) {
+            this.classList.add('field-error');
+            this.classList.remove('field-success');
+            feedback.textContent = result.message;
+            feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-red-600';
+            feedback.classList.remove('hidden');
+            sendOtpBtn.disabled = true;
+        } else {
+            this.classList.add('field-success');
+            this.classList.remove('field-error');
+            feedback.textContent = result.message;
+            feedback.className = 'field-feedback mt-2 text-sm font-baskerville text-green-600';
+            feedback.classList.remove('hidden');
+            sendOtpBtn.disabled = false;
+        }
+    }
+    
+    checkFormValidity();
+}, 500)); // 500ms delay
     </script>
 </body>
 </html>
